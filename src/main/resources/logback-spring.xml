@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+	<property name="LOG_HOME" value="logs"></property>
+	
+	<property name="LOG_FILE" value="${LOG_HOME}/logs"></property>
+	<property name="INFO_FILE" value="${LOG_HOME}/infos"></property>
+	<property name="WARN_FILE" value="${LOG_HOME}/warns"></property>
+	<property name="ERROR_FILE" value="${LOG_HOME}/errors"></property>
+	<property name="DEBUG_FILE" value="${LOG_HOME}/debugs"></property>
+	
+	<property name="COM_HOME" value="${LOG_HOME}/Compressed"></property>
+	
+	<!-- 普通日志格式 -->
+	<property name="CLASSIC_LOG_PATTERN_TIME" value="%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} Line:%-3L - %msg%n"></property>
+	<property name="CLASSIC_LOG_PATTERN_DATETIME" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} Line:%-3L - %msg%n"></property>
+	<!-- 彩色日志格式 -->
+	<property name="COLORFUL_LOG_PATTERN_TIME" value="${COLORFUL_LOG_PATTERN_TIME:-%clr(%d{HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}" />
+    <property name="COLORFUL_LOG_PATTERN_DATETIME" value="${COLORFUL_LOG_PATTERN_DATETIME:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}" />
+	
+	<contextName>logback</contextName>
+	
+	<!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+    
+    <!-- 命令行 appender -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${COLORFUL_LOG_PATTERN_TIME}</pattern>
+			<!-- <charset>UTF-8</charset> -->
+			<charset>GBK</charset>
+		</encoder>
+	</appender>
+	<!-- 命令行（本地测试） appender -->
+	<!-- <appender name="localTestConsole" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>debug</level>
+		</filter>
+		<encoder>
+			<charset>utf-8</charset>
+			<pattern>${COLORFUL_LOG_PATTERN_TIME}</pattern>
+		</encoder>
+	</appender> -->
+
+	<!-- Log appender -->
+	<appender name="logFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_FILE}</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logback.%d{yyyy-MM-dd}.%i.log.log.gz</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>5MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${CLASSIC_LOG_PATTERN_TIME}</pattern>
+		</encoder>
+		<append>true</append>
+	</appender>
+	<!-- Info appender -->
+	<appender name="infoFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${INFO_FILE}</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>info</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${COM_HOME}/logback.%d{yyyy-MM-dd}.%i.info.log.gz</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>5MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${CLASSIC_LOG_PATTERN_DATETIME}</pattern>
+		</encoder>
+		<append>true</append>
+	</appender>
+	<!-- Warn appender -->
+	<appender name="warnFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${WARN_FILE}</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>warn</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${COM_HOME}/logback.%d{yyyy-MM-dd}.%i.warn.log.gz</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>5MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${CLASSIC_LOG_PATTERN_DATETIME}</pattern>
+		</encoder>
+		<append>true</append>
+	</appender>
+	<!-- Error appender -->
+	<appender name="errorFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${ERROR_FILE}</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>error</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${COM_HOME}/logback.%d{yyyy-MM-dd}.%i.error.log.gz</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>5MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${CLASSIC_LOG_PATTERN_DATETIME}</pattern>
+		</encoder>
+		<append>true</append>
+	</appender>
+	<!-- Debug appender -->
+	<appender name="debugFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${DEBUG_FILE}</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>debug</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${COM_HOME}/logback.%d{yyyy-MM-dd}.%i.debug.log.gz</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>5MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${CLASSIC_LOG_PATTERN_DATETIME}</pattern>
+		</encoder>
+		<append>true</append>
+	</appender>
+	
+	<!--定义logger，只有定义了logger并引入的appender，appender才会生效-->
+	<root level="info">
+		<appender-ref ref="console"/>
+		<appender-ref ref="logFile"/>
+		<appender-ref ref="infoFile"/>
+		<appender-ref ref="warnFile"/>
+		<appender-ref ref="errorFile"/>
+		<appender-ref ref="debugFile"/>
+	</root>
+	<logger name="com.alibaba.druid" level="error"/>
+	<logger name="org.springframework" level="error"/>
+</configuration>
