@@ -1,4 +1,4 @@
-package featureSelection.research.web.config;
+package featureselection.reasearch.web.config;
 
 import javax.sql.DataSource;
 
@@ -17,16 +17,16 @@ import com.alibaba.druid.pool.DruidDataSource;
 @PropertySource("classpath:db.properties")
 public class DataSourceConfiguration {
 
-	@Bean(destroyMethod ="close", initMethod="init")
-	@ConfigurationProperties(prefix="spring.datasource")
-	@Primary
-	public DataSource druidDataSource () {
-		DruidDataSource druidDataSource = new DruidDataSource();
-		return druidDataSource ;
-	}
-	
-	@Bean(name = "webSqlSessionFactory")
-	@Primary
+    @Bean(destroyMethod = "close", initMethod = "init")
+    @ConfigurationProperties(prefix = "spring.datasource")
+    @Primary
+    public DataSource druidDataSource() {
+        DruidDataSource druidDataSource = new DruidDataSource();
+        return druidDataSource;
+    }
+
+    @Bean(name = "webSqlSessionFactory")
+    @Primary
     public SqlSessionFactory webSqlSessionFactory(@Qualifier("druidDataSource") DataSource dataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);

@@ -1,22 +1,23 @@
 # Spring
 spring:
   # 服务器邮箱
-  mail: 
+  mail:
     host: smtp.qq.com
     username: xxxxxx@xxx.com
     password: xxxxxxxxxxxxxx
     properties:
       mail:
-        smtp: 
+        smtp:
           auth: true
           starttls:
             enable: true
             required: true
 
-# MyBatis
-mybatis: 
-  mapper-locations: classpath:featureselection/research/web/mybatisMapper/*.xml
-  
+  # MyBatis
+  #mybatis:
+  #  mapper-locations: classpath:featureselection/research/web/mybatisMapper/*.xml
+
 # Logback    
 logging:
-  path: '/logs'
+  file:
+    path: '/logs'
