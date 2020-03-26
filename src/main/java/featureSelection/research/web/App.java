@@ -1,4 +1,4 @@
-package featureselection.reasearch.web;
+package featureselection.research.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

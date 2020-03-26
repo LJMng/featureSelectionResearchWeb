@@ -1,4 +1,4 @@
-package featureselection.reasearch.web.config;
+package featureselection.research.web.config;
 
 import javax.sql.DataSource;
 

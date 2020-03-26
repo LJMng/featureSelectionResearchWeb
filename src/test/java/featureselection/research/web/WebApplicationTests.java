@@ -1,6 +1,6 @@
-package featureselection.reasearch.web;
+package featureselection.research.web;
 
-import featureselection.reasearch.web.mybatisMapper.TaskInfoMapper;
+import featureselection.research.web.mybatisMapper.TaskInfoMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

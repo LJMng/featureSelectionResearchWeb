@@ -1,4 +1,4 @@
-package featureselection.reasearch.web.mybatisMapper;
+package featureselection.research.web.mybatisMapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

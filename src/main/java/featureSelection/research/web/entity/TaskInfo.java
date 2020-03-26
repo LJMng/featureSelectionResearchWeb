@@ -1,4 +1,4 @@
-package featureselection.reasearch.web.entity;
+package featureselection.research.web.entity;
 
 
 public class TaskInfo {
