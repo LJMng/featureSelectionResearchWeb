@@ -1,0 +1,27 @@
+[v-cloak] {
+    display: none;
+}
+
+ul,li{
+    padding:0;margin:0;list-style:none
+}
+
+.jumbotron{
+    margin-bottom: 0;
+    background: floralwhite;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+#jumbotron{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#jumbotron li{
+    font-size: 20px;
+}
+
+#jumbotron:first-child{
+
+}

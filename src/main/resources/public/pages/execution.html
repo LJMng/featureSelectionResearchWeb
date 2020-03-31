@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Execution</title>
+    <!--bootstrap.css-->
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css"/>
+    <!--bootstrap-switch-->
+    <link rel="stylesheet" href="/webjars/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css">
+    <!--customCss-->
+    <link rel="stylesheet" href="css/execution.css">
+    <!-- jquery -->
+    <script src="/webjars/jquery/jquery.js"></script>
+    <script src="/webjars/jquery-cookie/jquery.cookie.js"></script>
+    <!--Vue.js -->
+    <script src="/webjars/vue/vue.min.js"></script>
+    <!--Bootstrap.js-->
+    <script src="/webjars/bootstrap/js/bootstrap.js"></script>
+    <!--Bootstrap core JavaScript-->
+    <script src="/webjars/bootstrap/js/bootstrap.bundle.js"></script>
+    <!--bootstrap-switch-->
+    <script src="/webjars/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+    <!--axios-->
+    <script src="/webjars/axios/0.19.2/dist/axios.js"></script>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <!--head-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top" id="nav_head">
+            <div class="container">
+                <a class="navbar-brand" href="#">AlgGroup</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav font-weight-bold">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">{{navHead_li1}}<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item  active">
+                            <a class="nav-link" href="#">{{navHead_li2}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">{{navHead_li3}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <button type="button" class="btn btn-outline-secondary btn-sm">{{navHead_btn1}}</button>
+                <input type="checkbox" name="my-checkbox" checked id="language">
+            </div>
+        </nav>
+        <br>
+        <!--body-->
+        <div class="container mt-5">
+            <!--body的导航栏-->
+            <nav id="nav_body">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <!--Home-->
+                    <a class="nav-item nav-link active " id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">{{navBody_a1}}</a>
+                    <!--algorithms-->
+                    <a class="nav-item nav-link ml-1" id="nav-algorithms-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-algorithms" aria-selected="false">{{navBody_a2}}</a>
+                    <!--New Task-->
+                    <a class="nav-item nav-link ml-1" id="nav-new-tab" data-toggle="tab" href="#nav-new" role="tab" aria-controls="nav-contact" aria-selected="false">{{navBody_a3}}</a>
+                    <!--Query Task-->
+                    <a class="nav-item nav-link ml-1" id="nav-query-tab" data-toggle="tab" href="#nav-query" role="tab" aria-controls="nav-query" aria-selected="false">{{navBody_a4}}</a>
+                </div>
+            </nav>
+            <!--body的导航中不同选项对应内容-->
+            <div class="tab-content" id="nav-tabContent">
+                <!--Home的内容-->
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="container" id="jumbotron">
+                        <div class="jumbotron">
+                            <h1 class="display-4 font-weight-normal">{{home_title}}</h1>
+                            <p class="lead m-0 ml-2">{{home_text}}</p>
+                            <hr class="my-4">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6">
+                                    <p class="lead font-weight-normal" style="font-size: 25px">{{home_ul1}}</p>
+                                    <ul class="list-group ml-3 mb-4">
+                                        <li><svg class="bi bi-check-box text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 003 14.5h10a1.5 1.5 0 001.5-1.5V8a.5.5 0 00-1 0v5a.5.5 0 01-.5.5H3a.5.5 0 01-.5-.5V3a.5.5 0 01.5-.5h8a.5.5 0 000-1H3A1.5 1.5 0 001.5 3v10z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul1_li1}}</li>
+                                        <li><svg class="bi bi-check-box text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 003 14.5h10a1.5 1.5 0 001.5-1.5V8a.5.5 0 00-1 0v5a.5.5 0 01-.5.5H3a.5.5 0 01-.5-.5V3a.5.5 0 01.5-.5h8a.5.5 0 000-1H3A1.5 1.5 0 001.5 3v10z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul1_li2}}r</li>
+                                        <li><svg class="bi bi-check-box text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 003 14.5h10a1.5 1.5 0 001.5-1.5V8a.5.5 0 00-1 0v5a.5.5 0 01-.5.5H3a.5.5 0 01-.5-.5V3a.5.5 0 01.5-.5h8a.5.5 0 000-1H3A1.5 1.5 0 001.5 3v10z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul1_li3}}</li>
+                                        <li><svg class="bi bi-check-box text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 003 14.5h10a1.5 1.5 0 001.5-1.5V8a.5.5 0 00-1 0v5a.5.5 0 01-.5.5H3a.5.5 0 01-.5-.5V3a.5.5 0 01.5-.5h8a.5.5 0 000-1H3A1.5 1.5 0 001.5 3v10z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul1_li4}}</li>
+                                        <li><svg class="bi bi-check-box text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 003 14.5h10a1.5 1.5 0 001.5-1.5V8a.5.5 0 00-1 0v5a.5.5 0 01-.5.5H3a.5.5 0 01-.5-.5V3a.5.5 0 01.5-.5h8a.5.5 0 000-1H3A1.5 1.5 0 001.5 3v10z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;......</li>
+                                    </ul>
+                                </div>
+                                <div class="col-xl-6 col-lg-6">
+                                    <p class="lead font-weight-normal" style="font-size: 25px">{{home_ul1}}</p>
+                                    <ul class="list-group ml-3 mb-4">
+                                        <li><svg class="bi bi-diamond text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 010-2.098L6.95.435zm1.4.7a.495.495 0 00-.7 0L1.134 7.65a.495.495 0 000 .7l6.516 6.516a.495.495 0 00.7 0l6.516-6.516a.495.495 0 000-.7L8.35 1.134z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul2_li1}}</li>
+                                        <li><svg class="bi bi-diamond text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 010-2.098L6.95.435zm1.4.7a.495.495 0 00-.7 0L1.134 7.65a.495.495 0 000 .7l6.516 6.516a.495.495 0 00.7 0l6.516-6.516a.495.495 0 000-.7L8.35 1.134z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul2_li2}}</li>
+                                        <li><svg class="bi bi-diamond text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 010-2.098L6.95.435zm1.4.7a.495.495 0 00-.7 0L1.134 7.65a.495.495 0 000 .7l6.516 6.516a.495.495 0 00.7 0l6.516-6.516a.495.495 0 000-.7L8.35 1.134z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul2_li3}}</li>
+                                        <li><svg class="bi bi-diamond text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 010-2.098L6.95.435zm1.4.7a.495.495 0 00-.7 0L1.134 7.65a.495.495 0 000 .7l6.516 6.516a.495.495 0 00.7 0l6.516-6.516a.495.495 0 000-.7L8.35 1.134z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul2_li4}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--algorithms的内容-->
+                <div class="tab-pane fade" id="nav-algorithms" role="tabpanel" aria-labelledby="nav-algorithms-tab">asdfasdf</div>
+                <!--New Task的内容-->
+                <div class="tab-pane fade" id="nav-new" role="tabpanel" aria-labelledby="nav-new-tab">asdfasdfafs</div>
+                <!--Query Task的内容-->
+                <div class="tab-pane fade" id="nav-query" role="tabpanel" aria-labelledby="nav-query-tab">asdfafs</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    var vn = new Vue({
+        el: '#app',
+        data: {
+            navHead_li1: '',
+            navHead_li2: '',
+            navHead_li3: '',
+            navHead_btn1: '',
+            navBody_a1: '',
+            navBody_a2: '',
+            navBody_a3: '',
+            navBody_a4: '',
+            home_text: '',
+            home_title: '',
+            home_ul1: '',
+            home_ul1_li1: '',
+            home_ul1_li2: '',
+            home_ul1_li3: '',
+            home_ul1_li4: '',
+            home_ul2: '',
+            home_ul2_li1: '',
+            home_ul2_li2: '',
+            home_ul2_li3: '',
+            home_ul2_li4: ''
+        },
+        created: function () {
+            /*
+            * 根据存储语言选择信息的cookie获取页面元素内容
+            * */
+            axios.get('/htmlElements').then((response) => {
+                for (let i = 0; i < response.data.length; i++) {
+                    for (item in this._data){
+                        if (response.data[i].moduleKey==item){
+                            if($.cookie("language")=='ch'){
+                                this.$set(this._data,item,response.data[i].chValue);
+                            }else {
+                                this.$set(this._data,item,response.data[i].enValue);
+                            };
+                        }
+                    }
+                }
+            })
+        }
+    });
+    $(function () {
+        /**
+         * 语言选择
+         */
+        var sta;
+        var lang=$.cookie("language");
+        if (lang==null){
+            $.cookie("language","en");
+            lang="en";
+        }
+        if (lang=='en'){
+            sta=true;
+        }else {
+            sta=false;
+        }
+        /**
+         * 开关按钮
+         */
+        $("#language").bootstrapSwitch({
+            state: sta,
+            onText: "English",
+            offText: "中文",
+            onColor: "primary",
+            offColor: "primary",
+            size: "small",
+            labelWidth: "15px",
+            onSwitchChange: function (event,state) {
+                if (state==false){
+                    $.cookie("language","ch")
+                    window.location.href='/execution';
+                }else {
+                    $.cookie("language","en")
+                    window.location.href='/execution';
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
