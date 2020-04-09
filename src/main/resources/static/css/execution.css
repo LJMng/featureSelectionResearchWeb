@@ -1,3 +1,7 @@
+body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 ,p{
+    font-family: Microsoft YaHei;
+}
+
 [v-cloak] {
     display: none;
 }
@@ -22,6 +26,20 @@ ul,li{
     font-size: 20px;
 }
 
-#jumbotron:first-child{
 
+
+.input-img {
+    color: slategrey;
+    position: absolute;
+    margin-left: 80px;
+    z-index: 999;
+    margin-top: -4px;
+}
+
+.fix-context {
+    width: fit-content;
+}
+
+#button-addon3 {
+    width: 30%;
 }

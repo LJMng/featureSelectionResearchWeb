@@ -16,9 +16,6 @@ spring:
   # MyBatis
   #mybatis:
   #  mapper-locations: classpath:featureselection/research/web/mybatisMapper/*.xml
-  mvc:
-    async:
-      request-timeout:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

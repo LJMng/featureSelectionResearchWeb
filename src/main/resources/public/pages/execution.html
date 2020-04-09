@@ -47,7 +47,7 @@
                         </li>
                     </ul>
                 </div>
-                <button type="button" class="btn btn-outline-secondary btn-sm">{{navHead_btn1}}</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm mr-2">{{navHead_btn1}}</button>
                 <input type="checkbox" name="my-checkbox" checked id="language">
             </div>
         </nav>
@@ -60,9 +60,9 @@
                     <!--Home-->
                     <a class="nav-item nav-link active " id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">{{navBody_a1}}</a>
                     <!--algorithms-->
-                    <a class="nav-item nav-link ml-1" id="nav-algorithms-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-algorithms" aria-selected="false">{{navBody_a2}}</a>
+                    <a class="nav-item nav-link ml-1" id="nav-algorithms-tab" data-toggle="tab" href="#nav-algorithms" role="tab" aria-controls="nav-algorithms" aria-selected="false">{{navBody_a2}}</a>
                     <!--New Task-->
-                    <a class="nav-item nav-link ml-1" id="nav-new-tab" data-toggle="tab" href="#nav-new" role="tab" aria-controls="nav-contact" aria-selected="false">{{navBody_a3}}</a>
+                    <a class="nav-item nav-link ml-1" id="nav-new-tab" data-toggle="tab" href="#nav-new" role="tab" aria-controls="nav-new" aria-selected="false">{{navBody_a3}}</a>
                     <!--Query Task-->
                     <a class="nav-item nav-link ml-1" id="nav-query-tab" data-toggle="tab" href="#nav-query" role="tab" aria-controls="nav-query" aria-selected="false">{{navBody_a4}}</a>
                 </div>
@@ -124,7 +124,126 @@
                     </div>
                 </div>
                 <!--algorithms的内容-->
-                <div class="tab-pane fade" id="nav-algorithms" role="tabpanel" aria-labelledby="nav-algorithms-tab">asdfasdf</div>
+                <div class="tab-pane fade" id="nav-algorithms" role="tabpanel" aria-labelledby="nav-algorithms-tab">
+                    <div class="row mt-3">
+                        <div class="col-3 border-right">
+                            <div class="accordion mb-3" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-header p-0" id="headingOne">
+                                        <h2 class="mb-0">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend" id="button-addon3">
+                                                    <button class="btn btn-link text-left pl-2 pr-2" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                        {{algorithms_filter}}&nbsp;<svg class="bi bi-chevron-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 01.708 0L8 10.293l5.646-5.647a.5.5 0 01.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z" clip-rule="evenodd"/></svg>
+                                                    </button>
+                                                </div>
+                                                <input type="text" class="form-control pl-4 border-top-0 border-bottom-0 border-right-0" v-model.trim="search" @keyup="searchAlgorithm" :placeholder="algorithms_search" aria-label="Example text with two button addons" aria-describedby="button-addon3" height="inherit">
+                                                <span class="input-img">
+                                                <svg class="bi bi-search" width="0.7em" height="0.7em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
+                                                    <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                </span>
+                                            </div>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseOne" class="collapse border-bottom" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                        <div class="card-body pt-0 pb-2 pl-1 pr-1">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item pt-2 pb-0 pl-2">{{algorithms_filter1}}</li>
+                                                <li class="list-group-item pb-4">
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2 active">All</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">Heuristic</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">Optimization</button>
+                                                </li>
+                                                <li class="list-group-item pt-2 pb-0 pl-2">{{algorithms_filter2}}</li>
+                                                <li class="list-group-item pb-4">
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2 active">All</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">Positive Region</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">Entropy</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">Others</button>
+                                                </li>
+                                                <li class="list-group-item pt-2 pb-0 pl-2">{{algorithms_filter3}}</li>
+                                                <li class="list-group-item pb-4">
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2 active">All</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">None</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">NEC</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">Dependency Calculation</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <a v-for="(algorithm,index) in algorithmList" :class="index==0?'nav-link active':'nav-link'" :id="algorithm.algorithm_name" data-toggle="pill" :href="'#'+'v-pills-'+algorithm.algorithm_name" role="tab" :aria-controls="'v-pills-'+algorithm.algorithm_name" :aria-selected="index==0?'true':'false'">{{algorithm.algorithm_name}}</a>
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <div class="tab-content" id="v-pills-tabContent">
+                                <div v-for="(algorithm,index) in algorithmList" :class="index==0?'tab-pane fade show active':'tab-pane fade'" :id="'v-pills-'+algorithm.algorithm_name" role="tabpanel" :aria-labelledby="algorithm.algorithm_name">
+                                    <h1 class="text-center"><svg class="bi bi-star-fill text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                    </svg>{{algorithm.algorithm_name}} {{algorithms_info_title}}</h1>
+                                    <hr>
+                                    <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                                    </svg>{{algorithms_info_papers}}</h4>
+                                    <ul class="list-group list-group-flush ml-3 pr-2 mb-4">
+                                        <li class="list-group-item pb-0 pt-1 pl-1 pr-2 border-top-0 fix-context">
+                                            <a :href="algorithm.algorithm_paper_link" target="_blank"><svg class="bi bi-dot text-primary" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" clip-rule="evenodd"/>
+                                        </svg>{{algorithm.algorithm_paper_reference}}</a></li>
+                                    </ul>
+                                    <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                                    </svg>{{algorithms_info_intro}}</h4>
+                                    <div class="jumbotron jumbotron-fluid mb-4 pt-2 pb-2 rounded">
+                                        <div class="container">
+                                            <p class="lead mb-0">{{algorithm.algorithm_description}}</p>
+                                        </div>
+                                    </div>
+                                    <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                                    </svg>{{algorithms_info_how}}</h4>
+                                    <div class="card mb-3 mb-4">
+                                        <img src="pic/timg.jpg" class="card-img-top" alt="several steps">
+                                        <div class="card-body">
+                                            <p class="card-text">Follow these steps help you get start quickly.</p>
+                                        </div>
+                                    </div>
+                                    <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                                    </svg>{{algorithms_info_parameter}}</h4>
+                                    <ul class="list-group list-group-flush ml-3 pr-2 mb-4">
+                                        <div class="row">
+                                            <div class="col-4 mb-3 pl-2 pr-2" v-for="(parameter,index) in parameterList[algorithm.algorithm_id]">
+                                                <div class="card text-center border border-warning">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{parameter.parameterName}}</h5>
+                                                        <p class="card-text">{{parameter.parameterDescription}}</p>
+                                                    </div>
+                                                    <ul class="list-group list-group-flush text-left">
+                                                        <li class="list-group-item pl-2 pr-2 pt-2 pb-2">Type:{{parameter.parameterType}}</li>
+                                                        <li class="list-group-item pl-2 pr-2 pt-2 pb-2">Default Value:{{parameter.parameterDefaultValue}}</li>
+                                                    </ul>
+                                                    <div class="card-footer text-muted font-weight-light pt-1 pb-1">
+                                                        Parameter{{index+1}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!--New Task的内容-->
                 <div class="tab-pane fade" id="nav-new" role="tabpanel" aria-labelledby="nav-new-tab">asdfasdfafs</div>
                 <!--Query Task的内容-->
@@ -133,17 +252,24 @@
         </div>
     </div>
 <script type="text/javascript">
-    var vn = new Vue({
+    var app = new Vue({
         el: '#app',
         data: {
+            //------------------public-----------------
+            algorithmList: [],
+            parameterList: {},
+
+            //------------------HeaderNav-----------------
             navHead_li1: '',
             navHead_li2: '',
             navHead_li3: '',
             navHead_btn1: '',
+            //------------------BodyNav-----------------
             navBody_a1: '',
             navBody_a2: '',
             navBody_a3: '',
             navBody_a4: '',
+            //------------------HomeContext-----------------
             home_text: '',
             home_title: '',
             home_ul1: '',
@@ -155,7 +281,19 @@
             home_ul2_li1: '',
             home_ul2_li2: '',
             home_ul2_li3: '',
-            home_ul2_li4: ''
+            home_ul2_li4: '',
+            //------------------AlgorithmsContext-----------------
+            algorithms_filter: '',
+            algorithms_search: '',
+            algorithms_filter1: '',
+            algorithms_filter2: '',
+            algorithms_filter3: '',
+            algorithms_info_how: '',
+            algorithms_info_intro: '',
+            algorithms_info_papers: '',
+            algorithms_info_parameter: '',
+            algorithms_info_title: '',
+            search: ''
         },
         created: function () {
             /*
@@ -169,11 +307,28 @@
                                 this.$set(this._data,item,response.data[i].chValue);
                             }else {
                                 this.$set(this._data,item,response.data[i].enValue);
-                            };
+                            }
                         }
                     }
                 }
+            });
+            axios.get('/getAlgorithmsList').then((response) => {
+                this.algorithmList=response.data;
+            });
+            axios.get('/getParameterList').then((response) => {
+                this.parameterList=response.data;
             })
+        },
+        methods: {
+            searchAlgorithm: function (event) {
+                $('#v-pills-tab').children().each((index,element) => {
+                    if (!($(element).text().trim().toLowerCase().indexOf(this.search.toLowerCase())>=0)){
+                        $(element).addClass("d-none");
+                    }else {
+                        $(element).removeClass("d-none");
+                    }
+                });
+            }
         }
     });
     $(function () {
@@ -191,6 +346,10 @@
         }else {
             sta=false;
         }
+        /**
+         * 页面定位
+         * /
+
         /**
          * 开关按钮
          */
