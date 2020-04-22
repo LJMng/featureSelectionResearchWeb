@@ -112,6 +112,13 @@
 			<artifactId>axios</artifactId>
 			<version>0.19.2</version>
 		</dependency>
+		<!-- echarts -->
+		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>echarts</artifactId>
+			<version>4.7.0</version>
+		</dependency>
+
 		<!-- JUnit test -->
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>

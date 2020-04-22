@@ -19,6 +19,4 @@ public class ExecutionController {
     public String getExecutionIndex(){
         return "/pages/execution.html";
     }
-
-
 }
