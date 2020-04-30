@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.7.0/echarts-en.common.js"></script> -->
+
+    <style type="text/css">
+        .aboutushead {
+            background: #425861 url(http://www.bootstrapmb.com/content/images/bg-page-section.png);
+            padding-top: 40px !important;
+            padding-bottom: 40px !important;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="aboutuspage">
+        <div class="aboutushead">
+            <h1 style="color: aliceblue">
+                {{pagetitle}}
+            </h1>
+        </div>
+        <div class="main">
+            <div class="row mt-4">
+                <div class="col-3">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+                            role="tab" aria-controls="v-pills-home" aria-selected="true">
+                            {{aboutustitle}}
+                        </a>
+                        <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+                            role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                            {{introductionustitle}}
+                        </a>
+                        <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages"
+                            role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                            {{contactustitle}}
+                        </a>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                            aria-labelledby="v-pills-home-tab">
+                            {{aboutusinfo}}
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
+                            aria-labelledby="v-pills-profile-tab">{{introductionusinfo}}
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
+                            aria-labelledby="v-pills-messages-tab">...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var vue_demo_aboutus = new Vue({
+            el: '#aboutuspage',
+            data: {
+                pagetitle: '',
+                aboutustitle: '',
+                introductionustitle: '',
+                contactustitle: '',
+                aboutusinfo: '',
+                introductionusinfo: '',
+
+
+            },
+            created: function () {
+                axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=aboutus").then((response) => {
+                    console.log(response.data)
+                    for (let i = 0; i < response.data.length; i++) {
+                        for (item in this._data) {
+                            if (response.data[i].moduleKey == item) {
+                                if ($.cookie("language") == 'ch') {
+                                    this.$set(this._data, item, response.data[i].chValue);
+                                } else {
+                                    this.$set(this._data, item, response.data[i].enValue);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        $(function () {
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+    <div class="modal fade" id="parameterInfo" tabindex="-1" role="dialog" aria-labelledby="parameterInfoTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="parameterInfoTitle">{{schemesdetailstitle}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span>
+                        <h5>{{parametertitle}}</h5>
+                    </span>
+                    <ul class="list-group-flush">
+                        <li class="list-group-item" v-for="parameterInfo in parameterScheme.parameterSchemeValues">
+                            {{parameterInfo.parameter!=null? parameterInfo.parameter.parameterName:""}}
+                            :{{parameterInfo.parameterValue}}
+                        </li>
+                    </ul>
+                    <span>
+                        <h5>{{datasetinfotitle}}</h5>
+                    </span>
+                    <ul class="list-group-flush">
+                        <li class="list-group-item">
+                            datasetName:{{parameterScheme.dataset!=null? parameterScheme.dataset.datasetName:""}}</li>
+                        <li class="list-group-item">
+                            datasetSource:{{parameterScheme.dataset!=null? parameterScheme.dataset.datasetSource:""}}
+                        </li>
+                        <li class="list-group-item">
+                            datasetDimension:{{parameterScheme.dataset!=null? parameterScheme.dataset.datasetDimension:""}}
+                        </li>
+                    </ul>
+                    <div class="text-right">
+                        <button class="btn btn-secondary " type="button" onclick="download()">
+                            <svg class="bi bi-box-arrow-in-down" width="2em" height="2em" viewBox="0 0 16 16"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M4.646 8.146a.5.5 0 0 1 .708 0L8 10.793l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"
+                                    clip-rule="evenodd" />
+                                <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0v-9A.5.5 0 0 1 8 1z"
+                                    clip-rule="evenodd" />
+                                <path fill-rule="evenodd"
+                                    d="M1.5 13.5A1.5 1.5 0 0 0 3 15h10a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 13 4h-1.5a.5.5 0 0 0 0 1H13a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5v-8A.5.5 0 0 1 3 5h1.5a.5.5 0 0 0 0-1H3a1.5 1.5 0 0 0-1.5 1.5v8z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var vue_parameterInfo = new Vue({
+            el: '#parameterInfo',
+            data: {
+                schemesdetailstitle: '',
+                parametertitle: '',
+                datasetinfotitle: '',
+                parameterScheme: {
+                    schemeId: "1",
+                    schemeName: "方案1",
+                    schemeDescription: "",
+                    dataset: {
+                        datasetId: "1",
+                        datasetName: "测试用数据集1",
+                        datasetDimension: "100",
+                    },
+                    parameterSchemeValues: [
+                        {
+                            parameter: {
+                                parameterId: "1",
+                                parameterName: "参数1"
+                            },
+                            parameterValue: 100,
+                        },
+                        {
+                            parameter: {
+                                parameterId: "2",
+                                parameterName: "参数1"
+                            },
+                            parameterValue: 1,
+                        },
+                    ]
+                }
+            },
+            created: function () {
+                axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=schemesDetails").then((response) => {
+                    for (let i = 0; i < response.data.length; i++) {
+                        for (item in this._data) {
+                            if (response.data[i].moduleKey == item) {
+                                if ($.cookie("language") == 'ch') {
+                                    this.$set(this._data, item, response.data[i].chValue);
+                                } else {
+                                    this.$set(this._data, item, response.data[i].enValue);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+        });
+
+        $(function () {
+
+        });
+
+        function download() {
+            window.location.href = "http://localhost:8000/demo/download?datasetid=" + vue_parameterInfo.parameterScheme.dataset.datasetId;
+
+        }
+
+    </script>
+</body>
+
+</html>

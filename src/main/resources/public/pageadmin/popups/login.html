@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Modal -->
+    <div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginmodal">{{logintitle}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">{{accounttitle}}</label>
+                            <input type="email" class="form-control" id="account" aria-describedby="accountHelp">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">{{passwordtitle}}</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1">
+                        </div>
+                        <button type="submit" class="btn btn-primary">{{log}}</button>
+                        <small id="emailHelp" class="form-text text-muted">{{notaccount}}</small>
+                        <small id="emailHelp" class="form-text text-muted" data-dismiss="modal"><a
+                                onclick="toRegister()" href="#">{{register}}</a></small>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var vue_demo_loginmodal = new Vue({
+            el: '#loginmodal',
+            data: {
+                logintitle:'',
+                accounttitle:'',
+                passwordtitle:'',
+                log:'',
+                notaccount:'',
+                register:'',
+            },
+            created: function () {
+                /*
+                * 根据存储语言选择信息的cookie获取页面元素内容
+                */
+                axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=login").then((response) => {
+                    for (let i = 0; i < response.data.length; i++) {
+                        for (item in this._data) {
+                            if (response.data[i].moduleKey == item) {
+                                if ($.cookie("language") == 'ch') {
+                                    this.$set(this._data, item, response.data[i].chValue);
+                                } else {
+                                    this.$set(this._data, item, response.data[i].enValue);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        // 上面created与下面$(function(){})的调用顺序自行百度和查看Vue.js文档说明，或者自行尝试
+        $(function () {
+        });
+
+    </script>
+</body>
+
+</html>

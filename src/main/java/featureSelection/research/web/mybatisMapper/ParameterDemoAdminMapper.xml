@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="featureSelection.research.web.mybatisMapper.ParameterDemoAdminMapper">
+    <resultMap id= "result" type = "featureSelection.research.web.entity.AlgorithmParameterDemoAdmin">
+        <id property="parameterId" column="parameter_id" />
+        <result property="parameterName" column="parameter_name" />
+        <result property="parameterValue" column="parameter_value" />
+        <result property="algorithmName" column="algorithm_name" />
+        <result property="schemeName" column="scheme_name" />
+    </resultMap>
+
+    <!--查询所有参数信息-->
+    <select id="findAll" resultMap="result">
+        select
+            algorithm_name,scheme_name,parameter.parameter_id,
+            parameter_value,parameter_name
+        from
+            algorithm,parameter_scheme,parameter_scheme_value,parameter
+        where
+            parameter_scheme_value.parameter_id=parameter.parameter_id
+        and
+            parameter_scheme.scheme_id=parameter_scheme_value.scheme_id
+        and
+            parameter_scheme.algorithm_id=algorithm.algorithm_id
+    </select>
+
+</mapper>

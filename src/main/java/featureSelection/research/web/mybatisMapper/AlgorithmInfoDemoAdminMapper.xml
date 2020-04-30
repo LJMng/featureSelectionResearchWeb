@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="featureSelection.research.web.mybatisMapper.AlgorithmInfoDemoAdminMapper">
+    <resultMap id= "result" type = "featureSelection.research.web.entity.AlgorithmInfoDemoAdmin">
+        <id column="algorithm_id" property="algorithmId" />
+        <result column="algorithm_name" property="algorithmName" />
+        <result column="algorithm_description" property="algorithmDescription" />
+        <result column="algorithm_paper_reference" property="algorithmPaperReference" />
+        <result column="algorithm_paper_link" property="algorithmPaperLink" />
+        <result column="algorithm_call_interface" property="algorithmCallInterface" />
+
+        <collection property="algorithmParameterDemoAdmin" ofType="featureSelection.research.web.entity.AlgorithmParameterDemoAdmin">
+            <id property="parameterId" column="parameter_id" />
+            <result property="parameterName" column="parameter_name" />
+            <result property="parameterType" column="parameter_type" />
+            <result property="parameterValue" column="parameter_value" />
+        </collection>
+    </resultMap>
+
+    <!--查询所有算法信息-->
+    <select id="findAll" resultMap="result">
+        select * from algorithm
+    </select>
+
+    <!--通过ID查询算法信息-->
+    <select id="getAlgorithmInfoDemoAdminById" resultMap="result" parameterType="int">
+        select * from algorithm where algorithm_id = #{algorithmId}
+    </select>
+
+    <!--增加算法信息-->
+    <insert id="insertAlgorithmInfoDemoAdmin" parameterType="featureSelection.research.web.entity.AlgorithmInfoDemoAdmin" useGeneratedKeys="true" keyProperty="algorithmId">
+        insert into algorithm (algorithm_name, algorithm_paper_reference, algorithm_description, algorithm_paper_link, algorithm_call_interface)
+        values (
+            #{algorithmName},
+            #{algorithmPaperReference},
+            #{algorithmDescription},
+            #{algorithmCallInterface},
+            #{algorithmPaperLink}
+        )
+    </insert>
+    <!--增加参数信息-->
+    <insert id="insertAlgorithmParameterDemoAdmin" parameterType="featureSelection.research.web.entity.AlgorithmInfoDemoAdmin">
+        <foreach collection="algorithmParameterDemoAdmin" item="item">
+            <if test="item.parameterName!=''">
+                insert into parameter (parameter_name,algorithm_id,parameter_type) values (#{item.parameterName},(select max(algorithm_id) from algorithm),#{item.parameterType});
+            </if>
+        </foreach>
+    </insert>
+
+
+    <!--更新被绑定ID的算法信息-->
+    <update id="updateAlgorithmInfoDemoAdmin">
+        update algorithm set
+            algorithm_name = #{algorithmName},
+            algorithm_paper_reference = #{algorithmPaperReference},
+            algorithm_description = #{algorithmDescription},
+            algorithm_paper_link = #{algorithmPaperLink},
+            algorithm_call_interface = #{algorithmCallInterface}
+        where algorithm_id = #{algorithmId}
+    </update>
+
+    <!--删除被绑定ID的算法信息-->
+    <delete id="deleteAlgorithmInfoDemoAdmin">
+        delete from algorithm where algorithm_id = #{algorithmId}
+    </delete>
+    <delete id="deleteAlgorithmParameterDemoAdmin">
+        delete from parameter where algorithm_id = #{algorithmId}
+    </delete>
+
+
+    <!--查询所有算法ID和名称提供方案调用-->
+    <select id="findAllIdAndName" resultMap="result">
+        select algorithm_id,algorithm_name
+        from algorithm;
+    </select>
+
+    <!--通过算法ID查询算法参数-->
+    <select id="getParameterById" resultMap="result">
+        select * from parameter where algorithm_id = #{algorithmId}
+    </select>
+</mapper>
