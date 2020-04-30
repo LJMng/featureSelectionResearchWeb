@@ -118,6 +118,12 @@
 			<artifactId>echarts</artifactId>
 			<version>4.7.0</version>
 		</dependency>
+		<!--csv-->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.8</version>
+		</dependency>
 
 		<!-- JUnit test -->
 		<!-- https://mvnrepository.com/artifact/junit/junit -->

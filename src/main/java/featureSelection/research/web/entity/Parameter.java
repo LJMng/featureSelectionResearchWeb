@@ -1,4 +1,4 @@
-package featureselection.research.web.entity;
+package featureSelection.research.web.entity;
 
 
 /**
@@ -12,6 +12,7 @@ public class Parameter {
   private String parameterDescription;
   private String parameterType;
   private String parameterDefaultValue;
+  private String parameterSettingInfo;
   private String parameterValidityCheckInterface;
   private String parameterValidityDescription;
   private java.sql.Timestamp ut;
@@ -19,13 +20,14 @@ public class Parameter {
   public Parameter() {
   }
 
-  public Parameter(long parameterId, long algorithmId, String parameterName, String parameterDescription, String parameterType, String parameterDefaultValue) {
+  public Parameter(long parameterId, long algorithmId, String parameterName, String parameterDescription, String parameterType, String parameterDefaultValue, String parameterSettingInfo) {
     this.parameterId = parameterId;
     this.algorithmId = algorithmId;
     this.parameterName = parameterName;
     this.parameterDescription = parameterDescription;
     this.parameterType = parameterType;
     this.parameterDefaultValue = parameterDefaultValue;
+    this.parameterSettingInfo = parameterSettingInfo;
   }
 
   public long getParameterId() {
@@ -108,4 +110,11 @@ public class Parameter {
     this.ut = ut;
   }
 
+  public String getParameterSettingInfo() {
+    return parameterSettingInfo;
+  }
+
+  public void setParameterSettingInfo(String parameterSettingInfo) {
+    this.parameterSettingInfo = parameterSettingInfo;
+  }
 }

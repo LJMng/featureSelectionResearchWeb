@@ -1,4 +1,4 @@
-package featureselection.research.web.entity;
+package featureSelection.research.web.entity;
 
 /**
  * @author BuTTer

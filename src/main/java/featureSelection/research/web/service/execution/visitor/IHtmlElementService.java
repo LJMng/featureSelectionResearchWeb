@@ -1,9 +1,6 @@
-package featureselection.research.web.service.execution.visitor;
+package featureSelection.research.web.service.execution.visitor;
 
-import featureselection.research.web.entity.Algorithm;
-import featureselection.research.web.entity.Dataset;
-import featureselection.research.web.entity.HtmlElementControl;
-import featureselection.research.web.entity.Parameter;
+import featureSelection.research.web.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -37,4 +34,6 @@ public interface IHtmlElementService {
      * @return Map<Long, Dataset> key为公共数据集Id
      */
     Map<Long, Dataset> getDatasetList();
+
+    Map<Long,List<ProcedureSettings>> getProcedureSettingList();
 }

@@ -1,9 +1,10 @@
-package featureselection.research.web.controller.execution.visitor;
+package featureSelection.research.web.controller.execution.visitor;
 
-import featureselection.research.web.entity.DatasetForm;
-import featureselection.research.web.entity.TaskInfo;
-import featureselection.research.web.entity.TaskResult;
-import featureselection.research.web.service.execution.visitor.IExecutionFormsService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import featureSelection.research.web.entity.DatasetForm;
+import featureSelection.research.web.entity.TaskInfo;
+import featureSelection.research.web.entity.TaskResult;
+import featureSelection.research.web.service.execution.visitor.IExecutionFormsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,7 +41,7 @@ public class ExecutionFormsController {
 
     @PostMapping("/uploadTaskForm")
     public String submitTaskForm(TaskInfo task,
-             @RequestParam(name = "file",required = false) MultipartFile uploadFile){
+             @RequestParam(name = "file",required = false) MultipartFile uploadFile) throws JsonProcessingException {
         return formsService.submitTaskForm(task,uploadFile,taskPath);
     }
 

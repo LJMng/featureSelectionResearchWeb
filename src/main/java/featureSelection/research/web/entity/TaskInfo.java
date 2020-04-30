@@ -1,10 +1,10 @@
-package featureselection.research.web.entity;
+package featureSelection.research.web.entity;
 
 
 public class TaskInfo {
 
   private long taskId;
-  private String accountId;
+  private long accountId;
   private String taskName;
   private String taskStatus;
   private String taskComment;
@@ -32,11 +32,11 @@ public class TaskInfo {
   }
 
 
-  public String getAccountId() {
+  public long getAccountId() {
     return accountId;
   }
 
-  public void setAccountId(String accountId) {
+  public void setAccountId(long accountId) {
     this.accountId = accountId;
   }
 

@@ -1,4 +1,4 @@
-package featureselection.research.web;
+package featureSelection.research.web;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

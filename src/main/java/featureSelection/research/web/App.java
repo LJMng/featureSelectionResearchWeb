@@ -1,4 +1,4 @@
-package featureselection.research.web;
+package featureSelection.research.web;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

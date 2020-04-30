@@ -1,8 +1,9 @@
-package featureselection.research.web.service.execution.visitor;
+package featureSelection.research.web.service.execution.visitor;
 
-import featureselection.research.web.entity.DatasetForm;
-import featureselection.research.web.entity.TaskInfo;
-import featureselection.research.web.entity.TaskResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import featureSelection.research.web.entity.DatasetForm;
+import featureSelection.research.web.entity.TaskInfo;
+import featureSelection.research.web.entity.TaskResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface IExecutionFormsService {
 
     List<DatasetForm> getDatasetForms(long accountId);
 
-    String submitTaskForm(TaskInfo task, MultipartFile uploadFile, String path);
+    String submitTaskForm(TaskInfo task, MultipartFile uploadFile, String path) throws JsonProcessingException;
 
     List<TaskInfo> getTaskListByAccountId(long accountId);
 

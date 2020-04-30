@@ -1,4 +1,4 @@
-package featureselection.research.web.controller.execution.visitor;
+package featureSelection.research.web.controller.execution.visitor;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

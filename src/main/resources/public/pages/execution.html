@@ -407,6 +407,121 @@
                             </div>
                         </div>
                     </div>
+                    <!--AlgorithmSettingModal-->
+                    <div v-for="(algorithm,key,index1) in algorithmList" class="modal fade" :id="algorithm.algorithmName+'Modal'" tabindex="-1" role="dialog" data-backdrop="static">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 55%;" v-if="key==2||key==1">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{{algorithm.algorithmName}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card mb-4 shadow-sm">
+                                        <img :src="algorithms_info_how_img" class="card-img-top" alt="several steps">
+                                        <div class="card-body" v-html="algorithms_info_how_context"></div>
+                                    </div>
+                                    <div class="card mb-4 shadow-sm">
+                                        <div class="alert alert-warning text-center" role="alert">
+                                            Basic Parameters
+                                        </div>
+                                        <div class="row m-0" v-for="(param,index2) in parameterList[algorithm.algorithmId]">
+                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='text'">{{param.parameterName}}
+                                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
+                                                        <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </span>
+                                            </label>
+                                            <div class="input-group mb-3 col-7" v-if="param.parameterSettingInfo.type=='text'">
+                                                <input type="text" class="form-control" :id="algorithm.algorithmName+param.parameterName+'Basic'" :name="algorithm.algorithmName+param.parameterName">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button">Default</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-3" v-if="param.parameterSettingInfo.type=='text'"></div>
+
+                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='select'">{{param.parameterName}}
+                                                <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
+                                                    <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                </span>
+                                            </label>
+                                            <div class="input-group mb-3 col-7" v-if="param.parameterSettingInfo.type=='select'">
+                                                <select class="custom-select" :name="algorithm.algorithmName+param.parameterName" :id="algorithm.algorithmName+param.parameterName+'Basic'">
+                                                    <option selected>Choose...</option>
+                                                    <option v-for="(option,index3) in param.parameterSettingInfo.options" :value="option">{{option}}</option>
+                                                </select>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button">Default</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-3" v-if="param.parameterSettingInfo.type=='select'"></div>
+
+                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='radio'">{{param.parameterName}}
+                                                <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
+                                                    <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                </span>
+                                            </label>
+                                            <div class="input-group mb-3 col-10" v-if="param.parameterSettingInfo.type=='radio'">
+                                                <div class="custom-control-inline custom-control custom-radio" v-for="(option,index4) in param.parameterSettingInfo.options">
+                                                    <input class="custom-control-input" type="radio" :id="algorithm.algorithmName+param.parameterName+index4" :value="option" :name="algorithm.algorithmName+param.parameterName">
+                                                    <label class="custom-control-label" :for="algorithm.algorithmName+param.parameterName+index4">{{option}}</label>
+                                                </div>
+                                            </div>
+
+                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='checkbox'">{{param.parameterName}}
+                                                <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
+                                                    <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                </span>
+                                            </label>
+                                            <div class="input-group mb-3 col-10" v-if="param.parameterSettingInfo.type=='checkbox'">
+                                                <div class="custom-control-inline custom-control custom-checkbox" v-for="(option,index5) in param.parameterSettingInfo.options">
+                                                    <input class="custom-control-input" type="checkbox" :id="algorithm.algorithmName+param.parameterName+index5" :value="option" :name="algorithm.algorithmName+param.parameterName">
+                                                    <label class="custom-control-label" :for="algorithm.algorithmName+param.parameterName+index5">{{option}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-4 shadow-sm">
+                                        <div class="alert alert-warning text-center" role="alert">
+                                            Procedure Settings
+                                        </div>
+                                        <div class="row m-0" v-for="(ps,index2) in ProcedureSettingsList[algorithm.algorithmId]">
+                                            <div class="col-3 p-2">
+                                                <div class="custom-control custom-control-inline custom-radio">
+                                                    <input type="checkbox" class="custom-control-input" :id="algorithm.algorithmName+ps.name+'Procedure'" :name="algorithm.algorithmName+ps.name+'Check'+(index2+1)" :checked="ps.state=='optional'?null:'checked'" :disabled="ps.state=='required'?'disabled':null" @change="changeDisabled($event,algorithm.algorithmName+ps.name)">
+                                                    <label class="custom-control-label" :for="algorithm.algorithmName+ps.name+'Procedure'">{{ps.name}}</label>
+                                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="ps.description">
+                                                        <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="input-group mb-3 col-9">
+                                                <select class="custom-select" :id="algorithm.algorithmName+ps.name+'select'" :name="algorithm.algorithmName+ps.name" :disabled="ps.state=='optional'?'disabled':null">
+                                                    <option v-for="(option,index3) in ps.options" :selected="option==ps.defaultOption?'selected':null" :value="option">{{option}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <span class="text-success"></span>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" @click="saveAlgorithmSettings($event,algorithm)">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <!--Query TaskContext-->
                 <div class="tab-pane fade" id="nav-query" role="tabpanel" aria-labelledby="nav-query-tab">
@@ -769,9 +884,9 @@
             </div>
         </div>
         <!--NewTaskParameterModal-->
-        <div id="NewTaskParameterModal">
+        <!--<div id="NewTaskParameterModal">
             <model :ainfo="algorithmList" :param-info="parameterList" @get-params="setParams"></model>
-        </div>
+        </div>-->
         <!-- AlgorithmInfoModal -->
         <div class="modal fade" id="algorithmInfoModal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 50%">
@@ -847,7 +962,7 @@
         </div>
     </div>
 <script type="text/javascript">
-    Vue.component('model',{
+    /*Vue.component('model',{
         props: ['ainfo','paramInfo'],
         data: function(){
             return{
@@ -1126,6 +1241,7 @@
         </div>
     </div>`,
     });
+    */
     var app = new Vue({
         el: '#app',
         data: {
@@ -1133,6 +1249,7 @@
             algorithmList: {},
             parameterList: {},
             datasetList: {},
+            ProcedureSettingsList: {},
             file_suffix: ['.csv','.xlsx','.xls'],
             dataset_info_p1: '',
             dataset_info_p2: '',
@@ -1279,11 +1396,20 @@
                 // this.algorithm_info_temp=this.algorithmList[1];
             });
             axios.get('/getParameterList').then((response) => {
-                this.parameterList=response.data;
+                let params = response.data;
+                for (let key in params){
+                    for (let i = 0; i < params[key].length; i++) {
+                        params[key][i].parameterSettingInfo = JSON.parse(params[key][i].parameterSettingInfo);
+                    }
+                }
+                this.parameterList=params;
             });
             axios.get('/getDatasetList').then((response) => {
                 this.datasetList=response.data;
             });
+            axios.get('/getProcedureSettingsList').then((response) => {
+                this.ProcedureSettingsList = response.data;
+            })
             let param = new URLSearchParams();
             param.append("accountId",303030);
             axios.post('/getTaskListByAccountId',param).then((response) => {
@@ -1416,10 +1542,6 @@
                 this.algorithm_info_temp=this.algorithmList[key];
                 $('[data-toggle="popover"]').popover();
             },
-            setParams: function (val1,val2) {
-                this.params=val1;
-                this.task_algorithm_id=val2;
-            },
             submitTaskForm: function() {
                 let ifCorrect = true;
                 let checks = $("div[name='taskFormCheck']");
@@ -1460,6 +1582,11 @@
                     axios.post('/uploadTaskForm',taskForm,{
                         'Content-Type':'multipart/form-data'
                     }).then((response) => {
+                        let param2 = new URLSearchParams();
+                        param2.append("accountId",303030);
+                        axios.post('/getTaskListByAccountId',param2).then((response) => {
+                            this.task_list=response.data;
+                        });
                         $('#taskFormResult').html('<div class="alert alert-success alert-dismissible fade show" role="alert" id="taskFormAlert">' +
                             'Submit Success!Your task id is <strong>'+response.data+'</strong>'+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
                         $('#taskFormAlert').bind('closed.bs.alert', function () {
@@ -1563,15 +1690,18 @@
                 }
                 setTimeout(function () {
                     window.location.reload();
-                },1000);
-
+                },1500);
             },
             deleteTask: function (event,task) {
                 let param = new URLSearchParams();
                 param.append("taskId",task.taskId);
                 axios.post('/deleteTask',param).then((response) => {
                     console.log(response.data);
-                    this.$forceUpdate();
+                });
+                let param2 = new URLSearchParams();
+                param2.append("accountId",303030);
+                axios.post('/getTaskListByAccountId',param2).then((response) => {
+                    this.task_list=response.data;
                 });
                 $('#deleteFeedback').next().css('display','none');
                 $('#deleteFeedback').next().next().css('display','none');
@@ -1580,9 +1710,9 @@
                 }else{
                     $('#deleteFeedback').html("<div class='text-success'>Success!</div>");
                 }
-                setTimeout(function () {
-                    window.location.reload();
-                },1000);
+                // setTimeout(function () {
+                //     window.location.reload();
+                // },1000);
 
             },
             getTaskEcharts: function (task) {
@@ -1650,6 +1780,56 @@
                     alert(msg+'当前状态不可修改');
                 }else {
                     alert(msg+' is not in queue and it can not be updated');
+                }
+            },
+            saveAlgorithmSettings: function (event,algorithm) {
+                let paramSet = {basic: {},procedure: {}};
+                let parameters = this.parameterList[algorithm.algorithmId];
+                let procedureSettings = this.ProcedureSettingsList[algorithm.algorithmId];
+                for (let i = 0; i < parameters.length; i++) {
+                    let nameTemp = algorithm.algorithmName+parameters[i].parameterName;
+                    switch (parameters[i].parameterSettingInfo.type) {
+                        case 'text':
+                            paramSet.basic[parameters[i].parameterName] = {input: $("input[name="+nameTemp+"]").val(),option: null};
+                            break;
+                        case 'select':
+                            paramSet.basic[parameters[i].parameterName] = {input: $("select[name="+nameTemp+"]").val(),option: null};
+                            break;
+                        case 'radio':
+                            paramSet.basic[parameters[i].parameterName] = {input: $("input[name="+nameTemp+"]:checked").val(),option: null};
+                            break;
+                        case 'checkbox':
+                            let listTemp = [];
+                            $("input[name="+nameTemp+"]:checked").each(function () {
+                                listTemp.push($(this).val());
+                            });
+                            paramSet.basic[parameters[i].parameterName] = {input: null,option: listTemp};
+                    }
+                }
+                for (let i = 0; i < procedureSettings.length; i++) {
+                    let nameTemp = algorithm.algorithmName+procedureSettings[i].name;
+                    if ($("select[name="+nameTemp+"]").prop("disabled")){
+                        paramSet.procedure[procedureSettings[i].name] = {data: null, selected: false};
+                    } else {
+                        paramSet.procedure[procedureSettings[i].name] = {data: $("select[name="+nameTemp+"]").val(), selected: true};
+                    }
+                }
+                this.params = paramSet;
+                this.task_algorithm_id = algorithm.algorithmId;
+                if ($.cookie("language")=='ch'){
+                    $(event.srcElement).prev().prev().html("成功保存！");
+                }else {
+                    $(event.srcElement).prev().prev().html("Success!");
+                }
+                setTimeout(function () {
+                    $(event.srcElement).prev().prev().html("");
+                },2000);
+            },
+            changeDisabled: function (event,name) {
+                if ($(event.srcElement).prop("checked")) {
+                    $("select[name="+name+"]").removeAttr("disabled");
+                }else {
+                    $("select[name="+name+"]").attr("disabled","disabled");
                 }
             }
         },

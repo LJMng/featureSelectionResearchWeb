@@ -1,4 +1,4 @@
-package featureselection.research.web.config;
+package featureSelection.research.web.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
