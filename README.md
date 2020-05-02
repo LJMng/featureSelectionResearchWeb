@@ -23,8 +23,16 @@ The java project basic structure is built as follow:
 	  |      |     +--admin
 	  |      |     +--visitor
 	  |      +--entity			// web mvc: model
+	  |		 | 	   +--communicationJson		//json Info to algorithm server
+	  |		 |	   +--demo
+	  |		 |	   |	+-- visitor		
 	  |      +--mybatisMapper	// mybatis mapper: java interfaces
+	  |		 |	   +--demo
+	  |		 |	   |	+-- visitor			  
 	  |      +--service		// web mvc: service
+	  |		 |	   +--demo
+	  |		 |	   |	+-- visitor		
+	  |		 |	   |	|	+-- impl		
 	  |      +--App.java		// Spring Boot app entrance.
 	  +--resources
 	    +--public				// html pages
@@ -40,7 +48,7 @@ The java project basic structure is built as follow:
 	    +--application.yml		// Spring Boot configurations
 	    +--db.properties		// Database configurations
 	    +--logback-spring.xml	// logback configurations
-	     
+
 Currently, there are **3** sub-systems: *demo*, *execution*, *admin for both*, which are used for different purposes: 
 - a **demo system** for quick and simple demonstrations of Feature Selection(FS) algorithms;
 - a system for actual and practical **executions** of FS;
@@ -92,7 +100,7 @@ Importing scripts, say importing *Vue* from *WebJar*, one can use the following 
 	 	<script src="/webjars/vue/vue.min.js"></script>
 	 	...
 	 </header>
-	 
+
 And *.css* files works the same way:
 
 	 <header>
