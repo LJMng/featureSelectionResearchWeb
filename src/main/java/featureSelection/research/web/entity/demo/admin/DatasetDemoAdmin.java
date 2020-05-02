@@ -1,4 +1,4 @@
-package featureSelection.research.web.entity;
+package featureSelection.research.web.entity.demo.admin;
 
 public class DatasetDemoAdmin{
         //方案对应数据集ID

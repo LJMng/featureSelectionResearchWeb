@@ -1,6 +1,6 @@
 package featureSelection.research.web.controller.demo.admin;
 
-import featureSelection.research.web.entity.AlgorithmInfoDemoAdmin;
+import featureSelection.research.web.entity.demo.admin.AlgorithmInfoDemoAdmin;
 import featureSelection.research.web.mybatisMapper.AlgorithmInfoDemoAdminMapper;
 import featureSelection.research.web.mybatisMapper.ParameterDemoAdminMapper;
 import org.springframework.beans.factory.annotation.Autowired;

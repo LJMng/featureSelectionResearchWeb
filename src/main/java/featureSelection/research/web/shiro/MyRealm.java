@@ -1,6 +1,6 @@
 package featureSelection.research.web.shiro;
 
-import featureSelection.research.web.entity.Administrator;
+import featureSelection.research.web.entity.demo.admin.Administrator;
 import featureSelection.research.web.mybatisMapper.AdministratorDemoAdminMapper;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;

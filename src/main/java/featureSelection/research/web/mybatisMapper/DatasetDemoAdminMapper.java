@@ -1,6 +1,6 @@
 package featureSelection.research.web.mybatisMapper;
 
-import featureSelection.research.web.entity.DatasetDemoAdmin;
+import featureSelection.research.web.entity.demo.admin.DatasetDemoAdmin;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

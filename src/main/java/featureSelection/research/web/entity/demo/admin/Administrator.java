@@ -1,4 +1,4 @@
-package featureSelection.research.web.entity;
+package featureSelection.research.web.entity.demo.admin;
 
 public class Administrator {
     private String administratorId;

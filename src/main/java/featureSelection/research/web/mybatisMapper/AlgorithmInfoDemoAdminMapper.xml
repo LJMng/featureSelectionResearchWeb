@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="featureSelection.research.web.mybatisMapper.AlgorithmInfoDemoAdminMapper">
-    <resultMap id= "result" type = "featureSelection.research.web.entity.AlgorithmInfoDemoAdmin">
+    <resultMap id= "result" type = "featureSelection.research.web.entity.demo.admin.AlgorithmInfoDemoAdmin">
         <id column="algorithm_id" property="algorithmId" />
         <result column="algorithm_name" property="algorithmName" />
         <result column="algorithm_description" property="algorithmDescription" />
@@ -9,7 +9,7 @@
         <result column="algorithm_paper_link" property="algorithmPaperLink" />
         <result column="algorithm_call_interface" property="algorithmCallInterface" />
 
-        <collection property="algorithmParameterDemoAdmin" ofType="featureSelection.research.web.entity.AlgorithmParameterDemoAdmin">
+        <collection property="algorithmParameterDemoAdmin" ofType="featureSelection.research.web.entity.demo.admin.AlgorithmParameterDemoAdmin">
             <id property="parameterId" column="parameter_id" />
             <result property="parameterName" column="parameter_name" />
             <result property="parameterType" column="parameter_type" />
@@ -28,7 +28,7 @@
     </select>
 
     <!--增加算法信息-->
-    <insert id="insertAlgorithmInfoDemoAdmin" parameterType="featureSelection.research.web.entity.AlgorithmInfoDemoAdmin" useGeneratedKeys="true" keyProperty="algorithmId">
+    <insert id="insertAlgorithmInfoDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.AlgorithmInfoDemoAdmin" useGeneratedKeys="true" keyProperty="algorithmId">
         insert into algorithm (algorithm_name, algorithm_paper_reference, algorithm_description, algorithm_paper_link, algorithm_call_interface)
         values (
             #{algorithmName},
@@ -39,7 +39,7 @@
         )
     </insert>
     <!--增加参数信息-->
-    <insert id="insertAlgorithmParameterDemoAdmin" parameterType="featureSelection.research.web.entity.AlgorithmInfoDemoAdmin">
+    <insert id="insertAlgorithmParameterDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.AlgorithmInfoDemoAdmin">
         <foreach collection="algorithmParameterDemoAdmin" item="item">
             <if test="item.parameterName!=''">
                 insert into parameter (parameter_name,algorithm_id,parameter_type) values (#{item.parameterName},(select max(algorithm_id) from algorithm),#{item.parameterType});

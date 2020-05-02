@@ -1,6 +1,6 @@
 package featureSelection.research.web.controller.demo.admin;
 
-import featureSelection.research.web.entity.DatasetDemoAdmin;
+import featureSelection.research.web.entity.demo.admin.DatasetDemoAdmin;
 import featureSelection.research.web.mybatisMapper.DatasetDemoAdminMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="featureSelection.research.web.mybatisMapper.SchemeDemoAdminMapper">
-    <resultMap id="result" type = "featureSelection.research.web.entity.SchemeDemoAdmin">
+    <resultMap id="result" type = "featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin">
         <id column="scheme_id" property="schemeId" />
         <result column="scheme_name" property="schemeName" />
         <result column="scheme_description" property="schemeDescription" />
@@ -11,7 +11,7 @@
         <result column="dataset_id" property="datasetId" />
         <result column="dataset_name" property="datasetName" />
         <!--一对多-->
-        <collection property="algorithmParameterDemoAdmin" ofType="featureSelection.research.web.entity.AlgorithmParameterDemoAdmin">
+        <collection property="algorithmParameterDemoAdmin" ofType="featureSelection.research.web.entity.demo.admin.AlgorithmParameterDemoAdmin">
             <id property="parameterId" column="parameter_id" />
             <result property="parameterName" column="parameter_name" />
             <result property="parameterType" column="parameter_type" />
@@ -64,7 +64,7 @@
     </select>
 
     <!--增加方案-->
-    <insert id="insertSchemeDemoAdmin" parameterType="featureSelection.research.web.entity.SchemeDemoAdmin" useGeneratedKeys="true" keyProperty="schemeId">
+    <insert id="insertSchemeDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin" useGeneratedKeys="true" keyProperty="schemeId">
         insert into parameter_scheme (algorithm_id, scheme_name, scheme_description, scheme_remark, dataset_id)
         values (
             #{algorithmId},

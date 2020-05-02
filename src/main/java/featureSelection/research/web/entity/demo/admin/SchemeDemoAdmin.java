@@ -1,4 +1,4 @@
-package featureSelection.research.web.entity;
+package featureSelection.research.web.entity.demo.admin;
 
 import java.util.List;
 

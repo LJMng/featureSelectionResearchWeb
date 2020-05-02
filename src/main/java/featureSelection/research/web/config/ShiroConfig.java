@@ -30,13 +30,13 @@ public class ShiroConfig {
         //拦截配置
         Map<String,String> filterMap = new LinkedHashMap<String,String>();
 
-//        filterMap.put("/logout","logout");
-//        filterMap.put("/","authc");
-//        filterMap.put("/DemoAdmin/index","authc");
-//        filterMap.put("/DemoAdmin/AlgorithmAdmin","authc");
-//        filterMap.put("/DemoAdmin/SchemeAdmin","authc");
-//        filterMap.put("/webjars/**","anon");
-//        filterMap.put("/static/**","anon");
+        filterMap.put("/logout","logout");
+        filterMap.put("/","authc");
+        filterMap.put("/DemoAdmin/index","authc");
+        filterMap.put("/DemoAdmin/AlgorithmAdmin","authc");
+        filterMap.put("/DemoAdmin/SchemeAdmin","authc");
+        filterMap.put("/webjars/**","anon");
+        filterMap.put("/static/**","anon");
 
         //修改跳转的登录页面
         shiroFilterFactoryBean.setLoginUrl("/DemoAdmin/login");
