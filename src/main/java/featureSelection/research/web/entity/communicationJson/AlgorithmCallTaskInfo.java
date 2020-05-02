@@ -1,0 +1,113 @@
+package featureSelection.research.web.entity.communicationJson;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
+/**
+ * @ClassName : AlgorithmCallTaskInfo
+ * @Description : 调用服务器算法服务数据传输格式
+ * @Author : WDD
+ * @Date: 2020-04-13 21:32
+ */
+public class AlgorithmCallTaskInfo {
+    private String id;
+    @JSONField(name = "dataset-name")
+    private String datasetName;
+    private String part;
+    private String column;
+    @JSONField(name = "part-data-size")
+    private String partDataSize;
+    @JSONField(name = "algorithm-info")
+    private AlgorithmInfo algorithmInfo;
+    @JSONField(name = "previous-reducts")
+    private String previousReducts;
+    @JSONField(name = "run-times")
+    private String runTimes;
+    private String attributes;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDatasetName() {
+        return datasetName;
+    }
+
+    public void setDatasetName(String datasetName) {
+        this.datasetName = datasetName;
+    }
+
+    public String getPart() {
+        return part;
+    }
+
+    public void setPart(String part) {
+        this.part = part;
+    }
+
+    public String getColumn() {
+        return column;
+    }
+
+    public void setColumn(String column) {
+        this.column = column;
+    }
+
+    public String getPartDataSize() {
+        return partDataSize;
+    }
+
+    public void setPartDataSize(String partDataSize) {
+        this.partDataSize = partDataSize;
+    }
+
+    public AlgorithmInfo getAlgorithmInfo() {
+        return algorithmInfo;
+    }
+
+    public void setAlgorithmInfo(AlgorithmInfo algorithmInfo) {
+        this.algorithmInfo = algorithmInfo;
+    }
+
+    public String getPreviousReducts() {
+        return previousReducts;
+    }
+
+    public void setPreviousReducts(String previousReducts) {
+        this.previousReducts = previousReducts;
+    }
+
+    public String getRunTimes() {
+        return runTimes;
+    }
+
+    public void setRunTimes(String runTimes) {
+        this.runTimes = runTimes;
+    }
+
+    public String getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(String attributes) {
+        this.attributes = attributes;
+    }
+
+    @Override
+    public String toString() {
+        return "AlgorithmCallTaskInfo{" +
+                "id='" + id + '\'' +
+                ", datasetName='" + datasetName + '\'' +
+                ", part='" + part + '\'' +
+                ", column='" + column + '\'' +
+                ", partDataSize='" + partDataSize + '\'' +
+                ", algorithmInfo=" + algorithmInfo +
+                ", previousReducts='" + previousReducts + '\'' +
+                ", runTimes='" + runTimes + '\'' +
+                ", attributes='" + attributes + '\'' +
+                '}';
+    }
+}
