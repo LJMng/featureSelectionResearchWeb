@@ -1,0 +1,31 @@
+# Spring
+spring:
+  # 服务器邮箱
+  mail: 
+    host: smtp.qq.com
+    username: 1009710828@qq.com
+    password: lxrcpmnozinfbeei
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    protocol: smtp
+    default-encoding: UTF-8
+    test-connection: true
+  mvc:
+    view:
+      prefix: /pages/
+      suffix: .html
+
+
+# MyBatis
+mybatis: 
+  mapper-locations: classpath:featureselection/research/web/mybatisMapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+# Logback    
+logging:
+  path: '/logs'

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<title>I'm title</title>
+		
+		<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+		
+		<!-- jquery -->
+ 		<!-- 	Web jars -->
+		<!-- 		jquery -->
+ 		<script src="/webjars/jquery/jquery.min.js"></script>
+ 		<script src="/webjars/jquery-cookie/jquery.cookie.js"></script>
+		<!-- 		Vue.js -->
+ 		<script src="/webjars/vue/vue.min.js"></script>
+		<!-- 		Bootstrap -->
+		<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+		<!-- 		Bootstrap core JavaScript-->
+		<script src="/webjars/bootstrap/js/bootstrap.bundle.js"></script>
+	</head>
+	<body>
+		<div id="div_id">
+			{{vue_data_text}}
+		</div>
+		
+		<script type="text/javascript">
+			var vue_head_navbar_nav = new Vue({
+				el: '#div_id',	// 通过id(="div_id")与上面的div绑定
+				data: {
+					vue_data_text: 'I\'m text',
+				}, 
+				created: function(){
+					// Vue初始方法，可以自行百度一下相关介绍与用法
+					// 1. 调用js方法获取页面涉及的URL, 赋值到js变量中.
+					//	queryXXXURI();
+				}
+			});
+			// 上面created与下面$(function(){})的调用顺序自行百度和查看Vue.js文档说明，或者自行尝试
+			$(function(){
+				// 网页一打开，就执行这个js初始方法，可以自行百度一下相关介绍与用法
+				// 1. 调用js方法获取页面涉及的URL, 赋值到js变量中.
+				//	queryXXXURI();
+			});
+		</script>
+	</body>
+</html>
