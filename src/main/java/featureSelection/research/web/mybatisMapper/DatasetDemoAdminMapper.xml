@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="featureSelection.research.web.mybatisMapper.DatasetDemoAdminMapper">
+    <resultMap id= "result" type = "featureSelection.research.web.entity.demo.admin.DatasetDemoAdmin">
+        <id property="datasetId" column="dataset_id" />
+        <result property="datasetName" column="dataset_name" />
+        <result property="datasetDescription" column="dataset_description" />
+        <result property="datasetCount" column="dataset_count" />
+        <result property="datasetSource" column="dataset_source" />
+        <result property="datasetDimension" column="dataset_dimension" />
+    </resultMap>
+
+    <!--查询所有算法信息-->
+    <select id="findAll" resultMap="result">
+        select * from dataset
+    </select>
+
+    <!--通过ID查询算法信息-->
+    <select id="getDatasetDemoAdminById" resultMap="result" parameterType="int">
+        select * from dataset where dataset_id = #{datasetId};
+    </select>
+
+    <!--增加算法信息-->
+    <insert id="insertDatasetDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.DatasetDemoAdmin" useGeneratedKeys="true" keyProperty="datasetId">
+        insert into dataset (dataset_name, dataset_description, dataset_count, dataset_source, dataset_dimension)
+        values (
+            #{datasetName},
+            #{datasetDescription},
+            #{datasetCount},
+            #{datasetSource},
+            #{datasetDimension}
+        )
+    </insert>
+
+    <!--更新被绑定ID的算法信息-->
+    <update id="updateDatasetDemoAdmin">
+        update dataset set
+            dataset_name = #{datasetName},
+            dataset_description = #{datasetDescription},
+            dataset_count = #{datasetCount},
+            dataset_source = #{datasetSource},
+            dataset_dimension = #{datasetDimension}
+        where dataset_id = #{datasetId}
+    </update>
+
+    <!--删除被绑定ID的算法信息-->
+    <delete id="deleteDatasetDemoAdmin">
+        delete from dataset where dataset_id = #{datasetId}
+    </delete>
+
+    <!--删除方案对应的数据集-->
+    <delete id="deleteDatasetInScheme">
+        delete from scheme_dataset where dataset_id = #{datasetId}
+    </delete>
+
+    <!--查询所有数据集ID和名称提供方案调用-->
+    <select id="findAllIdAndName" resultMap="result">
+        select dataset_id,dataset_name
+        from dataset;
+    </select>
+</mapper>
