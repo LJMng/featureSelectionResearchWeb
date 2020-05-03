@@ -52,7 +52,7 @@ public class  AlgorithmEexecuteController {
                          HttpServletRequest request,
                          HttpServletResponse response) throws IOException {
         Dataset datasetinfo= datasetServiceImpl.getDatesetInfo(Integer.parseInt(datasetid));
-
+        System.out.println(datasetinfo.toString());
         String path = this.getClass().getClassLoader().getResource(datasetinfo.getdatasetFile()).getPath();
         //获取输入流
         InputStream bis = new BufferedInputStream(new FileInputStream(new File(path)));

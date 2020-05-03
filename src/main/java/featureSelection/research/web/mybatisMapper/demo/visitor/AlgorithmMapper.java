@@ -12,5 +12,5 @@ public interface AlgorithmMapper {
 
     public List<Algorithm>getAllAlgorithmInfo();
 
-    public Algorithm getAlgorithmInfoById(@Param("algorithmid")int algorithmid);
+    public Algorithm getAlgorithmInfoById(@Param("algorithmid") int algorithmid);
 }

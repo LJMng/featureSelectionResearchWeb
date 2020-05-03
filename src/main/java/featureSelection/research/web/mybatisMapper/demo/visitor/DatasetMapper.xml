@@ -7,6 +7,7 @@
     <resultMap id="datasetinfo" type="featureSelection.research.web.entity.demo.visitor.Dataset">
         <id column="dataset_id" property="datasetId"></id>
         <result column="dataset_file" property="datasetFile"></result>
+        <result column="dataset_name" property="datasetName"></result>
         <result column="dataset_description" property="datasetDescription"></result>
         <result column="dataset_size" property="datasetSize"></result>
         <result column="dataset_source" property="datasetSource"></result>

@@ -141,10 +141,10 @@
 					}
 				}
 			});
-			$("#demo-guide").load('pages/guide.html');
-			$("#demo-algorithms").load('pages/algorithms.html');
-			$("#demo-updates").load('pages/updates.html');
-			$("#loginpup").load('popups/login.html')
+			$("#demo-guide").load('pages/demo/visitor/guide.html');
+			$("#demo-algorithms").load('pages/demo/visitor/algorithms.html');
+			$("#demo-updates").load('pages/demo/visitor/updates.html');
+			$("#loginpup").load('popups/demo/visitor/login.html')
 		});
 
 		function toRegister() {
@@ -152,7 +152,7 @@
 			$("#demo-algorithms").empty();
 			$("#demo-updates").empty();
 			$('#aboutus').empty();
-			$('#register').load('pages/register.html');
+			$('#register').load('pages/demo/visitor/register.html');
 		};
 
 		function backIndex() {
@@ -164,7 +164,7 @@
 			$("#demo-algorithms").empty();
 			$("#demo-updates").empty();
 			$('#register').empty();
-			$('#aboutus').load('pages/aboutus.html');
+			$('#aboutus').load('pages/demo/visitor/aboutus.html');
 		};
 	</script>
 </body>

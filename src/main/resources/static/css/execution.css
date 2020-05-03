@@ -1,0 +1,45 @@
+body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 ,p{
+    font-family: Microsoft YaHei;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+ul,li{
+    padding:0;margin:0;list-style:none
+}
+
+.jumbotron{
+    margin-bottom: 0;
+    background: floralwhite;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+#jumbotron{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#jumbotron li{
+    font-size: 20px;
+}
+
+
+
+.input-img {
+    color: slategrey;
+    position: absolute;
+    margin-left: 80px;
+    z-index: 999;
+    margin-top: -4px;
+}
+
+.fix-context {
+    width: fit-content;
+}
+
+#button-addon3 {
+    width: 30%;
+}

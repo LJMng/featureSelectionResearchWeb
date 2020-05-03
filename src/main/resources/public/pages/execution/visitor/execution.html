@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Execution</title>
+    <!--bootstrap.css-->
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css"/>
+    <!--bootstrap-switch-->
+    <link rel="stylesheet" href="/webjars/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css">
+    <!--customCss-->
+    <link rel="stylesheet" href="/css/execution.css">
+    <!-- jquery -->
+    <script src="/webjars/jquery/jquery.js"></script>
+    <script src="/webjars/jquery-cookie/jquery.cookie.js"></script>
+    <!--Vue.js -->
+    <script src="/webjars/vue/vue.js"></script>
+    <!--Bootstrap.js-->
+    <script src="/webjars/bootstrap/js/bootstrap.js"></script>
+    <!--Bootstrap core JavaScript-->
+    <script src="/webjars/bootstrap/js/bootstrap.bundle.js"></script>
+    <!--bootstrap-switch-->
+    <script src="/webjars/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+    <!--axios-->
+    <script src="/webjars/axios/dist/axios.js"></script>
+    <!--echarts-->
+    <script src="/webjars/echarts/dist/echarts.js"></script>
+</head>
+<body data-spy="scroll" data-target="#navbar-example3" data-offset="120">
+<div id="app" v-cloak>
+        <!--head-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-3" id="nav_head">
+            <div class="container">
+                <a class="navbar-brand" href="#">AlgGroup</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav font-weight-bold">
+                        <li class="nav-item">
+                            <a class="nav-link" href="http://www.baidu.com">{{navHead_li1}}<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/execution">{{navHead_li2}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">{{navHead_li3}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <button type="button" class="btn btn-outline-secondary btn-sm mr-2">{{navHead_btn1}}</button>
+                <input type="checkbox" name="my-checkbox" checked id="language">
+            </div>
+        </nav>
+        <!--body-->
+        <div class="container">
+            <!--body's navbar-->
+            <nav id="nav_body">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <!--Home-->
+                    <a class="nav-item nav-link" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true" @click="currentTag">{{navBody_a1}}</a>
+                    <!--algorithms-->
+                    <a class="nav-item nav-link ml-1" id="nav-algorithms-tab" data-toggle="tab" href="#nav-algorithms" role="tab" aria-controls="nav-algorithms" aria-selected="false" @click="currentTag">{{navBody_a2}}</a>
+                    <!--New Task-->
+                    <a class="nav-item nav-link ml-1" id="nav-new-tab" data-toggle="tab" href="#nav-new" role="tab" aria-controls="nav-new" aria-selected="false" @click="currentTag">{{navBody_a3}}</a>
+                    <!--Query Task-->
+                    <a class="nav-item nav-link ml-1" id="nav-query-tab" data-toggle="tab" href="#nav-query" role="tab" aria-controls="nav-query" aria-selected="false" @click="currentTag">{{navBody_a4}}</a>
+                    <!--public dataset-->
+                    <a class="nav-item nav-link ml-1" id="nav-dataset-tab" data-toggle="tab" href="#nav-dataset" role="tab" aria-controls="nav-dataset" aria-selected="false" @click="currentTag">{{navBody_a5}}</a>
+                </div>
+            </nav>
+            <!--bodyContext-->
+            <div class="tab-content" id="nav-tabContent">
+                <!--HomeContext-->
+                <div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="container" id="jumbotron">
+                        <div class="jumbotron">
+                            <h1 class="display-4 font-weight-normal">{{home_title}}</h1>
+                            <p class="lead m-0 ml-2">{{home_text}}</p>
+                            <hr class="my-4">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6">
+                                    <p class="lead font-weight-normal" style="font-size: 25px">{{home_ul1}}</p>
+                                    <ul class="list-group ml-3 mb-4">
+                                        <li><svg class="bi bi-check-box text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 003 14.5h10a1.5 1.5 0 001.5-1.5V8a.5.5 0 00-1 0v5a.5.5 0 01-.5.5H3a.5.5 0 01-.5-.5V3a.5.5 0 01.5-.5h8a.5.5 0 000-1H3A1.5 1.5 0 001.5 3v10z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul1_li1}}</li>
+                                        <li><svg class="bi bi-check-box text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 003 14.5h10a1.5 1.5 0 001.5-1.5V8a.5.5 0 00-1 0v5a.5.5 0 01-.5.5H3a.5.5 0 01-.5-.5V3a.5.5 0 01.5-.5h8a.5.5 0 000-1H3A1.5 1.5 0 001.5 3v10z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul1_li2}}r</li>
+                                        <li><svg class="bi bi-check-box text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 003 14.5h10a1.5 1.5 0 001.5-1.5V8a.5.5 0 00-1 0v5a.5.5 0 01-.5.5H3a.5.5 0 01-.5-.5V3a.5.5 0 01.5-.5h8a.5.5 0 000-1H3A1.5 1.5 0 001.5 3v10z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul1_li3}}</li>
+                                        <li><svg class="bi bi-check-box text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 003 14.5h10a1.5 1.5 0 001.5-1.5V8a.5.5 0 00-1 0v5a.5.5 0 01-.5.5H3a.5.5 0 01-.5-.5V3a.5.5 0 01.5-.5h8a.5.5 0 000-1H3A1.5 1.5 0 001.5 3v10z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul1_li4}}</li>
+                                        <li><svg class="bi bi-check-box text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 003 14.5h10a1.5 1.5 0 001.5-1.5V8a.5.5 0 00-1 0v5a.5.5 0 01-.5.5H3a.5.5 0 01-.5-.5V3a.5.5 0 01.5-.5h8a.5.5 0 000-1H3A1.5 1.5 0 001.5 3v10z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;......</li>
+                                    </ul>
+                                </div>
+                                <div class="col-xl-6 col-lg-6">
+                                    <p class="lead font-weight-normal" style="font-size: 25px">{{home_ul1}}</p>
+                                    <ul class="list-group ml-3 mb-4">
+                                        <li><svg class="bi bi-diamond text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 010-2.098L6.95.435zm1.4.7a.495.495 0 00-.7 0L1.134 7.65a.495.495 0 000 .7l6.516 6.516a.495.495 0 00.7 0l6.516-6.516a.495.495 0 000-.7L8.35 1.134z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul2_li1}}</li>
+                                        <li><svg class="bi bi-diamond text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 010-2.098L6.95.435zm1.4.7a.495.495 0 00-.7 0L1.134 7.65a.495.495 0 000 .7l6.516 6.516a.495.495 0 00.7 0l6.516-6.516a.495.495 0 000-.7L8.35 1.134z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul2_li2}}</li>
+                                        <li><svg class="bi bi-diamond text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 010-2.098L6.95.435zm1.4.7a.495.495 0 00-.7 0L1.134 7.65a.495.495 0 000 .7l6.516 6.516a.495.495 0 00.7 0l6.516-6.516a.495.495 0 000-.7L8.35 1.134z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul2_li3}}</li>
+                                        <li><svg class="bi bi-diamond text-primary" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 010-2.098L6.95.435zm1.4.7a.495.495 0 00-.7 0L1.134 7.65a.495.495 0 000 .7l6.516 6.516a.495.495 0 00.7 0l6.516-6.516a.495.495 0 000-.7L8.35 1.134z" clip-rule="evenodd"/>
+                                        </svg>&nbsp;{{home_ul2_li4}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--algorithmsContext-->
+                <div class="tab-pane fade" id="nav-algorithms" role="tabpanel" aria-labelledby="nav-algorithms-tab">
+                    <div class="row mt-3">
+                        <!--algorithmListNavbar-->
+                        <div class="col-3 border-right">
+                            <div class="accordion mb-3" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-header p-0" id="headingOne">
+                                        <h2 class="mb-0">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend" id="button-addon3">
+                                                    <button class="btn btn-link text-left pl-2 pr-2" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                        {{algorithms_filter}}&nbsp;<svg class="bi bi-chevron-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 01.708 0L8 10.293l5.646-5.647a.5.5 0 01.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z" clip-rule="evenodd"/></svg>
+                                                    </button>
+                                                </div>
+                                                <input type="text" class="form-control pl-4 border-top-0 border-bottom-0 border-right-0" v-model.trim="search" @keyup="searchAlgorithm" :placeholder="algorithms_search" aria-label="Example text with two button addons" aria-describedby="button-addon3" height="inherit">
+                                                <span class="input-img">
+                                                <svg class="bi bi-search" width="0.7em" height="0.7em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
+                                                    <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                </span>
+                                            </div>
+                                        </h2>
+                                    </div>
+                                    <div id="collapseOne" class="collapse border-bottom" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                        <div class="card-body pt-0 pb-2 pl-1 pr-1">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item pt-2 pb-0 pl-2">{{algorithms_filter1}}</li>
+                                                <li class="list-group-item pb-4">
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2 active">All</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">Heuristic</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">Optimization</button>
+                                                </li>
+                                                <li class="list-group-item pt-2 pb-0 pl-2">{{algorithms_filter2}}</li>
+                                                <li class="list-group-item pb-4">
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2 active">All</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">Positive Region</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">Entropy</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">Others</button>
+                                                </li>
+                                                <li class="list-group-item pt-2 pb-0 pl-2">{{algorithms_filter3}}</li>
+                                                <li class="list-group-item pb-4">
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2 active">All</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">None</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">NEC</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mt-2">Dependency Calculation</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <a v-for="(algorithm,key,index) in algorithmList" :class="index==0?'nav-link active':'nav-link'" :id="algorithm.algorithmName" data-toggle="pill" :href="'#'+'v-pills-'+algorithm.algorithmName" role="tab" :aria-controls="'v-pills-'+algorithm.algorithmName" :aria-selected="index==0?'true':'false'">{{algorithm.algorithmName}}</a>
+                            </div>
+                        </div>
+                        <!--algorithmContext-->
+                        <div class="col-9">
+                            <div class="tab-content" id="v-pills-tabContent">
+                                <div v-for="(algorithm,key,index) in algorithmList" :class="index==0?'tab-pane fade show active':'tab-pane fade'" :id="'v-pills-'+algorithm.algorithmName" role="tabpanel" :aria-labelledby="algorithm.algorithmName">
+                                    <!--title-->
+                                    <h1 class="text-center"><svg class="bi bi-star-fill text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                    </svg>{{algorithm.algorithmName}} {{algorithms_info_title}}</h1>
+                                    <hr>
+                                    <!--paper-->
+                                    <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                                    </svg>{{algorithms_info_papers}}</h4>
+                                    <ul class="list-group list-group-flush ml-3 pr-2 mb-4">
+                                        <li class="list-group-item pb-0 pt-1 pl-1 pr-2 border-top-0 fix-context">
+                                            <a :href="algorithm.algorithmPaperLink" target="_blank"><svg class="bi bi-dot text-primary" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" clip-rule="evenodd"/>
+                                        </svg>{{algorithm.algorithmPaperReference}}</a></li>
+                                    </ul>
+                                    <!--introduction1-->
+                                    <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                                    </svg>{{algorithms_info_intro}}</h4>
+                                    <div class="jumbotron jumbotron-fluid mb-4 pt-2 pb-2 rounded">
+                                        <div class="container">
+                                            <p class="lead mb-0">{{algorithm.algorithmDescription}}</p>
+                                        </div>
+                                    </div>
+                                    <!--introduction2-->
+                                    <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                                    </svg>{{algorithms_info_how}}</h4>
+                                    <div class="card mb-3 mb-4">
+                                        <img :src="algorithms_info_how_img" class="card-img-top" alt="several steps">
+                                        <div class="card-body" v-html="algorithms_info_how_context">
+
+                                        </div>
+                                    </div>
+                                    <!--parameterInfo-->
+                                    <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                                    </svg>{{algorithms_info_parameter}}</h4>
+                                    <ul class="list-group list-group-flush ml-3 pr-2 mb-4">
+                                        <div class="row">
+                                            <div class="col-4 mb-3 pl-2 pr-2" v-for="(parameter,index) in parameterList[algorithm.algorithmId]">
+                                                <div class="card text-center border border-warning">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{parameter.parameterName}}</h5>
+                                                        <p class="card-text">{{parameter.parameterDescription}}</p>
+                                                    </div>
+                                                    <ul class="list-group list-group-flush text-left">
+                                                        <li class="list-group-item pl-2 pr-2 pt-2 pb-2">
+                                                            {{algorithms_info_parameter_li1}}{{parameter.parameterType}}</li>
+                                                        <li class="list-group-item pl-2 pr-2 pt-2 pb-2">{{algorithms_info_parameter_li2}}{{parameter.parameterDefaultValue}}</li>
+                                                    </ul>
+                                                    <div class="card-footer text-muted font-weight-light pt-1 pb-1">
+                                                        {{algorithms_info_parameter_footer}}{{index+1}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--NewTaskContext-->
+                <div class="tab-pane fade" id="nav-new" role="tabpanel" aria-labelledby="nav-new-tab">
+                    <div class="row">
+                        <!--NewTaskNavbar-->
+                        <div class="col-2">
+                            <nav id="navbar-example3" class="navbar navbar-light bg-light position-fixed" style="margin-top: 150px">
+                                <nav class="nav nav-pills flex-column">
+                                    <a class="nav-link" href="#Dataset">{{new_task_navbar_a1}}</a>
+                                    <a class="nav-link" href="#Algorithm">{{new_task_navbar_a2}}</a>
+                                    <a class="nav-link" href="#BaseInfo">{{new_task_navbar_a3}}</a>
+                                </nav>
+                            </nav>
+                        </div>
+                        <!--stepContext-->
+                        <div class="col-10 mt-4">
+                            <!--step1-->
+                            <div class="alert alert-primary text-center" role="alert">
+                                <h3 id="Dataset">{{new_task_step1}}</h3>
+                            </div>
+                            <div class="p-4">
+                                <fieldset @change="datasetOption">
+                                    <div class="form-group">
+                                        <span id="taskDatasetInfo" data-toggle="modal" data-target="#datasetInfo" class="d-none" style="position: absolute;margin-top: 40px;margin-left: -30px;">
+                                            <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </span>
+                                        <label for="datasetSelect" class="h5">{{new_task_step1_label1}}</label>
+                                        <select class="custom-select" required id="datasetSelect" @change="datasetOption" v-model="task_dataset">
+                                            <option value="0" selected>{{new_task_step1_select_default}}</option>
+                                            <option v-for="(value,key,index) in datasetList" :value="key">{{value.datasetName}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="datasetFile" ref="taskDataset" required @change="showFileName">
+                                        <label class="custom-file-label" for="datasetFile" id="datasetFileLabel2">{{new_task_step1_label2}}</label>
+                                        <div class="invalid-tooltip" style="top: auto" name="taskFormCheck">{{new_task_step1_feedback1}}</div>
+                                    </div>
+                                </fieldset>
+                                <div id="taskDatasetFeedback" class="invisible mt-2">
+                                    <div class="alert alert-danger" role="alert" v-html="new_task_step1_feedback2"></div>
+                                </div>
+                            </div>
+                            <!--step2-->
+                            <div class="alert alert-primary text-center" role="alert">
+                                <h3 id="Algorithm">{{new_task_step2}}</h3>
+                            </div>
+                            <div class="p-4">
+                                <div class="accordion mb-3" id="accordionExample2">
+                                    <div class="card">
+                                        <div class="card-header p-0" id="headingOne2">
+                                            <h2 class="mb-0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend" id="button-addon">
+                                                        <button class="btn btn-link text-left pl-2 pr-2" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                            {{algorithms_filter}}&nbsp;<svg class="bi bi-chevron-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 01.708 0L8 10.293l5.646-5.647a.5.5 0 01.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z" clip-rule="evenodd"/></svg>
+                                                        </button>
+                                                    </div>
+                                                    <input type="text" class="form-control pl-4 border-top-0 border-bottom-0 border-right-0" v-model.trim="search" @keyup="searchAlgorithm" :placeholder="algorithms_search" aria-label="Example text with two button addons" aria-describedby="button-addon" height="inherit">
+                                                    <span class="input-img">
+                                            <svg class="bi bi-search" width="0.7em" height="0.7em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
+                                                <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            </span>
+                                                </div>
+                                            </h2>
+                                        </div>
+                                        <div id="collapseTwo" class="collapse border-bottom" aria-labelledby="headingOne2" data-parent="#accordionExample2">
+                                            <div class="card-body pt-0 pb-2 pl-1 pr-1">
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item pt-2 pb-0 pl-2">{{algorithms_filter1}}</li>
+                                                    <li class="list-group-item pb-4">
+                                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2 active">All</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2">Heuristic</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2">Optimization</button>
+                                                    </li>
+                                                    <li class="list-group-item pt-2 pb-0 pl-2">{{algorithms_filter2}}</li>
+                                                    <li class="list-group-item pb-4">
+                                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2 active">All</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2">Positive Region</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2">Entropy</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2">Others</button>
+                                                    </li>
+                                                    <li class="list-group-item pt-2 pb-0 pl-2">{{algorithms_filter3}}</li>
+                                                    <li class="list-group-item pb-4">
+                                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2 active">All</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2">None</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2">NEC</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2">Dependency Calculation</button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4 mb-3 pl-2 pr-2" v-for="(algorithm,key,index) in algorithmList">
+                                        <div class="card" style="width: 18rem;" >
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title p-2 mb-0"><svg class="bi bi-star-fill text-primary mb-1" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                                </svg>{{algorithm.algorithmName}}</h5>
+                                                <p class="card-text">{{new_task_step2_card_p1}}:{{algorithm.ut}}</p>
+                                                <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#algorithmInfoModal" @click="getAlgorithmInfo(key)">{{new_task_step2_card_btn1}}</a>
+                                                <a href="#" class="btn btn-primary" data-toggle="modal" :data-target="'#'+algorithm.algorithmName+'Modal'" @click="getAlgorithmInfo(key)">{{new_task_step2_card_btn2}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="algorithmSelectFeedback" class="invisible">
+                                    <div class="alert alert-danger" role="alert" v-html="new_task_step2_feedback1">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--step3-->
+                            <div class="alert alert-primary text-center" role="alert">
+                                <h3 id="BaseInfo">{{new_task_step3}}</h3>
+                            </div>
+                            <div class="p-4">
+                                <div class="form-row mb-5">
+                                    <label class="col-2 text-right" for="email">{{new_task_step3_card_label1}}</label>
+                                    <div class="col-4">
+                                        <input type="email" class="form-control" id="email" v-model="task_email" @blur="emailCheck">
+                                        <div class="invalid-tooltip" name="taskFormCheck">{{new_task_step3_feedback1}}</div>
+                                        <div class="custom-control custom-control-inline custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="eamilCheck" value="true" v-model="email_check">
+                                            <label for="eamilCheck" class="custom-control-label">{{new_task_step3_card_label4}}</label>
+                                        </div>
+                                    </div>
+                                    <label class="col-2 text-right" for="taskName">{{new_task_step3_card_label2}}</label>
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" id="taskName" v-model="task_name" @blur="taskNameCheck">
+                                        <div class="invalid-tooltip" name="taskFormCheck">
+                                            {{new_task_step3_feedback2}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label class="col-2 text-right" for="taskDescription">{{new_task_step3_card_label3}}</label>
+                                    <div class="col-10">
+                                        <textarea class="form-control" id="taskDescription" rows="3" v-model="task_description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center pb-5" style="margin-bottom: 300px;">
+                                <button class="btn btn-lg btn-primary" @click="submitTaskForm">{{new_task_step_btn1}}</button>
+                                <div id="taskFormResult" class="p-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--AlgorithmSettingModal-->
+                    <div v-for="(algorithm,key,index1) in algorithmList" class="modal fade" :id="algorithm.algorithmName+'Modal'" tabindex="-1" role="dialog" data-backdrop="static">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 55%;" v-if="key==2||key==1">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{{algorithm.algorithmName}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card mb-4 shadow-sm">
+                                        <img :src="algorithms_info_how_img" class="card-img-top" alt="several steps">
+                                        <div class="card-body" v-html="algorithms_info_how_context"></div>
+                                    </div>
+                                    <div class="card mb-4 shadow-sm">
+                                        <div class="alert alert-warning text-center" role="alert">
+                                            Basic Parameters
+                                        </div>
+                                        <div class="row m-0" v-for="(param,index2) in parameterList[algorithm.algorithmId]">
+                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='text'">{{param.parameterName}}
+                                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
+                                                        <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </span>
+                                            </label>
+                                            <div class="input-group mb-3 col-7" v-if="param.parameterSettingInfo.type=='text'">
+                                                <input type="text" class="form-control" :id="algorithm.algorithmName+param.parameterName+'Basic'" :name="algorithm.algorithmName+param.parameterName">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button">Default</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-3" v-if="param.parameterSettingInfo.type=='text'"></div>
+
+                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='select'">{{param.parameterName}}
+                                                <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
+                                                    <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                </span>
+                                            </label>
+                                            <div class="input-group mb-3 col-7" v-if="param.parameterSettingInfo.type=='select'">
+                                                <select class="custom-select" :name="algorithm.algorithmName+param.parameterName" :id="algorithm.algorithmName+param.parameterName+'Basic'">
+                                                    <option selected>Choose...</option>
+                                                    <option v-for="(option,index3) in param.parameterSettingInfo.options" :value="option">{{option}}</option>
+                                                </select>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button">Default</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-3" v-if="param.parameterSettingInfo.type=='select'"></div>
+
+                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='radio'">{{param.parameterName}}
+                                                <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
+                                                    <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                </span>
+                                            </label>
+                                            <div class="input-group mb-3 col-10" v-if="param.parameterSettingInfo.type=='radio'">
+                                                <div class="custom-control-inline custom-control custom-radio" v-for="(option,index4) in param.parameterSettingInfo.options">
+                                                    <input class="custom-control-input" type="radio" :id="algorithm.algorithmName+param.parameterName+index4" :value="option" :name="algorithm.algorithmName+param.parameterName">
+                                                    <label class="custom-control-label" :for="algorithm.algorithmName+param.parameterName+index4">{{option}}</label>
+                                                </div>
+                                            </div>
+
+                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='checkbox'">{{param.parameterName}}
+                                                <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
+                                                    <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                </span>
+                                            </label>
+                                            <div class="input-group mb-3 col-10" v-if="param.parameterSettingInfo.type=='checkbox'">
+                                                <div class="custom-control-inline custom-control custom-checkbox" v-for="(option,index5) in param.parameterSettingInfo.options">
+                                                    <input class="custom-control-input" type="checkbox" :id="algorithm.algorithmName+param.parameterName+index5" :value="option" :name="algorithm.algorithmName+param.parameterName">
+                                                    <label class="custom-control-label" :for="algorithm.algorithmName+param.parameterName+index5">{{option}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-4 shadow-sm">
+                                        <div class="alert alert-warning text-center" role="alert">
+                                            Procedure Settings
+                                        </div>
+                                        <div class="row m-0" v-for="(ps,index2) in ProcedureSettingsList[algorithm.algorithmId]">
+                                            <div class="col-3 p-2">
+                                                <div class="custom-control custom-control-inline custom-radio">
+                                                    <input type="checkbox" class="custom-control-input" :id="algorithm.algorithmName+ps.name+'Procedure'" :name="algorithm.algorithmName+ps.name+'Check'+(index2+1)" :checked="ps.state=='optional'?null:'checked'" :disabled="ps.state=='required'?'disabled':null" @change="changeDisabled($event,algorithm.algorithmName+ps.name)">
+                                                    <label class="custom-control-label" :for="algorithm.algorithmName+ps.name+'Procedure'">{{ps.name}}</label>
+                                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="ps.description">
+                                                        <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="input-group mb-3 col-9">
+                                                <select class="custom-select" :id="algorithm.algorithmName+ps.name+'select'" :name="algorithm.algorithmName+ps.name" :disabled="ps.state=='optional'?'disabled':null">
+                                                    <option v-for="(option,index3) in ps.options" :selected="option==ps.defaultOption?'selected':null" :value="option">{{option}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <span class="text-success"></span>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" @click="saveAlgorithmSettings($event,algorithm)">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--Query TaskContext-->
+                <div class="tab-pane fade" id="nav-query" role="tabpanel" aria-labelledby="nav-query-tab">
+                    <div class="accordion mb-3 mt-4" id="accordionExample3">
+                        <div class="card">
+                            <div class="card-header p-0" id="headingOne3">
+                                <h2 class="mb-0">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-link text-left pl-2 pr-2" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                                {{algorithms_filter}}&nbsp;<svg class="bi bi-chevron-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 01.708 0L8 10.293l5.646-5.647a.5.5 0 01.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z" clip-rule="evenodd"/></svg>
+                                            </button>
+                                        </div>
+                                        <input type="text" class="form-control pl-4 border-top-0 border-bottom-0 border-right-0" v-model.trim="search" @keyup="searchAlgorithm" :placeholder="algorithms_search" aria-label="Example text with two button addons" height="inherit">
+                                        <span class="input-img">
+                                            <svg class="bi bi-search" width="0.7em" height="0.7em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
+                                                <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            </span>
+                                    </div>
+                                </h2>
+                            </div>
+                            <div id="collapseThree" class="collapse border-bottom" aria-labelledby="headingOne3" data-parent="#accordionExample3">
+                                <div class="card-body pt-0 pb-2 pl-1 pr-1">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item pt-2 pb-0 pl-2">{{algorithms_filter1}}</li>
+                                        <li class="list-group-item pb-4">
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2 active">All</button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2">Heuristic</button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2">Optimization</button>
+                                        </li>
+                                        <li class="list-group-item pt-2 pb-0 pl-2">{{algorithms_filter2}}</li>
+                                        <li class="list-group-item pb-4">
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2 active">All</button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2">Positive Region</button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2">Entropy</button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2">Others</button>
+                                        </li>
+                                        <li class="list-group-item pt-2 pb-0 pl-2">{{algorithms_filter3}}</li>
+                                        <li class="list-group-item pb-4">
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2 active">All</button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2">None</button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2">NEC</button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2">Dependency Calculation</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-hover table-bordered text-center">
+                        <thead class="table-warning">
+                        <tr>
+                            <th scope="col" style="width: 8%">{{query_task_table_th1}}</th>
+                            <th scope="col" style="width: 16%">{{query_task_table_th2}}</th>
+                            <th scope="col" style="width: auto">{{query_task_table_th3}}</th>
+                            <th scope="col" style="width: 10%">{{query_task_table_th4}}</th>
+                            <th scope="col" style="width: 25%">{{query_task_table_th5}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(task,index) in task_list">
+                            <th scope="row">{{task.taskId}}</th>
+                            <td>{{task.taskName}}</td>
+                            <td>{{task.taskComment}}</td>
+                            <td>{{task.taskStatus}}</td>
+                            <td>
+                                <a class="" href="#" @click="task.taskStatus=='排队中'?queryTaskInfo(task):myAlert(task.taskName)" :data-toggle="task.taskStatus=='排队中'?'modal':''" data-target="#updateTaskInfo">
+                                    <svg class="bi bi-pencil text-primary" width="1.6em" height="1.6em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z" clip-rule="evenodd"/>
+                                    </svg>
+                                </a>
+                                &nbsp;
+                                <a class="" href="#" data-toggle="modal" data-target="#taskEcharts" @click="getTaskEcharts(task)">
+                                    <svg class="bi bi-graph-up text-primary" width="1.6em" height="1.6em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M0 0h1v16H0V0zm1 15h15v1H1v-1z"/>
+                                      <path fill-rule="evenodd" d="M14.39 4.312L10.041 9.75 7 6.707l-3.646 3.647-.708-.708L7 5.293 9.959 8.25l3.65-4.563.781.624z" clip-rule="evenodd"/>
+                                      <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4h-3.5a.5.5 0 0 1-.5-.5z" clip-rule="evenodd"/>
+                                    </svg>
+                                </a>
+                                &nbsp;
+                                <a class="" href="#">
+                                    <svg class="bi bi-download text-primary" width="1.6em" height="1.6em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                      <path fill-rule="evenodd" d="M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z" clip-rule="evenodd"/>
+                                      <path fill-rule="evenodd" d="M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z" clip-rule="evenodd"/>
+                                      <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 1z" clip-rule="evenodd"/>
+                                    </svg>
+                                </a>
+                                &nbsp;
+                                <a class="" href="#" @click="queryTaskInfo(task)" data-toggle="modal" data-target="#deleteTaskConfirm">
+                                    <svg class="bi bi-trash text-danger" width="1.6em" height="1.6em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                      <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- updateTaskInfoModal -->
+                    <div class="modal fade" id="updateTaskInfo" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document" style="max-width: 50%">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{{temp_task_info.taskName}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-row mb-5">
+                                        <label class="col-2 text-right" for="email" v-if="temp_task_info.taskEmail!=''">{{new_task_step3_card_label1}}</label>
+                                        <div class="col-4" v-if="temp_task_info.taskEmail!=''">
+                                            <input type="email" class="form-control" id="updateEmail" :value="temp_task_info.taskEmail" @blur="emailCheck" v-model="update_task_email">
+                                            <div class="invalid-tooltip" name="updateTaskCheck">{{new_task_step3_feedback1}}</div>
+                                        </div>
+                                        <label class="col-2 text-right" for="taskName">{{new_task_step3_card_label2}}</label>
+                                        <div class="col-4">
+                                            <input type="text" class="form-control" id="updateName" :value="temp_task_info.taskName" @blur="taskNameCheck" v-model="update_task_name">
+                                            <div class="invalid-tooltip" name="updateTaskCheck">
+                                                {{new_task_step3_feedback2}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <label class="col-2 text-right" for="taskDescription">{{new_task_step3_card_label3}}</label>
+                                        <div class="col-10">
+                                            <textarea class="form-control" id="updateDescription" rows="3" :value="temp_task_info.taskComment" v-model="update_task_comment"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <span id="updateResult"></span>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modal_btn_close}}</button>
+                                    <button type="button" class="btn btn-primary" @click="updateTask(temp_task_info)">{{modal_btn_save}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- deleteTaskModal -->
+                    <div class="modal fade" id="deleteTaskConfirm" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{{query_task_delete_warning}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    {{query_task_delete_context}}<strong class="text-primary">{{temp_task_info.taskName+'?'}}</strong>
+                                </div>
+                                <div class="modal-footer">
+                                    <div id="deleteFeedback"></div>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modal_btn_cancel}}</button>
+                                    <button type="button" class="btn btn-warning" @click="deleteTask($event,temp_task_info)">
+                                        {{modal_btn_confirm}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- echart -->
+                    <div class="modal fade" id="taskEcharts" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{{temp_task_info.taskName}} {{query_task_chart_title}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center" id="taskEchartsBody">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modal_btn_close}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Public DatasetContext-->
+                <div class="tab-pane fade" id="nav-dataset" role="tabpanel" aria-labelledby="nav-dataset-tab">
+                    <!--Introduction-->
+                    <div class="jumbotron pb-2">
+                        <h3 class="display-4">{{public_dataset_intro_title}}</h3>
+                        <p class="lead">{{public_dataset_intro_p1}}</p>
+                        <hr>
+                        <div class="text-right">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#datasetFormModal">
+                                {{public_dataset_intro_btn1}}
+                            </button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadListModal" @click="getDatasetForms">
+                                {{public_dataset_intro_btn2}}
+                            </button>
+                        </div>
+                        <!--datasetFormModal -->
+                        <div class="modal fade" id="datasetFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                <div class="modal-content">
+                                    <form id="datasetForm">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">{{public_dataset_upload_title1}}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-row">
+                                            <div class="form-group col-6 mb-4">
+                                                <label for="inputName">{{query_task_table_th2}}</label>
+                                                <input v-model.trim="dataset_form_name" type="text" :class="this.dataset_form_name==''?'form-control border-danger':'form-control'" id="inputName" @blur="datasetNameCheck">
+                                                <div class="invalid-tooltip" name="datasetFormCheck">Existed!</div>
+                                            </div>
+                                            <div class="form-group col-6 custom-file">
+                                                <label for="inputFile">{{public_dataset_upload_label3}}</label><span class="float-right text-muted">.csv .xlsx .xls</span>
+                                                <input @change="showFileName" type="file" class="custom-file-input" id="inputFile" ref="inputDataset">
+                                                <label class="custom-file-label border-danger" for="inputFile" style="top: auto;overflow: hidden" id="datasetFileLabel">Choose file</label>
+                                                <div class="invalid-tooltip" style="top: auto" name="datasetFormCheck">Error file type.</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputSource">{{dataset_info_p2}}</label>
+                                            <input v-model.trim="dataset_form_source" type="text" class="form-control" id="inputSource" value="Mark" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="inputIntroduction">{{dataset_info_p1}}</label>
+                                            <textarea v-model.trim="dataset_form_description" class="form-control" id="inputIntroduction" required></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="inputPreprocessing">{{public_dataset_upload_label1}}</label>
+                                            <textarea v-model="dataset_form_preprocessing" class="form-control" id="inputPreprocessing" required></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="inputAlgorithm">{{public_dataset_upload_label2}}</label>
+                                            <textarea v-model.trim="dataset_form_algorithm" :class="dataset_form_algorithm==''?'form-control border-danger':'form-control'" id="inputAlgorithm" required></textarea>
+                                        </div>
+                                        <div id="formResult">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modal_btn_close}}</button>
+                                        <button type="button" class="btn btn-primary" @click="submitDatasetForm">{{modal_btn_submit}}</button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!--datasetUploadListModal-->
+                        <div class="modal fade" id="uploadListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document" style="max-width: 80%">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="Title">{{public_dataset_check_title1}}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr class="table-warning">
+                                                <th scope="col">Id</th>
+                                                <th scope="col">{{query_task_table_th2}}</th>
+                                                <th scope="col">{{public_dataset_check_th1}}</th>
+                                                <th scope="col">{{query_task_table_th4}}</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="(value,index) in dataset_forms">
+                                                <th scope="row">{{value.inputId}}</th>
+                                                <td>{{value.inputName}}</td>
+                                                <td>{{value.inputStartTime}}</td>
+                                                <td>{{value.inputStatus}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modal_btn_close}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--PublicDatasetLists-->
+                    <table class="table table-hover" style="table-layout: fixed" @mouseover="tipLoader">
+                        <thead>
+                            <tr class="table-warning">
+                                <th scope="col" style="width: 5%">#</th>
+                                <th scope="col" style="width: auto">{{query_task_table_th2}}</th>
+                                <th scope="col" style="width: 62%">{{query_task_table_th3}}</th>
+                                <th scope="col" style="width: 8%">{{dataset_info_p3}}</th>
+                                <th scope="col" style="width: 16%">{{query_task_table_th5}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(value,key,index) in datasetList">
+                            <th scope="row">{{index+1}}</th>
+                            <td><a class="btn-link text-body" :href="value.datasetSource" data-toggle="tooltip" data-placement="left" title="Click to View Source">
+                                {{value.datasetName}}</a></td>
+                            <td class="overflow-auto" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap">{{value.datasetDescription}}</td>
+                            <td>{{value.datasetSize}}</td>
+                            <td class="text-nowrap">
+                                <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#datasetInfo" @click="getDatasetInfo(key)">{{new_task_step2_card_btn1}}</button>
+                                <a :href.trim="value.datasetFile" :download="value.datasetName+'.jpg'"><button class="btn btn-sm btn-outline-warning">{{public_dataset_list_btn1}}</button></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- DatasetInfo Modal -->
+        <div class="modal fade" id="datasetInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 55%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalScrollableTitle">{{dataset_temp.datasetName}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>{{dataset_info_p1}}</h5>
+                        <p class="ml-2">
+                            {{dataset_temp.datasetDescription}}
+                        </p>
+                        <h5>{{dataset_info_p2}}</h5>
+                        <p class="ml-2">
+                            {{dataset_temp.datasetSource}}
+                        </p>
+                        <h5>{{dataset_info_p3}}</h5>
+                        <p class="ml-2">
+                            {{dataset_temp.datasetSize}}
+                        </p>
+                        <h5>{{dataset_info_p4}}</h5>
+                        <p class="ml-2">
+                            {{dataset_temp.datasetDimension}}
+                        </p>
+                        <h5>{{dataset_info_p5}}</h5>
+                        <p class="ml-2">
+                            {{dataset_temp.datasetRecords}}
+                        </p>
+                        <h5>{{dataset_info_p6}}</h5>
+                        <p class="ml-2">
+                            {{dataset_temp.datasetTags}}
+                        </p>
+                        <h5>{{dataset_info_p7}}</h5>
+                        <p class="ml-2">
+                            {{dataset_temp.datasetType}}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modal_btn_close}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--NewTaskParameterModal-->
+        <!--<div id="NewTaskParameterModal">
+            <model :ainfo="algorithmList" :param-info="parameterList" @get-params="setParams"></model>
+        </div>-->
+        <!-- AlgorithmInfoModal -->
+        <div class="modal fade" id="algorithmInfoModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 50%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{algorithm_info_temp.algorithmName}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tab-content">
+                            <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                            </svg>{{algorithms_info_papers}}</h4>
+                            <ul class="list-group list-group-flush ml-3 pr-2 mb-4">
+                                <li class="list-group-item pb-0 pt-1 pl-1 pr-2 border-top-0 fix-context">
+                                    <a :href="algorithm_info_temp.algorithmPaperLink" target="_blank"><svg class="bi bi-dot text-primary" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" clip-rule="evenodd"/>
+                                    </svg>{{algorithm_info_temp.algorithmPaperReference}}</a></li>
+                            </ul>
+                            <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                            </svg>{{algorithms_info_intro}}</h4>
+                            <div class="jumbotron jumbotron-fluid mb-4 pt-2 pb-2 rounded">
+                                <div class="container">
+                                    <p class="lead mb-0">{{algorithm_info_temp.algorithmDescription}}</p>
+                                </div>
+                            </div>
+                            <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                            </svg>{{algorithms_info_how}}</h4>
+                            <div class="card mb-3 mb-4">
+                                <img :src="algorithms_info_how_img" class="card-img-top" alt="several steps">
+                                <div class="card-body">
+                                    <p class="card-text">{{algorithms_info_how_context}}</p>
+                                </div>
+                            </div>
+                            <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                            </svg>{{algorithms_info_parameter}}</h4>
+                            <ul class="list-group list-group-flush ml-3 pr-2 mb-4">
+                                <div class="row">
+                                    <div class="col-4 mb-3 pl-2 pr-2" v-for="(parameter,index) in parameterList[algorithm_info_temp.algorithmId]">
+                                        <div class="card text-center border border-warning">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{parameter.parameterName}}</h5>
+                                                <p class="card-text">{{parameter.parameterDescription}}</p>
+                                            </div>
+                                            <ul class="list-group list-group-flush text-left">
+                                                <li class="list-group-item pl-2 pr-2 pt-2 pb-2">
+                                                    {{algorithms_info_parameter_li1}}{{parameter.parameterType}}</li>
+                                                <li class="list-group-item pl-2 pr-2 pt-2 pb-2">{{algorithms_info_parameter_li2}}{{parameter.parameterDefaultValue}}</li>
+                                            </ul>
+                                            <div class="card-footer text-muted font-weight-light pt-1 pb-1">
+                                                {{algorithms_info_parameter_footer}}{{index+1}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modal_btn_close}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    /*Vue.component('model',{
+        props: ['ainfo','paramInfo'],
+        data: function(){
+            return{
+                gdut1: '',
+                gdut2: '',
+                gdut3: '',
+                gdut4: [],
+                //--------------Selector1-------------
+                gdut2Option: [],
+                //--------------ProcedureSetting1-------------
+                pss1: '',
+                pss2: 'b',
+                pss3: 'b',
+                pss4: 'c',
+                pss5: 'd',
+                psr1: false,
+                psr2: true,
+                psr3: true,
+                psr4: true,
+                psr5: true,
+            };
+        },
+        watch: {
+            paramInfo: function(val) {
+                this.gdut2Option = this.paramInfo[1][1].parameterDefaultValue.split(",");
+            },
+            psr1: function(val) {
+                if (val==false){
+                    this.pss1=null;
+                }else {
+                    this.pss1='a';
+                }
+            },
+            psr3: function(val) {
+                if (val==false){
+                    this.pss3='';
+                    $('#pss3').attr('disabled','disabled');
+                }else {
+                    $('#pss3').removeAttr('disabled');
+                }
+            },
+            psr4: function(val) {
+                if (val==false){
+                    this.pss4='';
+                    $('#pss4').attr('disabled','disabled');
+                }else {
+                    $('#pss4').removeAttr('disabled');
+                }
+            },
+            psr5: function(val) {
+                if (val==false){
+                    this.pss5='';
+                    $('#pss5').attr('disabled','disabled');
+                }else {
+                    $('#pss5').removeAttr('disabled');
+                }
+            }
+        },
+        methods: {
+            setParamDefault: function(event,param,value) {
+                this.$set(this,param,value);
+            },
+            saveChange: function() {
+                var params = {};
+                params.gdut1=this.gdut1;
+                params.gdut2=this.gdut2;
+                params.gdut3=this.gdut3;
+                params.gdut4=this.gdut4;
+                params.procedure1=this.pss1;
+                params.procedure2=this.pss2;
+                params.procedure3=this.pss3;
+                params.procedure4=this.pss4;
+                params.procedure5=this.pss5;
+                this.$emit("get-params",params,1);
+                $('#successSave').removeClass("d-none");
+            }
+        },
+        template : `
+    <div>
+        <div class="modal fade" id="NECModal" tabindex="-1" role="dialog" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 55%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ainfo[1].algorithmName}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card mb-4 shadow-sm">
+                            <img src="pic/timg.jpg" class="card-img-top" alt="several steps">
+                            <div class="card-body">
+                                <p class="card-text">Follow these steps help you get start quickly.</p>
+                            </div>
+                        </div>
+                        <div class="card mb-4 shadow-sm">
+                            <div class="alert alert-warning text-center" role="alert">
+                                Basic Parameters
+                            </div>
+                            <div class="row m-0">
+                                <label for="inputPassword" class="col-2 p-2">{{paramInfo[1][0].parameterName}}
+                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="paramInfo[1][0].parameterDescription">
+                                            <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                            </svg>
+                                    </span>
+                                </label>
+                                <div class="input-group mb-3 col-7">
+                                    <input type="text" class="form-control" v-model="gdut1">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" @click="setParamDefault($event,'gdut1',paramInfo[1][0].parameterDefaultValue)">Default</button>
+                                    </div>
+                                </div>
+                                <div class="col-3"></div>
+
+                                <label for="inputPassword" class="col-2 p-2">{{paramInfo[1][1].parameterName}}
+                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="paramInfo[1][1].parameterDescription">
+                                            <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                            </svg>
+                                    </span>
+                                </label>
+                                <div class="input-group mb-3 col-7">
+                                    <select class="custom-select" id="inputGroupSelect04" v-model="gdut2">
+                                        <option selected>Choose...</option>
+                                        <option v-for="value in gdut2Option" :value="value">{{value}}</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button">Default</button>
+                                    </div>
+                                </div>
+                                <div class="col-3"></div>
+
+                                <label for="" class="col-2 p-2">{{paramInfo[1][2].parameterName}}
+                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="paramInfo[1][2].parameterDescription">
+                                            <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                            </svg>
+                                    </span>
+                                </label>
+                                <div class="input-group mb-3 col-10">
+                                    <div class="custom-control-inline custom-control custom-radio">
+                                        <input class="custom-control-input" type="radio" id="inlineRadio1" value="true" name="gdut3" v-model="gdut3">
+                                        <label class="custom-control-label" for="inlineRadio1">true</label>
+                                    </div>
+                                    <div class="custom-control-inline custom-control custom-radio">
+                                        <input class="custom-control-input" type="radio" id="inlineRadio2" value="false" name="gdut3" v-model="gdut3">
+                                        <label class="custom-control-label" for="inlineRadio2">false</label>
+                                    </div>
+                                </div>
+
+                                <label for="" class="col-2 p-2">{{paramInfo[1][3].parameterName}}
+                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="paramInfo[1][3].parameterDescription">
+                                            <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                            </svg>
+                                    </span>
+                                </label>
+                                <div class="input-group mb-3 col-10">
+                                    <div class="custom-control-inline custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="inlineCheckbox1" value="奶茶" v-model="gdut4">
+                                        <label class="custom-control-label" for="inlineCheckbox1">奶茶</label>
+                                    </div>
+                                    <div class="custom-control-inline custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="inlineCheckbox2" value="辣子鸡" v-model="gdut4">
+                                        <label class="custom-control-label" for="inlineCheckbox2">辣子鸡</label>
+                                    </div>
+                                    <div class="custom-control-inline custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="inlineCheckbox3" value="臭豆腐" v-model="gdut4">
+                                        <label class="custom-control-label" for="inlineCheckbox3">臭豆腐</label>
+                                    </div>
+                                    <div class="custom-control-inline custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="inlineCheckbox4" value="桂林米粉" v-model="gdut4">
+                                        <label class="custom-control-label" for="inlineCheckbox4">桂林米粉</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-4 shadow-sm">
+                            <div class="alert alert-warning text-center" role="alert">
+                                Procedure Settings
+                            </div>
+                            <div class="row m-0">
+                                <div class="col-3 p-2">
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                        <input type="checkbox" class="custom-control-input" id="psr1" v-model="psr1" value="true">
+                                        <label class="custom-control-label" for="psr1">Procedure1</label>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3 col-9">
+                                    <select class="custom-select" id="pss1" disabled>
+                                        <option selected>A Method</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-3 p-2">
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                        <input type="checkbox" class="custom-control-input" id="psr2" checked="checked" values="true" disabled>
+                                        <label class="custom-control-label" for="psr2">Procedure2</label>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3 col-9">
+                                    <select class="custom-select" id="pss2" v-model="pss2">
+                                        <option value="a">a method</option>
+                                        <option value="b">b method</option>
+                                        <option value="c">c method</option>
+                                        <option value="d">d method</option>
+                                        <option value="e">e method</option>
+                                        <option value="f">f method</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-3 p-2">
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                        <input type="checkbox" class="custom-control-input" id="psr3" v-model="psr3" value="true">
+                                        <label class="custom-control-label" for="psr3">Procedure3</label>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3 col-9">
+                                    <select class="custom-select" id="pss3" v-model="pss3">
+                                        <option selected>Choose...</option>
+                                        <option value="a">a method</option>
+                                        <option value="b">b method</option>
+                                        <option value="c">c method</option>
+                                        <option value="d">d method</option>
+                                        <option value="e">e method</option>
+                                        <option value="f">f method</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-3 p-2">
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                        <input type="checkbox" class="custom-control-input" id="psr4" v-model="psr4" value="true">
+                                        <label class="custom-control-label" for="psr4">Procedure4</label>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3 col-9">
+                                    <select class="custom-select" id="pss4" v-model="pss4">
+                                        <option selected>Choose...</option>
+                                        <option value="a">a method</option>
+                                        <option value="b">b method</option>
+                                        <option value="c">c method</option>
+                                        <option value="d">d method</option>
+                                        <option value="e">e method</option>
+                                        <option value="f">f method</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-3 p-2">
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                        <input type="checkbox" class="custom-control-input" id="psr5" v-model="psr5" value="true">
+                                        <label class="custom-control-label" for="psr5">Procedure5</label>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3 col-9">
+                                    <select class="custom-select" id="pss5" v-model="pss5">
+                                        <option selected>Choose...</option>
+                                        <option value="a">a method</option>
+                                        <option value="b">b method</option>
+                                        <option value="c">c method</option>
+                                        <option value="d">d method</option>
+                                        <option value="e">e method</option>
+                                        <option value="f">f method</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <span class="text-success d-none" id="successSave">Success!</span>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" @click="saveChange($event)">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`,
+    });
+    */
+    var app = new Vue({
+        el: '#app',
+        data: {
+            //------------------public-----------------
+            algorithmList: {},
+            parameterList: {},
+            datasetList: {},
+            ProcedureSettingsList: {},
+            file_suffix: ['.csv','.xlsx','.xls'],
+            dataset_info_p1: '',
+            dataset_info_p2: '',
+            dataset_info_p3: '',
+            dataset_info_p4: '',
+            dataset_info_p5: '',
+            dataset_info_p6: '',
+            dataset_info_p7: '',
+            modal_btn_close: '',
+            modal_btn_save: '',
+            modal_btn_confirm: '',
+            modal_btn_cancel: '',
+            modal_btn_submit: '',
+            //------------------HeaderNav-----------------
+            navHead_li1: '',
+            navHead_li2: '',
+            navHead_li3: '',
+            navHead_btn1: '',
+            //------------------BodyNav-----------------
+            navBody_a1: '',
+            navBody_a2: '',
+            navBody_a3: '',
+            navBody_a4: '',
+            navBody_a5: '',
+            //------------------HomeContext-----------------
+            home_text: '',
+            home_title: '',
+            home_ul1: '',
+            home_ul1_li1: '',
+            home_ul1_li2: '',
+            home_ul1_li3: '',
+            home_ul1_li4: '',
+            home_ul2: '',
+            home_ul2_li1: '',
+            home_ul2_li2: '',
+            home_ul2_li3: '',
+            home_ul2_li4: '',
+            //------------------AlgorithmsContext-----------------
+            algorithms_filter: '',
+            algorithms_search: '',
+            algorithms_filter1: '',
+            algorithms_filter2: '',
+            algorithms_filter3: '',
+            algorithms_info_how: '',
+            algorithms_info_intro: '',
+            algorithms_info_papers: '',
+            algorithms_info_parameter: '',
+            algorithms_info_title: '',
+            search: '',
+            algorithms_info_how_context: '',
+            algorithms_info_how_img: '',
+            algorithms_info_parameter_li1: '',
+            algorithms_info_parameter_li2: '',
+            algorithms_info_parameter_footer: '',
+            //------------------PublicDatasetContext-----------------
+            dataset_temp: {},
+            dataset_form_name: '',
+            dataset_form_source: '',
+            dataset_form_description: '',
+            dataset_form_preprocessing: '',
+            dataset_form_algorithm: '',
+            dataset_forms: {},
+            public_dataset_upload_title1: '',
+            public_dataset_upload_label1: '',
+            public_dataset_upload_label2: '',
+            public_dataset_upload_label3: '',
+            public_dataset_check_title1: '',
+            public_dataset_check_th1: '',
+            public_dataset_intro_btn1: '',
+            public_dataset_intro_btn2: '',
+            public_dataset_intro_p1: '',
+            public_dataset_intro_title: '',
+            public_dataset_list_btn1: '',
+            //------------------NewTaskContext-----------------
+            task_dataset: 0,
+            task_dataset_info: {},
+            algorithm_info_temp: {},
+            password: '',
+            params: null,
+            task_email: '',
+            task_name: '',
+            task_description: '',
+            task_algorithm_id: -1,
+            email_check: true,
+            new_task_navbar_a1: '',
+            new_task_navbar_a2: '',
+            new_task_navbar_a3: '',
+            new_task_step_btn1: '',
+            new_task_step3_feedback2: '',
+            new_task_step3_feedback1: '',
+            new_task_step3_card_label4: '',
+            new_task_step3_card_label3: '',
+            new_task_step3_card_label2: '',
+            new_task_step3_card_label1: '',
+            new_task_step3: '',
+            new_task_step2_feedback1: '',
+            new_task_step2_card_p1: '',
+            new_task_step2_card_btn2: '',
+            new_task_step2_card_btn1: '',
+            new_task_step2: '',
+            new_task_step1_select_default: '',
+            new_task_step1_label2: '',
+            new_task_step1_label1: '',
+            new_task_step1_feedback2: '',
+            new_task_step1_feedback1: '',
+            new_task_step1: '',
+            new_task_navbar_a3: '',
+            new_task_navbar_a2: '',
+            new_task_navbar_a1: '',
+            //------------------QueryTaskContext-----------------
+            task_list: [],
+            temp_task_info: {},
+            update_task_comment: '',
+            update_task_name: '',
+            update_task_email: '',
+            query_task_table_th1: '',
+            query_task_table_th2: '',
+            query_task_table_th3: '',
+            query_task_table_th4: '',
+            query_task_table_th5: '',
+            query_task_delete_warning: '',
+            query_task_delete_context: '',
+            query_task_chart_title: '',
+        },
+        created: function () {
+            /*
+            * 根据存储语言选择信息的cookie获取页面元素内容
+            * */
+            axios.get('/htmlElements').then((response) => {
+                for (let i = 0; i < response.data.length; i++) {
+                    for (item in this._data){
+                        if (response.data[i].moduleKey==item){
+                            if($.cookie("language")=='ch'){
+                                this.$set(this._data,item,response.data[i].chValue);
+                            }else {
+                                this.$set(this._data,item,response.data[i].enValue);
+                            }
+                        }
+                    }
+                }
+            });
+            axios.get('/getAlgorithmsList').then((response) => {
+                this.algorithmList=response.data;
+                // this.algorithm_info_temp=this.algorithmList[1];
+            });
+            axios.get('/getParameterList').then((response) => {
+                let params = response.data;
+                for (let key in params){
+                    for (let i = 0; i < params[key].length; i++) {
+                        params[key][i].parameterSettingInfo = JSON.parse(params[key][i].parameterSettingInfo);
+                    }
+                }
+                this.parameterList=params;
+            });
+            axios.get('/getDatasetList').then((response) => {
+                this.datasetList=response.data;
+            });
+            axios.get('/getProcedureSettingsList').then((response) => {
+                this.ProcedureSettingsList = response.data;
+            })
+            let param = new URLSearchParams();
+            param.append("accountId",303030);
+            axios.post('/getTaskListByAccountId',param).then((response) => {
+                this.task_list=response.data;
+            });
+        },
+        methods: {
+            currentTag: function (event) {
+                sessionStorage.setItem('currentTag',event.target.id);
+            },
+            searchAlgorithm: function (event) {
+                $('#v-pills-tab').children().each((index,element) => {
+                    if (!($(element).text().trim().toLowerCase().indexOf(this.search.toLowerCase())>=0)){
+                        $(element).addClass("d-none");
+                    }else {
+                        $(element).removeClass("d-none");
+                    }
+                });
+            },
+            tipLoader: function (event) {
+                $('[data-toggle="tooltip"]').tooltip();
+            },
+            getDatasetInfo: function (key) {
+                this.dataset_temp=this.datasetList[key];
+            },
+            submitDatasetForm: function () {
+                let iFcorrect = true;
+                let checks = $("div[name='datasetFormCheck']");
+                for (let j = 0; j < checks.length; j++) {
+                    if ($(checks[j]).css('display')!='none'){
+                        iFcorrect = false;
+                        break;
+                    }
+                };
+                if(this.dataset_form_name=='' || this.$refs.inputDataset.files[0]==null || this.dataset_form_algorithm==''){
+                    iFcorrect = false;
+                };
+                if (iFcorrect){
+                    let datasetForm = new FormData();
+                    datasetForm.append("accountId",303030);
+                    datasetForm.append("inputName",this.dataset_form_name);
+                    datasetForm.append("inputHref",this.dataset_form_source);
+                    datasetForm.append("inputDescription",this.dataset_form_description);
+                    datasetForm.append("inputPreprocess",this.dataset_form_preprocessing);
+                    datasetForm.append("inputAlgorithm",this.dataset_form_algorithm);
+                    datasetForm.append("file",this.$refs.inputDataset.files[0]);
+                    axios.post('/uploadDatasetForm',datasetForm,{
+                        'Content-Type':'multipart/form-data'
+                    }).then((response) => {
+                        if (response.data=="success"){
+                            $('#formResult').html('' +
+                                '<div class="alert alert-success alert-dismissible fade show" role="alert" id="datasetFormAlert">\n' +
+                                '  <strong>Submit Success!</strong>You can click \'Check My Uploads\' to Check your uploads\'status anytime.\n' +
+                                '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+                                '    <span aria-hidden="true">&times;</span>\n' +
+                                '  </button>\n' +
+                                '</div>');
+                        }
+                        $('#datasetFormAlert').bind('closed.bs.alert', function () {
+                            $('#datasetForm')[0].reset();
+                        });
+                    });
+                }else {
+                    if ($.cookie("language")=='ch'){
+                        $('#formResult').html('' +
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert" id="datasetFormAlert">\n' +
+                            '  <strong>表单有误！</strong>请检查你的表单\n' +
+                            '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+                            '    <span aria-hidden="true">&times;</span>\n' +
+                            '  </button>\n' +
+                            '</div>');
+
+                    } else {
+                        $('#formResult').html('' +
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert" id="datasetFormAlert">\n' +
+                            '  <strong>Error!</strong>Please Check Your Form!\n' +
+                            '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+                            '    <span aria-hidden="true">&times;</span>\n' +
+                            '  </button>\n' +
+                            '</div>');
+                    }
+
+                }
+            },
+            showFileName: function (event) {
+                let originFileName = event.target.files[0].name;
+                let suffix = originFileName.substr(originFileName.lastIndexOf("."));
+                let showName = null;
+                if ((originFileName.length-suffix.length)>=6){
+                    showName = originFileName.substr(0,6)+"*"+suffix;
+                }else {
+                    showName = originFileName;
+                }
+                if (this.file_suffix.indexOf(suffix)>-1){
+                    $(event.srcElement).next().removeClass("border-danger");
+                    $(event.srcElement).next().next().css('display','none');
+                    $(event.srcElement).next().html(showName);
+
+                }else {
+                    $(event.srcElement).next().addClass("border-danger");
+                    $(event.srcElement).next().next().css('display','block');
+                    $(event.srcElement).next().html(showName);
+
+                }
+            },
+            getDatasetForms: function () {
+                let param = new URLSearchParams();
+                param.append("accountId",303030);
+                axios.post('/getDatasetForms',param).then((response) => {
+                    this.dataset_forms = response.data;
+                });
+            },
+            datasetOption: function () {
+                if (this.task_dataset!=0){
+                    this.dataset_temp=this.datasetList[this.task_dataset];
+                    $('#taskDatasetInfo').removeClass("d-none");
+                    $('#taskDatasetInfo').addClass("d-block");
+                    $('#datasetFile').attr("disabled","disabled");
+                    $('#taskDatasetFeedback').addClass('invisible');
+                }else{
+                    $('#datasetFile').removeAttr("disabled","disabled");
+                    $('#taskDatasetInfo').removeClass("d-block");
+                    $('#taskDatasetInfo').addClass("d-none");
+                    $("#datasetFileLabel2").html($('#datasetFile')[0].files[0].name);
+                        $('#datasetSelect').attr("disabled","disabled");
+                    }
+                    $('#taskDatasetFeedback').addClass('invisible');
+                },
+            getAlgorithmInfo: function (key) {
+                this.algorithm_info_temp=this.algorithmList[key];
+                $('[data-toggle="popover"]').popover();
+            },
+            submitTaskForm: function() {
+                let ifCorrect = true;
+                let checks = $("div[name='taskFormCheck']");
+                for (let j = 0; j < checks.length; j++) {
+                    if ($(checks[j]).css('display')!='none'){
+                        ifCorrect = false;
+                        break;
+                    }
+                }
+                if (this.task_name==''){
+                    $('#taskName').addClass('border-danger');
+                    ifCorrect = false;
+                }
+                if (this.email_check == true) {
+                    if (this.task_email==''){
+                        $('#email').addClass('border-danger');
+                        ifCorrect = false;
+                    }
+                }
+                if (this.task_dataset==0 && this.$refs.taskDataset.files[0]==null){
+                    $('#taskDatasetFeedback').removeClass('invisible');
+                    ifCorrect = false;
+                }
+                if (this.params==null) {
+                    $('#algorithmSelectFeedback').removeClass('invisible');
+                    ifCorrect = false;
+                }
+                if (ifCorrect) {
+                    let taskForm = new FormData();
+                    taskForm.append("accountId",303030);
+                    taskForm.append("taskName",this.task_name);
+                    taskForm.append("taskComment",this.task_description);
+                    taskForm.append("algorithmId",this.task_algorithm_id);
+                    taskForm.append("taskEmail",this.task_email);
+                    taskForm.append("algorithmParameters",JSON.stringify(this.params));
+                    taskForm.append("datasetId",this.task_dataset);
+                    taskForm.append("file",this.$refs.taskDataset.files[0]);
+                    axios.post('/uploadTaskForm',taskForm,{
+                        'Content-Type':'multipart/form-data'
+                    }).then((response) => {
+                        let param2 = new URLSearchParams();
+                        param2.append("accountId",303030);
+                        axios.post('/getTaskListByAccountId',param2).then((response) => {
+                            this.task_list=response.data;
+                        });
+                        $('#taskFormResult').html('<div class="alert alert-success alert-dismissible fade show" role="alert" id="taskFormAlert">' +
+                            'Submit Success!Your task id is <strong>'+response.data+'</strong>'+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        $('#taskFormAlert').bind('closed.bs.alert', function () {
+                            $('#datasetForm')[0].reset();
+                        });
+                    });
+                } else {
+                    if ($.cookie("language")=='ch') {
+                        $('#taskFormResult').html('' +
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert" id="datasetFormAlert">\n' +
+                            '  <strong>错误！</strong>请检查你的表单！\n' +
+                            '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+                            '    <span aria-hidden="true">&times;</span>\n' +
+                            '  </button>\n' +
+                            '</div>');
+                    } else {
+                        $('#taskFormResult').html('' +
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert" id="datasetFormAlert">\n' +
+                            '  <strong>Error!</strong>Please Check Your Form!\n' +
+                            '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+                            '    <span aria-hidden="true">&times;</span>\n' +
+                            '  </button>\n' +
+                            '</div>');
+                    }
+
+                }
+            },
+            datasetNameCheck: function (event) {
+                axios.get('/queryDatasetName',{
+                    params: {
+                        datasetName: $.trim(event.target.value)
+                    }
+                }).then(response => {
+                    if (response.data=="exist"){
+                        $(event.srcElement).next().css('display','block');
+                    }else {
+                        $(event.srcElement).next().css('display','none');
+                    }
+                });
+            },
+            emailCheck: function (event) {
+                let myreg = /^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+                if (myreg.test(event.target.value)) {
+                    $(event.srcElement).removeClass('border-danger');
+                    $(event.srcElement).next().css('display','none');
+                }else {
+                    $(event.srcElement).addClass('border-danger');
+                    $(event.srcElement).next().css('display','block');
+                }
+            },
+            taskNameCheck: function (event) {
+                if (this.task_name!=''){
+                    $(event.srcElement).removeClass('border-danger');
+                }
+                axios.get('/queryTaskName',{
+                    params: {
+                        taskName: $.trim(event.target.value),
+                        accountId: 303030
+                    }
+                }).then(response => {
+                    if (response.data=="exist"){
+                        $(event.srcElement).next().css('display','block');
+                        $(event.srcElement).addClass('border-danger');
+                    }else {
+                        $(event.srcElement).next().css('display','none');
+                        $(event.srcElement).removeClass('border-danger');
+                    }
+                });
+            },
+            queryTaskInfo: function (task) {
+                this.temp_task_info = task;
+                this.update_task_name = task.taskName;
+                this.update_task_email = task.taskEmail;
+                this.update_task_comment = task.taskComment;
+                console.log($("div[name='updateTaskCheck']"));
+                let checks = $("div[name='updateTaskCheck']");
+                for (let i = 0; i < checks.length; i++) {
+                    $(checks[i]).css('display','none');
+                    $(checks[i]).prev().removeClass('border-danger');
+                }
+            },
+            updateTask: function (task) {
+                if (task.taskStatus!="排队中") {
+                    alert("The task is not in queue and it can't be updated");
+                }else {
+                    let form = new FormData();
+                    form.append('taskId',this.temp_task_info.taskId);
+                    form.append('taskName',this.update_task_name);
+                    form.append('taskEmail',this.update_task_email);
+                    form.append('taskComment',this.update_task_comment);
+                    axios.post('/updateTask',form).then((response) => {
+                        if (response.data=="success"){
+                            let param2 = new FormData();
+                            param2.append("accountId",303030);
+                            axios.post('/getTaskListByAccountId',param2).then((response2) => {
+                                this.task_list=response2.data;
+                            });
+                            if ($.cookie("language")=='ch'){
+                                $('#updateResult').html("成功！");
+                            } else {
+                                $('#updateResult').html("Success！");
+                            }
+                            $('#updateResult').addClass("text-success");
+                        }
+                    });
+                }
+            },
+            deleteTask: function (event,task) {
+                let param = new FormData();
+                param.append("taskId",task.taskId);
+                axios.post('/deleteTask',param).then((response) => {
+                    let param2 = new FormData();
+                    param2.append("accountId",303030);
+                    axios.post('/getTaskListByAccountId',param2).then((response2) => {
+                        this.task_list=response2.data;
+                    });
+                });
+                $('#deleteFeedback').next().css('display','none');
+                $('#deleteFeedback').next().next().css('display','none');
+                if ($.cookie("language")=="ch"){
+                    $('#deleteFeedback').html("<div class='text-success'>成功！</div>");
+                }else{
+                    $('#deleteFeedback').html("<div class='text-success'>Success!</div>");
+                }
+                /*setTimeout(function () {
+                    window.location.reload();
+                },1000);*/
+
+            },
+            getTaskEcharts: function (task) {
+
+                this.temp_task_info = task;
+                $("#taskEchartsBody").empty();
+                axios.get('/getTaskResult',{
+                    params: {
+                        taskId: task.taskId
+                    }
+                }).then((response) => {
+                    let results = response.data;
+                    for (let i = 0;i<results.length;i++){
+                        $("#taskEchartsBody").append('<div style="height: 300px;width: 400px;margin: 0 auto" id="taskResult'+i+'"></div>');
+                        let myChart = echarts.init(document.getElementById('taskResult'+i));
+                        let result = JSON.parse(results[i].resultVal);
+                        let objKey = Object.keys(result);
+                        let values = [];
+                        for (let k in result) {
+                            values.push({value: result[k],name: k});
+                        }
+                        let option = {
+                            title: {
+                                text: 'Result'+(i+1),
+                                left: 'center'
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: '{b}: {c} ({d}%)'
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                left: 10,
+                                data: objKey
+                            },
+                            series: [
+                                {
+                                    type: 'pie',
+                                    radius: ['50%', '70%'],
+                                    avoidLabelOverlap: false,
+                                    label: {
+                                        show: false,
+                                        position: 'center'
+                                    },
+                                    emphasis: {
+                                        label: {
+                                            show: true,
+                                            fontSize: '30',
+                                            fontWeight: 'bold'
+                                        }
+                                    },
+                                    labelLine: {
+                                        show: false
+                                    },
+                                    data: values
+                                }
+                            ]
+                        };
+                        myChart.setOption(option);
+                    }
+                });
+            },
+            myAlert: function (msg) {
+                if ($.cookie("language")=='ch'){
+                    alert(msg+'当前状态不可修改');
+                }else {
+                    alert(msg+' is not in queue and it can not be updated');
+                }
+            },
+            saveAlgorithmSettings: function (event,algorithm) {
+                let paramSet = {basic: {},procedure: {}};
+                let parameters = this.parameterList[algorithm.algorithmId];
+                let procedureSettings = this.ProcedureSettingsList[algorithm.algorithmId];
+                for (let i = 0; i < parameters.length; i++) {
+                    let nameTemp = algorithm.algorithmName+parameters[i].parameterName;
+                    switch (parameters[i].parameterSettingInfo.type) {
+                        case 'text':
+                            paramSet.basic[parameters[i].parameterName] = {input: $("input[name="+nameTemp+"]").val(),option: null};
+                            break;
+                        case 'select':
+                            paramSet.basic[parameters[i].parameterName] = {input: $("select[name="+nameTemp+"]").val(),option: null};
+                            break;
+                        case 'radio':
+                            paramSet.basic[parameters[i].parameterName] = {input: $("input[name="+nameTemp+"]:checked").val(),option: null};
+                            break;
+                        case 'checkbox':
+                            let listTemp = [];
+                            $("input[name="+nameTemp+"]:checked").each(function () {
+                                listTemp.push($(this).val());
+                            });
+                            paramSet.basic[parameters[i].parameterName] = {input: null,option: listTemp};
+                    }
+                }
+                for (let i = 0; i < procedureSettings.length; i++) {
+                    let nameTemp = algorithm.algorithmName+procedureSettings[i].name;
+                    if ($("select[name="+nameTemp+"]").prop("disabled")){
+                        paramSet.procedure[procedureSettings[i].name] = {data: null, selected: false};
+                    } else {
+                        paramSet.procedure[procedureSettings[i].name] = {data: $("select[name="+nameTemp+"]").val(), selected: true};
+                    }
+                }
+                this.params = paramSet;
+                this.task_algorithm_id = algorithm.algorithmId;
+                if ($.cookie("language")=='ch'){
+                    $(event.srcElement).prev().prev().html("成功保存！");
+                }else {
+                    $(event.srcElement).prev().prev().html("Success!");
+                }
+                setTimeout(function () {
+                    $(event.srcElement).prev().prev().html("");
+                },2000);
+            },
+            changeDisabled: function (event,name) {
+                if ($(event.srcElement).prop("checked")) {
+                    $("select[name="+name+"]").removeAttr("disabled");
+                }else {
+                    $("select[name="+name+"]").attr("disabled","disabled");
+                }
+            }
+        },
+        watch: {
+            email_check: function (val) {
+                if (val==false){
+                    this.task_email=''
+                    $('#email').attr("disabled","disabled");
+                    $('#email').removeClass('border-danger');
+                    $('#email').next().css('display','none');
+                }else{
+                    $('#email').addClass('border-danger');
+                    $('#email').removeAttr("disabled","disabled");
+                }
+            },
+            params: function (val) {
+                if (val!=null){
+                    $('#algorithmSelectFeedback').addClass('invisible');
+                }
+            }
+        }
+    });
+
+
+    $(function () {
+        switch (sessionStorage.getItem('currentTag')) {
+            case "nav-home-tab":
+                $('#nav-home-tab').addClass('show');
+                $('#nav-home-tab').addClass('active');
+                $('#nav-home').addClass('show');
+                $('#nav-home').addClass('active');
+                break;
+            case "nav-algorithms-tab":
+                $('#nav-algorithms-tab').addClass('show');
+                $('#nav-algorithms-tab').addClass('active');
+                $('#nav-algorithms').addClass('show');
+                $('#nav-algorithms').addClass('active');
+                break;
+            case "nav-new-tab":
+                $('#nav-new-tab').addClass('show');
+                $('#nav-new-tab').addClass('active');
+                $('#nav-new').addClass('show');
+                $('#nav-new').addClass('active');
+                break;
+            case "nav-query-tab":
+                $('#nav-query-tab').addClass('show');
+                $('#nav-query-tab').addClass('active');
+                $('#nav-query').addClass('show');
+                $('#nav-query').addClass('active');
+                break;
+            case "nav-dataset-tab":
+                $('#nav-dataset-tab').addClass('show');
+                $('#nav-dataset-tab').addClass('active');
+                $('#nav-dataset').addClass('show');
+                $('#nav-dataset').addClass('active');
+                break;
+            default:
+                $('#nav-home-tab').addClass('show');
+                $('#nav-home-tab').addClass('active');
+                $('#nav-home').addClass('show');
+                $('#nav-home').addClass('active');
+        }
+        $('#deleteTaskConfirm').on('hidden.bs.modal', function (e) {
+            $('#deleteFeedback').next().css('display','block');
+            $('#deleteFeedback').next().next().css('display','block');
+            $('#deleteFeedback').html("");
+        });
+        deleteTaskConfirm
+        $('#updateTaskInfo').on('hidden.bs.modal', function (e) {
+            $('#updateResult').html('');
+        });
+        /**
+         * 语言选择
+         */
+        var sta;
+        var lang=$.cookie("language");
+        if (lang==null){
+            $.cookie("language","en");
+            lang="en";
+        }
+        if (lang=='en'){
+            sta=true;
+        }else {
+            sta=false;
+        }
+        /**
+         * 开关按钮
+         */
+        $("#language").bootstrapSwitch({
+            state: sta,
+            onText: "English",
+            offText: "中文",
+            onColor: "primary",
+            offColor: "primary",
+            size: "small",
+            labelWidth: "15px",
+            onSwitchChange: function (event,state) {
+                if (state==false){
+                    $.cookie("language","ch")
+                    window.location.href='/execution';
+                }else {
+                    $.cookie("language","en")
+                    window.location.href='/execution';
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

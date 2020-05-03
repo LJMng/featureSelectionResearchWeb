@@ -10,7 +10,7 @@ import java.util.List;
 public interface ParameterSchemeMapper {
     public List<ParameterScheme>getAllSchemeWithParameterValue();
 
-    public ParameterScheme getSchemeWithParameterValueById(@Param("schemeid")int schemeid);
+    public ParameterScheme getSchemeWithParameterValueById(@Param("schemeid") int schemeid);
 
-    public ParameterScheme getSchemeWithParameterValueAndDatasetById(@Param("schemeid")int schemeid);
+    public ParameterScheme getSchemeWithParameterValueAndDatasetById(@Param("schemeid") int schemeid);
 }
