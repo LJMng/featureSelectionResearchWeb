@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Execution</title>
+
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <!---->
+    <link rel="stylesheet" href="/webjars/bootstrap-switch/3.3.4/dist/css/bootstrap3/bootstrap-switch.css">
+    <!-- jquery -->
+    <!-- 	Web jars -->
+    <!-- 		jquery -->
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/jquery-cookie/jquery.cookie.js"></script>
+    <!-- 		Vue.js -->
+    <script src="/webjars/vue/vue.min.js"></script>
+    <!-- 		Bootstrap -->
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <!-- 		Bootstrap core JavaScript-->
+    <script src="/webjars/bootstrap/js/bootstrap.bundle.js"></script>
+    <!--bootstrap-switch-->
+    <script src="/webjars/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+    <!--axios-->
+    <script src="/webjars/axios/0.19.2/dist/axios.js"></script>
+</head>
+<body>
+<div id="algorithmData">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
+    <div class="container">
+        <a class="navbar-brand" href="/pages/execution.html">AlgGroup</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/pages/execution/admin/htmlElementList.html">htmlElement<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pages/execution/admin/datasetManage.html">Dataset</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pages/execution/admin/administrator.html">account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About us</a>
+                </li>
+            </ul>
+        </div>
+        <button type="button" class="btn btn-outline-secondary btn-sm">登录</button>        &nbsp;&nbsp;&nbsp;
+        <input type="checkbox" name="my-checkbox" value="true" onclick="function f(value) {
+
+        }">
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar" id="sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/execution.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            Home <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/administrator.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            管理员账户管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/account.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Vip用户管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/datasetManage.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                <polyline points="2 17 12 22 22 17"></polyline>
+                                <polyline points="2 12 12 17 22 12"></polyline>
+                            </svg>
+                            数据集管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/htmlElementList.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            页面元素管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/taskInfo.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                            任务单管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/algorithm.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                            算法管理
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="col-md-12">
+                <h1>Add Algorithm Params</h1>
+            </div>
+            <div class="col-md-6">
+                <p class="text-lg-left">u can choose the algorithm,and add some params for execution System</p>
+            </div>
+            <hr/>
+            <!--表单内容设计 -->
+            <form id="createAlgorithm" >
+                <div class="row">
+                    <div class="col-md-4 offset-md-4" >
+                        <h2>{{values.form_title01}}</h2>
+                    </div>
+                </div>
+                <!--参数选择区域 -->
+                <div class="row">
+                    <div class="col-md-4">
+                    <label class="bootstrap-switch-label">选择参数个数：</label>
+                    <input type="number" v-model.number="paramsNumber" class="form-control">
+                    </div>
+                </div>
+                <!--选择算法，并渲染出算法详细信息 -->
+                <div v-for="n in paramsNumber">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>算法名</label>
+                        <select class="custom-select" name="algorithmId" v-model="algorithmName[n]" required>
+                            <option v-for="algorithm in algorithms">{{algorithm.algorithmId}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+algorithmName[n]'>
+                            点击查看算法详情
+                        </button>
+                    </div>
+                </div>
+                <!--每个参数的输入 -->
+                <div class="row" >
+                    <div class="col-md-2">
+                        <label>第{{n}}个参数名：</label>
+                        <input type="text" name="paramName" class="form-control" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label>第{{n}}个参数类型：</label>
+                        <select class="custom-select" name="paraType"  required>
+                            <option selected>text</option>
+                            <option>radio</option>
+                            <option>selection</option>
+                            <option>checkbox</option>
+                        </select>
+                    </div>
+                    <!--根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 -->
+                    <div class="col-md-2">
+                        <label>值的个数</label>
+                        <input type="number" v-model.number="valueNumber[n]" class="form-control">
+                    </div>
+                    <div v-for="a in valueNumber[n]" class="col-md-1">
+                        <label>{{"value"+a}}</label>
+                        <input type="text" name="value" class="form-control">
+                    </div>
+                </div>
+                    <hr/>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 offset-md-4">
+                        <input type="submit" value="新增算法" class="form-control" id="addParameterSettingInfo">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="reset" value="重置" class="form-control">
+                    </div>
+                </div>
+            </form>
+            <hr/>
+            <div class="col-md-12">
+                <h1>Set the produceSettings</h1>
+            </div>
+            <div class="col-md-6">
+                <p class="text-lg-left">set the procedure for execution System when account use the system.they can chose which procedure want to run and how to run.</p>
+            </div>
+            <hr/>
+            <!--添加算法步骤的表内容：
+            1.根据算法名称进行添加，选择算法名称后可以点击算法详细内容
+            2.表单内容包括 algorithm_id name state options defaultOption description
+            3.通过表单直接提交，提交地址为 ： /addProduceSettings
+            -->
+            <form action="/addProcedureSetting" method="post" role="form">
+                <div class="row">
+                    <div class="col-md-4 offset-md-4">
+                        <label>选择算法：</label>
+                        <select name="algorithmId" v-model="algorithmId">
+                            <option v-for="algorithm in algorithms">{{algorithm.algorithmId}}</option>
+                        </select>
+                    </div>
+                    <div class="row-md-4">
+                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+algorithmId'>
+                            点击查看算法详情
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 offset-md-4">
+                        <label>步骤名称</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 offset-md-4">
+                        <label>运行状态</label>
+                        <select class="custom-select" name="state">
+                            <option>required</option>
+                            <option>optionalSelected</option>
+                            <option>optional</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 offset-md-4">
+                        <label>选择状态</label>
+                        <input type="text" class="form-control" name="options" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 offset-md-4">
+                        <label>默认选择</label>
+                        <input type="text" name="defaultOption" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 offset-md-4">
+                        <label>步骤描述</label>
+                        <input type="text" name="description" class="form-control" required>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-2 offset-md-4">
+                        <input type="submit" value="添加步骤" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="reset" value="重置" class="form-control">
+                    </div>
+                </div>
+
+            </form>
+
+            <!--模态框目标区域，遍历算法对象， -->
+            <!-- Modal -->
+            <div v-for="algorithm in algorithms" class="modal fade" v-bind:id="algorithm.algorithmName"  tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <div class="row">
+                                    <dt class="col-md-5">algorithmId:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmId}}</dd>
+                                    <dt class="col-md-5">algorithmName:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmName}}</dd>
+                                    <dt class="col-md-5">algorithmType:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmType}}</dd>
+                                    <dt class="col-md-5">PaperReference:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmPaperReference}}</dd>
+                                    <dt class="col-md-5">PaperLink:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmPaperLink}}</dd>
+                                    <dt class="col-md-5">CallInterFace:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallInterFace}}</dd>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- modal-->
+            <div v-for="algorithm in algorithms" class="modal fade" v-bind:id='"a"+algorithm.algorithmId' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalScrollableTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <div class="row">
+                                    <dt class="col-md-5">algorithmId:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmId}}</dd>
+                                    <dt class="col-md-5">algorithmName:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmName}}</dd>
+                                    <dt class="col-md-5">algorithmType:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmType}}</dd>
+                                    <dt class="col-md-5">PaperReference:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmPaperReference}}</dd>
+                                    <dt class="col-md-5">PaperLink:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmPaperLink}}</dd>
+                                    <dt class="col-md-5">CallInterFace:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallInterFace}}</dd>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+    <script type="text/javascript" src="/js/algorithmjs.js"></script>
+</div>
+</body>
+<footer class="container">
+    <hr>
+    <p class="float-right"><a href="/pages/execution/admin/account.html">Back to top</a></p>
+    <p>&copy; 2017-2020 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+</footer>
+</html>
