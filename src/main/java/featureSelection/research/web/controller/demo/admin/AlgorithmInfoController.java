@@ -1,12 +1,14 @@
 package featureSelection.research.web.controller.demo.admin;
 
+
 import featureSelection.research.web.entity.demo.admin.AlgorithmInfoDemoAdmin;
-import featureSelection.research.web.mybatisMapper.AlgorithmInfoDemoAdminMapper;
-import featureSelection.research.web.mybatisMapper.ParameterDemoAdminMapper;
+import featureSelection.research.web.mybatisMapper.demo.admin.AlgorithmInfoDemoAdminMapper;
+import featureSelection.research.web.mybatisMapper.demo.admin.ParameterDemoAdminMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RequestMapping("/AlgorithmInfoDemoAdmin")
 @RestController

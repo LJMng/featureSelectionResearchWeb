@@ -37,9 +37,4 @@ public class PagesController {
     public String toAboutusAdmin(){
         return "/demoAdmin/AboutusDemoAdmin.html";
     }
-
-    @GetMapping("/pageAdmin")
-    public String getPages(){
-        return "/demoAdmin/pageadmin/index.html";
-    }
 }

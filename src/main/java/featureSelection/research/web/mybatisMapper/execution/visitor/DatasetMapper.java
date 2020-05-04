@@ -16,8 +16,8 @@ import java.util.Map;
 @Repository
 public interface DatasetMapper {
 
-    @Select("select dataset_dimension from dataset where dataset_id = #{datasetId}")
-    int getDatasetDimensionById(int datasetId);
+    @Select("select dataset_dimension from dataset where dataset_id = #{id}")
+    int getDatasetDimensionById(int id);
 
     @Select("select count(dataset_name) from dataset where dataset_name = #{datasetName}")
     int queryDatasetName(String datasetName);

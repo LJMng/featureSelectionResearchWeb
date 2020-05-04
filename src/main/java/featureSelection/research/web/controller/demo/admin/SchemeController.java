@@ -1,7 +1,8 @@
 package featureSelection.research.web.controller.demo.admin;
 
+import featureSelection.research.web.entity.demo.admin.DatasetDemoAdmin;
 import featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin;
-import featureSelection.research.web.mybatisMapper.SchemeDemoAdminMapper;
+import featureSelection.research.web.mybatisMapper.demo.admin.SchemeDemoAdminMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,4 +52,11 @@ public class SchemeController {
         schemeDemoAdminMapper.deleteScheme(id);
         return null;
     }
+    //查询所有数据集ID和名称提供方案调用接口
+    @GetMapping("/findAllIdAndName")
+    public List<DatasetDemoAdmin> findAllIdAndName(){
+        return schemeDemoAdminMapper.findAllIdAndName();
+    }
 }
+
+

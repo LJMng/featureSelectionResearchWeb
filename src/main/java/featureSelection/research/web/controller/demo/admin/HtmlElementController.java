@@ -1,7 +1,7 @@
 package featureSelection.research.web.controller.demo.admin;
 
 import featureSelection.research.web.entity.demo.admin.HtmlElementDemoAdmin;
-import featureSelection.research.web.mybatisMapper.HtmlElementDemoAdminMapper;
+import featureSelection.research.web.mybatisMapper.demo.admin.HtmlElementDemoAdminMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

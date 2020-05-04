@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class LoginController {
 
-    @RequestMapping("/login")
+    @RequestMapping("/demoAdminLogin")
     public String login(String username, String password){
         //获取Subject
         Subject subject = SecurityUtils.getSubject();
