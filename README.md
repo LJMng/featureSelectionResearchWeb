@@ -17,22 +17,37 @@ The java project basic structure is built as follow:
 	  |      |  +--DataSourceConfiguration.java	// configurations of Database Source.
 	  |      +--controller		// web mvc: controller
 	  |      |  +--demo
-	  |      |  |  +--admin
-	  |      |  |  +--visitor
+	  |      |     +--admin
+	  |      |     +--visitor
 	  |      |  +--execution
 	  |      |     +--admin
 	  |      |     +--visitor
 	  |      +--entity			// web mvc: model
-	  |		 | 	   +--communicationJson		//json Info to algorithm server
-	  |		 |	   +--demo
-	  |		 |	   |	+-- visitor		
+	  |		 | 	+--communicationJson		//json Info to algorithm server
+	  |      |  +--demo
+	  |      |     +--admin
+	  |      |     +--visitor
+	  |      |  +--execution
+	  |      |     +--admin
+	  |      |     +--visitor
 	  |      +--mybatisMapper	// mybatis mapper: java interfaces
-	  |		 |	   +--demo
-	  |		 |	   |	+-- visitor			  
+	  |      |  +--demo
+	  |      |     +--admin
+	  |      |     +--visitor
+	  |      |  +--execution
+	  |      |     +--admin
+	  |      |     +--visitor	  
 	  |      +--service		// web mvc: service
-	  |		 |	   +--demo
-	  |		 |	   |	+-- visitor		
-	  |		 |	   |	|	+-- impl		
+	  |      |  +--demo
+	  |      |     +--admin
+	  |		 |	   |		+--impl
+	  |      |     +--visitor
+	  |		 |	   |		+--impl
+	  |      |  +--execution
+	  |      |     +--admin
+	  |		 |	   |		+--impl
+	  |      |     +--visitor
+	  |		 |	   |		+--impl
 	  |      +--App.java		// Spring Boot app entrance.
 	  +--resources
 	    +--public				// html pages
