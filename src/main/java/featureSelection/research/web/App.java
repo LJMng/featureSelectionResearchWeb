@@ -7,12 +7,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.IOException;
 
 
 @SpringBootApplication
+@EnableAsync
 @ComponentScan(nameGenerator = UniqueNameGenerator.class)
 @MapperScan(basePackages="featureselection.research.web.mybatisMapper",nameGenerator =UniqueNameGenerator.class )
 @EnableScheduling

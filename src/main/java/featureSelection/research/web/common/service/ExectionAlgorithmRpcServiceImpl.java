@@ -1,6 +1,4 @@
 package featureSelection.research.web.common.service;
-
-import com.alibaba.fastjson.JSONObject;
 import featureSelection.research.web.common.util.RabbitmqUtil;
 import featureSelection.research.web.entity.demo.visitor.Algorithm;
 import featureSelection.research.web.mybatisMapper.demo.visitor.AlgorithmMapper;
@@ -30,6 +28,7 @@ public class ExectionAlgorithmRpcServiceImpl {
      * @param algorithmid 算法id
      * @return String
      */
+    @Async("executionThread")
     public String send(Object data,int algorithmid){
         Algorithm algorithm = algorithmMapper.getAlgorithmInfoById(algorithmid);
         String routingkey = algorithm.getAlgorithmCallRoutingkey();
@@ -41,14 +40,12 @@ public class ExectionAlgorithmRpcServiceImpl {
         CachingConnectionFactory connectionFactory= RabbitmqUtil.getConnectionFactory(host,port,username,password,exchange);
         RabbitTemplate rabbitTemplate=RabbitmqUtil.getRabbitTemplate(connectionFactory);
         rabbitTemplate.setReplyTimeout(-1);
-        rpcsend(rabbitTemplate,data,exchange,routingkey);
+        Object response = rabbitTemplate.convertSendAndReceive(exchange,routingkey,data);
+        //写返回结果后的处理逻辑,比如将结果存储至数据库中，发送短信进行通知
+        System.out.println("写入任务结果");
         return "ok";
     }
 
-    @Async
-    public void rpcsend(RabbitTemplate rabbitTemplate,Object data,String exchange,String routingkey){
-        Object response = rabbitTemplate.convertSendAndReceive(exchange,routingkey,data);
-        //写返回结果后的处理逻辑,比如将结果存储至数据库中，发送短信进行通知
-    }
+
 
 }
