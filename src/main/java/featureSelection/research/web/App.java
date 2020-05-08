@@ -1,7 +1,6 @@
 package featureSelection.research.web;
 
-import featureSelection.research.web.common.UniqueNameGenerator;
-import featureSelection.research.web.service.demo.visitor.impl.AlgotithRpcServiceImpl;
+import featureSelection.research.web.common.util.UniqueNameGenerator;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +9,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import java.util.Arrays;
+import java.io.IOException;
+
 
 @SpringBootApplication
 @ComponentScan(nameGenerator = UniqueNameGenerator.class)
@@ -18,8 +18,7 @@ import java.util.Arrays;
 @EnableScheduling
 @ServletComponentScan({"featureselection.research.web.controller"})
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ApplicationContext  context = SpringApplication.run(App.class, args);
-        Arrays.stream(context.getBeanDefinitionNames()).forEach(System.out::println);
     }
 }

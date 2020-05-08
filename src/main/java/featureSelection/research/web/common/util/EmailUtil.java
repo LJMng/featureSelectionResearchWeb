@@ -1,4 +1,4 @@
-package featureSelection.research.web.common;
+package featureSelection.research.web.common.util;
 
 import featureSelection.research.web.entity.execution.admin.ToEmail;
 import org.springframework.beans.factory.annotation.Autowired;

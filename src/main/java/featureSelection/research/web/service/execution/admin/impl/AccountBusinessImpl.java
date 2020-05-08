@@ -7,7 +7,7 @@ import featureSelection.research.web.entity.execution.admin.ToEmail;
 
 import featureSelection.research.web.mybatisMapper.execution.admin.AccountMapper;
 import featureSelection.research.web.service.execution.admin.AccountBusiness;
-import featureSelection.research.web.common.EmailUtil;
+import featureSelection.research.web.common.util.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

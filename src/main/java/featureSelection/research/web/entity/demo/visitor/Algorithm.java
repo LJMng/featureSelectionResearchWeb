@@ -15,6 +15,12 @@ public class Algorithm {
     private String algorithmPaperReference;
     private String algorithmPaperLink;
     private String algorithmCallInterface;
+    private String algorithnCallHost;
+    private String algorithmCallExchange;
+    private String algorithmCallRoutingkey;
+    private String algorithmCallPort;
+    private String algorithmCallUsername;
+    private String algorithmCallPassword;
     private Timestamp ut;
     private List<ParameterScheme>parameterSchemes;
     private List<Parameter>parameters;
@@ -102,6 +108,54 @@ public class Algorithm {
         this.parameterSchemeIndex = parameterSchemeIndex;
     }
 
+    public String getAlgorithnCallHost() {
+        return algorithnCallHost;
+    }
+
+    public void setAlgorithnCallHost(String algorithnCallHost) {
+        this.algorithnCallHost = algorithnCallHost;
+    }
+
+    public String getAlgorithmCallExchange() {
+        return algorithmCallExchange;
+    }
+
+    public void setAlgorithmCallExchange(String algorithmCallExchange) {
+        this.algorithmCallExchange = algorithmCallExchange;
+    }
+
+    public String getAlgorithmCallRoutingkey() {
+        return algorithmCallRoutingkey;
+    }
+
+    public void setAlgorithmCallRoutingkey(String algorithmCallRoutingkey) {
+        this.algorithmCallRoutingkey = algorithmCallRoutingkey;
+    }
+
+    public String getAlgorithmCallPort() {
+        return algorithmCallPort;
+    }
+
+    public void setAlgorithmCallPort(String algorithmCallPort) {
+        this.algorithmCallPort = algorithmCallPort;
+    }
+
+    public String getAlgorithmCallUsername() {
+        return algorithmCallUsername;
+    }
+
+    public void setAlgorithmCallUsername(String algorithmCallUsername) {
+        this.algorithmCallUsername = algorithmCallUsername;
+    }
+
+    public String getAlgorithmCallPassword() {
+        return algorithmCallPassword;
+    }
+
+    public void setAlgorithmCallPassword(String algorithmCallPassword) {
+        this.algorithmCallPassword = algorithmCallPassword;
+    }
+
     @Override
     public String toString() {
         return "Algorithm{" +
@@ -110,6 +164,12 @@ public class Algorithm {
                 ", algorithmPaperReference='" + algorithmPaperReference + '\'' +
                 ", algorithmPaperLink='" + algorithmPaperLink + '\'' +
                 ", algorithmCallInterface='" + algorithmCallInterface + '\'' +
+                ", algorithnCallHost='" + algorithnCallHost + '\'' +
+                ", algorithmCallExchange='" + algorithmCallExchange + '\'' +
+                ", algorithmCallRoutingkey='" + algorithmCallRoutingkey + '\'' +
+                ", algorithmCallPort='" + algorithmCallPort + '\'' +
+                ", algorithmCallUsername='" + algorithmCallUsername + '\'' +
+                ", algorithmCallPassword='" + algorithmCallPassword + '\'' +
                 ", ut=" + ut +
                 ", parameterSchemes=" + parameterSchemes +
                 ", parameters=" + parameters +

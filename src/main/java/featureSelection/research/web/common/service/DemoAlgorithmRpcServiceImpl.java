@@ -1,6 +1,7 @@
-package featureSelection.research.web.service.demo.visitor.impl;
+package featureSelection.research.web.common.service;
 
 import com.alibaba.fastjson.JSONObject;
+import featureSelection.research.web.common.util.RabbitmqUtil;
 import featureSelection.research.web.entity.demo.visitor.Algorithm;
 import featureSelection.research.web.entity.demo.visitor.ParameterScheme;
 import featureSelection.research.web.entity.demo.visitor.ParameterSchemeValue;
@@ -9,7 +10,7 @@ import featureSelection.research.web.entity.communicationJson.AlgorithmInfo;
 import featureSelection.research.web.entity.communicationJson.AlgorithmSetting;
 import featureSelection.research.web.mybatisMapper.demo.visitor.AlgorithmMapper;
 import featureSelection.research.web.mybatisMapper.demo.visitor.ParameterSchemeMapper;
-import featureSelection.research.web.service.demo.visitor.AlgotithRpcService;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,14 +21,13 @@ import java.util.Map;
 
 /**
  * @ClassName : AlgotithRpcServiceimp
- * @Description : 算法远程调用服务
+ * @Description : 供demo系统使用的rpc服务（同步）
  * @Author : WDD
  * @Date: 2020-04-12 20:09
  */
 @Service
-public class AlgotithRpcServiceImpl implements AlgotithRpcService {
-    @Autowired
-    RabbitTemplate rabbitTemplate;  //使用RabbitTemplate,这提供了接收/发送等等方法
+public class DemoAlgorithmRpcServiceImpl {
+
     @Autowired
     AlgorithmMapper algorithmMapper;
     @Autowired
@@ -39,12 +39,19 @@ public class AlgotithRpcServiceImpl implements AlgotithRpcService {
      * @param  schemeid：方案id
      * @return 算法处理结果
      */
-    @Override
     public Object send(int algorithmid, int schemeid) {
         Algorithm algorithm = algorithmMapper.getAlgorithmInfoById(algorithmid);
-        String Routingkey = algorithm.getAlgorithmCallInterface();
+        String routingkey = algorithm.getAlgorithmCallRoutingkey();
+        String host=algorithm.getAlgorithnCallHost();
+        String exchange=algorithm.getAlgorithmCallExchange();
+        int port=Integer.parseInt(algorithm.getAlgorithmCallPort());
+        String username=algorithm.getAlgorithmCallUsername();
+        String password=algorithm.getAlgorithmCallPassword();
         JSONObject data = getTransferData(algorithm.getAlgorithmName(), schemeid);
-        Object response = rabbitTemplate.convertSendAndReceive("tut.rpc", "rpc", data);
+        CachingConnectionFactory connectionFactory=RabbitmqUtil.getConnectionFactory(host,port,username,password,exchange);
+        RabbitTemplate rabbitTemplate=RabbitmqUtil.getRabbitTemplate(connectionFactory);
+        rabbitTemplate.setReplyTimeout(-1);
+        Object response = rabbitTemplate.convertSendAndReceive(exchange,routingkey,data);
         System.out.println(response.toString());
         return response;
     }
@@ -56,7 +63,6 @@ public class AlgotithRpcServiceImpl implements AlgotithRpcService {
      * @param schemeid  参数方案id
      * @return 发送给算法服务器的Json对象
      */
-    @Override
     public JSONObject getTransferData(String algorithmName, int schemeid) {
         //获取方案信息
         ParameterScheme parameterScheme = parameterSchemeMapper.getSchemeWithParameterValueAndDatasetById(1);

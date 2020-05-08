@@ -1,4 +1,4 @@
-package featureSelection.research.web.common;
+package featureSelection.research.web.common.util;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;

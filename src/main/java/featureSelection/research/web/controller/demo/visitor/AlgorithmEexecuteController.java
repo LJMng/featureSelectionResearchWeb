@@ -2,7 +2,7 @@ package featureSelection.research.web.controller.demo.visitor;
 import featureSelection.research.web.entity.demo.visitor.Algorithm;
 import featureSelection.research.web.entity.demo.visitor.Dataset;
 import featureSelection.research.web.service.demo.visitor.impl.AlgorithmServiceImpl;
-import featureSelection.research.web.service.demo.visitor.impl.AlgotithRpcServiceImpl;
+import featureSelection.research.web.common.service.DemoAlgorithmRpcServiceImpl;
 import featureSelection.research.web.service.demo.visitor.impl.DatasetServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +30,7 @@ public class  AlgorithmEexecuteController {
     @Autowired
     private DatasetServiceImpl datasetServiceImpl;
     @Autowired
-    private AlgotithRpcServiceImpl algotithRpcService;
+    private DemoAlgorithmRpcServiceImpl algotithRpcService;
 
     @PostMapping(value = "/transmitExcuteInfo")
     @ResponseBody

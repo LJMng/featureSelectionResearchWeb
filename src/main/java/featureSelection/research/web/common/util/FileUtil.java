@@ -1,4 +1,4 @@
-package featureSelection.research.web.common;
+package featureSelection.research.web.common.util;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
