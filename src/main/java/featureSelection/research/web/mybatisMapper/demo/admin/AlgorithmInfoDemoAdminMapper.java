@@ -1,6 +1,7 @@
 package featureSelection.research.web.mybatisMapper.demo.admin;
 
 import featureSelection.research.web.entity.demo.admin.AlgorithmInfoDemoAdmin;
+import featureSelection.research.web.entity.execution.admin.Algorithm;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,11 +13,11 @@ public interface AlgorithmInfoDemoAdminMapper {
     //通过ID查询算法信息
     public AlgorithmInfoDemoAdmin getAlgorithmInfoDemoAdminById(Integer id);
     //增加算法信息
-    public int insertAlgorithmInfoDemoAdmin(AlgorithmInfoDemoAdmin algorithmInfoDemoAdmin);
+    public int insertAlgorithmInfoDemoAdmin(Algorithm algorithm);
     //增加对应的参数名称
     public int insertAlgorithmParameterDemoAdmin(AlgorithmInfoDemoAdmin algorithmInfoDemoAdmin);
     //更新被绑定ID的算法信息
-    public int updateAlgorithmInfoDemoAdmin(AlgorithmInfoDemoAdmin algorithmInfoDemoAdmin);
+    public int updateAlgorithmInfoDemoAdmin(Algorithm algorithm);
     //删除被绑定ID的算法信息
     public int deleteAlgorithmInfoDemoAdmin(Integer id);
     //删除对应的算法参数

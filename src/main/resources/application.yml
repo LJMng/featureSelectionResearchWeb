@@ -21,6 +21,10 @@ spring:
           starttls:
             enable: true
             required: true
+    protocol: smtp
+    default-encoding: UTF-8
+    test-connection: true
+
 
 # MyBatis
 mybatis:

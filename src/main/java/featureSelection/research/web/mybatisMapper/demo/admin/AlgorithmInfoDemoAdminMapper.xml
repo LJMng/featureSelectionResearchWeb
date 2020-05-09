@@ -28,18 +28,24 @@
     </select>
 
     <!--增加算法信息-->
-    <insert id="insertAlgorithmInfoDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.AlgorithmInfoDemoAdmin" useGeneratedKeys="true" keyProperty="algorithmId">
-        insert into algorithm (algorithm_name, algorithm_paper_reference, algorithm_description, algorithm_paper_link, algorithm_call_interface)
+    <insert id="insertAlgorithmInfoDemoAdmin" parameterType="featureSelection.research.web.entity.execution.admin.Algorithm" useGeneratedKeys="true" keyProperty="algorithmId">
+        insert into algorithm (algorithm_name, algorithm_paper_reference, algorithm_description, algorithm_paper_link, algorithm_call_interface,algorithm_call_host,algorithm_call_exchange,algorithm_call_routingkey,algorithm_call_port,algorithm_call_username,algorithm_call_password)
         values (
             #{algorithmName},
             #{algorithmPaperReference},
             #{algorithmDescription},
             #{algorithmCallInterface},
-            #{algorithmPaperLink}
+            #{algorithmPaperLink},
+            #{algorithmCallHost},
+            #{algorithmCallExchange},
+            #{algorithmCallRoutingkey},
+            #{algorithmCallPort},
+            #{algorithmCallUsername},
+            #{algorithmCallPassword}
         )
     </insert>
     <!--增加参数信息-->
-    <insert id="insertAlgorithmParameterDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.AlgorithmInfoDemoAdmin">
+    <insert id="insertAlgorithmParameterDemoAdmin" parameterType="featureSelection.research.web.entity.execution.admin.Algorithm">
         <foreach collection="algorithmParameterDemoAdmin" item="item">
             <if test="item.parameterName!=''">
                 insert into parameter (parameter_name,algorithm_id,parameter_type) values (#{item.parameterName},(select max(algorithm_id) from algorithm),#{item.parameterType});
@@ -55,7 +61,13 @@
             algorithm_paper_reference = #{algorithmPaperReference},
             algorithm_description = #{algorithmDescription},
             algorithm_paper_link = #{algorithmPaperLink},
-            algorithm_call_interface = #{algorithmCallInterface}
+            algorithm_call_interface = #{algorithmCallInterface},
+            algorithm_call_host = #{algorithmCallHost},
+            algorithm_call_exchange = #{algorithmCallExchange},
+            algorithm_call_routingkey = #{algorithmCallRoutingkey},
+            algorithm_call_port = #{algorithmCallPort},
+            algorithm_call_username = #{algorithmCallUsername},
+            algorithm_call_password = #{algorithmCallPassword}
         where algorithm_id = #{algorithmId}
     </update>
 

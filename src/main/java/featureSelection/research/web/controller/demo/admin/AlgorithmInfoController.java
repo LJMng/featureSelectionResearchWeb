@@ -2,6 +2,7 @@ package featureSelection.research.web.controller.demo.admin;
 
 
 import featureSelection.research.web.entity.demo.admin.AlgorithmInfoDemoAdmin;
+import featureSelection.research.web.entity.execution.admin.Algorithm;
 import featureSelection.research.web.mybatisMapper.demo.admin.AlgorithmInfoDemoAdminMapper;
 import featureSelection.research.web.mybatisMapper.demo.admin.ParameterDemoAdminMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +34,16 @@ public class AlgorithmInfoController {
 
     //提供增加算法信息的接口
     @PostMapping("/insert")
-    public String insertAlgorithmInfoDemoAdmin(@RequestBody AlgorithmInfoDemoAdmin algorithmInfoDemoAdmin){
-        algorithmInfoDemoAdminMapper.insertAlgorithmInfoDemoAdmin(algorithmInfoDemoAdmin);
-        algorithmInfoDemoAdminMapper.insertAlgorithmParameterDemoAdmin(algorithmInfoDemoAdmin);
+    public String insertAlgorithmInfoDemoAdmin(@RequestBody Algorithm algorithm){
+        algorithmInfoDemoAdminMapper.insertAlgorithmInfoDemoAdmin(algorithm);
+//        algorithmInfoDemoAdminMapper.insertAlgorithmParameterDemoAdmin(algorithm);
         return null;
     }
 
     //提供更新算法信息的接口
     @PostMapping("/update")
-    public String updateAlgorithmInfoDemoAdmin(@RequestBody AlgorithmInfoDemoAdmin algorithmInfoDemoAdmin){
-        algorithmInfoDemoAdminMapper.updateAlgorithmInfoDemoAdmin(algorithmInfoDemoAdmin);
+    public String updateAlgorithmInfoDemoAdmin(@RequestBody Algorithm algorithm){
+        algorithmInfoDemoAdminMapper.updateAlgorithmInfoDemoAdmin(algorithm);
         return null;
     }
 
