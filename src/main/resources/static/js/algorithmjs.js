@@ -23,6 +23,28 @@ var vm =new Vue({
         algorithms:'',
         algorithmId:1,
         algorithmName:[],
+        msgs: [],
+        info:{
+            algorithmId:'',
+            algorithmName:'',
+            algorithmPaperReference:'',
+            algorithmPaperLink:'',
+            algorithmDescription: '',
+            algorithmCallInterface:'',
+            algorithmParameterDemoAdmin:[],
+            algorithmCallHost:'',
+            algorithmCallExchange:'',
+            algorithmCallRoutingkey:'',
+            algorithmCallPort:'',
+            algorithmCallUsername:'',
+            algorithmCallPassword:''
+
+        },
+        number: 0,
+        parameterName: [],
+        parameterType: [],
+        searchString: '',
+
     },
     created:function () {
         //初始化数值
@@ -40,8 +62,137 @@ var vm =new Vue({
 
         })
 
+        this.getData()
 
-    }
+
+    },
+    methods:{
+        //获得所有算法信息
+        getData() {
+            axios.get('/AlgorithmInfoDemoAdmin/findAll')
+                .then(resp => {
+                    this.msgs = resp.data;
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }, //获得指定ID算法信息
+        getDataById(id) {
+            const _id = id;
+            axios.get('/AlgorithmInfoDemoAdmin/find/'+id)
+                .then(resp => {
+                    this.info.algorithmId = _id;
+                    this.info.algorithmName = resp.data.algorithmName;
+                    this.info.algorithmPaperLink = resp.data.algorithmPaperLink;
+                    this.info.algorithmPaperReference = resp.data.algorithmPaperReference;
+                    this.info.algorithmDescription = resp.data.algorithmDescription;
+                    this.info.algorithmCallInterface = resp.data.algorithmCallInterface;
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        //新增算法信息
+        insertData() {
+            //表单验证
+            if(!this.info.algorithmName){
+                alert('请输入算法名称')
+                return ;
+            }
+            if(!this.info.algorithmPaperReference){
+                alert('请输入算法简介')
+                return ;
+            }
+            if(!this.info.algorithmCallInterface){
+                alert('请输入算法接口')
+                return ;
+            }
+
+            //获取数据并检验
+            for(var i=0;i<this.number;i++){
+                this.info.algorithmParameterDemoAdmin[i].parameterName=this.parameterName[i];
+                this.info.algorithmParameterDemoAdmin[i].parameterType=this.parameterType[i];
+                if(!this.info.algorithmParameterDemoAdmin[i].parameterName){
+                    alert('请输入参数'+(i+1)+'的名称')
+                    return ;
+                }
+                if(!this.info.algorithmParameterDemoAdmin[i].parameterType){
+                    alert('请选择参数'+(i+1)+'的类型')
+                    return ;
+                }
+            }
+            axios.post('/AlgorithmInfoDemoAdmin/insert',this.info)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+        //更新算法信息
+        updateData() {
+            //表单验证
+            if(!this.info.algorithmName){
+                alert('算法名称不能为空')
+                return ;
+            }
+            if(!this.info.algorithmPaperReference){
+                alert('算法简介不能为空')
+                return ;
+            }
+            if(!this.info.algorithmCallInterface){
+                alert('算法接口不能为空')
+                return ;
+            }
+            axios.post('/AlgorithmInfoDemoAdmin/update',this.info)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+        //删除算法信息
+        deleteData(id) {
+            axios.post('/AlgorithmInfoDemoAdmin/delete/'+id)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+        //清空数据
+        clearData() {
+            this.info.algorithmId = '';
+            this.info.algorithmName = '';
+            this.info.algorithmDescription = '';
+            this.info.algorithmPaperLink = '';
+            this.info.algorithmPaperReference = '';
+            this.info.algorithmCallInterface = '';
+        }
+    },
+    computed: {
+        //搜索功能
+        filterInfo: function() {
+            var info_array = this.msgs,
+                searchString = this.searchString;
+
+            if(!searchString){
+                return info_array;
+            }
+
+            searchString = searchString.trim().toLowerCase();
+
+            info_array = info_array.filter(function (item) {
+                if(item.algorithmName.toLowerCase().indexOf(searchString) !== -1){
+                    return item;
+                }
+            });
+
+            return info_array;
+        },
+    },
 
 })
 
