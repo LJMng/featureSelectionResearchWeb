@@ -48,7 +48,8 @@
     <insert id="insertAlgorithmParameterDemoAdmin" parameterType="featureSelection.research.web.entity.execution.admin.Algorithm">
         <foreach collection="algorithmParameterDemoAdmin" item="item">
             <if test="item.parameterName!=''">
-                insert into parameter (parameter_name,algorithm_id,parameter_type) values (#{item.parameterName},(select max(algorithm_id) from algorithm),#{item.parameterType});
+                insert into parameter (parameter_name,algorithm_id,parameter_type)
+                 values (#{item.parameterName},(select max(algorithm_id) from algorithm),#{item.parameterType});
             </if>
         </foreach>
     </insert>

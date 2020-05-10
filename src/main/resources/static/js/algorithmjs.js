@@ -193,6 +193,30 @@ var vm =new Vue({
             return info_array;
         },
     },
+    watch:{
+        //监听number
+        number:{
+            handler(newVal,oldVal){
+                //新的长度
+                var newLength = this.number;
+                //新增长度
+                var addLength = 0;
+                //如果新的长度大于原来的长度
+                if(newLength>this.info.algorithmParameterDemoAdmin.length){
+                    //增加长度=新的长度-原来长度
+                    addLength = newLength - this.info.algorithmParameterDemoAdmin.length;
+                    //增加个数
+                    for(var i=0;i<addLength;i++){
+                        //增加的数组,且不能在外面声明,否则地址会一样,即修改一个其他全部修改
+                        var newArr = [{parameterName:'',parameterType:''}];
+                        this.info.algorithmParameterDemoAdmin = this.info.algorithmParameterDemoAdmin.concat(newArr)
+                    }
+                } else {
+                    this.info.algorithmParameterDemoAdmin.splice(this.number);//清除多余数组
+                }
+            }
+        }
+    }
 
 })
 
