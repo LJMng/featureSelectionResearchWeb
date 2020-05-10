@@ -30,4 +30,7 @@ public interface TaskInfoMapper {
 
     @Delete("delete from task_info where task_id = #{taskId}")
     int deleteTask(int taskId);
+
+    @Select("select * from task_info where task_id=#{taskId}")
+    TaskInfo getTaskInfoByTaskId(int taskId);
 }

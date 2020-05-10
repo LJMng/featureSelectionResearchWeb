@@ -1,7 +1,7 @@
 package featureSelection.research.web.controller.demo.visitor;
 
 import featureSelection.research.web.entity.demo.visitor.ApplyAccount;
-import featureSelection.research.web.service.demo.visitor.impl.ApplyAccountServiceImpl;
+import featureSelection.research.web.service.demo.visitor.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,19 +20,27 @@ import java.util.Map;
 public class AccountController {
 
     @Autowired
-    private ApplyAccountServiceImpl applyAccountServiceImpl;
+    private AccountServiceImpl accountService;
+
 
     @PostMapping("/applyAccount")
     public Map<String, Integer> applyAccount(@RequestParam("email") String email,
                                              @RequestParam("password") String password,
-                                             @RequestParam("apply")String apply) {
+                                              @RequestParam("apply") String apply) {
         Map<String, Integer> result = new HashMap<>();
-        ApplyAccount applyAccount=new ApplyAccount();
+        ApplyAccount applyAccount = new ApplyAccount();
         applyAccount.setApplyEmail(email);
         applyAccount.setApplyReason(apply);
         applyAccount.setapplyPassword(password);
-        applyAccountServiceImpl.apply(applyAccount);
+        accountService.apply(applyAccount);
         result.put("status", 200);
         return result;
+    }
+
+    @PostMapping("/demologinbyemail")
+    public Map<String, Object> loginByEmail(@RequestParam("email") String email,
+                                            @RequestParam("password") String password) {
+        return accountService.loginByEmail(email, password);
+
     }
 }

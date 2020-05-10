@@ -33,7 +33,7 @@ public class ShiroConfig {
         filterMap.put("/DemoAdmin/logout","logout");
         filterMap.put("/DemoAdmin/index","authc");
         filterMap.put("/DemoAdmin/AlgorithmAdmin","authc");
-        filterMap.put("/DemoAdmin/SchemeAdmin","authc");
+//        filterMap.put("/DemoAdmin/SchemeAdmin","authc");
 
 
         //修改跳转的登录页面

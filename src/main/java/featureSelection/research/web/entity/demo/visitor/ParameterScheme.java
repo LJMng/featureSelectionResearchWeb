@@ -15,7 +15,7 @@ public class ParameterScheme {
     private String schemeDescription;
     private String schemeRemark;
     private Timestamp ut;
-    private  Dataset dataset;
+    private Dataset dataset;
     private List<ParameterSchemeValue>parameterSchemeValues;
 
     public int getSchemeId() {

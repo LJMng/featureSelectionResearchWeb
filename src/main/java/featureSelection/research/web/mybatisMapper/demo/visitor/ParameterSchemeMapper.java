@@ -13,4 +13,6 @@ public interface ParameterSchemeMapper {
     public ParameterScheme getSchemeWithParameterValueById(@Param("schemeid") int schemeid);
 
     public ParameterScheme getSchemeWithParameterValueAndDatasetById(@Param("schemeid") int schemeid);
+
+    public ParameterScheme getDataSetAndSchemeBySchemeId(@Param("schemeid")int schemeid);
 }

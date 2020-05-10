@@ -56,7 +56,6 @@ public class CSVUtill {
         }
         return this.csvParser.getHeaderMap().size();
     }
-
     public long getRecords () {
         long recordNumber = 0;
         try {
@@ -66,7 +65,6 @@ public class CSVUtill {
         } catch (IOException e) {
             throw new RuntimeException("records not found");
         }
-
         return recordNumber;
     }
 }

@@ -2,6 +2,8 @@ package featureSelection.research.web.entity.communicationJson;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import java.util.Arrays;
+
 /**
  * @ClassName : AlgorithmCallTaskInfo
  * @Description : 调用服务器算法服务数据传输格式
@@ -12,7 +14,7 @@ public class AlgorithmCallTaskInfo {
     private String id;
     @JSONField(name = "dataset-name")
     private String datasetName;
-    private String part;
+    private int part;
     private String column;
     @JSONField(name = "part-data-size")
     private String partDataSize;
@@ -22,6 +24,10 @@ public class AlgorithmCallTaskInfo {
     private String previousReducts;
     @JSONField(name = "run-times")
     private String runTimes;
+    private int line;
+    @JSONField(name = "part-total-line")
+    private int partTotalLine;
+    private int[]data;
     private String attributes;
 
     public String getId() {
@@ -40,11 +46,11 @@ public class AlgorithmCallTaskInfo {
         this.datasetName = datasetName;
     }
 
-    public String getPart() {
+    public int getPart() {
         return part;
     }
 
-    public void setPart(String part) {
+    public void setPart(int part) {
         this.part = part;
     }
 
@@ -96,17 +102,44 @@ public class AlgorithmCallTaskInfo {
         this.attributes = attributes;
     }
 
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
+
+    public int getPartTotalLine() {
+        return partTotalLine;
+    }
+
+    public void setPartTotalLine(int partTotalLine) {
+        this.partTotalLine = partTotalLine;
+    }
+
+    public int[] getData() {
+        return data;
+    }
+
+    public void setData(int[] data) {
+        this.data = data;
+    }
+
     @Override
     public String toString() {
         return "AlgorithmCallTaskInfo{" +
                 "id='" + id + '\'' +
                 ", datasetName='" + datasetName + '\'' +
-                ", part='" + part + '\'' +
+                ", part=" + part +
                 ", column='" + column + '\'' +
                 ", partDataSize='" + partDataSize + '\'' +
                 ", algorithmInfo=" + algorithmInfo +
                 ", previousReducts='" + previousReducts + '\'' +
                 ", runTimes='" + runTimes + '\'' +
+                ", line=" + line +
+                ", partTotalLine='" + partTotalLine + '\'' +
+                ", data=" + Arrays.toString(data) +
                 ", attributes='" + attributes + '\'' +
                 '}';
     }

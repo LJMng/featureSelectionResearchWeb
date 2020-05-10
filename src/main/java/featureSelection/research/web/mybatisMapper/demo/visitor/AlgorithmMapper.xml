@@ -11,7 +11,7 @@
         <result column="algorithm_paper_reference" property="algorithmPaperReference"></result>
         <result column="algorithm_paper_link" property="algorithmPaperLink"></result>
         <result column="algorithm_call_interface" property="algorithmCallInterface"></result>
-        <result column="algorithn_call_host" property="algorithnCallHost"></result>
+        <result column="algorithm_call_host" property="algorithmCallHost"></result>
         <result column="algorithm_call_exchange" property="algorithmCallExchange"></result>
         <result column="algorithm_call_routingkey" property="algorithmCallRoutingkey"></result>
         <result column="algorithm_call_port" property="algorithmCallPort"></result>
@@ -26,7 +26,7 @@
         <result column="algorithm_paper_reference" property="algorithmPaperReference"></result>
         <result column="algorithm_paper_link" property="algorithmPaperLink"></result>
         <result column="algorithm_call_interface" property="algorithmCallInterface"></result>
-        <result column="algorithn_call_host" property="algorithnCallHost"></result>
+        <result column="algorithm_call_host" property="algorithmCallHost"></result>
         <result column="algorithm_call_exchange" property="algorithmCallExchange"></result>
         <result column="algorithm_call_routingkey" property="algorithmCallRoutingkey"></result>
         <result column="algorithm_call_port" property="algorithmCallPort"></result>
@@ -46,7 +46,7 @@
         <result column="algorithm_paper_reference" property="algorithmPaperReference"></result>
         <result column="algorithm_paper_link" property="algorithmPaperLink"></result>
         <result column="algorithm_call_interface" property="algorithmCallInterface"></result>
-        <result column="algorithn_call_host" property="algorithnCallHost"></result>
+        <result column="algorithm_call_host" property="algorithmCallHost"></result>
         <result column="algorithm_call_exchange" property="algorithmCallExchange"></result>
         <result column="algorithm_call_routingkey" property="algorithmCallRoutingkey"></result>
         <result column="algorithm_call_port" property="algorithmCallPort"></result>

@@ -1,8 +1,9 @@
 package featureSelection.research.web.controller.demo.visitor;
+import featureSelection.research.web.common.service.ExectionAlgorithmRpcService;
 import featureSelection.research.web.entity.demo.visitor.Algorithm;
 import featureSelection.research.web.entity.demo.visitor.Dataset;
 import featureSelection.research.web.service.demo.visitor.impl.AlgorithmServiceImpl;
-import featureSelection.research.web.common.service.DemoAlgorithmRpcServiceImpl;
+import featureSelection.research.web.common.service.DemoAlgorithmRpcService;
 import featureSelection.research.web.service.demo.visitor.impl.DatasetServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,9 @@ public class  AlgorithmEexecuteController {
     @Autowired
     private DatasetServiceImpl datasetServiceImpl;
     @Autowired
-    private DemoAlgorithmRpcServiceImpl algotithRpcService;
+    private DemoAlgorithmRpcService algotithRpcService;
+    @Autowired
+    private ExectionAlgorithmRpcService exectionAlgorithmRpcService;
 
     @PostMapping(value = "/transmitExcuteInfo")
     @ResponseBody
@@ -39,6 +42,14 @@ public class  AlgorithmEexecuteController {
         Object resultJson=algotithRpcService.send(Integer.parseInt(algorithmId),Integer.parseInt(parameterSchemeId));
 
         return resultJson;
+    }
+
+    @GetMapping(value = "/testAsync")
+    @ResponseBody
+    public String testAsync() {
+//        exectionAlgorithmRpcService.send("data",1);
+        System.out.println("已发送");
+        return "ok";
     }
 
     @ResponseBody

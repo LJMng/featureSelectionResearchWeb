@@ -15,7 +15,7 @@ public class Algorithm {
     private String algorithmPaperReference;
     private String algorithmPaperLink;
     private String algorithmCallInterface;
-    private String algorithnCallHost;
+    private String algorithmCallHost;
     private String algorithmCallExchange;
     private String algorithmCallRoutingkey;
     private String algorithmCallPort;
@@ -108,12 +108,12 @@ public class Algorithm {
         this.parameterSchemeIndex = parameterSchemeIndex;
     }
 
-    public String getAlgorithnCallHost() {
-        return algorithnCallHost;
+    public String getAlgorithmCallHost() {
+        return algorithmCallHost;
     }
 
-    public void setAlgorithnCallHost(String algorithnCallHost) {
-        this.algorithnCallHost = algorithnCallHost;
+    public void setAlgorithmCallHost(String algorithmCallHost) {
+        this.algorithmCallHost = algorithmCallHost;
     }
 
     public String getAlgorithmCallExchange() {
@@ -164,7 +164,7 @@ public class Algorithm {
                 ", algorithmPaperReference='" + algorithmPaperReference + '\'' +
                 ", algorithmPaperLink='" + algorithmPaperLink + '\'' +
                 ", algorithmCallInterface='" + algorithmCallInterface + '\'' +
-                ", algorithnCallHost='" + algorithnCallHost + '\'' +
+                ", algorithmCallHost='" + algorithmCallHost + '\'' +
                 ", algorithmCallExchange='" + algorithmCallExchange + '\'' +
                 ", algorithmCallRoutingkey='" + algorithmCallRoutingkey + '\'' +
                 ", algorithmCallPort='" + algorithmCallPort + '\'' +
