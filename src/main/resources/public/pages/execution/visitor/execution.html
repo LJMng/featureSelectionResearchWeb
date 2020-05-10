@@ -409,7 +409,7 @@
                     </div>
                     <!--AlgorithmSettingModal-->
                     <div v-for="(algorithm,key,index1) in algorithmList" class="modal fade" :id="algorithm.algorithmName+'Modal'" tabindex="-1" role="dialog" data-backdrop="static">
-                        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 55%;" v-if="key==2||key==1">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 55%;">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">{{algorithm.algorithmName}}</h5>
@@ -426,7 +426,7 @@
                                         <div class="alert alert-warning text-center" role="alert">
                                             Basic Parameters
                                         </div>
-                                        <div class="row m-0" v-for="(param,index2) in parameterList[algorithm.algorithmId]">
+                                        <div class="row m-0" v-for="(param,index2) in parameterList[algorithm.algorithmId]" v-if="param.parameterSettingInfo!=null">
                                             <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='text'">{{param.parameterName}}
                                                     <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
                                                         <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
