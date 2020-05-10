@@ -1,6 +1,9 @@
 package featureSelection.research.web.entity.execution.admin;
 
+import featureSelection.research.web.entity.demo.admin.AlgorithmParameterDemoAdmin;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class Algorithm implements Serializable {
     private int algorithmId;
@@ -16,7 +19,36 @@ public class Algorithm implements Serializable {
     private String algorithmCallPort;
     private String algorithmCallUsername;
     private String algorithmCallPassword;
+    //算法参数
+    private List<AlgorithmParameterDemoAdmin> algorithmParameterDemoAdmin;
+    //存放参数名称
+    private List<String> list;
+    //存放参数类型
+    private List<String> list2;
 
+    public List<AlgorithmParameterDemoAdmin> getAlgorithmParameterDemoAdmin() {
+        return algorithmParameterDemoAdmin;
+    }
+
+    public void setAlgorithmParameterDemoAdmin(List<AlgorithmParameterDemoAdmin> algorithmParameterDemoAdmin) {
+        this.algorithmParameterDemoAdmin = algorithmParameterDemoAdmin;
+    }
+
+    public List<String> getList() {
+        return list;
+    }
+
+    public void setList(List<String> list) {
+        this.list = list;
+    }
+
+    public List<String> getList2() {
+        return list2;
+    }
+
+    public void setList2(List<String> list2) {
+        this.list2 = list2;
+    }
 
     public int getAlgorithmId() {
         return algorithmId;
@@ -138,6 +170,9 @@ public class Algorithm implements Serializable {
                 ", algorithmCallPort='" + algorithmCallPort + '\'' +
                 ", algorithmCallUsername='" + algorithmCallUsername + '\'' +
                 ", algorithmCallPassword='" + algorithmCallPassword + '\'' +
+                ", algorithmParameterDemoAdmin=" + algorithmParameterDemoAdmin +
+                ", list=" + list +
+                ", list2=" + list2 +
                 '}';
     }
 }

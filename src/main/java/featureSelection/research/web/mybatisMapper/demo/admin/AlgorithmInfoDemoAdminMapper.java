@@ -15,7 +15,7 @@ public interface AlgorithmInfoDemoAdminMapper {
     //增加算法信息
     public int insertAlgorithmInfoDemoAdmin(Algorithm algorithm);
     //增加对应的参数名称
-    public int insertAlgorithmParameterDemoAdmin(AlgorithmInfoDemoAdmin algorithmInfoDemoAdmin);
+    public int insertAlgorithmParameterDemoAdmin(Algorithm algorithm);
     //更新被绑定ID的算法信息
     public int updateAlgorithmInfoDemoAdmin(Algorithm algorithm);
     //删除被绑定ID的算法信息
