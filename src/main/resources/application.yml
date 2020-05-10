@@ -12,8 +12,8 @@ spring:
   # 服务器邮箱
   mail:
     host: smtp.qq.com
-    username: xxxxxx@xxx.com
-    password: xxxxxxxxxxxxxx
+    username: 1009710828@qq.com
+    password: lxrcpmnozinfbeei
     properties:
       mail:
         smtp:
