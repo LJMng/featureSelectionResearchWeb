@@ -36,7 +36,7 @@ public class AlgorithmInfoController {
     @PostMapping("/insert")
     public String insertAlgorithmInfoDemoAdmin(@RequestBody Algorithm algorithm){
         algorithmInfoDemoAdminMapper.insertAlgorithmInfoDemoAdmin(algorithm);
-//        algorithmInfoDemoAdminMapper.insertAlgorithmParameterDemoAdmin(algorithm);
+        algorithmInfoDemoAdminMapper.insertAlgorithmParameterDemoAdmin(algorithm);
         return null;
     }
 

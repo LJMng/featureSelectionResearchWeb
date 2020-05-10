@@ -142,10 +142,6 @@
                 <div class="col-md-10">
                     <h1>Algorithm Manage</h1>
                 </div>
-                <div class="col-md-2 offset-md-10">
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#insertModal" @click="clearData()">添加算法</button>
-                </div>
-
             </div>
             <div class="col-md-6">
                 <p class="text-lg-left">search algorithm Info and change algorithm message</p>
@@ -244,28 +240,28 @@
                                     <label class="col-form-label">MQ 密码:</label>
                                     <input type="text" class="form-control" v-model="info.algorithmCallPassword">
                                 </div>
-<!--                                <div class="form-group">-->
-<!--                                    <label >参数个数(一旦确定无法修改):</label>-->
-<!--                                    <input type="text" class="form-control" v-model.number="number">-->
-<!--                                </div>-->
-<!--                                <div class="form-group" v-for="(n, index) in number">-->
-<!--                                    <label class="col-form-label">参数名称{{index+1}}:</label>-->
-<!--                                    <input type="text" class="form-control" v-model="parameterName[n-1]">-->
-<!--                                    <label class="col-form-label">参数{{index+1}}类型:</label>-->
-<!--                                    <div class="custom-control custom-radio custom-control-inline">-->
-<!--                                        <input value="input" type="radio" :id="n+'customRadio1'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">-->
-<!--                                        <label class="custom-control-label m-1" :for="n+'customRadio1'">input</label>-->
-<!--                                    </div>-->
-<!--                                    <div class="custom-control custom-radio custom-control-inline">-->
-<!--                                        <input value="boolean" type="radio" :id="n+'customRadio2'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">-->
-<!--                                        <label class="custom-control-label m-1" :for="n+'customRadio2'">boolean</label>-->
-<!--                                    </div>-->
-<!--                                    <div class="custom-control custom-radio custom-control-inline">-->
-<!--                                        <input value="selected" type="radio" :id="n+'customRadio3'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">-->
-<!--                                        <label class="custom-control-label m-1" :for="n+'customRadio3'">selected</label>-->
-<!--                                    </div>-->
-<!--                                    <hr>-->
-<!--                                </div>-->
+                                <div class="form-group">
+                                    <label >参数个数(一旦确定无法修改):</label>
+                                    <input type="text" class="form-control" v-model.number="number">
+                                </div>
+                                <div class="form-group" v-for="(n, index) in number">
+                                    <label class="col-form-label">参数名称{{index+1}}:</label>
+                                    <input type="text" class="form-control" v-model="parameterName[n-1]">
+                                    <label class="col-form-label">参数{{index+1}}类型:</label>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input value="input" type="radio" :id="n+'customRadio1'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">
+                                        <label class="custom-control-label m-1" :for="n+'customRadio1'">input</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input value="boolean" type="radio" :id="n+'customRadio2'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">
+                                        <label class="custom-control-label m-1" :for="n+'customRadio2'">boolean</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input value="selected" type="radio" :id="n+'customRadio3'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">
+                                        <label class="custom-control-label m-1" :for="n+'customRadio3'">selected</label>
+                                    </div>
+                                    <hr>
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">
