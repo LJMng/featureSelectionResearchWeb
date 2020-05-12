@@ -1,6 +1,8 @@
 package featureSelection.research.web.service.execution.admin.impl;
 
 import featureSelection.research.web.entity.execution.admin.Algorithm;
+import featureSelection.research.web.entity.execution.admin.Parameter;
+import featureSelection.research.web.entity.execution.admin.ParameterInfo;
 import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
 import featureSelection.research.web.mybatisMapper.execution.admin.AlgorithmMapper;
 import featureSelection.research.web.mybatisMapper.execution.admin.AlgorithmParamMapper;
@@ -40,5 +42,39 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     @Override
     public List<Algorithm> getAlgorithms() {
         return algorithmMapper.getAlgorithms();
+    }
+
+    @Override
+    public void createParameters(ParameterInfo parameterInfo) {
+        //遍历parameterInfo里面的一个数组 封装成parameter对象
+        String[] parameterNames=parameterInfo.getParameterNames();
+        for(int i=0;i<parameterNames.length;i++){
+            Parameter parameter=new Parameter();
+            parameter.setAlgorithmId(parameterInfo.getAlgorithmId());
+            parameter.setParameterName(parameterInfo.getParameterNames()[i]);
+            parameter.setParameterDescription(parameterInfo.getParameterDescriptions()[i]);
+            parameter.setParameterDefaultValue(parameterInfo.getParameterDefaultValues()[i]);
+            parameter.setParameterType(parameterInfo.getParameterTypes()[i]);
+            String parameterSettingInfoType=parameterInfo.getParameterSettingInfoTypes()[i];
+            //获取取值数组的字符串
+            String parameterSettingInfoValue=parameterInfo.getParameterSettingInfoValues()[i];
+            String values[]=parameterSettingInfoValue.split(",");
+
+            String parameterSettingInfo="{\"type\":\"";// '{"type":"'
+            parameterSettingInfo=parameterSettingInfo+parameterSettingInfoType+"\",\"options\":[\"";
+            //遍历values数组，取值设置parameterSettingInfo
+            for (int j=0;j<values.length;j++){
+                if (j==values.length-1){
+                    parameterSettingInfo=parameterSettingInfo+values[j]+"\"]}";
+                }else{
+                    parameterSettingInfo=parameterSettingInfo+values[j]+"\",\"";
+                }
+            }
+            parameter.setParameterSettingInfo(parameterSettingInfo);
+            algorithmMapper.createParameter(parameter);
+
+
+
+        }
     }
 }

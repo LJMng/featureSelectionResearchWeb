@@ -23,6 +23,7 @@ var vm =new Vue({
         algorithms:'',
         algorithmId:1,
         algorithmName:[],
+        algorithmNames:'',
         msgs: [],
         info:{
             algorithmId:'',
@@ -41,9 +42,19 @@ var vm =new Vue({
 
         },
         number: 0,
-        parameterName: [],
+        // parameterName: [],
         parameterType: [],
         searchString: '',
+
+        parameterInfo:{
+            algorithmId:1,
+            parameterNames:[],
+            parameterDescriptions:[],
+            parameterDefaultValues:[],
+            parameterTypes:[],
+            parameterSettingInfoTypes:[],
+            parameterSettingInfoValues:[]
+        }
 
     },
     created:function () {
@@ -92,6 +103,16 @@ var vm =new Vue({
                     console.log(err);
                 });
         },
+        //添加算法参数信息
+        createParameter(){
+            axios.post('/createParameters',this.parameterInfo)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
         //新增算法信息
         insertData() {
             //表单验证
@@ -123,6 +144,7 @@ var vm =new Vue({
             }
             axios.post('/AlgorithmInfoDemoAdmin/insert',this.info)
                 .then(() => {
+                    console.log(this.info)
                     window.location.reload();
                 })
                 .catch(err => {
