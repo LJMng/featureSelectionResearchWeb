@@ -3,9 +3,11 @@ package featureSelection.research.web.mybatisMapper.demo.admin;
 import featureSelection.research.web.entity.demo.admin.AlgorithmInfoDemoAdmin;
 import featureSelection.research.web.entity.execution.admin.Algorithm;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 @Mapper
 public interface AlgorithmInfoDemoAdminMapper {
     //查询所有算法信息

@@ -1,6 +1,7 @@
 package featureSelection.research.web.controller.execution.admin;
 
 import featureSelection.research.web.entity.execution.admin.Algorithm;
+import featureSelection.research.web.entity.execution.admin.ParameterInfo;
 import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
 import featureSelection.research.web.service.execution.admin.AlgorithmBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 public class AlgorithmController {
     @Autowired
     private AlgorithmBusiness algorithmBusiness;
@@ -123,6 +124,12 @@ public class AlgorithmController {
    public String addProcedureSettings(ProcedureSettings procedureSettings){
         algorithmBusiness.addProcedureSettings(procedureSettings);
         return "redirect:/pages/execution/admin/algorithm.html";
+   }
+
+   @PostMapping("/createParameters")
+   public void createParameters(@RequestBody ParameterInfo parameterInfo){
+        algorithmBusiness.createParameters(parameterInfo);
+       System.out.println(parameterInfo);
    }
 
    @GetMapping(value = "/getAlgorithms")

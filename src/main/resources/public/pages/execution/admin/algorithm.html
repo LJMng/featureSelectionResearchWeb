@@ -179,6 +179,7 @@
                     <td>
                         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="getDataById(msg.algorithmId)">修改</button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" @click="getDataById(msg.algorithmId)">删除</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#a"+msg.algorithmId'>详情</button>
                     </td>
                 </tr>
                 </tbody>
@@ -225,7 +226,7 @@
                                     <input type="text" class="form-control" v-model="info.algorithmCallExchange">
                                 </div>
                                 <div class="form-group">
-                                <label class="col-form-label">MQ routingkey:</label>
+                                <label class="col-form-label">MQ Routingkey:</label>
                                 <input type="text" class="form-control" v-model="info.algorithmCallRoutingkey">
                                 </div>
                                 <div class="form-group">
@@ -240,28 +241,28 @@
                                     <label class="col-form-label">MQ 密码:</label>
                                     <input type="text" class="form-control" v-model="info.algorithmCallPassword">
                                 </div>
-                                <div class="form-group">
-                                    <label >参数个数(一旦确定无法修改):</label>
-                                    <input type="text" class="form-control" v-model.number="number">
-                                </div>
-                                <div class="form-group" v-for="(n, index) in number">
-                                    <label class="col-form-label">参数名称{{index+1}}:</label>
-                                    <input type="text" class="form-control" v-model="parameterName[n-1]">
-                                    <label class="col-form-label">参数{{index+1}}类型:</label>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input value="input" type="radio" :id="n+'customRadio1'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">
-                                        <label class="custom-control-label m-1" :for="n+'customRadio1'">input</label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input value="boolean" type="radio" :id="n+'customRadio2'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">
-                                        <label class="custom-control-label m-1" :for="n+'customRadio2'">boolean</label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input value="selected" type="radio" :id="n+'customRadio3'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">
-                                        <label class="custom-control-label m-1" :for="n+'customRadio3'">selected</label>
-                                    </div>
-                                    <hr>
-                                </div>
+<!--                                <div class="form-group">-->
+<!--                                    <label >参数个数(一旦确定无法修改):</label>-->
+<!--                                    <input type="text" class="form-control" v-model.number="number">-->
+<!--                                </div>-->
+<!--                                <div class="form-group" v-for="(n, index) in number">-->
+<!--                                    <label class="col-form-label">参数名称{{index+1}}:</label>-->
+<!--                                    <input type="text" class="form-control" v-model="parameterName[n-1]">-->
+<!--                                    <label class="col-form-label">参数{{index+1}}类型:</label>-->
+<!--                                    <div class="custom-control custom-radio custom-control-inline">-->
+<!--                                        <input value="input" type="radio" :id="n+'customRadio1'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">-->
+<!--                                        <label class="custom-control-label m-1" :for="n+'customRadio1'">input</label>-->
+<!--                                    </div>-->
+<!--                                    <div class="custom-control custom-radio custom-control-inline">-->
+<!--                                        <input value="boolean" type="radio" :id="n+'customRadio2'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">-->
+<!--                                        <label class="custom-control-label m-1" :for="n+'customRadio2'">boolean</label>-->
+<!--                                    </div>-->
+<!--                                    <div class="custom-control custom-radio custom-control-inline">-->
+<!--                                        <input value="selected" type="radio" :id="n+'customRadio3'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">-->
+<!--                                        <label class="custom-control-label m-1" :for="n+'customRadio3'">selected</label>-->
+<!--                                    </div>-->
+<!--                                    <hr>-->
+<!--                                </div>-->
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -358,81 +359,97 @@
             </div>
             <hr>
 
-
-
             <div class="col-md-12">
                 <h1>Add Algorithm Params</h1>
             </div>
             <div class="col-md-6">
                 <p class="text-lg-left">u can choose the algorithm,and add some params for execution System</p>
             </div>
-            <hr/>
-            <!--表单内容设计 -->
-            <form id="createAlgorithm" >
+            <!--            添加参数内容表单-->
+            <form>
+                <!--选择算法 -->
                 <div class="row">
-                    <div class="col-md-4 offset-md-4" >
-                        <h2>{{values.form_title01}}</h2>
-                    </div>
-                </div>
-                <!--参数选择区域 -->
-                <div class="row">
-                    <div class="col-md-4">
-                    <label class="bootstrap-switch-label">选择参数个数：</label>
-                    <input type="number" v-model.number="paramsNumber" class="form-control">
-                    </div>
-                </div>
-                <!--选择算法，并渲染出算法详细信息 -->
-                <div v-for="n in paramsNumber">
-                <div class="row">
-                    <div class="col-md-2">
-                        <label>算法名</label>
-                        <select class="custom-select" name="algorithmId" v-model="algorithmName[n]" required>
-                            <option v-for="algorithm in algorithms">{{algorithm.algorithmId}}</option>
+                    <div class="col-md-4 offset-md-2">
+                        <label>算法名称</label>
+                        <select v-model="algorithmNames">
+                            <option v-for="algorithm in algorithms">
+                                {{algorithm.algorithmName}}
+                            </option>
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+algorithmName[n]'>
+                    <div class="row-md-4">
+                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#"+algorithmNames'>
                             点击查看算法详情
                         </button>
                     </div>
                 </div>
-                <!--每个参数的输入 -->
-                <div class="row" >
-                    <div class="col-md-2">
-                        <label>第{{n}}个参数名：</label>
-                        <input type="text" name="paramName" class="form-control" required>
-                    </div>
-                    <div class="col-md-2">
-                        <label>第{{n}}个参数类型：</label>
-                        <select class="custom-select" name="paraType"  required>
-                            <option selected>text</option>
-                            <option>radio</option>
-                            <option>selection</option>
-                            <option>checkbox</option>
-                        </select>
-                    </div>
-                    <!--根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 -->
-                    <div class="col-md-2">
-                        <label>值的个数</label>
-                        <input type="number" v-model.number="valueNumber[n]" class="form-control">
-                    </div>
-                    <div v-for="a in valueNumber[n]" class="col-md-1">
-                        <label>{{"value"+a}}</label>
-                        <input type="text" name="value" class="form-control">
+                <div class="row">
+                    <div class="col-md-4 offset-md-2">
+                        <label>参数个数：</label>
+                        <input class="form-control" type="number" v-model.number="paramsNumber">
                     </div>
                 </div>
-                    <hr/>
+                <div v-for="n in paramsNumber">
+                    <div class="row">
+                        <div class="col-md-4 offset-md-2">
+                            <h2>第{{n}}个参数</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 offset-md-2">
+                            <label>参数名：</label>
+                            <input class="form-control" type="text" v-model="parameterInfo.parameterNames[n-1]">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 offset-md-2">
+                            <label>参数类型：</label>
+                            <select class="form-control"  v-model="parameterInfo.parameterTypes[n-1]">
+                                <option>Integer</option>
+                                <option>Boolean</option>
+                                <option>String</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 offset-md-2">
+                            <label>参数描述：</label>
+                            <input class="form-control" type="text" v-model="parameterInfo.parameterDescriptions[n-1]">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 offset-md-2">
+                            <label>参数默认值：</label>
+                            <input class="form-control" type="text" v-model="parameterInfo.parameterDefaultValues[n-1]">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 offset-md-2">
+                            <label>第{{n}}个参数类型：</label>
+                            <select class="custom-select" v-model="parameterInfo.parameterSettingInfoTypes[n-1]" name="paraType"  required>
+                                <option selected>text</option>
+                                <option>radio</option>
+                                <option>selection</option>
+                                <option>checkbox</option>
+                            </select>
+                        </div>
+                        <!--根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 -->
+                        <div class="col-md-4">
+                            <label>取值</label>
+                            <input type="text" name="value" class="form-control" v-model="parameterInfo.parameterSettingInfoValues[n-1]" >
+                        </div>
+                    </div>
+                    <hr>
                 </div>
                 <div class="row">
                     <div class="col-md-2 offset-md-4">
-                        <input type="submit" value="新增算法" class="form-control" id="addParameterSettingInfo">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="reset" value="重置" class="form-control">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary submitBtn" @click="createParameter()">确定</button>
                     </div>
                 </div>
             </form>
             <hr/>
+
             <div class="col-md-12">
                 <h1>Set the produceSettings</h1>
             </div>
@@ -505,13 +522,14 @@
 
             </form>
 
+
             <!--模态框目标区域，遍历算法对象， -->
-            <!-- Modal -->
-            <div v-for="algorithm in algorithms" class="modal fade" v-bind:id="algorithm.algorithmName"  tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <!-- 算法详细信息模态框Modal -->
+            <div v-for="algorithm in algorithms" class="modal fade" v-bind:id='"a"+algorithm.algorithmId'  tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+                            <h5 class="modal-title" id="exampleModalScrollableTitle">算法详细信息</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -519,18 +537,28 @@
                         <div class="modal-body">
                             <div class="card-body">
                                 <div class="row">
-                                    <dt class="col-md-5">algorithmId:</dt>
+                                    <dt class="col-md-5">算法id:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmId}}</dd>
-                                    <dt class="col-md-5">algorithmName:</dt>
+                                    <dt class="col-md-5">算法名称:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmName}}</dd>
-                                    <dt class="col-md-5">algorithmType:</dt>
+                                    <dt class="col-md-5">算法类型:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmType}}</dd>
-                                    <dt class="col-md-5">PaperReference:</dt>
+                                    <dt class="col-md-5">算法描述:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmDescription}}</dd>
+                                    <dt class="col-md-5">引用论文信息:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmPaperReference}}</dd>
-                                    <dt class="col-md-5">PaperLink:</dt>
+                                    <dt class="col-md-5">引用论文链接:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmPaperLink}}</dd>
-                                    <dt class="col-md-5">CallInterFace:</dt>
-                                    <dd class="col-md-7">{{algorithm.algorithmCallInterFace}}</dd>
+                                    <dt class="col-md-5">算法接口:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallInterface}}</dd>
+                                    <dt class="col-md-5">算法服务主机:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallHost}}</dd>
+                                    <dt class="col-md-5">算法Exchange:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallExchange}}</dd>
+                                    <dt class="col-md-5">算法RoutingKey:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallRoutingkey}}</dd>
+                                    <dt class="col-md-5">算法服务器端口:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallPort}}</dd>
                                 </div>
                             </div>
 
@@ -542,8 +570,10 @@
                     </div>
                 </div>
             </div>
+
+
             <!-- modal-->
-            <div v-for="algorithm in algorithms" class="modal fade" v-bind:id='"a"+algorithm.algorithmId' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div v-for="algorithm in algorithms" class="modal fade" v-bind:id="algorithm.algorithmName" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -555,18 +585,40 @@
                         <div class="modal-body">
                             <div class="card-body">
                                 <div class="row">
-                                    <dt class="col-md-5">algorithmId:</dt>
+                                    <dt class="col-md-5">算法id:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmId}}</dd>
-                                    <dt class="col-md-5">algorithmName:</dt>
+                                    <dt class="col-md-5">算法名称:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmName}}</dd>
-                                    <dt class="col-md-5">algorithmType:</dt>
+                                    <dt class="col-md-5">算法类型:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmType}}</dd>
-                                    <dt class="col-md-5">PaperReference:</dt>
+                                    <dt class="col-md-5">算法描述:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmDescription}}</dd>
+                                    <dt class="col-md-5">引用论文信息:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmPaperReference}}</dd>
-                                    <dt class="col-md-5">PaperLink:</dt>
+                                    <dt class="col-md-5">引用论文链接:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmPaperLink}}</dd>
-                                    <dt class="col-md-5">CallInterFace:</dt>
-                                    <dd class="col-md-7">{{algorithm.algorithmCallInterFace}}</dd>
+                                    <dt class="col-md-5">算法接口:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallInterface}}</dd>
+                                    <dt class="col-md-5">算法服务主机:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallHost}}</dd>
+                                    <dt class="col-md-5">算法Exchange:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallExchange}}</dd>
+                                    <dt class="col-md-5">算法RoutingKey:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallRoutingkey}}</dd>
+                                    <dt class="col-md-5">算法服务器端口:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallPort}}</dd>
+<!--                                    <dt class="col-md-5">algorithmId:</dt>-->
+<!--                                    <dd class="col-md-7">{{algorithm.algorithmId}}</dd>-->
+<!--                                    <dt class="col-md-5">algorithmName:</dt>-->
+<!--                                    <dd class="col-md-7">{{algorithm.algorithmName}}</dd>-->
+<!--                                    <dt class="col-md-5">algorithmType:</dt>-->
+<!--                                    <dd class="col-md-7">{{algorithm.algorithmType}}</dd>-->
+<!--                                    <dt class="col-md-5">PaperReference:</dt>-->
+<!--                                    <dd class="col-md-7">{{algorithm.algorithmPaperReference}}</dd>-->
+<!--                                    <dt class="col-md-5">PaperLink:</dt>-->
+<!--                                    <dd class="col-md-7">{{algorithm.algorithmPaperLink}}</dd>-->
+<!--                                    <dt class="col-md-5">CallInterFace:</dt>-->
+<!--                                    <dd class="col-md-7">{{algorithm.algorithmCallInterFace}}</dd>-->
                                 </div>
                             </div>
 

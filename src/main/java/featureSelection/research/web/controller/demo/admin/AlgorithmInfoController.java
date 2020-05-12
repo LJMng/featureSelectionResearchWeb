@@ -16,9 +16,8 @@ import java.util.List;
 public class AlgorithmInfoController {
 
     @Autowired
-    AlgorithmInfoDemoAdminMapper algorithmInfoDemoAdminMapper;
-    @Autowired
-    ParameterDemoAdminMapper parameterDemoAdminMapper;
+    private AlgorithmInfoDemoAdminMapper algorithmInfoDemoAdminMapper;
+
 
     //提供查询所有算法信息的接口
     @GetMapping("/findAll")
@@ -35,8 +34,8 @@ public class AlgorithmInfoController {
     //提供增加算法信息的接口
     @PostMapping("/insert")
     public String insertAlgorithmInfoDemoAdmin(@RequestBody Algorithm algorithm){
+        System.out.println(algorithm);
         algorithmInfoDemoAdminMapper.insertAlgorithmInfoDemoAdmin(algorithm);
-        algorithmInfoDemoAdminMapper.insertAlgorithmParameterDemoAdmin(algorithm);
         return null;
     }
 
