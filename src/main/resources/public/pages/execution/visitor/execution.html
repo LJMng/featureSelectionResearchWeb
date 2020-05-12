@@ -1787,32 +1787,36 @@
                 let paramSet = {basic: {},procedure: {}};
                 let parameters = this.parameterList[algorithm.algorithmId];
                 let procedureSettings = this.ProcedureSettingsList[algorithm.algorithmId];
-                for (let i = 0; i < parameters.length; i++) {
-                    let nameTemp = algorithm.algorithmName+parameters[i].parameterName;
-                    switch (parameters[i].parameterSettingInfo.type) {
-                        case 'text':
-                            paramSet.basic[parameters[i].parameterName] = {input: $("input[name="+nameTemp+"]").val(),option: null};
-                            break;
-                        case 'select':
-                            paramSet.basic[parameters[i].parameterName] = {input: $("select[name="+nameTemp+"]").val(),option: null};
-                            break;
-                        case 'radio':
-                            paramSet.basic[parameters[i].parameterName] = {input: $("input[name="+nameTemp+"]:checked").val(),option: null};
-                            break;
-                        case 'checkbox':
-                            let listTemp = [];
-                            $("input[name="+nameTemp+"]:checked").each(function () {
-                                listTemp.push($(this).val());
-                            });
-                            paramSet.basic[parameters[i].parameterName] = {input: null,option: listTemp};
+                if (parameters!=null) {
+                    for (let i = 0; i < parameters.length; i++) {
+                        let nameTemp = algorithm.algorithmName+parameters[i].parameterName;
+                        switch (parameters[i].parameterSettingInfo.type) {
+                            case 'text':
+                                paramSet.basic[parameters[i].parameterName] = {input: $("input[name="+nameTemp+"]").val(),option: null};
+                                break;
+                            case 'select':
+                                paramSet.basic[parameters[i].parameterName] = {input: $("select[name="+nameTemp+"]").val(),option: null};
+                                break;
+                            case 'radio':
+                                paramSet.basic[parameters[i].parameterName] = {input: $("input[name="+nameTemp+"]:checked").val(),option: null};
+                                break;
+                            case 'checkbox':
+                                let listTemp = [];
+                                $("input[name="+nameTemp+"]:checked").each(function () {
+                                    listTemp.push($(this).val());
+                                });
+                                paramSet.basic[parameters[i].parameterName] = {input: null,option: listTemp};
+                        }
                     }
                 }
-                for (let i = 0; i < procedureSettings.length; i++) {
-                    let nameTemp = algorithm.algorithmName+procedureSettings[i].name;
-                    if ($("select[name="+nameTemp+"]").prop("disabled")){
-                        paramSet.procedure[procedureSettings[i].name] = {data: null, selected: false};
-                    } else {
-                        paramSet.procedure[procedureSettings[i].name] = {data: $("select[name="+nameTemp+"]").val(), selected: true};
+                if (procedureSettings != null){
+                    for (let i = 0; i < procedureSettings.length; i++) {
+                        let nameTemp = algorithm.algorithmName+procedureSettings[i].name;
+                        if ($("select[name="+nameTemp+"]").prop("disabled")){
+                            paramSet.procedure[procedureSettings[i].name] = {data: null, selected: false};
+                        } else {
+                            paramSet.procedure[procedureSettings[i].name] = {data: $("select[name="+nameTemp+"]").val(), selected: true};
+                        }
                     }
                 }
                 this.params = paramSet;

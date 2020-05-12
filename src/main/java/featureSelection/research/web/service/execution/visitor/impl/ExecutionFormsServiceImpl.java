@@ -2,6 +2,7 @@ package featureSelection.research.web.service.execution.visitor.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import featureSelection.research.web.common.service.ExectionAlgorithmRpcService;
 import featureSelection.research.web.common.util.CSVUtill;
 import featureSelection.research.web.common.util.FileUploadUtil;
 import featureSelection.research.web.entity.execution.visitor.DatasetForm;
@@ -52,7 +53,8 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
     @Autowired
     private CSVUtill csvUtill;
 
-
+    @Autowired
+    private ExectionAlgorithmRpcService rpcService;
     @Override
     public String uploadDatasetForm(DatasetForm dataset, MultipartFile uploadFile, String path) {
         String uploadResult = fileUpload.uploadFIle(uploadFile, path);
@@ -94,6 +96,7 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
         parameterFormat.setAttributes(parameterMapper.getParamsIdByAlgorithmId(task.getAlgorithmId()));
         task.setAlgorithmParameters(objectMapper.writeValueAsString(parameterFormat));
         taskInfoMapper.addTaskInfo(task);
+        rpcService.send(task.getTaskId());
         return String.valueOf(task.getTaskId());
     }
 

@@ -88,7 +88,7 @@ public class AccountBusinessImpl implements AccountBusiness {
         account.setAccountEmail(passApplyAccount.getApplyEmail());
         account.setAccountId(passApplyAccount.getApplyId());
         account.setAccountPassword(passApplyAccount.getApplyPassword());
-        account.setAccountName("嘤嘤嘤");
+        account.setAccountName("用户");
         this.addAccount(account);
         //更新inputApply表
         accountMapper.updateApplyAccount(passApplyAccount);
@@ -111,7 +111,7 @@ public class AccountBusinessImpl implements AccountBusiness {
                 "\t\t</div>\n" +
                 "\t</body>\n" +
                 "</html>";
-        ToEmail toEmail=new ToEmail("1009710828@qq.com","注册账户成功",content);
+        ToEmail toEmail=new ToEmail(passApplyAccount.getApplyEmail(),"注册账户成功",content);
         emailUtil.htmlEmail(toEmail);
 
     }

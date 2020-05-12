@@ -1,6 +1,7 @@
 package featureSelection.research.web.mybatisMapper.execution.visitor;
 
 import featureSelection.research.web.entity.execution.visitor.TaskResult;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -17,4 +18,8 @@ public interface TaskResultMapper {
 
     @Select("select * from task_result where task_id = #{taskId}")
     List<TaskResult> getTaskResults(int taskId);
+
+    @Insert("insert into task_result values(#{taskId}, #{resultId}, #{result})")
+    void insertTaskResults(int taskId, int resultId ,String result);
+
 }

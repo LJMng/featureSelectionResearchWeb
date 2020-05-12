@@ -1,6 +1,6 @@
 package featureSelection.research.web.config;
 
-import featureSelection.research.web.shiro.MyRealm;
+import featureSelection.research.web.common.shiro.MyRealm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Qualifier;

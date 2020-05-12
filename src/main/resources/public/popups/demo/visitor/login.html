@@ -9,55 +9,54 @@
 </head>
 
 <body>
-    <!-- Modal -->
-    <div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="loginmodal">{{logintitle}}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">{{accounttitle}}</label>
-                            <input type="email" class="form-control" id="account" aria-describedby="accountHelp">
+<!-- Modal -->
+<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginmodal">{{logintitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">{{accounttitle}}</label>
+                    <input type="email" class="form-control" id="account" aria-describedby="accountHelp">
 
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">{{passwordtitle}}</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
-                        </div>
-                        <button type="submit" class="btn btn-primary">{{log}}</button>
-                        <small id="emailHelp" class="form-text text-muted">{{notaccount}}</small>
-                        <small id="emailHelp" class="form-text text-muted" data-dismiss="modal"><a
-                                onclick="toRegister()" href="#">{{register}}</a></small>
-                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">{{passwordtitle}}</label>
+                    <input type="password" class="form-control" id="password">
                 </div>
+                <button class="btn btn-primary"><a onclick="login()">{{log}}</a></button>
+                <small id="emailHelp" class="form-text text-muted">{{notaccount}}</small>
+                <small id="emailHelp" class="form-text text-muted" data-dismiss="modal"><a
+                        onclick="toRegister()" href="#">{{register}}</a></small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        var vue_demo_loginmodal = new Vue({
-            el: '#loginmodal',
-            data: {
-                logintitle:'',
-                accounttitle:'',
-                passwordtitle:'',
-                log:'',
-                notaccount:'',
-                register:'',
-            },
-            created: function () {
-                /*
-                * 根据存储语言选择信息的cookie获取页面元素内容
-                */
-                axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=login").then((response) => {
+</div>
+<script type="text/javascript">
+    var vue_demo_loginmodal = new Vue({
+        el: '#loginmodal',
+        data: {
+            logintitle: '',
+            accounttitle: '',
+            passwordtitle: '',
+            log: '',
+            notaccount: '',
+            register: '',
+        },
+        created: function () {
+            /*
+            * 根据存储语言选择信息的cookie获取页面元素内容
+            */
+            axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=login").then((response) => {
+                    console.log(response.data)
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {
                             if (response.data[i].moduleKey == item) {
@@ -72,11 +71,27 @@
                 });
             }
         });
-        // 上面created与下面$(function(){})的调用顺序自行百度和查看Vue.js文档说明，或者自行尝试
-        $(function () {
-        });
 
-    </script>
+    // 上面created与下面$(function(){})的调用顺序自行百度和查看Vue.js文档说明，或者自行尝试
+    $(function () {
+    });
+
+    function login() {
+        var account = $("#account").val();
+        var password = $("#password").val();
+        console.log("denglu")
+        $.post(baseURL + "/demologinbyemail", {"email": account, "password": password},
+            function (data) {
+                console.log(data);
+                if (data.status == 200) {
+                    $.cookie("account", account);
+                    window.location.href = baseURL + "execution";
+                } else {
+                    alert(data.reason);
+                }
+            });
+    }
+</script>
 </body>
 
 </html>

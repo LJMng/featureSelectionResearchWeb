@@ -4,11 +4,6 @@ server:
 spring:
   application:
     name: biz-publisher
-  rabbitmq:
-    host: 127.0.0.1
-    port: 5672
-    username: guest
-    password: guest
   # 服务器邮箱
   mail:
     host: smtp.qq.com
@@ -34,5 +29,5 @@ mybatis:
 # Logback
 logging:
   path: '/logs'
-  level:
-    featureSelection.research.web.mybatisMapper: debug
+#  level:
+#    featureSelection.research.web.mybatisMapper: debug

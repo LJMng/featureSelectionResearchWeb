@@ -32,6 +32,7 @@ public class EmailUtil {
         message.setText(toEmail.getContent());
         try {
             mailSender.send(message);
+            System.out.println("发送");
             return true;
         } catch (MailException e) {
             e.printStackTrace();

@@ -33,4 +33,8 @@ public interface TaskInfoMapper {
 
     @Select("select * from task_info where task_id=#{taskId}")
     TaskInfo getTaskInfoByTaskId(int taskId);
+
+    @Update("update task_info set task_status =#{status} where task_id=#{taskId} ")
+    void updateTaskInfoStatus(@Param("status") String status,@Param("taskId") int taskId);
+
 }

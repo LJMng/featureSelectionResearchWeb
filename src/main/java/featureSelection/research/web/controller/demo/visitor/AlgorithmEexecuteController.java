@@ -47,7 +47,7 @@ public class  AlgorithmEexecuteController {
     @GetMapping(value = "/testAsync")
     @ResponseBody
     public String testAsync() {
-//        exectionAlgorithmRpcService.send("data",1);
+        exectionAlgorithmRpcService.send(5);
         System.out.println("已发送");
         return "ok";
     }

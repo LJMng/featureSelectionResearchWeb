@@ -1,4 +1,4 @@
-package featureSelection.research.web.shiro;
+package featureSelection.research.web.common.shiro;
 
 import featureSelection.research.web.entity.demo.admin.Administrator;
 import featureSelection.research.web.mybatisMapper.demo.admin.AdministratorDemoAdminMapper;

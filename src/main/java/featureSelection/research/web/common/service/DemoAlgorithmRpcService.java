@@ -46,7 +46,7 @@ public class DemoAlgorithmRpcService {
      * @param schemeid：方案id
      * @return 算法处理结果
      */
-    public Object send(int algorithmid, int schemeid) {
+    public  Object send(int algorithmid, int schemeid) {
         Algorithm algorithm = algorithmMapper.getAlgorithmInfoById(algorithmid);
         String routingkey = algorithm.getAlgorithmCallRoutingkey();
         String host = algorithm.getAlgorithmCallHost();
@@ -120,7 +120,7 @@ public class DemoAlgorithmRpcService {
      */
     public AlgorithmCallTaskInfo schemeInfoToRequestEnity(int schemeid) {
         //获取方案信息
-        ParameterScheme parameterScheme = parameterSchemeMapper.getDataSetAndSchemeBySchemeId(schemeid);
+        ParameterScheme parameterScheme = parameterSchemeMapper.getSchemeWithParameterValueAndDatasetById(schemeid);
         Dataset dataset = datasetMapper.getDatasetInfo(parameterScheme.getDataset().getDatasetId());
         //定义算法调用任务信息实体类
         AlgorithmCallTaskInfo algorithmCallServiceInfo = new AlgorithmCallTaskInfo();

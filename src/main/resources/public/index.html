@@ -36,117 +36,45 @@
 <body data-spy="scroll" data-target="#myScrollspy" data-offset="-100" style="position:relative;">
 
 	<!--导航栏-->
-	<div id="demo">
-
-		<!--占位-->
-		<div style="height: 90px"></div>
-		<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light " id="navbar">
-			<div class="container">
-				<a onclick="backIndex()" class="navbar-brand" href="#">{{brand}}</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-					aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarNavDropdown">
-					<ul class="navbar-nav">
-						<li class="nav-item active">
-							<a class="nav-link" href="#">Getting Start<span class="sr-only">(current)</span></a>
-						</li>
-						<li class="nav-item">
-							<a onclick="toexecution()" class="nav-link" href="#">Executions</a>
-						</li>
-						<li class="nav-item">
-							<a onclick="toaboutus()" class="nav-link" href="#">About us</a>
-						</li>
-					</ul>
-				</div>
-				<button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal"
-					data-target="#loginmodal">登录</button>
-				&nbsp;&nbsp;&nbsp;
-				<input type="checkbox" name="my-checkbox" checked id="language">
-		</nav>
-	</div>
-
-
+	<div id="demo-header"></div>
 	<div class="container">
-		<div id="aboutus"></div>
-		<div id="register"></div>
-		<div id="loginpup"></div>
-		<div id="algorithmdetailspop"></div>
-		<!--demo头部-->
+		<!--demo首页头部-->
 		<div id="demo-guide"></div>
-
-		<!--demo算法-->
+		<!--demo首页算法-->
 		<div id="demo-algorithms" name="algorithms"></div>
-
-		<!--updates-->
+		<!--demo首页更新板-->
 		<div id="demo-updates"></div>
-
-		<div style="overflow: hidden;position: fixed;right: 10px;bottom: 20px;z-index: 10;">
-			<div style="overflow: hidden;">
-				<div style="padding-top:20px;padding-right:50px;padding-bottom:50px">
-					<a href="#" style="float: right;" class="btns">回到顶部</a>
-				</div>
+		<!--关于我们-->
+		<div id="aboutus"></div>
+		<!--注册-->
+		<div id="register"></div>
+		<!--登陆弹窗-->
+		<div id="loginpup"></div>
+		<!--算法方案细节弹窗-->
+		<div id="algorithmdetailspop"></div>
+	</div>
+	<!--回到顶部-->
+	<div style="overflow: hidden;position: fixed;right: 10px;bottom: 20px;z-index: 10;">
+		<div style="overflow: hidden;">
+			<div style="padding-top:20px;padding-right:50px;padding-bottom:50px">
+				<a href="#" style="float: right;" class="btns">回到顶部</a>
 			</div>
 		</div>
 	</div>
 
 	<script type="text/javascript">
 		var baseURL = "http://localhost:8000/";
-		var vue_demo = new Vue({
-			el: '#demo',
-			data: {
-				brand: "AlgGroup",
-				
-			},
-			created: function () {
-
-			}
-		});
-
 		// 上面created与下面$(function(){})的调用顺序自行百度和查看Vue.js文档说明，或者自行尝试
 		$(function () {
-			/**
-			 * 语言选择
-			 */
-			var sta;
-			var lang = $.cookie("language");
-			if (lang == null) {
-				$.cookie("language", "en");
-				lang = "en";
-			}
-			if (lang == 'en') {
-				sta = true;
-			} else {
-				sta = false;
-			}
-			/**
-			 * 开关按钮
-			 */
-			$("#language").bootstrapSwitch({
-				state: sta,
-				onText: "English",
-				offText: "中文",
-				onColor: "primary",
-				offColor: "primary",
-				size: "small",
-				labelWidth: "15px",
-				onSwitchChange: function (event, state) {
-					if (state == false) {
-						$.cookie("language", "ch")
-						window.location.href = baseURL;
-					} else {
-						$.cookie("language", "en")
-						window.location.href = baseURL;
-					}
-				}
-			});
+			//加载页面
+			$("#demo-header").load('pages/demo/visitor/header.html');
 			$("#demo-guide").load('pages/demo/visitor/guide.html');
 			$("#demo-algorithms").load('pages/demo/visitor/algorithms.html');
 			$("#demo-updates").load('pages/demo/visitor/updates.html');
 			$("#loginpup").load('popups/demo/visitor/login.html')
 		});
 
+		//加载注册页面
 		function toRegister() {
 			$("#demo-guide").empty();
 			$("#demo-algorithms").empty();
@@ -155,14 +83,22 @@
 			$('#register').load('pages/demo/visitor/register.html');
 		};
 
+		//回到首页
 		function backIndex() {
 			window.location.href = baseURL;
 		};
 
+		//进入execution系统
 		function toexecution() {
-			window.location.href = baseURL+"execution";
+			if ($.cookie("account") != null) {
+				window.location.href = baseURL + "execution";
+			}
+			else {
+				$("#loginbutton").click()
+			}
 		};
 
+		//加载关于我们界面
 		function toaboutus() {
 			$("#demo-guide").empty();
 			$("#demo-algorithms").empty();
