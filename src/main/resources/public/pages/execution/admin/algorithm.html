@@ -370,15 +370,15 @@
                 <!--选择算法 -->
                 <div class="row">
                     <div class="col-md-4 offset-md-2">
-                        <label>算法名称</label>
-                        <select v-model="algorithmNames">
+                        <label>选择算法id：</label>
+                        <select v-model="parameterInfo.algorithmId">
                             <option v-for="algorithm in algorithms">
-                                {{algorithm.algorithmName}}
+                                {{algorithm.algorithmId}}
                             </option>
                         </select>
                     </div>
                     <div class="row-md-4">
-                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#"+algorithmNames'>
+                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+parameterInfo.algorithmId'>
                             点击查看算法详情
                         </button>
                     </div>
