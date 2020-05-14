@@ -38,6 +38,7 @@ var vm =new Vue({
     methods:{
         deleteAdministrator:function (administratorId) {
             axios.get('/deleteAdministrator?administratorId='+administratorId)
+            window.location.reload();
         },
         fCheckedAdministratorId:function () {
             if (this.checkAdministratorId.length>20){

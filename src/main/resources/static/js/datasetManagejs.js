@@ -39,6 +39,7 @@ var vm =new Vue({
         values:"",
         datasetForms:"",
         advice:"put your advice",
+        administratorName:'',
         persons:[
             {name:'Tom',age:18},
             {name:'jack',age: 17},
@@ -86,14 +87,18 @@ var vm =new Vue({
         setOrderType:function(orderType){
             this.orderType=orderType;
         },
-        deleteDataset:function (datasetId) {
-            axios.get('/deleteDataset?datasetId='+datasetId)
+        deleteDataset:function (datasetId,administratorName) {
+            axios.get('/deleteDataset?datasetId='+datasetId+'&administratorName='+administratorName)
+            window.location.reload();
         },
         passDatasetForm:function (inputId) {
             axios.get('/passDatasetForm?inputId='+inputId)
+
+            window.location.reload();
         },
-        unPassDatasetForm:function (inputId,advice) {
-            axios.get('/unPassDatasetForm?inputId='+inputId+'&advice='+advice)
+        unPassDatasetForm:function (inputId,advice,administratorName) {
+            axios.get('/unPassDatasetForm?inputId='+inputId+'&advice='+advice+'&administratorName='+administratorName)
+            window.location.reload();
         },
         fCheckDatasetName:function () {
             if (this.checkDatasetName.length>20){

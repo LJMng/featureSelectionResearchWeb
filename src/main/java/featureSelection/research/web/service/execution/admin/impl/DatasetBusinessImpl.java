@@ -25,7 +25,7 @@ import java.util.List;
 @Transactional
 public class DatasetBusinessImpl implements DatasetBusiness {
     private  static final String UPLOAD_BASE="src/main/resources/static/dataset/datasetHome/";
-    private static final String TEMP_BASE="/dataset/temp/";
+    private static final String TEMP_BASE="src/main/resources/";
     @Autowired
     private EmailUtil emailUtil;
     @Autowired
@@ -66,12 +66,12 @@ public class DatasetBusinessImpl implements DatasetBusiness {
     }
 
     @Override
-    public void passDatasetForm(int inputId) throws MessagingException {
+    public void passDatasetForm(int inputId,String administratorName) throws MessagingException {
         //获取申请表单对象
         DatasetForm datasetForm=datasetMapping.getDatasetFormById(inputId);
         //获取文件地址，将数据集文件复制到公共数据集文件夹
         String inputFile=datasetForm.getInputFile();
-        File source=new File("src/main/resources/static/dataset/temp/newfile.xlsx");
+        File source=new File(TEMP_BASE+datasetForm.getInputFile());
         String fileName= FilenameUtils.getName(datasetForm.getInputFile());
         File target=new File (UPLOAD_BASE+fileName);
         try {
@@ -87,7 +87,7 @@ public class DatasetBusinessImpl implements DatasetBusiness {
          */
         datasetForm.setInputStatus("通过审核");
         datasetForm.setInputEndTime(new Date());
-        datasetForm.setInputReviewer("ccjmkj");
+        datasetForm.setInputReviewer(administratorName);
         datasetMapping.updateDatasetForm(datasetForm);
         //将数据集信息添加到数据集表
         Dataset dataset=new Dataset();
@@ -129,7 +129,7 @@ public class DatasetBusinessImpl implements DatasetBusiness {
     }
 
     @Override
-    public void unPassDatasetForm(int inputId, String advice) {
+    public void unPassDatasetForm(int inputId, String advice,String administratorName) {
         //获取申请表单对象
         DatasetForm datasetForm=datasetMapping.getDatasetFormById(inputId);
         //获取文件地址，删除文件
@@ -144,7 +144,7 @@ public class DatasetBusinessImpl implements DatasetBusiness {
          */
         datasetForm.setInputStatus("不通过");
         datasetForm.setInputEndTime(new Date());
-        datasetForm.setInputReviewer("ccjmkj");
+        datasetForm.setInputReviewer(administratorName);
         datasetMapping.updateDatasetForm(datasetForm);
         //发送邮件给用户
         /*

@@ -18,7 +18,7 @@ public interface DatasetBusiness {
 
     public List<DatasetForm> getDatasetForms();
 
-    public void passDatasetForm(int inputId) throws MessagingException;
+    public void passDatasetForm(int inputId,String administrator) throws MessagingException;
 
-    public void unPassDatasetForm(int inputId, String advice);
+    public void unPassDatasetForm(int inputId, String advice,String administratorName);
 }

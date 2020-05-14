@@ -27,6 +27,7 @@ var vm=new Vue({
     methods: {
         deletePageElement:function (htmlName,moduleKey) {
             axios.get('/deletePageElement?moduleKey='+moduleKey)
+            window.location.reload();
         },
         fCheckModuleKey:function () {
             if (this.checkModuleKey.length>30){

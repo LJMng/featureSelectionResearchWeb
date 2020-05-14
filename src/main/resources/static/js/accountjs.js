@@ -42,6 +42,7 @@ var vm =new Vue({
     methods:{
         deleteAccount:function (accountId) {
             axios.get('/deleteAccount?accountId='+accountId)
+            window.location.reload();
         },
         checkoutEmail:function (checkEmail) {
 
