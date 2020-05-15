@@ -418,13 +418,13 @@
                         <div class="col-4">
                             <div class="list-group" id="list-tab" role="tablist">
                                 <a class="list-group-item list-group-item-action active"  data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
-                                <a v-for="datasetForm in datasetForms" class="list-group-item list-group-item-action" v-bind:id="datasetForm.inputId" data-toggle="list" v-bind:href='"#"+datasetForm.inputName' role="tab" v-bind:aria-controls="datasetForm.inputId">{{datasetForm.inputId}}</a>
+                                <a v-for="datasetForm in datasetForms" class="list-group-item list-group-item-action" v-bind:id="datasetForm.inputId" data-toggle="list" v-bind:href='"#aa"+datasetForm.inputId' role="tab" v-bind:aria-controls="datasetForm.inputId">{{datasetForm.inputId}}</a>
                             </div>
                         </div>
                         <div class="col-8">
                             <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id="list-home" role="tabpanel" >Velit aute mollit ipsum ad dolor consectetur nulla officia culpa adipisicing exercitation fugiat tempor. Voluptate deserunt sit sunt nisi aliqua fugiat proident ea ut. Mollit voluptate reprehenderit occaecat nisi ad non minim tempor sunt voluptate consectetur exercitation id ut nulla. Ea et fugiat aliquip nostrud sunt incididunt consectetur culpa aliquip eiusmod dolor. Anim ad Lorem aliqua in cupidatat nisi enim eu nostrud do aliquip veniam minim.</div>
-                                <div v-for="datasetForm in datasetForms" class="tab-pane fade" v-bind:id="datasetForm.inputName" role="tabpanel" v-bind:aria-labelledby="datasetForm.inputId">
+                                <div v-for="datasetForm in datasetForms" class="tab-pane fade" v-bind:id='"aa"+datasetForm.inputId' role="tabpanel" v-bind:aria-labelledby="datasetForm.inputId">
                                     <div class="card-body">
                                         <div class="row">
                                             <dt class="col-md-5">applyAccount:</dt>
@@ -458,12 +458,18 @@
                                                 <textarea class="form-text" id="exampleFormControlTextarea1" cols="50" rows="5" v-model="advice"></textarea>
                                             </label>
                                         </div>
+                                        <div class="col-md-6">
+                                            <label>
+                                                <p>审核人：</p>
+                                                <input class="form-control" type="text" v-model="administratorName">
+                                            </label>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <button class="btn btn-primary" @click="passDatasetForm(datasetForm.inputId)">pass</button>
+                                                <button class="btn btn-primary" @click="passDatasetForm(datasetForm.inputId,administratorName)">pass</button>
                                             </div>
                                             <div class="col-md-4 offset-md-1">
-                                                <button class="btn btn-danger" @click="unPassDatasetForm(datasetForm.inputId,advice)">unPass</button>
+                                                <button class="btn btn-danger" @click="unPassDatasetForm(datasetForm.inputId,advice,administratorName)">unPass</button>
                                             </div>
                                         </div>
                                     </div>
