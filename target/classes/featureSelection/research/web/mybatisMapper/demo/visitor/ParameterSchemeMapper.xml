@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="featureSelection.research.web.mybatisMapper.demo.visitor.ParameterSchemeMapper">
+
+
+    <resultMap id="SchemeWithParameterValueAndParmeter"
+               type="featureSelection.research.web.entity.demo.visitor.ParameterScheme">
+        <id column="scheme_id" property="schemeId"></id>
+        <result column="scheme_name" property="schemeName"></result>
+        <collection property="parameterSchemeValues" javaType="List"
+                    ofType="featureSelection.research.web.entity.demo.visitor.ParameterSchemeValue">
+            <result column="parameter_value" property="parameterValue"></result>
+            <association property="parameter" javaType="featureSelection.research.web.entity.demo.visitor.Parameter">
+                <id column="parameter_id" property="parameterId"></id>
+                <result column="parameter_name" property="parameterName"></result>
+                <result column="parameter_type" property="parameterType"></result>
+            </association>
+        </collection>
+    </resultMap>
+
+    <!-- 数据结构： 方案：{数据集，参数值：{对应参数信息参数}}-->
+    <resultMap id="SchemeWithParameterValueAndParmeterAndDataset"
+               type="featureSelection.research.web.entity.demo.visitor.ParameterScheme">
+        <id column="scheme_id" property="schemeId"></id>
+        <result column="scheme_name" property="schemeName"></result>
+        <association property="dataset" javaType="featureSelection.research.web.entity.demo.visitor.Dataset">
+            <id column="dataset_id" property="datasetId"></id>
+            <result column="dataset_name" property="datasetName"></result>
+            <result column="dataset_file" property="datasetFile"></result>
+            <result column="dataset_size" property="datasetSize"></result>
+            <result column="dataset_dimension" property="datasetDimension"></result>
+        </association>
+        <collection property="parameterSchemeValues" javaType="List"
+                    ofType="featureSelection.research.web.entity.demo.visitor.ParameterSchemeValue">
+            <result column="parameter_value" property="parameterValue"></result>
+            <association property="parameter" javaType="featureSelection.research.web.entity.demo.visitor.Parameter">
+                <id column="parameter_id" property="parameterId"></id>
+                <result column="parameter_name" property="parameterName"></result>
+                <result column="parameter_type" property="parameterType"></result>
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="getAllSchemeWithParameterValue" resultMap="SchemeWithParameterValueAndParmeter">
+        select ps.*,psv.parameter_value,p.parameter_name FROM parameter_scheme_value
+        psv,parameter_scheme ps,parameter p
+        WHERE ps.scheme_id=psv.scheme_id AND psv.parameter_id=p.parameter_id;
+    </select>
+
+    <select id="getSchemeWithParameterValueById" resultMap="SchemeWithParameterValueAndParmeter"
+            parameterType="Integer">
+       select ps.*,psv.parameter_value,p.* FROM parameter_scheme_value
+        psv,parameter_scheme ps,parameter p
+        WHERE ps.scheme_id=psv.scheme_id AND psv.parameter_id=p.parameter_id AND ps.scheme_id=#{schemeid};
+    </select>
+
+
+    <select id="getSchemeWithParameterValueAndDatasetById" resultMap="SchemeWithParameterValueAndParmeterAndDataset"
+            parameterType="Integer">
+        SELECT ps.*,psv.parameter_value,p.*,d.*  FROM parameter_scheme_value
+        psv,parameter_scheme ps,parameter p,dataset d
+        WHERE ps.scheme_id=psv.scheme_id AND psv.parameter_id=p.parameter_id AND ps.scheme_id=#{schemeid} AND
+        ps.dataset_id=d.dataset_id
+    </select>
+
+
+    <select id="getDataSetAndSchemeBySchemeId" resultMap="SchemeWithParameterValueAndParmeterAndDataset"
+            parameterType="Integer">
+        SELECT dataset.* ,parameter_scheme.* from parameter_scheme,dataset
+        WHERE parameter_scheme.scheme_id=#{schemeid} AND parameter_scheme.dataset_id=dataset.dataset_id;
+    </select>
+</mapper>

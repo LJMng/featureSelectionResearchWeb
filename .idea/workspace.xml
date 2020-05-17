@@ -2,6 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b124d633-73e2-4798-a899-de064c44e5ef" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/featureSelection/research/web/controller/demo/admin/HtmlElementController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/featureSelection/research/web/controller/demo/admin/HtmlElementController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/featureSelection/research/web/controller/demo/admin/UploadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/featureSelection/research/web/controller/demo/admin/UploadController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/featureSelection/research/web/mybatisMapper/demo/admin/HtmlElementDemoAdminMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/featureSelection/research/web/mybatisMapper/demo/admin/HtmlElementDemoAdminMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/featureSelection/research/web/mybatisMapper/demo/admin/HtmlElementDemoAdminMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/featureSelection/research/web/mybatisMapper/demo/admin/HtmlElementDemoAdminMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/demoAdmin/AboutusDemoAdmin.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/demoAdmin/AboutusDemoAdmin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/demoAdmin/SchemeDemoAdmin.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/demoAdmin/SchemeDemoAdmin.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/public/demoAdmin/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/demoAdmin/index.html" afterDir="false" />
     </list>
     <list id="d52aea6d-0f0c-4396-8560-1ea6b177cbb3" name="Revert &quot;单元格隐藏太长的文字&quot;" comment="Revert &quot;单元格隐藏太长的文字&quot;&#10;&#10;This reverts commit f9004645" />
@@ -38,6 +44,9 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RunManager">
@@ -74,6 +83,7 @@
       <workItem from="1589686869828" duration="99000" />
       <workItem from="1589687091425" duration="146000" />
       <workItem from="1589687266607" duration="322000" />
+      <workItem from="1589701040412" duration="403000" />
     </task>
     <task id="LOCAL-00001" summary="单元格隐藏太长的文字">
       <created>1589686961096</created>
@@ -103,13 +113,33 @@
     <option name="LAST_COMMIT_MESSAGE" value="单元格隐藏太长的文字" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="138" y="96" key="#Project_Structure" timestamp="1589701079078">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="138" y="96" key="#Project_Structure/0.0.1600.860@0.0.1600.860" timestamp="1589701079078" />
     <state x="142" y="7" key="CommitChangelistDialog2" timestamp="1589687170509">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="142" y="7" key="CommitChangelistDialog2/0.0.1600.860@0.0.1600.860" timestamp="1589687170509" />
-    <state x="338" y="355" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589687195775">
+    <state width="754" height="220" key="GridCell.Tab.0.bottom" timestamp="1589701442785">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="338" y="355" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1600.860@0.0.1600.860" timestamp="1589687195775" />
+    <state width="754" height="220" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1589701442785" />
+    <state width="754" height="220" key="GridCell.Tab.0.center" timestamp="1589701442785">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="754" height="220" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1589701442785" />
+    <state width="754" height="220" key="GridCell.Tab.0.left" timestamp="1589701442785">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="754" height="220" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1589701442785" />
+    <state width="754" height="220" key="GridCell.Tab.0.right" timestamp="1589701442785">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="754" height="220" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1589701442785" />
+    <state x="338" y="355" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589701110130">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="338" y="355" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1600.860@0.0.1600.860" timestamp="1589701110130" />
   </component>
 </project>

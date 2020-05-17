@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="featureSelection.research.web.mybatisMapper.demo.admin.HtmlElementDemoAdminMapper">    <resultMap id= "result" type = "featureSelection.research.web.entity.demo.admin.HtmlElementDemoAdmin">
+<mapper namespace="featureSelection.research.web.mybatisMapper.HtmlElementDemoAdminMapper">
+    <resultMap id= "result" type = "featureSelection.research.web.entity.demo.admin.HtmlElementDemoAdmin">
         <id column="module_key" property="moduleKey" />
         <id column="html_name" property="htmlName" />
         <result column="type" property="type" />
@@ -8,21 +9,44 @@
         <result column="en_value" property="enValue" />
     </resultMap>
 
-    <!--查询所有算法信息-->
+    <!--查询所有信息-->
     <select id="findAll" resultMap="result">
         select * from html_element_control
+    </select>
+    <!--查询所有图片信息-->
+    <select id="findAllImages" resultMap="result">
+        select * from html_element_control where html_name = "aboutus" and type = "image"
+    </select>
+    <!--    查找一个图片-->
+    <select id="findByKey" resultMap="result">
+        select * from html_element_control where module_key = #{key}
     </select>
 
     <!--保存更改-->
     <update id="saveHtmlElement">
         <foreach collection="list" item="item">
             update
-                html_element_control
+            html_element_control
             set
-                ch_value = #{item.chValue},
-                en_value = #{item.enValue}
+            ch_value = #{item.chValue},
+            en_value = #{item.enValue}
             where
-                module_key = #{item.moduleKey};
+            module_key = #{item.moduleKey};
         </foreach>
     </update>
+
+    <insert id="saveImage">
+        insert into html_element_control (module_key, html_name, type, ch_value, en_value)
+        values (
+            #{moduleKey},
+            "aboutus",
+            "image",
+            #{chValue},
+            #{enValue}
+        )
+    </insert>
+
+    <delete id="deleteImage">
+        delete from html_element_control where module_key = #{moduleKey}
+    </delete>
 </mapper>

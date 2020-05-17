@@ -1,9 +1,11 @@
 package featureSelection.research.web.controller.demo.admin;
 
+import featureSelection.research.web.entity.demo.admin.HtmlElementDemoAdmin;
+import featureSelection.research.web.mybatisMapper.demo.admin.HtmlElementDemoAdminMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -12,12 +14,14 @@ import java.util.UUID;
 @Controller
 public class UploadController {
 
+    //改为项目地址
     private static String UPLOAD_FOLDER = "C:\\Users\\jiang\\Desktop\\featureSelection - 副本 - 副本 - 副本\\src\\main\\resources\\public\\images\\";
 
+    @Autowired
+    HtmlElementDemoAdminMapper htmlElementDemoAdminMapper;
+
     @PostMapping("/formUpload")
-    public String uploadForm(@RequestParam("title") String title,
-                             @RequestParam("body") String body,
-                             @RequestParam("phone") String phone,
+    public String uploadForm(@RequestParam("description") String description,
                              @RequestParam("file") MultipartFile file){
         try {
             //获取后缀
@@ -32,24 +36,14 @@ public class UploadController {
             //保存图片
             File image = new File(UPLOAD_FOLDER+relativeAddr);
             file.transferTo(image);
-            System.out.println("添加成功");
-            image.delete();
-            System.out.println("删除成功");
+            HtmlElementDemoAdmin e = new HtmlElementDemoAdmin();
+            e.setModuleKey("aboutusimage"+str.substring(0,8));
+            e.setEnValue("/images/"+relativeAddr);
+            e.setChValue(description);
+            htmlElementDemoAdminMapper.saveImage(e);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "redirect:/DemoAdmin/AboutusAdmin";
-    }
-
-    @ResponseBody
-    @PostMapping("/deleteFormUpload")
-    public String deleteUploadForm(String path){
-        int lastIndexOf = path.lastIndexOf("/");
-        String img_path = path.substring(lastIndexOf + 1, path.length());
-        File file = new File(UPLOAD_FOLDER+img_path);
-        if(file.exists()){
-            boolean flag = file.delete();
-        }
-        return null;
     }
 }
