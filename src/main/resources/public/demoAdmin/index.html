@@ -140,9 +140,25 @@
             },{
                 field: 'chValue',
                 title: '中文',
+                cellStyle:{
+                    css:{
+                        "overflow": "hidden",
+                        "text-overflow": "ellipsis",
+                        "white-space": "nowrap",
+                        "max-width": "360px"
+                    }
+                }
             }, {
                 field: 'enValue',
-                title: '英文'
+                title: '英文',
+                cellStyle:{
+                    css:{
+                        "overflow": "hidden",
+                        "text-overflow": "ellipsis",
+                        "white-space": "nowrap",
+                        "max-width": "360px"
+                    }
+                }
             }, {
                 field: 'type',
                 title: '类型',
