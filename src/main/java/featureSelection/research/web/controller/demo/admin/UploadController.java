@@ -15,7 +15,8 @@ import java.util.UUID;
 public class UploadController {
 
     //改为项目地址
-    private static String UPLOAD_FOLDER = "C:\\Users\\jiang\\Desktop\\featureSelection - 副本 - 副本 - 副本\\src\\main\\resources\\public\\images\\";
+//    private static String UPLOAD_FOLDER = "C:\\Users\\jiang\\Desktop\\featureSelection - 副本 - 副本 - 副本\\src\\main\\resources\\public\\demoAdmin\\images\\";
+    private static String UPLOAD_FOLDER = "classpath://demoAdmin/images/";
 
     @Autowired
     HtmlElementDemoAdminMapper htmlElementDemoAdminMapper;

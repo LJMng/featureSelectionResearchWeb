@@ -51,4 +51,11 @@ public class HtmlElementController {
         htmlElementDemoAdminMapper.deleteImage(key);
         return null;
     }
+
+    @PostMapping("/setDefault")
+    public String setDefault(){
+        htmlElementDemoAdminMapper.dropTable();
+        htmlElementDemoAdminMapper.setDefault();
+        return null;
+    }
 }

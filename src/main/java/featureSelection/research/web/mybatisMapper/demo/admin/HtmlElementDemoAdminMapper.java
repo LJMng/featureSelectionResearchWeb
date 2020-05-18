@@ -20,4 +20,9 @@ public interface HtmlElementDemoAdminMapper {
     public int saveImage(HtmlElementDemoAdmin htmlElementDemoAdmin);
     //删除图片信息
     public int deleteImage(String moduleKey);
+    //设为默认值
+    //删除原表内容
+    public int dropTable();
+    //将默认值插到原表
+    public int setDefault();
 }

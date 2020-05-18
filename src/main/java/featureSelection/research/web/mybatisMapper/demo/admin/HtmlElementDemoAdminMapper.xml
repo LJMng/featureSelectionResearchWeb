@@ -35,6 +35,7 @@
         </foreach>
     </update>
 
+    <!--    保存图片-->
     <insert id="saveImage">
         insert into html_element_control (module_key, html_name, type, ch_value, en_value)
         values (
@@ -46,7 +47,18 @@
         )
     </insert>
 
+    <!--    删除图片-->
     <delete id="deleteImage">
         delete from html_element_control where module_key = #{moduleKey}
     </delete>
+
+    <!--    设置为默认值-->
+    <!--    删除原表内容-->
+    <delete id="dropTable">
+        delete from html_element_control
+    </delete>
+    <!--    将默认值插到原表-->
+    <insert id="setDefault">
+        insert into html_element_control select * from html_element_control_default
+    </insert>
 </mapper>
