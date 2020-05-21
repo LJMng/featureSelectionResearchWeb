@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+/**
+ * @author jjz
+ * */
 @Component
 @Mapper
 public interface AlgorithmInfoDemoAdminMapper {

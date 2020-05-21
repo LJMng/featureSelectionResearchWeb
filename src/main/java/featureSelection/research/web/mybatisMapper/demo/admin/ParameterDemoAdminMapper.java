@@ -4,7 +4,9 @@ import featureSelection.research.web.entity.demo.admin.AlgorithmParameterDemoAdm
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-
+/**
+ * @author jjz
+ * */
 @Mapper
 public interface ParameterDemoAdminMapper {
     //查询所有参数信息

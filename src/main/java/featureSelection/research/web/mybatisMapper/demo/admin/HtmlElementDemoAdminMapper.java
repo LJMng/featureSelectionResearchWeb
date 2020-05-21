@@ -5,7 +5,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-
+/**
+ * @author jjz
+ * */
 @Mapper
 public interface HtmlElementDemoAdminMapper {
     //获取所有html

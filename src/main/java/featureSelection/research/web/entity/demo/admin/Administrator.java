@@ -1,5 +1,7 @@
 package featureSelection.research.web.entity.demo.admin;
-
+/**
+ * @author jjz
+ * */
 public class Administrator {
     private String administratorId;
     private String administratorName;

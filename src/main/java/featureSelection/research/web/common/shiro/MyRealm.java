@@ -10,7 +10,9 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-
+/**
+ * @author jjz
+ * */
 public class MyRealm extends AuthorizingRealm {
 
     //授权

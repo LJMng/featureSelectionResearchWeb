@@ -1,5 +1,7 @@
 package featureSelection.research.web.entity.demo.admin;
-
+/**
+ * @author jjz
+ * */
 public class AlgorithmParameterDemoAdmin {
     //参数方案对应的算法对应的参数ID
     private Integer parameterId;

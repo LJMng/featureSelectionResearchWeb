@@ -1,5 +1,7 @@
 package featureSelection.research.web.entity.demo.admin;
-
+/**
+ * @author jjz
+ * */
 public class DatasetDemoAdmin{
         //方案对应数据集ID
         private Integer datasetId;

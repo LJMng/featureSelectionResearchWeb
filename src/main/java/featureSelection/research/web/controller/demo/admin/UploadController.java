@@ -10,7 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.UUID;
-
+/**
+ * @author jjz
+ * */
 @Controller
 public class UploadController {
 
@@ -21,6 +23,13 @@ public class UploadController {
     @Autowired
     HtmlElementDemoAdminMapper htmlElementDemoAdminMapper;
 
+    /**
+     * @param description
+     *      前端返回的图片附带的信息
+     * @param file
+     *      前端返回的图片
+     * @return 返回关于我们管理页面
+     * */
     @PostMapping("/formUpload")
     public String uploadForm(@RequestParam("description") String description,
                              @RequestParam("file") MultipartFile file){
@@ -37,6 +46,8 @@ public class UploadController {
             //保存图片
             File image = new File(UPLOAD_FOLDER+relativeAddr);
             file.transferTo(image);
+
+            //设置要保存的页面元素并存入数据库
             HtmlElementDemoAdmin e = new HtmlElementDemoAdmin();
             e.setModuleKey("aboutusimage"+str.substring(0,8));
             e.setEnValue("/images/"+relativeAddr);

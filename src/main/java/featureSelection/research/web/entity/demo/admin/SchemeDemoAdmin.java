@@ -1,7 +1,9 @@
 package featureSelection.research.web.entity.demo.admin;
 
 import java.util.List;
-
+/**
+ * @author jjz
+ * */
 public class SchemeDemoAdmin {
     //方案ID
     private Integer schemeId;

@@ -117,13 +117,13 @@
         <foreach collection="algorithmParameterDemoAdmin" item="item">
             <choose>
                 <when test="item.parameterType=='boolean'">
-                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value) values (#{schemeId},#{item.parameterId},'NO');
+                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value, is_selected, step) values (#{schemeId},#{item.parameterId},'NO',0,0);
                 </when>
                 <when test="item.parameterType=='selected'">
                     insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value, is_selected, step) values (#{schemeId},#{item.parameterId},0,false,0);
                 </when>
                 <otherwise>
-                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value) values (#{schemeId},#{item.parameterId},0);
+                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value, is_selected, step) values (#{schemeId},#{item.parameterId},0,0,0);
                 </otherwise>
             </choose>
         </foreach>
