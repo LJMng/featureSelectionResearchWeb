@@ -121,7 +121,7 @@ public class AlgorithmController {
     }
 
     @PostMapping("/addProcedureSetting")
-   public String addProcedureSettings(ProcedureSettings procedureSettings){
+   public String addProcedureSettings(@RequestBody ProcedureSettings procedureSettings){
         algorithmBusiness.addProcedureSettings(procedureSettings);
         return "redirect:/pages/execution/admin/algorithm.html";
    }

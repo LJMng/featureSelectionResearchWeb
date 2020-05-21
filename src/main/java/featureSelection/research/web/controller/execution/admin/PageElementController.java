@@ -4,10 +4,7 @@ import featureSelection.research.web.entity.execution.admin.PageElement;
 import featureSelection.research.web.service.execution.admin.PageElementBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +18,7 @@ public class PageElementController {
 
 
     @PostMapping("/htmlElements")
-    public String createPageElement(PageElement pageElement){
+    public String createPageElement(@RequestBody PageElement pageElement){
         pageElementBusiness.createPageElement(pageElement);
         return "redirect:/pages/execution/admin/htmlElementList.html";
     }
@@ -33,10 +30,10 @@ public class PageElementController {
         return pageElements;
     }
 
-    @GetMapping("/updateElement")
-    public String updateElement(PageElement pageElement){
+    @PostMapping("/updateElement")
+    public String updateElement(@RequestBody PageElement pageElement){
         pageElementBusiness.updateElement(pageElement);
-        return "htmlElementList";
+        return "redirect: /pages/execution/admin/htmlElementList.html";
     }
 
     @GetMapping("/elements")

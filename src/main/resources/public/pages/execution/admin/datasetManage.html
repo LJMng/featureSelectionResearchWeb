@@ -30,32 +30,32 @@
 <body>
 <div id="datasetData">
     <!--主导航栏 -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
-    <div class="container">
-        <a class="navbar-brand" href="/pages/execution.html">AlgGroup</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/pages/execution/admin/htmlElementList.html">htmlElement<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/pages/execution/admin/datasetManage.html">dataset</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/pages/execution/admin/administrator.html">account</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About us</a>
-                </li>
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/pages/execution.html">AlgGroup</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/pages/execution/admin/htmlElementList.html">htmlElement<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/datasetManage.html">dataset</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/administrator.html">account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About us</a>
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-outline-secondary btn-sm">登录</button>        &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" name="my-checkbox" checked>
         </div>
-        <button type="button" class="btn btn-outline-secondary btn-sm">登录</button>        &nbsp;&nbsp;&nbsp;
-        <input type="checkbox" name="my-checkbox" checked>
-    </div>
-</nav>
+    </nav>
     <div class="container-fluid">
         <div class="row">
             <!--侧边导航栏 -->
@@ -418,13 +418,13 @@
                         <div class="col-4">
                             <div class="list-group" id="list-tab" role="tablist">
                                 <a class="list-group-item list-group-item-action active"  data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
-                                <a v-for="datasetForm in datasetForms" class="list-group-item list-group-item-action" v-bind:id="datasetForm.inputId" data-toggle="list" v-bind:href='"#"+datasetForm.inputName' role="tab" v-bind:aria-controls="datasetForm.inputId">{{datasetForm.inputId}}</a>
+                                <a v-for="datasetForm in datasetForms" class="list-group-item list-group-item-action" v-bind:id="datasetForm.inputId" data-toggle="list" v-bind:href='"#aa"+datasetForm.inputId' role="tab" v-bind:aria-controls="datasetForm.inputId">{{datasetForm.inputId}}</a>
                             </div>
                         </div>
                         <div class="col-8">
                             <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id="list-home" role="tabpanel" >Velit aute mollit ipsum ad dolor consectetur nulla officia culpa adipisicing exercitation fugiat tempor. Voluptate deserunt sit sunt nisi aliqua fugiat proident ea ut. Mollit voluptate reprehenderit occaecat nisi ad non minim tempor sunt voluptate consectetur exercitation id ut nulla. Ea et fugiat aliquip nostrud sunt incididunt consectetur culpa aliquip eiusmod dolor. Anim ad Lorem aliqua in cupidatat nisi enim eu nostrud do aliquip veniam minim.</div>
-                                <div v-for="datasetForm in datasetForms" class="tab-pane fade" v-bind:id="datasetForm.inputName" role="tabpanel" v-bind:aria-labelledby="datasetForm.inputId">
+                                <div v-for="datasetForm in datasetForms" class="tab-pane fade" v-bind:id='"aa"+datasetForm.inputId' role="tabpanel" v-bind:aria-labelledby="datasetForm.inputId">
                                     <div class="card-body">
                                         <div class="row">
                                             <dt class="col-md-5">applyAccount:</dt>
@@ -458,12 +458,18 @@
                                                 <textarea class="form-text" id="exampleFormControlTextarea1" cols="50" rows="5" v-model="advice"></textarea>
                                             </label>
                                         </div>
+                                        <div class="col-md-6">
+                                            <label>
+                                                <p>审核人：</p>
+                                                <input class="form-control" type="text" v-model="administratorName">
+                                            </label>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <button class="btn btn-primary" @click="passDatasetForm(datasetForm.inputId)">pass</button>
+                                                <button class="btn btn-primary" @click="passDatasetForm(datasetForm.inputId,administratorName)">pass</button>
                                             </div>
                                             <div class="col-md-4 offset-md-1">
-                                                <button class="btn btn-danger" @click="unPassDatasetForm(datasetForm.inputId,advice)">unPass</button>
+                                                <button class="btn btn-danger" @click="unPassDatasetForm(datasetForm.inputId,advice,administratorName)">unPass</button>
                                             </div>
                                         </div>
                                     </div>
@@ -475,7 +481,7 @@
             </main>
         </div>
     </div>
-<script type="text/javascript" src="/js/datasetManagejs.js"></script>
+    <script type="text/javascript" src="/js/datasetManagejs.js"></script>
 </div>
 </body>
 <footer class="container">

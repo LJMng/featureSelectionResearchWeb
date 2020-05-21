@@ -226,8 +226,12 @@
                                     <input type="text" class="form-control" v-model="info.algorithmCallExchange">
                                 </div>
                                 <div class="form-group">
-                                <label class="col-form-label">MQ Routingkey:</label>
-                                <input type="text" class="form-control" v-model="info.algorithmCallRoutingkey">
+                                <label class="col-form-label">demo Routingkey:</label>
+                                <input type="text" class="form-control" v-model="info.algorithmCallDemoRoutingkey">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">execution Routingkey:</label>
+                                    <input type="text" class="form-control" v-model="info.algorithmCallExecutionRoutingkey">
                                 </div>
                                 <div class="form-group">
                                     <label class="col-form-label">算法服务器端口：</label>
@@ -313,8 +317,12 @@
                                     <input type="text" class="form-control" v-model="info.algorithmCallExchange">
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label">MQ routingkey:</label>
-                                    <input type="text" class="form-control" v-model="info.algorithmCallRoutingkey">
+                                    <label class="col-form-label">Demo Routingkey:</label>
+                                    <input type="text" class="form-control" v-model="info.algorithmCallDemoRoutingkey">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Execution Routingkey:</label>
+                                    <input type="text" class="form-control" v-model="info.algorithmCallExecutionRoutingkey">
                                 </div>
                                 <div class="form-group">
                                     <label class="col-form-label">算法服务器端口：</label>
@@ -462,11 +470,11 @@
             2.表单内容包括 algorithm_id name state options defaultOption description
             3.通过表单直接提交，提交地址为 ： /addProduceSettings
             -->
-            <form action="/addProcedureSetting" method="post" role="form">
+            <form>
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
                         <label>选择算法：</label>
-                        <select name="algorithmId" v-model="algorithmId">
+                        <select name="algorithmId" v-model="procedureSetting.algorithmId">
                             <option v-for="algorithm in algorithms">{{algorithm.algorithmId}}</option>
                         </select>
                     </div>
@@ -479,13 +487,13 @@
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
                         <label>步骤名称</label>
-                        <input type="text" name="name" class="form-control" required>
+                        <input type="text"  v-model="procedureSetting.name" class="form-control" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
                         <label>运行状态</label>
-                        <select class="custom-select" name="state">
+                        <select class="custom-select"  v-model="procedureSetting.state">
                             <option>required</option>
                             <option>optionalSelected</option>
                             <option>optional</option>
@@ -495,25 +503,25 @@
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
                         <label>选择状态</label>
-                        <input type="text" class="form-control" name="options" required>
+                        <input type="text" class="form-control" title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.options" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
                         <label>默认选择</label>
-                        <input type="text" name="defaultOption" class="form-control" required>
+                        <input type="text" v-model="procedureSetting.defaultOption" class="form-control" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
                         <label>步骤描述</label>
-                        <input type="text" name="description" class="form-control" required>
+                        <input type="text" v-model="procedureSetting.description" class="form-control" required>
                     </div>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col-md-2 offset-md-4">
-                        <input type="submit" value="添加步骤" class="form-control">
+                        <input type="submit" value="添加步骤" class="form-control" @click="createProcedureSetting()">
                     </div>
                     <div class="col-md-2">
                         <input type="reset" value="重置" class="form-control">
@@ -555,8 +563,10 @@
                                     <dd class="col-md-7">{{algorithm.algorithmCallHost}}</dd>
                                     <dt class="col-md-5">算法Exchange:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmCallExchange}}</dd>
-                                    <dt class="col-md-5">算法RoutingKey:</dt>
-                                    <dd class="col-md-7">{{algorithm.algorithmCallRoutingkey}}</dd>
+                                    <dt class="col-md-5">DemoRoutingKey:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallDemoRoutingkey}}</dd>
+                                    <dt class="col-md-5">ExecutionRoutingKey:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallExecutionRoutingkey}}</dd>
                                     <dt class="col-md-5">算法服务器端口:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmCallPort}}</dd>
                                 </div>
@@ -607,18 +617,6 @@
                                     <dd class="col-md-7">{{algorithm.algorithmCallRoutingkey}}</dd>
                                     <dt class="col-md-5">算法服务器端口:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmCallPort}}</dd>
-<!--                                    <dt class="col-md-5">algorithmId:</dt>-->
-<!--                                    <dd class="col-md-7">{{algorithm.algorithmId}}</dd>-->
-<!--                                    <dt class="col-md-5">algorithmName:</dt>-->
-<!--                                    <dd class="col-md-7">{{algorithm.algorithmName}}</dd>-->
-<!--                                    <dt class="col-md-5">algorithmType:</dt>-->
-<!--                                    <dd class="col-md-7">{{algorithm.algorithmType}}</dd>-->
-<!--                                    <dt class="col-md-5">PaperReference:</dt>-->
-<!--                                    <dd class="col-md-7">{{algorithm.algorithmPaperReference}}</dd>-->
-<!--                                    <dt class="col-md-5">PaperLink:</dt>-->
-<!--                                    <dd class="col-md-7">{{algorithm.algorithmPaperLink}}</dd>-->
-<!--                                    <dt class="col-md-5">CallInterFace:</dt>-->
-<!--                                    <dd class="col-md-7">{{algorithm.algorithmCallInterFace}}</dd>-->
                                 </div>
                             </div>
 
