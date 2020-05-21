@@ -15,7 +15,8 @@ public class Algorithm implements Serializable {
     private String algorithmCallInterface;
     private String algorithmCallHost;
     private String algorithmCallExchange;
-    private String algorithmCallRoutingkey;
+    private String algorithmCallDemoRoutingkey;
+    private String algorithmCallExecutionRoutingkey;
     private String algorithmCallPort;
     private String algorithmCallUsername;
     private String algorithmCallPassword;
@@ -114,12 +115,20 @@ public class Algorithm implements Serializable {
         this.algorithmCallExchange = algorithmCallExchange;
     }
 
-    public String getAlgorithmCallRoutingkey() {
-        return algorithmCallRoutingkey;
+    public String getAlgorithmCallDemoRoutingkey() {
+        return algorithmCallDemoRoutingkey;
     }
 
-    public void setAlgorithmCallRoutingkey(String algorithmCallRoutingkey) {
-        this.algorithmCallRoutingkey = algorithmCallRoutingkey;
+    public void setAlgorithmCallDemoRoutingkey(String algorithmCallDemoRoutingkey) {
+        this.algorithmCallDemoRoutingkey = algorithmCallDemoRoutingkey;
+    }
+
+    public String getAlgorithmCallExecutionRoutingkey() {
+        return algorithmCallExecutionRoutingkey;
+    }
+
+    public void setAlgorithmCallExecutionRoutingkey(String algorithmCallExecutionRoutingkey) {
+        this.algorithmCallExecutionRoutingkey = algorithmCallExecutionRoutingkey;
     }
 
     public String getAlgorithmCallPort() {
@@ -166,7 +175,8 @@ public class Algorithm implements Serializable {
                 ", algorithmCallInterface='" + algorithmCallInterface + '\'' +
                 ", algorithmCallHost='" + algorithmCallHost + '\'' +
                 ", algorithmCallExchange='" + algorithmCallExchange + '\'' +
-                ", algorithmCallRoutingkey='" + algorithmCallRoutingkey + '\'' +
+                ", algorithmCallDemoRoutingkey='" + algorithmCallDemoRoutingkey + '\'' +
+                ", algorithmCallExecutionRoutingkey='" + algorithmCallExecutionRoutingkey + '\'' +
                 ", algorithmCallPort='" + algorithmCallPort + '\'' +
                 ", algorithmCallUsername='" + algorithmCallUsername + '\'' +
                 ", algorithmCallPassword='" + algorithmCallPassword + '\'' +
