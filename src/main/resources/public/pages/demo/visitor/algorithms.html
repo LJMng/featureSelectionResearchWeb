@@ -174,74 +174,7 @@
                 resulttext: '',
                 //-----------algorithmData------------
                 selected: '',
-                algorithms: [
-                    {
-                        algorithmId: "1",
-                        algorithmName: "算法1",
-                        algorithmDesciption: "测试用的算法1",
-                        parameterSchemeIndex: "",
-                        parameters: [
-                            {
-                                parameterid: "1",
-                                parameterName: "参数1",
-                            },
-                            {
-                                parameterid: "2",
-                                parameterName: "参数2",
-                            },
-                        ],
-                        parameterSchemes: [
-                            {
-                                schemeId: "1",
-                                schemeName: "方案1",
-                                schemeDescription: "",
-                                dataset: {
-                                    datasetId: "1",
-                                    datasetName: "测试用数据集1",
-                                    datasetSource: "自创",
-                                    datasetInstance: "100",
-                                },
-                                parameterValues: [
-                                    {
-                                        parameter: {
-                                            parameterId: "1",
-                                            parameterName: "参数1"
-                                        },
-                                        parameterValue: 100,
-                                    },
-                                    {
-                                        parameter: {
-                                            parameterId: "2",
-                                            parameterName: "参数1"
-                                        },
-                                        parameterValue: 1,
-                                    },
-                                ]
-                            },
-                            {
-                                schemeId: "2        ",
-                                schemeName: "方案2",
-                                schemeDescription: "",
-                                parameterValues: [
-                                    {
-                                        parameter: {
-                                            parameterId: "1",
-                                            parameterName: "参数1"
-                                        },
-                                        parameterValue: 1000,
-                                    },
-                                    {
-                                        parameter: {
-                                            parameterId: "2",
-                                            parameterName: "参数1"
-                                        },
-                                        parameterValue: 1000,
-                                    },
-                                ]
-                            },
-                        ],
-                    },
-                ]
+                algorithms: []
             },
             methods: {
                 submitParameterToExecute(algorithmIndex, parameterSchemeIndex) {
@@ -313,7 +246,7 @@
                 }
             }
         });
-        // 上面created与下面$(function(){})的调用顺序自行百度和查看Vue.js文档说明，或者自行尝试
+
         $(function () {
             $('#schemesdetailspop').load('popups/demo/visitor/schemesDetails.html')
             $.get("http://localhost:8000/demo/getAllAlgorithmInfo", function (data) {

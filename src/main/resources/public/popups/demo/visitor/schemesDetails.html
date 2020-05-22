@@ -64,35 +64,7 @@
         var vue_parameterInfo = new Vue({
             el: '#parameterInfo',
             data: {
-                schemesdetailstitle: '',
-                parametertitle: '',
-                datasetinfotitle: '',
-                parameterScheme: {
-                    schemeId: "1",
-                    schemeName: "方案1",
-                    schemeDescription: "",
-                    dataset: {
-                        datasetId: "1",
-                        datasetName: "测试用数据集1",
-                        datasetDimension: "100",
-                    },
-                    parameterSchemeValues: [
-                        {
-                            parameter: {
-                                parameterId: "1",
-                                parameterName: "参数1"
-                            },
-                            parameterValue: 100,
-                        },
-                        {
-                            parameter: {
-                                parameterId: "2",
-                                parameterName: "参数1"
-                            },
-                            parameterValue: 1,
-                        },
-                    ]
-                }
+               
             },
             created: function () {
                 axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=schemesDetails").then((response) => {

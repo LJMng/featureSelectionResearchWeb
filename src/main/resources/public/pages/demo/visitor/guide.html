@@ -40,11 +40,6 @@
                 button_text2: ""
             },
             created: function () {
-                //vue不支持jqury.ajax..
-                /*
-                * 根据存储语言选择信息的cookie获取页面元素内容
-                *
-                 */
                 axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=guide").then((response) => {
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {
@@ -59,10 +54,6 @@
                     }
                 });
             }
-        });
-        // 上面created与下面$(function(){})的调用顺序自行百度和查看Vue.js文档说明，或者自行尝试
-        $(function () {
-
         });
     </script>
 </body>
