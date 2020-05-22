@@ -1,9 +1,9 @@
 package featureSelection.research.web.controller.demo.visitor;
-import featureSelection.research.web.common.service.ExectionAlgorithmRpcService;
+import featureSelection.research.web.common.service.DemoRabbitmqComServiceSingleton;
+import featureSelection.research.web.entity.communicationJson.rabbitmqcominfo.DemoRabbimqComInfo;
 import featureSelection.research.web.entity.demo.visitor.Algorithm;
 import featureSelection.research.web.entity.demo.visitor.Dataset;
 import featureSelection.research.web.service.demo.visitor.impl.AlgorithmServiceImpl;
-import featureSelection.research.web.common.service.DemoAlgorithmRpcService;
 import featureSelection.research.web.service.demo.visitor.impl.DatasetServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.List;
+
+import static java.lang.Thread.sleep;
 
 /**
  * @ClassName : AlgorithmEexecuteController
@@ -27,35 +29,39 @@ import java.util.List;
 @RequestMapping(value = "/demo")
 public class  AlgorithmEexecuteController {
     @Autowired
-    private AlgorithmServiceImpl algorithmservice;
+    private AlgorithmServiceImpl algorithmserviceImpl;
     @Autowired
     private DatasetServiceImpl datasetServiceImpl;
-    @Autowired
-    private DemoAlgorithmRpcService algotithRpcService;
-    @Autowired
-    private ExectionAlgorithmRpcService exectionAlgorithmRpcService;
 
     @PostMapping(value = "/transmitExcuteInfo")
     @ResponseBody
     public Object reciveExecuteInfo(@RequestParam("algorithmId") String algorithmId,
                                     @RequestParam("parameterSchemeId") String parameterSchemeId) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        Object resultJson=algotithRpcService.send(Integer.parseInt(algorithmId),Integer.parseInt(parameterSchemeId));
+        Object resultJson=new Object();
+        DemoRabbimqComInfo demoRabbimqComInfo=new DemoRabbimqComInfo(Integer.parseInt(parameterSchemeId),
+                Integer.parseInt(algorithmId));
+        DemoRabbitmqComServiceSingleton.addDemoRabbitmqComInfo(demoRabbimqComInfo);
+        while(true){
+        if (demoRabbimqComInfo.getResultInfo()!=null){
+            resultJson=demoRabbimqComInfo.getResultInfo();
+            //任务结束后删除连接
+            DemoRabbitmqComServiceSingleton.deleteRabbitmqComInfo(demoRabbimqComInfo.getDemoRabbimqComTaskId());
+            return resultJson;
 
-        return resultJson;
-    }
-
-    @GetMapping(value = "/testAsync")
-    @ResponseBody
-    public String testAsync() {
-        exectionAlgorithmRpcService.send(5);
-        System.out.println("已发送");
-        return "ok";
+        }else{
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        }
     }
 
     @ResponseBody
     @GetMapping("getAllAlgorithmInfo")
     public List<Algorithm>getAllAlgorithmInfo(){
-        return algorithmservice.getAllAlgorithmInfo();
+        return algorithmserviceImpl.getAllAlgorithmInfo();
     }
 
     @GetMapping(value="/download")
