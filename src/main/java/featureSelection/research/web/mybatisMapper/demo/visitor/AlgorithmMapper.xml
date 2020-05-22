@@ -13,7 +13,11 @@
         <result column="algorithm_call_interface" property="algorithmCallInterface"></result>
         <result column="algorithm_call_host" property="algorithmCallHost"></result>
         <result column="algorithm_call_exchange" property="algorithmCallExchange"></result>
-        <result column="algorithm_call_routingkey" property="algorithmCallRoutingkey"></result>
+        <result column="algorithm_call_demo_routingkey" property="algorithmCallDemoRoutingkey"></result>
+        <result column="algorithm_call_execution_connect_routingkey"
+                property="algorithmCallExecutionConnectRoutingkey"></result>
+        <result column="algorithm_call_execution_send_routingkey"
+                property="algorithmCallExecutionSendRoutingkey"></result>
         <result column="algorithm_call_port" property="algorithmCallPort"></result>
         <result column="algorithm_call_username" property="algorithmCallUsername"></result>
         <result column="algorithm_call_password" property="algorithmCallPassword"></result>
@@ -27,7 +31,11 @@
         <result column="algorithm_paper_link" property="algorithmPaperLink"></result>
         <result column="algorithm_call_interface" property="algorithmCallInterface"></result>
         <result column="algorithm_call_host" property="algorithmCallHost"></result>
-        <result column="algorithm_call_exchange" property="algorithmCallExchange"></result>
+        <result column="algorithm_call_demo_routingkey" property="algorithmCallDemoRoutingkey"></result>
+        <result column="algorithm_call_execution_connect_routingkey"
+                property="algorithmCallExecutionConnectRoutingkey"></result>
+        <result column="algorithm_call_execution_send_routingkey"
+                property="algorithmCallExecutionSendRoutingkey"></result>
         <result column="algorithm_call_routingkey" property="algorithmCallRoutingkey"></result>
         <result column="algorithm_call_port" property="algorithmCallPort"></result>
         <result column="algorithm_call_username" property="algorithmCallUsername"></result>
@@ -48,7 +56,11 @@
         <result column="algorithm_call_interface" property="algorithmCallInterface"></result>
         <result column="algorithm_call_host" property="algorithmCallHost"></result>
         <result column="algorithm_call_exchange" property="algorithmCallExchange"></result>
-        <result column="algorithm_call_routingkey" property="algorithmCallRoutingkey"></result>
+        <result column="algorithm_call_demo_routingkey" property="algorithmCallDemoRoutingkey"></result>
+        <result column="algorithm_call_execution_connect_routingkey"
+                property="algorithmCallExecutionConnectRoutingkey"></result>
+        <result column="algorithm_call_execution_send_routingkey"
+                property="algorithmCallExecutionSendRoutingkey"></result>
         <result column="algorithm_call_port" property="algorithmCallPort"></result>
         <result column="algorithm_call_username" property="algorithmCallUsername"></result>
         <result column="algorithm_call_password" property="algorithmCallPassword"></result>

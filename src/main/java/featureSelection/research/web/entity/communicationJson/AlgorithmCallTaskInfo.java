@@ -1,6 +1,7 @@
 package featureSelection.research.web.entity.communicationJson;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import featureSelection.research.web.entity.communicationJson.localrabbitmqinfo.LocalRabbitmqInfo;
 
 import java.util.Arrays;
 
@@ -29,7 +30,8 @@ public class AlgorithmCallTaskInfo {
     private int partTotalLine;
     private int[]data;
     private String attributes;
-
+    @JSONField(name = "rabbitmqInfo")
+    private LocalRabbitmqInfo localRabbitmqInfo;
     public String getId() {
         return id;
     }
@@ -126,6 +128,14 @@ public class AlgorithmCallTaskInfo {
         this.data = data;
     }
 
+    public LocalRabbitmqInfo getLocalRabbitmqInfo() {
+        return localRabbitmqInfo;
+    }
+
+    public void setLocalRabbitmqInfo(LocalRabbitmqInfo localRabbitmqInfo) {
+        this.localRabbitmqInfo = localRabbitmqInfo;
+    }
+
     @Override
     public String toString() {
         return "AlgorithmCallTaskInfo{" +
@@ -138,9 +148,10 @@ public class AlgorithmCallTaskInfo {
                 ", previousReducts='" + previousReducts + '\'' +
                 ", runTimes='" + runTimes + '\'' +
                 ", line=" + line +
-                ", partTotalLine='" + partTotalLine + '\'' +
+                ", partTotalLine=" + partTotalLine +
                 ", data=" + Arrays.toString(data) +
                 ", attributes='" + attributes + '\'' +
+                ", localRabbitmqInfo=" + localRabbitmqInfo +
                 '}';
     }
 }

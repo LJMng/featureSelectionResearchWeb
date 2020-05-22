@@ -1,5 +1,7 @@
 package featureSelection.research.web.entity.demo.visitor;
 
+import featureSelection.research.web.mybatisMapper.demo.visitor.AlgorithmMapper;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  * @Author : WDD
  * @Date: 2020-03-30 21:16
  */
-public class Algorithm {
+public  class Algorithm {
     private int  algorithmId;
     private String algorithmName;
     private String algorithmPaperReference;
@@ -17,7 +19,9 @@ public class Algorithm {
     private String algorithmCallInterface;
     private String algorithmCallHost;
     private String algorithmCallExchange;
-    private String algorithmCallRoutingkey;
+    private String algorithmCallDemoRoutingkey;
+    private String algorithmCallExeuctionConnectRoutingkey;
+    private String algorithmCallExeuctionSendRoutingkey;
     private String algorithmCallPort;
     private String algorithmCallUsername;
     private String algorithmCallPassword;
@@ -124,12 +128,28 @@ public class Algorithm {
         this.algorithmCallExchange = algorithmCallExchange;
     }
 
-    public String getAlgorithmCallRoutingkey() {
-        return algorithmCallRoutingkey;
+    public String getAlgorithmCallDemoRoutingkey() {
+        return algorithmCallDemoRoutingkey;
     }
 
-    public void setAlgorithmCallRoutingkey(String algorithmCallRoutingkey) {
-        this.algorithmCallRoutingkey = algorithmCallRoutingkey;
+    public void setAlgorithmCallDemoRoutingkey(String algorithmCallDemoRoutingkey) {
+        this.algorithmCallDemoRoutingkey = algorithmCallDemoRoutingkey;
+    }
+
+    public String getAlgorithmCallExeuctionConnectRoutingkey() {
+        return algorithmCallExeuctionConnectRoutingkey;
+    }
+
+    public void setAlgorithmCallExeuctionConnectRoutingkey(String algorithmCallExeuctionConnectRoutingkey) {
+        this.algorithmCallExeuctionConnectRoutingkey = algorithmCallExeuctionConnectRoutingkey;
+    }
+
+    public String getAlgorithmCallExeuctionSendRoutingkey() {
+        return algorithmCallExeuctionSendRoutingkey;
+    }
+
+    public void setAlgorithmCallExeuctionSendRoutingkey(String algorithmCallExeuctionSendRoutingkey) {
+        this.algorithmCallExeuctionSendRoutingkey = algorithmCallExeuctionSendRoutingkey;
     }
 
     public String getAlgorithmCallPort() {
@@ -166,7 +186,9 @@ public class Algorithm {
                 ", algorithmCallInterface='" + algorithmCallInterface + '\'' +
                 ", algorithmCallHost='" + algorithmCallHost + '\'' +
                 ", algorithmCallExchange='" + algorithmCallExchange + '\'' +
-                ", algorithmCallRoutingkey='" + algorithmCallRoutingkey + '\'' +
+                ", algorithmCallDemoRoutingkey='" + algorithmCallDemoRoutingkey + '\'' +
+                ", algorithmCallExeuctionConnectRoutingkey='" + algorithmCallExeuctionConnectRoutingkey + '\'' +
+                ", algorithmCallExeuctionSendRoutingkey='" + algorithmCallExeuctionSendRoutingkey + '\'' +
                 ", algorithmCallPort='" + algorithmCallPort + '\'' +
                 ", algorithmCallUsername='" + algorithmCallUsername + '\'' +
                 ", algorithmCallPassword='" + algorithmCallPassword + '\'' +
