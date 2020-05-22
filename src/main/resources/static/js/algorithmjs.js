@@ -35,11 +35,11 @@ var vm =new Vue({
             algorithmParameterDemoAdmin:[],
             algorithmCallHost:'',
             algorithmCallExchange:'',
-            algorithmCallRoutingkey:'',
+            algorithmCallDemoRoutingkey:'',
+            algorithmCallExecutionRoutingkey:'',
             algorithmCallPort:'',
             algorithmCallUsername:'',
             algorithmCallPassword:''
-
         },
         number: 0,
         // parameterName: [],
@@ -54,6 +54,14 @@ var vm =new Vue({
             parameterTypes:[],
             parameterSettingInfoTypes:[],
             parameterSettingInfoValues:[]
+        },
+        procedureSetting:{
+            algorithmId:1,
+            name:'',
+            state:'',
+            options:'',
+            defaultOption:'',
+            description:''
         }
 
     },
@@ -192,6 +200,16 @@ var vm =new Vue({
             this.info.algorithmPaperLink = '';
             this.info.algorithmPaperReference = '';
             this.info.algorithmCallInterface = '';
+        },
+        //新增算法步骤
+        createProcedureSetting(){
+            axios.post('/addProcedureSetting',this.procedureSetting)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         }
     },
     computed: {
@@ -242,19 +260,19 @@ var vm =new Vue({
 
 })
 
-    //发送表单ajax请求
-    $("#addParameterSettingInfo").on('click',function(){
-        alert("请求发送")
-        $.ajax({
-            url:"/addAlgorithm",
-            type:"POST",
-            data:JSON.stringify($("#createAlgorithm").serializeObject()),
-            contentType:"application/json",  //缺失会出现URL编码，无法转成json对象
-            success:function(){
-                alert("成功");
-            }
-        });
+//发送表单ajax请求
+$("#addParameterSettingInfo").on('click',function(){
+    alert("请求发送")
+    $.ajax({
+        url:"/addAlgorithm",
+        type:"POST",
+        data:JSON.stringify($("#createAlgorithm").serializeObject()),
+        contentType:"application/json",  //缺失会出现URL编码，无法转成json对象
+        success:function(){
+            alert("成功");
+        }
     });
+});
 
 /**
  * 自动将form表单封装成json对象
@@ -273,17 +291,17 @@ $.fn.serializeObject = function() {
     $.each(a,function () {
         //判断是否为最后一个的values
         if(this.name==='value'){
-    if (o[this.name]) {
-        if (!o[this.name].push) {
-            //         不存在名，就赋值一个名
-            o[this.name] = [ o[this.name] ];
-        }
-        // 给对应的名赋值，都是采用追加的方式
-        o[this.name].push(this.value || '');
-    }
-    else {
-        o[this.name] = this.value || '';
-    }
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    //         不存在名，就赋值一个名
+                    o[this.name] = [ o[this.name] ];
+                }
+                // 给对应的名赋值，都是采用追加的方式
+                o[this.name].push(this.value || '');
+            }
+            else {
+                o[this.name] = this.value || '';
+            }
 
         }else{
             if (this.name==='algorithmId'){
@@ -314,4 +332,3 @@ $.fn.serializeObject = function() {
     // });
     return k;
 };
-

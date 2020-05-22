@@ -140,139 +140,112 @@
             </nav>
 
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                <!-- 修改htmlElement页面元素信息的模态框Modal -->
-                <form method="get" action="/updateElement" class="form-horizontal" role="form" id="myForm" onsubmit="return ">
-                    <div class="modal fade" id="updateModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
-                        <div class="modal-dialog">
-                            <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
-                            <div class="modal-content">
-                                <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
-
-                                <div class="btn-info modal-header">
-                                    <!--  模态框标题  -->
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <!--  关闭按钮  -->
-                                    <h4>点击修改页面元素信息</h4>
-                                    <!--  标题内容  -->
-                                </div>
-
-                                <div class="modal-body">
-                                    <!--  模态框内容，我在此处添加一个表单 -->
-                                    <form class="form-horizontal" role="form">
-                                        <div class="row">
-                                            <div class="col-md-2 offset-md-1">
-                                                <p align="center">htmlName</p>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <p align="center">moduleKey</p>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <p align="center">type</p>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <p align="center">chValue</p>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <p align="center">enValue</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-2 offset-md-1">
-                                                <input type="text" name="htmlName" class="form-control" placeholder="htmlName" disabled />
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="text" name="moduleKey" class="form-control" />
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="text" name="type" class="form-control" />
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="text" name="chValue" class="form-control" />
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="text" name="enValue" class="form-control" />
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <div class="modal-footer">
-                                    <!--  模态框底部样式，一般是提交或者确定按钮 -->
-                                    <button type="submit" class="btn btn-info">确定</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                </div>
-
-                            </div><!-- /.modal-content -->
-                        </div>
-                    </div> <!-- /.modal -->
-                </form>
                 <!-- 新增页面元素的模态框Modal -->
-                <form method="post" action="/htmlElements" class="form-horizontal" role="form" id="createForm" onsubmit="return ">
-                    <div class="modal fade" id="createModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
-                        <div class="modal-dialog">
-                            <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
-                            <div class="modal-content">
-                                <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
-
-                                <div class="btn-info modal-header">
-                                    <!--  模态框标题  -->
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <!--  关闭按钮  -->
-                                    <h4>点击修改页面元素信息</h4>
-                                    <!--  标题内容  -->
-                                </div>
-
-                                <div class="modal-body">
-                                    <!--  模态框内容，我在此处添加一个表单 -->
-                                    <form class="form-horizontal" role="form">
-                                        <div class="row">
-                                            <div class="col-md-10 offset-md-1">
-                                                <label>htmlName</label>
-                                                <input type="text" class="form-control" name="htmlName"   placeholder="htmlName" v-model="checkHtmlName" @blur="fCheckHtmlName">{{checked.checkedHtmlName}}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-10 offset-md-1">
-                                                <label>moduleKey</label>
-                                                <input type="text" class="form-control" name="moduleKey" placeholder="moduleKey" v-model="checkModuleKey" @blur="fCheckModuleKey">{{checked.checkedModuleKey}}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                        <div class="col-md-10 offset-md-1">
-                                            <label>type</label>
-                                            <input type="text" class="form-control" name="type" placeholder="type">
-                                        </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-10 offset-md-1">
-                                                <label>chValue</label>
-                                                <input type="text" class="form-control" name="chValue" placeholder="中文值" v-model="checkChValue" @blur="fCheckChValue">{{checked.checkedChValue}}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-10 offset-md-1">
-                                                <label>enValue</label>
-                                                <input type="text" class="form-control" name="enValue" placeholder="英文值" v-model="checkEnValue" @blur="fCheckEnValue">{{checked.checkedEnValue}}
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <div class="modal-footer">
-                                    <!--  模态框底部样式，一般是提交或者确定按钮 -->
-                                    <button type="submit" class="btn btn-info">确定</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                </div>
-
-                            </div><!-- /.modal-content -->
+                <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalScrollable">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="addElementPageName" class="col-form-label">页面名称:</label>
+                                        <input type="text" class="form-control" id="addElementPageName" v-model="htmlElement.htmlName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addelementModuleKey" class="col-form-label">模块名称:</label>
+                                        <input type="text"  class="form-control" id="addElementModuleKey" v-model="htmlElement.moduleKey">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addElementType" class="col-form-label">类型:</label>
+                                        <input type="text"  class="form-control" id="addElementType" v-model="htmlElement.type">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addElementChValue" class="col-form-label">中文值:</label>
+                                        <input type="text"  class="form-control" id="addElementChValue" v-model="htmlElement.chValue">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addElementEnValue" class="col-form-label">类型:</label>
+                                        <input type="text"  class="form-control" id="addElementEnValue" v-model="htmlElement.enValue">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" @click="createHtmlElement()">Save changes</button>
+                            </div>
                         </div>
-                    </div> <!-- /.modal -->
-                </form>
+                    </div>
+                </div>
+<!--                <form method="post" action="/htmlElements" class="form-horizontal" role="form" id="createForm" onsubmit="return ">-->
+<!--                    <div class="modal fade" id="createModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+<!--                        &lt;!&ndash;  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  &ndash;&gt;-->
+<!--                        <div class="modal-dialog">-->
+<!--                            &lt;!&ndash;  显示模态框对话框模型（若不写下一个div则没有颜色）  &ndash;&gt;-->
+<!--                            <div class="modal-content">-->
+<!--                                &lt;!&ndash;  显示模态框白色背景，所有内容都写在这个div里面  &ndash;&gt;-->
+
+<!--                                <div class="btn-info modal-header">-->
+<!--                                    &lt;!&ndash;  模态框标题  &ndash;&gt;-->
+<!--                                    <button type="button" class="close" data-dismiss="modal">&times;</button>-->
+<!--                                    &lt;!&ndash;  关闭按钮  &ndash;&gt;-->
+<!--                                    <h4>点击修改页面元素信息</h4>-->
+<!--                                    &lt;!&ndash;  标题内容  &ndash;&gt;-->
+<!--                                </div>-->
+
+<!--                                <div class="modal-body">-->
+<!--                                    &lt;!&ndash;  模态框内容，我在此处添加一个表单 &ndash;&gt;-->
+<!--                                    <form class="form-horizontal" role="form">-->
+<!--                                        <div class="row">-->
+<!--                                            <div class="col-md-10 offset-md-1">-->
+<!--                                                <label>htmlName</label>-->
+<!--                                                <input type="text" class="form-control" name="htmlName"   placeholder="htmlName" v-model="checkHtmlName" @blur="fCheckHtmlName">{{checked.checkedHtmlName}}-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="row">-->
+<!--                                            <div class="col-md-10 offset-md-1">-->
+<!--                                                <label>moduleKey</label>-->
+<!--                                                <input type="text" class="form-control" name="moduleKey" placeholder="moduleKey" v-model="checkModuleKey" @blur="fCheckModuleKey">{{checked.checkedModuleKey}}-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="row">-->
+<!--                                        <div class="col-md-10 offset-md-1">-->
+<!--                                            <label>type</label>-->
+<!--                                            <input type="text" class="form-control" name="type" placeholder="type">-->
+<!--                                        </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="row">-->
+<!--                                            <div class="col-md-10 offset-md-1">-->
+<!--                                                <label>chValue</label>-->
+<!--                                                <input type="text" class="form-control" name="chValue" placeholder="中文值" v-model="checkChValue" @blur="fCheckChValue">{{checked.checkedChValue}}-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="row">-->
+<!--                                            <div class="col-md-10 offset-md-1">-->
+<!--                                                <label>enValue</label>-->
+<!--                                                <input type="text" class="form-control" name="enValue" placeholder="英文值" v-model="checkEnValue" @blur="fCheckEnValue">{{checked.checkedEnValue}}-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </form>-->
+<!--                                </div>-->
+
+<!--                                <div class="modal-footer">-->
+<!--                                    &lt;!&ndash;  模态框底部样式，一般是提交或者确定按钮 &ndash;&gt;-->
+<!--                                    <button type="submit" class="btn btn-info">确定</button>-->
+<!--                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>-->
+<!--                                </div>-->
+
+<!--                            </div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
+<!--                        </div>-->
+<!--                    </div> &lt;!&ndash; /.modal &ndash;&gt;-->
+<!--                </form>-->
                 <div class="row">
                     <div class="col-md-2">
-                        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createModal">
+                        <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#createModal">
                             添加页面元素
                         </button>
                     </div>
@@ -282,63 +255,93 @@
                     </div>
                 </div>
                 <div class="container">
-                    <!-- 遍历元素列表信息，用循环列表渲染在页面上 -->
-                    <div class="list-group list-group-horizontal">
-                        <li class="list-group-item">
-                            <button class="btn btn-light btn-lg btn-block" >
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <label>{{Values.thead_li1}}</label>
+                    <!--列表内容换成斑马线表格来进行显示 -->
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>页面名称</th>
+                            <th>模块名称</th>
+                            <th>类型</th>
+                            <th>中文值</th>
+                            <th>英文值</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="pageElement in filterPageElement">
+                            <td style="width:150px;overflow:hidden;text-overflow:clip;">{{pageElement.htmlName}}</td>
+                            <td style="width:150px;overflow:hidden;text-overflow:ellipsis;">{{pageElement.moduleKey}}</td>
+                            <td style="width:150px;overflow:hidden;text-overflow:ellipsis;">{{pageElement.type}}</td>
+                            <td><div v-bind:title="pageElement.chValue" style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;display:block;">{{pageElement.chValue}}</div></td>
+                            <td><div v-bind:title="pageElement.enValue" style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;display:block;">{{pageElement.enValue}}</div></td>
+                            <td>
+                                <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#"+pageElement.moduleKey'>修改</button>
+                                <button class="btn btn-danger" @click="deletePageElement(pageElement.moduleKey)">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div v-for="pageElement in filterPageElement">
+                <div class="modal fade" v-bind:id="pageElement.moduleKey" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="elementPageName" class="col-form-label">页面名称:</label>
+                                        <input type="text" class="form-control" id="elementPageName" v-model="htmlElement.htmlName">
                                     </div>
-                                    <div class="col-md-2">
-                                        <label>{{Values.thead_li2}}</label>
+                                    <div class="form-group">
+                                        <label for="elementModuleKey" class="col-form-label">模块名称:</label>
+                                        <input type="text"  class="form-control" id="elementModuleKey" v-model="htmlElement.moduleKey">
                                     </div>
-                                    <div class="col-md-2">
-                                        <label>{{Values.thead_li3}}</label>
+                                    <div class="form-group">
+                                        <label for="elementType" class="col-form-label">类型:</label>
+                                        <input type="text"  class="form-control" id="elementType" v-model="htmlElement.type">
                                     </div>
-                                    <div class="col-md-2">
-                                        <label>{{Values.thead_li4}}</label>
+                                    <div class="form-group">
+                                        <label for="elementChValue" class="col-form-label">中文值:</label>
+                                        <input type="text"  class="form-control" id="elementChValue" v-model="htmlElement.chValue">
                                     </div>
-                                    <div class="col-md-2">
-                                        <label>{{Values.thead_li5}}</label>
+                                    <div class="form-group">
+                                        <label for="elementEnValue" class="col-form-label">类型:</label>
+                                        <input type="text"  class="form-control" id="elementEnValue" v-model="htmlElement.enValue">
                                     </div>
-                                </div>
-                            </button>
-                        </li>
-                    </div>
-                    <div class="list-group list-group-horizontal">
-                        <div>
-                            <div v-for="pageElement in filterPageElement">
-                                <li  class="list-group-item list-group-item-action">
-                                    <button class="btn btn-link btn-lg btn-block" data-toggle="modal" data-target="#updateModal">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label>{{pageElement.htmlName}}</label>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>{{pageElement.moduleKey}}</label>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>{{pageElement.type}}</label>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>{{pageElement.chValue}}</label>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>{{pageElement.enValue}}</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label><button class="btn btn-danger" @click="deletePageElement(pageElement.moduleKey)">删除</button></label>
-                                        </div>
-                                    </button>
-
-
-                                </li>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" @click="updateHtmlElement()">Save changes</button>
                             </div>
                         </div>
                     </div>
                 </div>
+                </div>
+
             </main>
         </div>
     </div>

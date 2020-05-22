@@ -11,7 +11,15 @@ var vm=new Vue({
         checkHtmlName:'',
         checkEnValue:'',
         checkChValue:'',
-        checked:{checkedModuleKey:'',checkedHtmlName:'',checkedEnValue:'',checkedChValue:''}
+        checked:{checkedModuleKey:'',checkedHtmlName:'',checkedEnValue:'',checkedChValue:''},
+        htmlElement:{
+            htmlName:'',
+            moduleKey:'',
+            chValue:'',
+            enValue:'',
+            type:''
+        }
+
     },
     computed:{
         filterPageElement(){
@@ -58,7 +66,26 @@ var vm=new Vue({
             }else{
                 this.checked.checkedChValue="正确！"
             }
-        }
+        },
+        updateHtmlElement(){
+            axios.post('/updateElement',this.htmlElement)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+        createHtmlElement(){
+            axios.post('/htmlElements',this.htmlElement)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+
+            }
     },
     created: function () {
         // Vue初始方法，可以自行百度一下相关介绍与用法

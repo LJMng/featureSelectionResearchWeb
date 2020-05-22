@@ -3,6 +3,7 @@ package featureSelection.research.web.mybatisMapper.demo.admin;
 import featureSelection.research.web.entity.demo.admin.HtmlElementDemoAdmin;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 /**
