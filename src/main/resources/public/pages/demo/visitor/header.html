@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <!--占位-->
+    <div id="header">
+        <div style="height: 90px"></div>
+        <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light " id="navbar">
+            <div class="container">
+                <a onclick="backIndex()" class="navbar-brand" href="#">{{brand}}</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">{{gettingstart}}<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a onclick="toexecution()" class="nav-link" href="#">{{executions}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a onclick="toaboutus()" class="nav-link" href="#">{{aboutus}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <button type="button" id="loginbutton" class="btn btn-outline-secondary btn-sm" data-toggle="modal"
+                    data-target="#loginmodal">{{login}}</button>
+                &nbsp;&nbsp;&nbsp;
+                <input type="checkbox" name="my-checkbox" checked id="language">
+        </nav>
+    </div>
+    <script type="text/javascript">
+
+        var vue_demo_header = new Vue({
+            el: '#header',
+            data: {
+                brand:'',
+                gettingstart:'',
+                executions:'',
+                aboutus:'',
+                login:''
+            },
+            created: function () {
+                axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=header").then((response) => {
+                    for (let i = 0; i < response.data.length; i++) {
+                        for (item in this._data) {
+                            if (response.data[i].moduleKey == item) {
+                                if ($.cookie("language") == 'ch') {
+                                    this.$set(this._data, item, response.data[i].chValue);
+                                } else {
+                                    this.$set(this._data, item, response.data[i].enValue);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        $(function () {
+            //语言选择
+            var sta;
+            var lang = $.cookie("language");
+            if (lang == null) {
+                $.cookie("language", "en");
+                lang = "en";
+            }
+            if (lang == 'en') {
+                sta = true;
+            } else {
+                sta = false;
+            }
+			//开关按纽
+            $("#language").bootstrapSwitch({
+                state: sta,
+                onText: "English",
+                offText: "中文",
+                onColor: "primary",
+                offColor: "primary",
+                size: "small",
+                labelWidth: "15px",
+                onSwitchChange: function (event, state) {
+                    if (state == false) {
+                        $.cookie("language", "ch")
+                        window.location.href = baseURL;
+                    } else {
+                        $.cookie("language", "en")
+                        window.location.href = baseURL;
+                    }
+                }
+            });
+        })
+    </script>
+</body>
+
+</html>
