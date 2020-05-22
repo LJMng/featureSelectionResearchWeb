@@ -1,5 +1,6 @@
 package featureSelection.research.web.entity.execution.visitor.parameterFormat;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,13 +10,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class ParameterFormat {
     private String id;
+    @JsonProperty("dataset-name")
     private String datasetName;
     private int part;
     private int column;
+    @JsonProperty("part-data-size")
     private int partDataSize;
+    @JsonProperty("algorithm-info")
     private AlgorithmInfo algorithmInfo;
+    @JsonProperty("previous-reducts")
     private int[] previousReducts;
+    @JsonProperty("run-times")
     private int runTimes;
+    @JsonProperty("attributes")
     private int[] attributes;
 
     public String getId() {
