@@ -8,7 +8,8 @@ public class ParameterInfo implements Serializable {
     private int algorithmId;
     private String[] parameterNames;
     private String[] parameterDescriptions;
-    private String[] parameterDefaultValues;
+    private String[] parameterInputDefaultValues;
+    private String[] parameterOptionDefaultValues;
     private String[] parameterTypes;
     private String[] parameterSettingInfoTypes;
     private String[]  parameterSettingInfoValues;
@@ -38,12 +39,20 @@ public class ParameterInfo implements Serializable {
         this.parameterDescriptions = parameterDescriptions;
     }
 
-    public String[] getParameterDefaultValues() {
-        return parameterDefaultValues;
+    public String[] getParameterInputDefaultValues() {
+        return parameterInputDefaultValues;
     }
 
-    public void setParameterDefaultValues(String[] parameterDefaultValues) {
-        this.parameterDefaultValues = parameterDefaultValues;
+    public void setParameterInputDefaultValues(String[] parameterInputDefaultValues) {
+        this.parameterInputDefaultValues = parameterInputDefaultValues;
+    }
+
+    public String[] getParameterOptionDefaultValues() {
+        return parameterOptionDefaultValues;
+    }
+
+    public void setParameterOptionDefaultValues(String[] parameterOptionDefaultValues) {
+        this.parameterOptionDefaultValues = parameterOptionDefaultValues;
     }
 
     public String[] getParameterTypes() {
@@ -77,7 +86,8 @@ public class ParameterInfo implements Serializable {
                 "algorithmId=" + algorithmId +
                 ", parameterNames=" + Arrays.toString(parameterNames) +
                 ", parameterDescriptions=" + Arrays.toString(parameterDescriptions) +
-                ", parameterDefaultValues=" + Arrays.toString(parameterDefaultValues) +
+                ", parameterInputDefaultValues=" + Arrays.toString(parameterInputDefaultValues) +
+                ", parameterOptionDefaultValues=" + Arrays.toString(parameterOptionDefaultValues) +
                 ", parameterTypes=" + Arrays.toString(parameterTypes) +
                 ", parameterSettingInfoTypes=" + Arrays.toString(parameterSettingInfoTypes) +
                 ", parameterSettingInfoValues=" + Arrays.toString(parameterSettingInfoValues) +

@@ -53,7 +53,11 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
             parameter.setAlgorithmId(parameterInfo.getAlgorithmId());
             parameter.setParameterName(parameterInfo.getParameterNames()[i]);
             parameter.setParameterDescription(parameterInfo.getParameterDescriptions()[i]);
-            parameter.setParameterDefaultValue(parameterInfo.getParameterDefaultValues()[i]);
+            //获取默认的input值
+            String InputDefaultValue=parameterInfo.getParameterInputDefaultValues()[i];
+            //获取默认的option值
+            String OptionDefaultValue=parameterInfo.getParameterOptionDefaultValues()[i];
+            parameter.setParameterDefaultValue(InputDefaultValue+","+OptionDefaultValue);
             parameter.setParameterType(parameterInfo.getParameterTypes()[i]);
             String parameterSettingInfoType=parameterInfo.getParameterSettingInfoTypes()[i];
             //获取取值数组的字符串
