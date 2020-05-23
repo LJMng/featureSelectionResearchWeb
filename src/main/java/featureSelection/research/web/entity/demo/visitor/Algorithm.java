@@ -16,12 +16,13 @@ public  class Algorithm {
     private String algorithmName;
     private String algorithmPaperReference;
     private String algorithmPaperLink;
+    private String algorithmDescription;
     private String algorithmCallInterface;
     private String algorithmCallHost;
     private String algorithmCallExchange;
     private String algorithmCallDemoRoutingkey;
-    private String algorithmCallExeuctionConnectRoutingkey;
-    private String algorithmCallExeuctionSendRoutingkey;
+    private String algorithmCallExecutionConnectRoutingkey;
+    private String algorithmCallExecutionSendRoutingkey;
     private String algorithmCallPort;
     private String algorithmCallUsername;
     private String algorithmCallPassword;
@@ -69,6 +70,14 @@ public  class Algorithm {
 
     public void setAlgorithmCallInterface(String algorithmCallInterface) {
         this.algorithmCallInterface = algorithmCallInterface;
+    }
+
+    public String getAlgorithmDescription() {
+        return algorithmDescription;
+    }
+
+    public void setAlgorithmDescription(String algorithmDescription) {
+        this.algorithmDescription = algorithmDescription;
     }
 
     public Timestamp getUt() {
@@ -136,20 +145,20 @@ public  class Algorithm {
         this.algorithmCallDemoRoutingkey = algorithmCallDemoRoutingkey;
     }
 
-    public String getAlgorithmCallExeuctionConnectRoutingkey() {
-        return algorithmCallExeuctionConnectRoutingkey;
+    public String getAlgorithmCallExecutionConnectRoutingkey() {
+        return algorithmCallExecutionConnectRoutingkey;
     }
 
-    public void setAlgorithmCallExeuctionConnectRoutingkey(String algorithmCallExeuctionConnectRoutingkey) {
-        this.algorithmCallExeuctionConnectRoutingkey = algorithmCallExeuctionConnectRoutingkey;
+    public void setAlgorithmCallExecutionConnectRoutingkey(String algorithmCallExecutionConnectRoutingkey) {
+        this.algorithmCallExecutionConnectRoutingkey = algorithmCallExecutionConnectRoutingkey;
     }
 
-    public String getAlgorithmCallExeuctionSendRoutingkey() {
-        return algorithmCallExeuctionSendRoutingkey;
+    public String getAlgorithmCallExecutionSendRoutingkey() {
+        return algorithmCallExecutionSendRoutingkey;
     }
 
-    public void setAlgorithmCallExeuctionSendRoutingkey(String algorithmCallExeuctionSendRoutingkey) {
-        this.algorithmCallExeuctionSendRoutingkey = algorithmCallExeuctionSendRoutingkey;
+    public void setAlgorithmCallExecutionSendRoutingkey(String algorithmCallExecutionSendRoutingkey) {
+        this.algorithmCallExecutionSendRoutingkey = algorithmCallExecutionSendRoutingkey;
     }
 
     public String getAlgorithmCallPort() {
@@ -183,12 +192,13 @@ public  class Algorithm {
                 ", algorithmName='" + algorithmName + '\'' +
                 ", algorithmPaperReference='" + algorithmPaperReference + '\'' +
                 ", algorithmPaperLink='" + algorithmPaperLink + '\'' +
+                ", algorithmDescription='" + algorithmDescription + '\'' +
                 ", algorithmCallInterface='" + algorithmCallInterface + '\'' +
                 ", algorithmCallHost='" + algorithmCallHost + '\'' +
                 ", algorithmCallExchange='" + algorithmCallExchange + '\'' +
                 ", algorithmCallDemoRoutingkey='" + algorithmCallDemoRoutingkey + '\'' +
-                ", algorithmCallExeuctionConnectRoutingkey='" + algorithmCallExeuctionConnectRoutingkey + '\'' +
-                ", algorithmCallExeuctionSendRoutingkey='" + algorithmCallExeuctionSendRoutingkey + '\'' +
+                ", algorithmCallExecutionConnectRoutingkey='" + algorithmCallExecutionConnectRoutingkey + '\'' +
+                ", algorithmCallExecutionSendRoutingkey='" + algorithmCallExecutionSendRoutingkey + '\'' +
                 ", algorithmCallPort='" + algorithmCallPort + '\'' +
                 ", algorithmCallUsername='" + algorithmCallUsername + '\'' +
                 ", algorithmCallPassword='" + algorithmCallPassword + '\'' +
