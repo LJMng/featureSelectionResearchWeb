@@ -63,14 +63,14 @@ public class DatasetController {
     }
 
     @GetMapping("/passDatasetForm")
-    public String passDatasetForm(int inputId,String administratorName) throws MessagingException {
-        datasetBusiness.passDatasetForm(inputId,administratorName);
+    public String passDatasetForm(int inputId,String administrator) throws MessagingException {
+        datasetBusiness.passDatasetForm(inputId,administrator);
         return "redirect:/pages/execution/admin/datasetManage.html";
     }
 
     @GetMapping("/unPassDatasetForm")
-    public String unPassDatasetForm(int inputId,String advice,String administratorName){
-        datasetBusiness.unPassDatasetForm(inputId,advice,administratorName);
+    public String unPassDatasetForm(int inputId,String advice,String administrator){
+        datasetBusiness.unPassDatasetForm(inputId,advice,administrator);
         return "redirect:/pages/execution/admin/datasetManage.html";
     }
 

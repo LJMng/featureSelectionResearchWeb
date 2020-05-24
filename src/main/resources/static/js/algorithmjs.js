@@ -50,7 +50,8 @@ var vm =new Vue({
             algorithmId:1,
             parameterNames:[],
             parameterDescriptions:[],
-            parameterDefaultValues:[],
+            parameterInputDefaultValues:[],
+            parameterOptionDefaultValues:[],
             parameterTypes:[],
             parameterSettingInfoTypes:[],
             parameterSettingInfoValues:[]
