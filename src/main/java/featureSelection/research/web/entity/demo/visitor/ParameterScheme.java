@@ -16,6 +16,7 @@ public class ParameterScheme {
     private String schemeRemark;
     private Timestamp ut;
     private Dataset dataset;
+    private List<SchemeProcedure>schemeProcedures;
     private List<ParameterSchemeValue>parameterSchemeValues;
 
     public int getSchemeId() {
@@ -74,6 +75,14 @@ public class ParameterScheme {
         this.dataset = dataset;
     }
 
+    public List<SchemeProcedure> getSchemeProcedures() {
+        return schemeProcedures;
+    }
+
+    public void setSchemeProcedures(List<SchemeProcedure> schemeProcedures) {
+        this.schemeProcedures = schemeProcedures;
+    }
+
     @Override
     public String toString() {
         return "ParameterScheme{" +
@@ -83,6 +92,7 @@ public class ParameterScheme {
                 ", schemeRemark='" + schemeRemark + '\'' +
                 ", ut=" + ut +
                 ", dataset=" + dataset +
+                ", schemeProcedures=" + schemeProcedures +
                 ", parameterSchemeValues=" + parameterSchemeValues +
                 '}';
     }

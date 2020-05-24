@@ -8,6 +8,7 @@
     <resultMap id="algorithmInfo" type="featureSelection.research.web.entity.demo.visitor.Algorithm">
         <id column="algorithm_id" property="algorithmId"></id>
         <result column="algorithm_name" property="algorithmName"></result>
+        <result column="algorithm_description" property="algorithmDescription"></result>
         <result column="algorithm_paper_reference" property="algorithmPaperReference"></result>
         <result column="algorithm_paper_link" property="algorithmPaperLink"></result>
         <result column="algorithm_call_interface" property="algorithmCallInterface"></result>
@@ -27,14 +28,15 @@
     <resultMap id="algorithmWithParameter" type="featureSelection.research.web.entity.demo.visitor.Algorithm">
         <id column="algorithm_id" property="algorithmId"></id>
         <result column="algorithm_name" property="algorithmName"></result>
+        <result column="algorithm_description" property="algorithmDescription"></result>
         <result column="algorithm_paper_reference" property="algorithmPaperReference"></result>
         <result column="algorithm_paper_link" property="algorithmPaperLink"></result>
         <result column="algorithm_call_interface" property="algorithmCallInterface"></result>
         <result column="algorithm_call_host" property="algorithmCallHost"></result>
-        <result column="algorithm_call_demo_routingkey" property="algorithmCallDemoRoutingkey"></result>
-        <result column="algorithm_call_execution_connect_routingkey"
+        <result column="algorithm_call_demo_routing_key" property="algorithmCallDemoRoutingkey"></result>
+        <result column="algorithm_call_execution_connect_routing_key"
                 property="algorithmCallExecutionConnectRoutingkey"></result>
-        <result column="algorithm_call_execution_send_routingkey"
+        <result column="algorithm_call_execution_send_routing_key"
                 property="algorithmCallExecutionSendRoutingkey"></result>
         <result column="algorithm_call_routingkey" property="algorithmCallRoutingkey"></result>
         <result column="algorithm_call_port" property="algorithmCallPort"></result>
@@ -47,10 +49,11 @@
     </resultMap>
 
     <!-- 算法信息 方案信息 参数信息 数据集信息 参数值信息-->
-    <resultMap id="algorithWithParameterAndSchemeAndDatasetAndParameterValue"
+    <resultMap id="algorithWithParameterAndSchemeAndDatasetAndParameterValueAndProcedure"
                type="featureSelection.research.web.entity.demo.visitor.Algorithm">
         <id column="algorithm_id" property="algorithmId"></id>
         <result column="algorithm_name" property="algorithmName"></result>
+        <result column="algorithm_description" property="algorithmDescription"></result>
         <result column="algorithm_paper_reference" property="algorithmPaperReference"></result>
         <result column="algorithm_paper_link" property="algorithmPaperLink"></result>
         <result column="algorithm_call_interface" property="algorithmCallInterface"></result>
@@ -81,6 +84,12 @@
                 <result column="dataset_source" property="datasetSource"></result>
                 <result column="dataset_file" property="datasetFile"></result>
             </association>
+            <collection property="schemeProcedures" javaType="List"
+                        ofType="featureSelection.research.web.entity.demo.visitor.SchemeProcedure">
+                <id column="scheme_procedure_id" property="schemeProcedureId"></id>
+                <result column="procedure_name" property="procedureName"></result>
+                <result column="procedure_setting_data" property="procedureSettingData"></result>
+            </collection>
             <collection property="parameterSchemeValues" javaType="List"
                         ofType="featureSelection.research.web.entity.demo.visitor.ParameterSchemeValue">
                 <result column="parameter_value" property="parameterValue"></result>
@@ -97,13 +106,14 @@
         select algorithm.*,parameter.* from algorithm,parameter where algorithm.algorithm_id=parameter.parameter_id
     </select>
 
-    <select id="getAllAlgorithmInfo" resultMap="algorithWithParameterAndSchemeAndDatasetAndParameterValue">
-            select a.*,ps.*,psv.parameter_value,p.*,d.*
+    <select id="getAllAlgorithmInfo" resultMap="algorithWithParameterAndSchemeAndDatasetAndParameterValueAndProcedure">
+            SELECT a.*,ps.*,psv.parameter_value,p.*,d.*,sp.*
             FROM `algorithm` a
             LEFT JOIN parameter_scheme ps ON a.algorithm_id=ps.algorithm_id
             LEFT JOIN parameter_scheme_value psv ON ps.scheme_id=psv.scheme_id
             LEFT JOIN parameter p ON psv.parameter_id=p.parameter_id
             LEFT JOIN dataset d ON ps.dataset_id=d.dataset_id
+            LEFT JOIN scheme_procedure sp on ps.scheme_id = sp.scheme_id
     </select>
 
     <select id="getAlgorithmInfoById" resultType="String" resultMap="algorithmInfo">

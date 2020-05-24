@@ -1,5 +1,6 @@
 package featureSelection.research.web.entity.communicationJson.rabbitmqcominfo;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import featureSelection.research.web.common.util.DemoCsvUtil;
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 
 import java.io.IOException;
 
@@ -43,7 +45,7 @@ public class ExecutionRabbitmqComInfo {
     private String exchange;
     private TaskInfo taskInfo;
     //通过工具类取得bean
-    private TaskInfoMapper taskInfoMapper = (TaskInfoMapper) SpringUtil.getBean(ParameterSchemeMapper.class);
+    private TaskInfoMapper taskInfoMapper = (TaskInfoMapper) SpringUtil.getBean(TaskInfoMapper.class);
     private DatasetMapper datasetMapper = (DatasetMapper) SpringUtil.getBean(DatasetMapper.class);
     private AlgorithmMapper algorithmMapper = (AlgorithmMapper) SpringUtil.getBean(AlgorithmMapper.class);
     private TaskResultMapper taskResultMapper = (TaskResultMapper) SpringUtil.getBean(TaskResultMapper.class);
@@ -53,17 +55,19 @@ public class ExecutionRabbitmqComInfo {
 
     public ExecutionRabbitmqComInfo(int taskId){
         TaskInfo taskInfo = taskInfoMapper.getTaskInfoByTaskId(taskId);
+        JSONObject taskParamaterInfo=JSONObject.parseObject(taskInfo.getAlgorithmParameters());
+        log.info(taskParamaterInfo.toString());
         int algorithmid = taskInfo.getAlgorithmId();
         Algorithm algorithm = algorithmMapper.getAlgorithmInfoById(algorithmid);
-        String connectRoutingkey = algorithm.getAlgorithmCallExeuctionConnectRoutingkey();
-        String sendRoutingkey=algorithm.getAlgorithmCallExeuctionSendRoutingkey();
+        String connectRoutingkey = algorithm.getAlgorithmCallExecutionConnectRoutingkey();
+        String sendRoutingkey=algorithm.getAlgorithmCallExecutionSendRoutingkey();
         String host = algorithm.getAlgorithmCallHost();
         String exchange = algorithm.getAlgorithmCallExchange();
         int port = Integer.parseInt(algorithm.getAlgorithmCallPort());
         String username = algorithm.getAlgorithmCallUsername();
         String password = algorithm.getAlgorithmCallPassword();
         CachingConnectionFactory connectionFactory = RabbitmqUtil.getConnectionFactory(host, port, username, password, exchange);
-        this.executionRabbimqComTaskId = algorithm.getAlgorithmName() + System.currentTimeMillis();
+        this.executionRabbimqComTaskId = taskParamaterInfo.getString("id");
         this.exchange=exchange;
         this.taskInfo=taskInfoMapper.getTaskInfoByTaskId(taskId);
         this.dataset=datasetMapper.getDatasetInfo(taskInfo.getDatasetId());
@@ -76,28 +80,18 @@ public class ExecutionRabbitmqComInfo {
      * 发送rabbitmq连接请求信息
      */
     public void sendRabbitmqConnectRequestInfo(){
-        AlgorithmCallTaskInfo connectenity = taskInfoInfoToRequestEnity();
-        connectenity.setLocalRabbitmqInfo(this.localExecutionRabbitmqInfo);
-        connectenity.setId(this.executionRabbimqComTaskId);
-        //将算法参数实体信息对象转换为json字符串
-        String jsonString = JSONObject.toJSONString(connectenity);
-        //将json字符串转换为json对象
-        JSONObject connectJsondata = JSONObject.parseObject(jsonString);
+        String localRabbitmqInfoString= JSON.toJSONString(this.localExecutionRabbitmqInfo);
+        JSONObject localRabbitmqInfo=JSONObject.parseObject(localRabbitmqInfoString);
+        JSONObject taskParamaterInfo=JSONObject.parseObject(taskInfo.getAlgorithmParameters());
+        taskParamaterInfo.put("rabbitmqInfo",localRabbitmqInfo);
         //发送信息请求与rabbitmq建立通讯
-        log.info("进行连接请求,请求数据：" + connectJsondata.toJSONString());
-        this.rabbitmqTemplate.convertAndSend(exchange, connectRoutingkey, connectJsondata);
+        log.info("进行连接请求,请求数据：" + taskParamaterInfo.toJSONString());
+        this.rabbitmqTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+        this.rabbitmqTemplate.convertAndSend(exchange, connectRoutingkey,taskParamaterInfo);
     }
 
 
-    /**
-     * 封装rabbitmq连接请求信息
-     * @return AlgorithmCallTaskInfo
-     */
-    public AlgorithmCallTaskInfo taskInfoInfoToRequestEnity() {
-        Algorithm algorithm = algorithmMapper.getAlgorithmInfoById(this.taskInfo.getAlgorithmId());
-        AlgorithmCallTaskInfo algorithmCallTaskInfo = new AlgorithmCallTaskInfo();
-        return algorithmCallTaskInfo;
-    }
+
 
     /**
      * 根据每一行数据信息封装数据发送实体Json数据

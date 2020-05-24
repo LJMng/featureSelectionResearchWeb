@@ -1,5 +1,6 @@
 package featureSelection.research.web.entity.communicationJson.rabbitmqcominfo;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import featureSelection.research.web.common.service.DemoRabbitmqComServiceSingleton;
 import featureSelection.research.web.common.util.DemoCsvUtil;
@@ -9,13 +10,11 @@ import featureSelection.research.web.entity.communicationJson.AlgorithmCallTaskI
 import featureSelection.research.web.entity.communicationJson.AlgorithmInfo;
 import featureSelection.research.web.entity.communicationJson.AlgorithmSetting;
 import featureSelection.research.web.entity.communicationJson.localrabbitmqinfo.LocalDemoRabbitmqInfo;
-import featureSelection.research.web.entity.demo.visitor.Algorithm;
-import featureSelection.research.web.entity.demo.visitor.Dataset;
-import featureSelection.research.web.entity.demo.visitor.ParameterScheme;
-import featureSelection.research.web.entity.demo.visitor.ParameterSchemeValue;
+import featureSelection.research.web.entity.demo.visitor.*;
 import featureSelection.research.web.mybatisMapper.demo.visitor.AlgorithmMapper;
 import featureSelection.research.web.mybatisMapper.demo.visitor.DatasetMapper;
 import featureSelection.research.web.mybatisMapper.demo.visitor.ParameterSchemeMapper;
+import featureSelection.research.web.mybatisMapper.demo.visitor.SchemeProcedureMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -24,6 +23,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +33,8 @@ import java.util.Map;
  * @Author : WDD
  * @Date: 2020-05-19 15:58
  */
-public class DemoRabbimqComInfo{
-    private final static Logger log=LoggerFactory.getLogger(DemoRabbimqComInfo.class);
+public class DemoRabbimqComInfo {
+    private final static Logger log = LoggerFactory.getLogger(DemoRabbimqComInfo.class);
 
     private String demoRabbimqComTaskId;
     private RabbitTemplate rabbitmqTemplate;
@@ -48,6 +48,7 @@ public class DemoRabbimqComInfo{
     private ParameterSchemeMapper parameterSchemeMapper = SpringUtil.getBean(ParameterSchemeMapper.class);
     private DatasetMapper datasetMapper = SpringUtil.getBean(DatasetMapper.class);
     private AlgorithmMapper algorithmMapper = SpringUtil.getBean(AlgorithmMapper.class);
+    private SchemeProcedureMapper schemeProcedureMapper = SpringUtil.getBean(SchemeProcedureMapper.class);
     private LocalDemoRabbitmqInfo localDemoRabbitmqInfo = SpringUtil.getBean(LocalDemoRabbitmqInfo.class);
 
     public DemoRabbimqComInfo() {
@@ -125,6 +126,17 @@ public class DemoRabbimqComInfo{
                         basicSettingValue);
             }
         }
+        //步骤信息
+        Map<String, Map<String, Object>> procedureSetting = new HashMap<>();
+        List<SchemeProcedure> schemeProcedures =
+                schemeProcedureMapper.getSchemeProceduresBySchemeId(parameterScheme.getSchemeId());
+        for (SchemeProcedure schemeprocedure:schemeProcedures){
+            Map prceduredatamap=(Map) JSON.parse(schemeprocedure.getProcedureSettingData());
+            procedureSetting.put(schemeprocedure.getProcedureName(),prceduredatamap);
+        }
+
+        //算法步骤设置放入算法设置实体
+        algorithmSetting.setProcedure(procedureSetting);
         //算法基础设置放入算法设置实体
         algorithmSetting.setBasic(basicSettings);
         //算法设置放入算法主体信息实体
@@ -170,7 +182,7 @@ public class DemoRabbimqComInfo{
         for (int i = 0; i < data.length - 1; i++) {
             JSONObject RequestJsonData = RequestJsonData(i, data[i], RequestJsonDataCommonInfo);
             this.rabbitmqTemplate.convertAndSend(exchange, routingkey, RequestJsonData);
-            log.info( "article"+i+ "data：" + RequestJsonData.toJSONString());
+            log.info("article" + i + "data：" + RequestJsonData.toJSONString());
         }
     }
 
