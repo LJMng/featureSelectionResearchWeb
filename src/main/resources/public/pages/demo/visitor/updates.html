@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 </head>
-
 <body>
     <div id="updates" class="text-center">
         <div style="display: inline-block;width: 400px;">
@@ -15,16 +13,12 @@
             <p class="text-left">{{item.updateContent}}</p>
         </div>
     </div>
-
     <script type="text/javascript">
         var vue_demo_update = new Vue({
             el: '#updates',
             data: {
                 updatetitle: '',
-                updates: [
-                    { ut: "2020/03/26", updateContent: "Released a new algorithm:algorithm1" },
-                    { ut: "2020/03/26", updateContent: "Released a new algorithm:algorithm2" }
-                ]
+                updates: []
             },
             created: function () {
                 axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=updates").then((response) => {
@@ -51,7 +45,6 @@
         function getUpdateInfo() {
             $.get("http://localhost:8000/getAllUpdateInfoList", function (data) {
                 vue_demo_update.updates = data;
-
             });
         }
     </script>

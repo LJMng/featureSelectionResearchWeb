@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
     <style type="text/css">
         .aboutushead {
             background: #425861 url(http://www.bootstrapmb.com/content/images/bg-page-section.png);
@@ -70,8 +67,6 @@
                 contactustitle: '',
                 aboutusinfo: '',
                 introductionusinfo: '',
-
-
             },
             created: function () {
                 axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=aboutus").then((response) => {

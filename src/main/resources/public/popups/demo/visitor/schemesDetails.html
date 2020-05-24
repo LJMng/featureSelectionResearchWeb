@@ -64,7 +64,10 @@
         var vue_parameterInfo = new Vue({
             el: '#parameterInfo',
             data: {
-               
+                schemesdetailstitle: '',
+                parametertitle: '',
+                datasetinfotitle: '',
+                parameterScheme: {}
             },
             created: function () {
                 axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=schemesDetails").then((response) => {

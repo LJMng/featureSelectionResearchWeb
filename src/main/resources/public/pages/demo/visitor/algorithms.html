@@ -11,14 +11,22 @@
 
 <body>
     <div id="algorithms" class="text-center container">
-
         <div class="ml-auto mr-auto" style="display: inline-block">
             <span class="h4 text-center ml-auto mr-auto">{{title}}</span>
             <hr>
             <span>{{secondtitle}}</span>
-            <br />
-            <br />
+
         </div>
+        <div id="guideinfo" class="border border-darken-1">
+            <div class="mt-2">
+                <h4 class="text-center">{{guideinfotitile}}</h5>
+            </div>
+            <div class="text-left ml-2 mr-2" style="font-size: 16px;">
+               {{guideinfocontent}}}
+            </div>
+        </div>
+        <br />
+        <br />
         <!--下拉条-->
         <div class="accordion" id="accordionExample">
             <div v-for="(algorithm,algorithmIndex) in algorithms" v-bind:key="algorithmIndex">
@@ -57,48 +65,13 @@
                             <hr width="30%" />
                             <br>
                             <div class="row border border-darken-1 m-2">
-
                                 <!--左边框-->
                                 <div class="col-6  border border-darken-1 bg-light">
-
-                                    <!-- <div class="input-group mb-3 mt-3 ml-2">
-                                        <form class="was-validated" style="width: 80%">
-                                            <div class="form-group">
-                                                <select class="custom-select" required>
-                                                    <option value="">Open this select menu</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                        <span class="input-group-btn ml-3">
-
-                                            <button class="btn btn-secondary" type="button">
-                                                <svg class="bi bi-box-arrow-in-down" width="2em" height="2em"
-                                                    viewBox="0 0 16 16" fill="currentColor"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd"
-                                                        d="M4.646 8.146a.5.5 0 0 1 .708 0L8 10.793l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"
-                                                        clip-rule="evenodd" />
-                                                    <path fill-rule="evenodd"
-                                                        d="M8 1a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0v-9A.5.5 0 0 1 8 1z"
-                                                        clip-rule="evenodd" />
-                                                    <path fill-rule="evenodd"
-                                                        d="M1.5 13.5A1.5 1.5 0 0 0 3 15h10a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 13 4h-1.5a.5.5 0 0 0 0 1H13a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5v-8A.5.5 0 0 1 3 5h1.5a.5.5 0 0 0 0-1H3a1.5 1.5 0 0 0-1.5 1.5v8z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </div> -->
-                                    <!--参数方案选择-->
                                     <div class="input-group mb-3 mt-3 ml-2">
                                         <form class="was-validated" style="width: 80%">
                                             <div class="form-group">
-
                                                 <select class="custom-select is-invalid" required
                                                     v-model="algorithm.parameterSchemeIndex" aria-placeholder="请选择方案">
-
                                                     <option
                                                         v-for="(parameterScheme,parameterSchemeIndex) in algorithm.parameterSchemes"
                                                         v-bind:value="parameterSchemeIndex">
@@ -107,7 +80,6 @@
                                             </div>
                                         </form>
                                         <span class="input-group-btn ml-3">
-
                                             <button class="btn btn-primary" type="button"
                                                 v-on:click="submitParameterToExecute(algorithmIndex,algorithm.parameterSchemeIndex)">{{run}}</button>
                                         </span>
@@ -145,7 +117,7 @@
                                                         d="M10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4h-3.5a.5.5 0 0 1-.5-.5z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                                <p class="mt-3" >{{resulttext}}</p>
+                                                <p class="mt-3">{{resulttext}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -159,19 +131,20 @@
     </div>
     <hr>
     <div id="schemesdetailspop"></div>
-
     <script type="text/javascript">
-
         var vue_demo_algorithms = new Vue({
             el: '#algorithms',
             data: {
                 //-----------pageElement------------
                 title: '',
                 secondtitle: '',
+                guideinfotitile:'',
+                guideinfocontent:'',
                 givittry: '',
                 run: '',
                 schemehead: '',
                 resulttext: '',
+                
                 //-----------algorithmData------------
                 selected: '',
                 algorithms: []
@@ -185,7 +158,6 @@
                     echarts.init(document.getElementById(resultcontainerIndex)).dispose();
                     var myChart = echarts.init(document.getElementById(resultcontainerIndex));
                     myChart.setOption({
-
                         title: [{
                             text: 'Reduct',
                             left: 'center'
@@ -224,7 +196,6 @@
             },
             created: function () {
                 axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=algorithms").then((response) => {
-                   
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {
                             if (response.data[i].moduleKey == item) {
@@ -260,18 +231,15 @@
         //获取参数详情
         function getParameterInfo(algorithmIndex, parameterSchemeIndex) {
             vue_parameterInfo.parameterScheme = vue_demo_algorithms.algorithms[algorithmIndex].parameterSchemes[parameterSchemeIndex];
-
         }
 
         //获取算法详情
         function getalgorithmdetails(algorithmIndex) {
-
             $("#demo-guide").empty();
             $("#demo-algorithms").empty();
             $("#demo-updates").empty();
             vue_demo_algorithm_details.algorithm = vue_demo_algorithms.algorithms[algorithmIndex];
             $('#algorithmdetailspop').show();
-
         }
     </script>
 </body>
