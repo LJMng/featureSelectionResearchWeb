@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="featureSelection.research.web.mybatisMapper.demo.admin.SchemeDemoAdminMapper">
+<mapper namespace="featureSelection.research.web.mybatisMapper.SchemeDemoAdminMapper">
     <resultMap id="result" type = "featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin">
         <id column="scheme_id" property="schemeId" />
         <result column="scheme_name" property="schemeName" />
@@ -15,8 +15,6 @@
             <id property="parameterId" column="parameter_id" />
             <result property="parameterName" column="parameter_name" />
             <result property="parameterType" column="parameter_type" />
-            <result property="isSelected" column="is_selected" />
-            <result property="executeStep" column="step" />
             <result property="parameterValue" column="parameter_value" />
             <result property="schemeId" column="scheme_id" />
         </collection>
@@ -28,7 +26,7 @@
         select
             algorithm.algorithm_id,parameter_scheme.scheme_id,parameter.parameter_id,
             scheme_name,scheme_description,scheme_remark,dataset_name,
-            algorithm_name,parameter_name,parameter_value,dataset.dataset_id,is_selected
+            algorithm_name,parameter_name,parameter_value,dataset.dataset_id
         from
             parameter,parameter_scheme,parameter_scheme_value,algorithm,dataset
         where
@@ -45,8 +43,8 @@
     <select id="getSchemeDemoAdminById" resultMap="result" parameterType="int">
         select
             algorithm.algorithm_id,parameter_scheme.scheme_id,dataset_name,
-            parameter.parameter_id,scheme_name,scheme_description,dataset.dataset_id,step,
-            scheme_remark,algorithm_name,parameter_name,parameter_value,parameter_type,is_selected
+            parameter.parameter_id,scheme_name,scheme_description,dataset.dataset_id,
+            scheme_remark,algorithm_name,parameter_name,parameter_value,parameter_type
         from
             parameter,parameter_scheme,parameter_scheme_value,algorithm,dataset
         where
@@ -102,9 +100,7 @@
             update
                 parameter_scheme_value
             set
-                parameter_value = #{item.parameterValue},
-                is_selected = #{item.selected},
-                step = #{item.executeStep}
+                parameter_value = #{item.parameterValue}
             where
                 scheme_id = #{item.schemeId}
             and
@@ -117,17 +113,18 @@
         <foreach collection="algorithmParameterDemoAdmin" item="item">
             <choose>
                 <when test="item.parameterType=='boolean'">
-                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value, is_selected, step) values (#{schemeId},#{item.parameterId},'NO',0,0);
+                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value) values (#{schemeId},#{item.parameterId},'NO');
                 </when>
                 <when test="item.parameterType=='selected'">
-                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value, is_selected, step) values (#{schemeId},#{item.parameterId},0,false,0);
+                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value) values (#{schemeId},#{item.parameterId},0);
                 </when>
                 <otherwise>
-                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value, is_selected, step) values (#{schemeId},#{item.parameterId},0,0,0);
+                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value) values (#{schemeId},#{item.parameterId},0);
                 </otherwise>
             </choose>
         </foreach>
     </insert>
+
     <!--查询所有数据集ID和名称提供方案调用-->
     <select id="findAllIdAndName" resultMap="result">
         select dataset_id,dataset_name

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="featureSelection.research.web.mybatisMapper.SchemeProcedureDemoAdminMapper">
+    <resultMap id="result" type = "featureSelection.research.web.entity.demo.admin.SchemeProcedureDemoAdmin">
+        <id column="scheme_procedure_id" property="schemeProcedureId" />
+        <result column="scheme_id" property="schemeId" />
+        <result column="procedure_name" property="procedureName" />
+        <result column="procedure_setting_data" property="procedureSettingData" />
+    </resultMap>
+
+<!--    查询所有步骤-->
+    <select id="findAll" resultMap="result">
+        select * from scheme_procedure
+    </select>
+
+<!--    通过ID查询步骤-->
+    <select id="getSchemeProcedureDemoAdminById" resultMap="result">
+        select * from scheme_procedure where scheme_procedure.scheme_id = #{id}
+    </select>
+
+<!--    增加步骤-->
+    <insert id="insertSchemeProcedureDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.SchemeProcedureDemoAdmin" useGeneratedKeys="true" keyProperty="schemeProcedureId">
+        insert into scheme_procedure (scheme_id, procedure_name, procedure_setting_data) values ((select max(scheme_id) from parameter_scheme), "请输入步骤名称", "{\"data\":\"data\",\"selected\":\"true\"}");
+    </insert>
+
+<!--    更新被绑定ID的步骤-->
+    <update id="updateSchemeProcedureDemoAdmin">
+        <foreach collection="list" item="item">
+            update scheme_procedure set
+                procedure_name = #{item.procedureName},
+                procedure_setting_data = #{item.procedureSettingData}
+            where
+                scheme_id = #{item.schemeId}
+            and
+                scheme_procedure_id = #{item.schemeProcedureId};
+        </foreach>
+    </update>
+
+<!--    删除被绑定ID的步骤-->
+    <delete id="deleteSchemeProcedureDemoAdmin">
+        delete from scheme_procedure where scheme_id = #{schemeId}
+    </delete>
+</mapper>

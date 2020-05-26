@@ -5,9 +5,7 @@ import featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-/**
- * @author jjz
- * */
+
 @Mapper
 public interface SchemeDemoAdminMapper {
     //查询所有方案
