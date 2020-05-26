@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="featureSelection.research.web.mybatisMapper.SchemeDemoAdminMapper">
+<mapper namespace="featureSelection.research.web.mybatisMapper.demo.admin.SchemeDemoAdminMapper">
     <resultMap id="result" type = "featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin">
         <id column="scheme_id" property="schemeId" />
         <result column="scheme_name" property="schemeName" />
