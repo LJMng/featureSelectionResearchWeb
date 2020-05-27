@@ -37,12 +37,6 @@ public class PagesController {
         return "/demoAdmin/SchemeDemoAdmin.html";
     }
 
-    //算法管理页面
-//    @GetMapping("/AlgorithmAdmin")
-//    public String toAlgorithmAdminPage(){
-//        return "/demoAdmin/AlgorithmDemoAdmin.html";
-//    }
-
     /**
      * @return 进入关于我们管理页面
      * */
