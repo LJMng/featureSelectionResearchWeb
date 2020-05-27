@@ -82,9 +82,16 @@ public class DemoRabbitmqComServiceSingleton {
                 demoRabbimqComInfos.get(info.get("id")).setStatues("dataerror");
                 log.error(info.get("data-error-info").toString());
             }
-            //若无连接信息以及错误信息，该消息即为任务结果信息，接收任务结果并设置任务完成
-            demoRabbimqComInfo.setResultInfo(info);
-            demoRabbimqComInfo.setStatues("FINISH");
+            //如果信息中包含退出信息，则任务完成，接收任务结果并设置任务完成
+            if (info.get("exitInfos")!=null){
+                demoRabbimqComInfo.addResultInfo(info);
+                demoRabbimqComInfo.setStatues("FINISH");
+                log.info("FINISH");
+            }else {
+                //若无连接信息以及错误信息及退出信息，该消息即为任务结果信息之一
+                demoRabbimqComInfo.addResultInfo(info);
+            }
+
         }
     }
 }

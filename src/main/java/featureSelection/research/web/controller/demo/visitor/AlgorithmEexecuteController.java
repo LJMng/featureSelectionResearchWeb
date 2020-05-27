@@ -1,4 +1,7 @@
 package featureSelection.research.web.controller.demo.visitor;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import featureSelection.research.web.common.service.DemoRabbitmqComServiceSingleton;
 import featureSelection.research.web.entity.communicationJson.rabbitmqcominfo.DemoRabbimqComInfo;
 import featureSelection.research.web.entity.demo.visitor.Algorithm;
@@ -37,13 +40,15 @@ public class  AlgorithmEexecuteController {
     @ResponseBody
     public Object reciveExecuteInfo(@RequestParam("algorithmId") String algorithmId,
                                     @RequestParam("parameterSchemeId") String parameterSchemeId) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        Object resultJson=new Object();
+        Object result=new Object();
         DemoRabbimqComInfo demoRabbimqComInfo=new DemoRabbimqComInfo(Integer.parseInt(parameterSchemeId),
                 Integer.parseInt(algorithmId));
         DemoRabbitmqComServiceSingleton.addDemoRabbitmqComInfo(demoRabbimqComInfo);
         while(true){
-        if (demoRabbimqComInfo.getResultInfo()!=null){
-            resultJson=demoRabbimqComInfo.getResultInfo();
+        if (demoRabbimqComInfo.getStatues().equals("FINISH")){
+            result=demoRabbimqComInfo.getResultInfos();
+            JSON resultJson=JSONArray.parseArray(result.toString());
+            System.out.println(resultJson);
             //任务结束后删除连接
             DemoRabbitmqComServiceSingleton.deleteRabbitmqComInfo(demoRabbimqComInfo.getDemoRabbimqComTaskId());
             return resultJson;
