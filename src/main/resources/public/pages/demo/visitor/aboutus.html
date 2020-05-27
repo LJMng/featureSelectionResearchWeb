@@ -38,6 +38,10 @@
                             role="tab" aria-controls="v-pills-messages" aria-selected="false">
                             {{contactustitle}}
                         </a>
+                        <a v-for="page in pages" class="nav-link" :id="'#card'+page.moduleKey" data-toggle="pill" :href="'#card'+page.moduleKey"
+                           role="tab" :aria-controls="page.moduleKey" aria-selected="false">
+                            {{page.chValue}}
+                        </a>
                     </div>
                 </div>
                 <div class="col-9">
@@ -52,35 +56,11 @@
                         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
                             aria-labelledby="v-pills-messages-tab">...
                         </div>
+                        <div v-for="page in pages" class="tab-pane fade" :id="'card'+page.moduleKey" role="tabpanel"
+                             :aria-labelledby="page.moduleKey" v-html="page.enValue">{{page.enValue}}
+                        </div>
                     </div>
                 </div>
-
-
-
-
-<!--                请修改此处-->
-                <div class="accordion m-5" id="accordionExample">
-                    <div class="card" v-for="page in pages">
-                        <div class="card-header" id="headingOne">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link btn-block" type="button" data-toggle="collapse"
-                                        :data-target="'#card'+page.moduleKey" aria-expanded="true" aria-controls="collapseOne">
-                                    {{page.chValue}}
-                                </button>
-                            </h2>
-                        </div>
-                        <div :id="'card'+page.moduleKey" class="collapse" aria-labelledby="headingOne"
-                             data-parent="#accordionExample">
-                            <div class="card-body">
-                                <div v-html="page.enValue">
-                                    {{page.enValue}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
 
                 </div>
             </div>
