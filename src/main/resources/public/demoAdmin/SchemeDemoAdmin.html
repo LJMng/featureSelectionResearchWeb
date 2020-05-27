@@ -526,7 +526,7 @@
                     .catch(err => {
                         console.log(err);
                     });
-                axios.get('/DatasetDemoAdmin/findAllIdAndName')
+                axios.get('/SchemeDemoAdmin/findAllIdAndName')
                     .then(resp => {
                         this.datasets = resp.data
                     })
