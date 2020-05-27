@@ -2,11 +2,16 @@ package featureSelection.research.web.controller.demo.admin;
 
 import featureSelection.research.web.entity.demo.admin.HtmlElementDemoAdmin;
 import featureSelection.research.web.mybatisMapper.demo.admin.HtmlElementDemoAdminMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author jjz
  * */
@@ -68,25 +73,32 @@ public class HtmlElementController {
     //删除图片与图片信息
     @PostMapping("/delete/{key}")
     public String deleteImage(@PathVariable("key") String key) {
-        /**
-         * @param e
-         *      HtmlElementDemoAdmin的实例化
-         * @param path
-         *      存放图片的路径
-         * @param lastIndexOf
-         *      最后的"/"后面的字符信息
-         * @param img_path
-         *      图片的名字
-         * @param flag
-         *      用来判断文件是否删除
-         * */
         HtmlElementDemoAdmin e = htmlElementDemoAdminMapper.findByKey(key);
         String path = e.getEnValue();
-        int lastIndexOf = path.lastIndexOf("/");
-        String img_path = path.substring(lastIndexOf);
-        File file = new File(UPLOAD_FOLDER+img_path);
-        if(file.exists()){
-            boolean flag = file.delete();
+        Pattern p_img = Pattern.compile("<(img|IMG)(.*?)(/>|></img>|>)");
+        Matcher m_img = p_img.matcher(path);
+        boolean result_img = m_img.find();
+        if (result_img) {
+            while (result_img) {
+                //获取到匹配的<img />标签中的内容
+                String str_img = m_img.group(2);
+
+                //开始匹配<img />标签中的src
+                Pattern p_src = Pattern.compile("(src|SRC)=(\"|\')(.*?)(\"|\')");
+                Matcher m_src = p_src.matcher(str_img);
+                if (m_src.find()) {
+                    String str_src = m_src.group(3);
+                    int lastIndexOf = str_src.lastIndexOf("/");
+                    String img_path = str_src.substring(lastIndexOf);
+                    File file = new File(UPLOAD_FOLDER + img_path);
+                    if (file.exists()) {
+                        boolean flag = file.delete();
+                    }
+                }
+                //结束匹配<img />标签中的src
+                //匹配content中是否存在下一个<img />标签，有则继续以上步骤匹配<img />标签中的src
+                result_img = m_img.find();
+            }
         }
         htmlElementDemoAdminMapper.deleteImage(key);
         return null;
@@ -100,6 +112,36 @@ public class HtmlElementController {
     public String setDefault(){
         htmlElementDemoAdminMapper.dropTable();
         htmlElementDemoAdminMapper.setDefault();
+        return null;
+    }
+
+    @PostMapping("/saveAboutUsPages")
+    public String saveAboutUsPages(@Param("html") String html,
+                                   @Param("title") String title) {
+        UUID uuid = UUID.randomUUID();
+        String str = uuid.toString();
+        String moduleKey = str.substring(0, 8);
+        HtmlElementDemoAdmin e = new HtmlElementDemoAdmin();
+        e.setModuleKey(moduleKey);
+        int l = 0;
+        String h = html;
+        do {
+            l = html.indexOf("&lt;", l);
+            if (l == -1) break;
+            h = html.substring(0, l) + "<" + html.substring(l + "$lt;".length());
+            l += "<".length();
+            html = h;
+        } while (true);
+        do {
+            l = html.indexOf("&gt;", l);
+            if (l == -1) break;
+            h = html.substring(0, l) + ">" + html.substring(l + "$gt;".length());
+            l += ">".length();
+            html = h;
+        } while (true);
+        e.setEnValue(html);
+        e.setChValue(title);
+        htmlElementDemoAdminMapper.saveAboutUsPages(e);
         return null;
     }
 }

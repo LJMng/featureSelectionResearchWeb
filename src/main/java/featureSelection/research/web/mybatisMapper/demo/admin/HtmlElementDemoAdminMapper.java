@@ -28,4 +28,6 @@ public interface HtmlElementDemoAdminMapper {
     public int dropTable();
     //将默认值插到原表
     public int setDefault();
+    //插入关于我们页面的信息
+    public int saveAboutUsPages(HtmlElementDemoAdmin htmlElementDemoAdmin);
 }

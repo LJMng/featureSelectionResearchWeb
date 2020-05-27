@@ -61,4 +61,16 @@
     <insert id="setDefault">
         insert into html_element_control select * from html_element_control_default
     </insert>
+
+    <!--    插入关于我们页面的信息-->
+    <insert id="saveAboutUsPages">
+        insert into html_element_control (module_key, html_name, type, ch_value, en_value)
+        values (
+            #{moduleKey},
+            "aboutus",
+            "html_pages",
+            #{chValue},
+            #{enValue}
+        )
+    </insert>
 </mapper>
