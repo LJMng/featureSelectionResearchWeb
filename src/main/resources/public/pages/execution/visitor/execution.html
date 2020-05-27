@@ -829,7 +829,7 @@
                             <td>{{value.datasetSize}}</td>
                             <td class="text-nowrap">
                                 <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#datasetInfo" @click="getDatasetInfo(key)">{{new_task_step2_card_btn1}}</button>
-                                <a :href.trim="value.datasetFile" :download="value.datasetName+'.jpg'"><button class="btn btn-sm btn-outline-warning">{{public_dataset_list_btn1}}</button></a>
+                                <a :href.trim="value.datasetFile" :download="value.datasetFile.substr(value.datasetFile.lastIndexOf('\\')+1)"><button class="btn btn-sm btn-outline-warning">{{public_dataset_list_btn1}}</button></a>
                             </td>
                         </tr>
                         </tbody>

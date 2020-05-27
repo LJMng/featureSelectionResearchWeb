@@ -21,9 +21,9 @@ import java.util.List;
 @RestController
 public class ExecutionFormsController {
 
-    public final static String tempPath = "static\\dataset\\temp\\";
-    public final static String taskPath = "static\\dataset\\task\\";
-    public final static String publicDatasetPath = "static\\dataset\\publicDataset\\";
+    public final static String tempPath = "dataset\\temp\\";
+    public final static String taskPath = "dataset\\task\\";
+    public final static String publicDatasetPath = "dataset\\publicDataset\\";
 
     @Autowired
     IExecutionFormsService formsService;
