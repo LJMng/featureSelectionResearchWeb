@@ -54,6 +54,35 @@
                         </div>
                     </div>
                 </div>
+
+
+
+
+<!--                请修改此处-->
+                <div class="accordion m-5" id="accordionExample">
+                    <div class="card" v-for="page in pages">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block" type="button" data-toggle="collapse"
+                                        :data-target="'#card'+page.moduleKey" aria-expanded="true" aria-controls="collapseOne">
+                                    {{page.chValue}}
+                                </button>
+                            </h2>
+                        </div>
+                        <div :id="'card'+image.moduleKey" class="collapse" aria-labelledby="headingOne"
+                             data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div v-html="page.enValue">
+                                    {{page.enValue}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
             </div>
         </div>
     </div>
@@ -67,6 +96,7 @@
                 contactustitle: '',
                 aboutusinfo: '',
                 introductionusinfo: '',
+                pages: '',
             },
             created: function () {
                 axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=aboutus").then((response) => {
@@ -82,6 +112,11 @@
                             }
                         }
                     }
+                });
+
+                // 获取展示的关于我们的页面
+                axios.get(baseURL + "/HtmlElementDemoAdmin/findAllImages").then((response) => {
+                    this.pages = response.data;
                 });
             }
         });
