@@ -62,7 +62,7 @@ public class ExectionAlgorithmRpcService {
         //1.获取算法信息
         Algorithm algorithm = algorithmMapper.getAlgorithmInfoById(algorithmid);
         //2.获取rabbitmq的connectionFactory
-//        String routingkey = algorithm.getAlgorithmCallRoutingkey();
+        String routingkey = algorithm.getAlgorithmCallRoutingkey();
         String host = algorithm.getAlgorithmCallHost();
         String exchange = algorithm.getAlgorithmCallExchange();
         int port = Integer.parseInt(algorithm.getAlgorithmCallPort());
@@ -85,12 +85,12 @@ public class ExectionAlgorithmRpcService {
         RabbitTemplate rabbitTemplate = RabbitmqUtil.getRabbitTemplate(connectionFactory);
         rabbitTemplate.setReplyTimeout(-1);
         //5.接受第一次返回结果（连接结果）
-//        Object firstresponse = rabbitTemplate.convertSendAndReceive(exchange, routingkey, connectJsondata);
-//        JSONObject connectresult = (JSONObject) firstresponse;
-//        int Partresult = (Integer) connectresult.get("part");
+        Object firstresponse = rabbitTemplate.convertSendAndReceive(exchange, routingkey, connectJsondata);
+        JSONObject connectresult = (JSONObject) firstresponse;
+        int Partresult = (Integer) connectresult.get("part");
         //6.判断请求结果
-//        if (connectenity.getPart() == Partresult) {
-//            System.out.println("请求结果：" + firstresponse.toString() + "\n" + "成功建立连接");
+        if (connectenity.getPart() == Partresult) {
+            System.out.println("请求结果：" + firstresponse.toString() + "\n" + "成功建立连接");
             //7.建立通讯后开始发送数据
             try {
                 Dataset dataset = datasetMapper.getDatasetInfo(taskInfo.getDatasetId());
@@ -104,13 +104,13 @@ public class ExectionAlgorithmRpcService {
                 //7.1 根据数据量确定消息数
                 for (int i = 0; i < data.length - 2; i++) {
                     JSONObject requestData = RequestJsonData(i, data[i], requestDataCommonInfo);
-//                    rabbitTemplate.convertSendAndReceive(exchange, routingkey, requestData);
+                    rabbitTemplate.convertSendAndReceive(exchange, routingkey, requestData);
                     System.out.println("发送第" + i + "条数据：" + requestData.toJSONString());
                 }
 
                 JSONObject RequestData = RequestJsonData(data.length, data[data.length - 1], requestDataCommonInfo);
                 //8.获得约简结果
-//                reductResult = rabbitTemplate.convertSendAndReceive(exchange, routingkey, RequestData);
+                reductResult = rabbitTemplate.convertSendAndReceive(exchange, routingkey, RequestData);
                 System.out.println("接受处理结果" + reductResult.toString());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -146,20 +146,20 @@ public class ExectionAlgorithmRpcService {
 //                    }
 //                }
 //            }
-//        if (reductResult != null) {
-//            JSONObject reductResultJson = (JSONObject) reductResult;
-//            JSONArray reductarray = (JSONArray) reductResultJson.get("reducts");
-//            String reduct=reductarray.toJSONString();
-//            taskResultMapper.insertTaskResults(taskId,1, reduct);
-//            taskInfoMapper.updateTaskInfoStatus("已完成",taskId);
-//            //邮件设置
-//            ToEmail email = new ToEmail();
-//            email.setToAccount(taskInfo.getTaskEmail());
-//            email.setSubject("Your task " + taskId + "result");
-//            email.setContent("columns" + reduct);
-//            emailUtil.commonEmail(email);
-//        }
-//    }
+        if (reductResult != null) {
+            JSONObject reductResultJson = (JSONObject) reductResult;
+            JSONArray reductarray = (JSONArray) reductResultJson.get("reducts");
+            String reduct=reductarray.toJSONString();
+            taskResultMapper.insertTaskResults(taskId,1, reduct);
+            taskInfoMapper.updateTaskInfoStatus("已完成",taskId);
+            //邮件设置
+            ToEmail email = new ToEmail();
+            email.setToAccount(taskInfo.getTaskEmail());
+            email.setSubject("Your task " + taskId + "result");
+            email.setContent("columns" + reduct);
+            emailUtil.commonEmail(email);
+        }
+    }
 
     /**
      * 根据 任务结果
