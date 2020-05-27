@@ -179,75 +179,76 @@
 </div>
 <script type="text/javascript">
     var app = new Vue({
-            el: '#div_id',
-            data() {
-                return {
-                    images: [],
-                    image: {
-                        moduleKey: ''
-                    }
+        el: '#div_id',
+        data() {
+            return {
+                images: [],
+                image: {
+                    moduleKey: ''
                 }
-            },
-            methods: {
-                //获得所有信息
-                getData() {
-                    axios.get('/HtmlElementDemoAdmin/findAllImages')
-                        .then(resp => {
-                            this.images = resp.data;
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-                },
-                //获得指定信息(删除)
-                getDataByKey(key) {
-                    this.clearData();
-                    axios.get('/HtmlElementDemoAdmin/findByKey/'+key)
-                        .then(resp => {
-                            this.image.moduleKey = resp.data.moduleKey
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-                },
-                //删除信息
-                deleteImage(key) {
-                    axios.post('/HtmlElementDemoAdmin/delete/'+key)
-                        .then(() => {
-                            window.location.reload();
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        })
-                },
-                //清空数据
-                clearData() {
-                    this.images.moduleKey = '';
-                },
-                save(){
-                    let title = $('#title').val();
-                    let markupStr = $('#summernote').summernote('code');
-                    let data = new FormData();
-                    data.append("html", markupStr);
-                    data.append("title", title);
-                    $.ajax({
-                        data: data,
-                        type: "POST",
-                        url: "/HtmlElementDemoAdmin/saveAboutUsPages",  //上传路径
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        success: function(data) {
-                            window.location.reload();
-                            alert('保存成功！');
-                        }
+            }
+        },
+        methods: {
+            //获得所有信息
+            getData() {
+                axios.get('/HtmlElementDemoAdmin/findAllImages')
+                    .then(resp => {
+                        this.images = resp.data;
+                        console.log(this.images)
+                    })
+                    .catch(err => {
+                        console.log(err);
                     });
-                }
             },
-            created () {
-                this.getData();
+            //获得指定信息(删除)
+            getDataByKey(key) {
+                this.clearData();
+                axios.get('/HtmlElementDemoAdmin/findByKey/'+key)
+                    .then(resp => {
+                        this.image.moduleKey = resp.data.moduleKey
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
             },
-        })
+            //删除信息
+            deleteImage(key) {
+                axios.post('/HtmlElementDemoAdmin/delete/'+key)
+                    .then(() => {
+                        window.location.reload();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            //清空数据
+            clearData() {
+                this.images.moduleKey = '';
+            },
+            save(){
+                let title = $('#title').val();
+                let markupStr = $('#summernote').summernote('code');
+                let data = new FormData();
+                data.append("html", markupStr);
+                data.append("title", title);
+                $.ajax({
+                    data: data,
+                    type: "POST",
+                    url: "/HtmlElementDemoAdmin/saveAboutUsPages",  //上传路径
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        window.location.reload();
+                        alert('保存成功！');
+                    }
+                });
+            }
+        },
+        created () {
+            this.getData();
+        },
+    })
 </script>
 <script>
     $('#summernote').summernote({

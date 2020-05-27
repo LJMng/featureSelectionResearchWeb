@@ -15,7 +15,7 @@
     </select>
     <!--查询所有图片信息-->
     <select id="findAllImages" resultMap="result">
-        select * from html_element_control where html_name = "aboutus" and type = "image"
+        select * from html_element_control where html_name = "aboutus" and type = "html_pages"
     </select>
     <!--    查找一个图片-->
     <select id="findByKey" resultMap="result">
