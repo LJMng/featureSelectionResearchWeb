@@ -273,7 +273,7 @@
             contentType: false,
             processData: false,
             success: function(data) {
-                $('#summernote').summernote('insertText', data.filename);
+                $('#summernote').summernote('insertImage', data.filename);
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 alert(XMLHttpRequest.status);

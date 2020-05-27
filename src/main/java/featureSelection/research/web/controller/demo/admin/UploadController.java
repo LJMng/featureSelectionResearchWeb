@@ -2,6 +2,8 @@ package featureSelection.research.web.controller.demo.admin;
 
 import featureSelection.research.web.mybatisMapper.demo.admin.HtmlElementDemoAdminMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,9 +21,6 @@ import java.util.UUID;
 @Controller
 public class UploadController {
 
-    //改为项目地址
-    private static String UPLOAD_FOLDER = "C:\\Users\\jiang\\Desktop\\featureSelection2\\src\\main\\resources\\public\\images\\";
-
     @Autowired
     HtmlElementDemoAdminMapper htmlElementDemoAdminMapper;
 
@@ -29,6 +28,9 @@ public class UploadController {
     @RequestMapping("/img")
     public Map<String,Object> uploadImgQiniu(@RequestParam("files") MultipartFile
                                                      file) throws IOException {
+
+        Resource resource = new ClassPathResource("");
+        System.out.println(resource.getFile().getAbsolutePath());
         Map<String,Object> map = new HashMap<String,Object>();
         String returnName = null;
         if(!file.isEmpty()) {
@@ -43,7 +45,7 @@ public class UploadController {
             returnName = relativeAddr;
 
             // fileName处理
-            relativeAddr = UPLOAD_FOLDER + relativeAddr;
+            relativeAddr = resource.getFile().getAbsolutePath() + "\\static\\images\\" + relativeAddr;
             // 文件对象
             File dest = new File(relativeAddr);
             // 创建路径
@@ -58,7 +60,7 @@ public class UploadController {
                 e.printStackTrace();
             }
         }
-        map.put("filename", "<img src=\"/images/"+returnName+"\" alt=\"...\" class=\"card-img-top\">");
+        map.put("filename", "/images/"+returnName);
         return map;
     }
 }

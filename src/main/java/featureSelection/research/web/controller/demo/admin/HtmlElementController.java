@@ -4,9 +4,14 @@ import featureSelection.research.web.entity.demo.admin.HtmlElementDemoAdmin;
 import featureSelection.research.web.mybatisMapper.demo.admin.HtmlElementDemoAdminMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -18,8 +23,6 @@ import java.util.regex.Pattern;
 @RequestMapping("/HtmlElementDemoAdmin")
 @RestController
 public class HtmlElementController {
-    //改为项目地址
-    private static String UPLOAD_FOLDER = "C:\\Users\\jiang\\Desktop\\featureSelection - 副本 - 副本 - 副本\\src\\main\\resources\\public\\images\\";
 
     @Autowired
     HtmlElementDemoAdminMapper htmlElementDemoAdminMapper;
@@ -72,9 +75,14 @@ public class HtmlElementController {
      * */
     //删除图片与图片信息
     @PostMapping("/delete/{key}")
-    public String deleteImage(@PathVariable("key") String key) {
+    public String deleteImage(@PathVariable("key") String key) throws IOException {
+        //获取当前项目下的路径
+        Resource resource = new ClassPathResource("");
         HtmlElementDemoAdmin e = htmlElementDemoAdminMapper.findByKey(key);
+        //获取图片路径
         String path = e.getEnValue();
+
+        //匹配图片的名字
         Pattern p_img = Pattern.compile("<(img|IMG)(.*?)(/>|></img>|>)");
         Matcher m_img = p_img.matcher(path);
         boolean result_img = m_img.find();
@@ -90,8 +98,9 @@ public class HtmlElementController {
                     String str_src = m_src.group(3);
                     int lastIndexOf = str_src.lastIndexOf("/");
                     String img_path = str_src.substring(lastIndexOf);
-                    File file = new File(UPLOAD_FOLDER + img_path);
+                    File file = new File(resource.getFile().getAbsolutePath() + "\\static\\images\\" + img_path);
                     if (file.exists()) {
+                        //删除图片
                         boolean flag = file.delete();
                     }
                 }
