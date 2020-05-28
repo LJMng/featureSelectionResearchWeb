@@ -99,7 +99,6 @@
                     <h5><b>参数步骤详情</b></h5>
                     <div v-for="procedure in temp">
                         <p v-if="scheme.schemeId===procedure.schemeId">{{procedure.procedureName}}:{{procedure.procedureSettingData}}</p>
-                        <p v-else>{{procedure.procedureName}}参数步骤未设置，请设置！</p>
                     </div>
                     <hr>
                     <p class="card-text" v-if="scheme.schemeRemark"><small
@@ -365,10 +364,13 @@
                                     this.tempSetting[i] = JSON.parse(temp1[i]);
                                 }
                                 let temp = this.ProcedureSettingsList[this.scheme.algorithmId];
-                                console.log(temp[0].defaultOption)
                                 for(let i=0;i<temp.length;i++){
                                     this.tempSetting[i].data = temp[i].defaultOption;
-                                    console.log(this.tempSetting[i])
+                                    if(temp[i].state==='optional'){
+                                        this.tempSetting[i].selected = 'false';
+                                    }else{
+                                        this.tempSetting[i].selected = 'true';
+                                    }
                                 }
                             })
                             .catch(err => {
@@ -498,6 +500,7 @@
                 } else {
                     this.tempSetting[i].selected = 'false';
                 }
+                console.log(this.tempSetting)
             },
         },
         //页面生成前获取所有信息
