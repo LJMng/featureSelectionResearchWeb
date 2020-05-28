@@ -247,13 +247,36 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group row">
-                            <div class="alert alert-success m-1 container-fluid" style="text-align: center" role="alert">
-                                基本参数设置
-                            </div>
-                            <div class="col-sm-12" v-for="param in scheme.algorithmParameterDemoAdmin">
-                                <div class="row m-0">
+                            <div class="col-sm-12">
+                                <div class="alert alert-success m-1 container-fluid" style="text-align: center" role="alert">
+                                    基本参数设置
+                                </div>
+                                <div class="row m-0" v-for="param in scheme.algorithmParameterDemoAdmin">
                                     <label>{{param.parameterName}}</label>
                                     <input class="form-control" v-model="param.parameterValue">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 mt-3">
+                                <div class="alert alert-warning text-center" role="alert">
+                                    参数步骤设置
+                                </div>
+                                <div class="row m-0" v-for="(ps,index2) in ProcedureSettingsList[scheme.algorithmId]">
+                                    <div class="col-3 p-2">
+                                        <div class="custom-control custom-control-inline custom-radio">
+                                            <input type="checkbox" class="custom-control-input" :id="scheme.algorithmName+ps.name+'Procedure'" :name="scheme.algorithmName+ps.name+'Check'+(index2+1)" :checked="ps.state=='optional'?null:'checked'" :disabled="ps.state=='required'?'disabled':null">
+                                            <label class="custom-control-label" :for="scheme.algorithmName+ps.name+'Procedure'">{{ps.name}}</label>
+                                            <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="ps.description">
+                                                        <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </span>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3 col-9">
+                                        <select class="custom-select" :id="scheme.algorithmName+ps.name+'select'" :name="scheme.algorithmName+ps.name" :disabled="ps.state=='optional'?'disabled':null">
+                                            <option v-for="(option,index3) in ps.options" :selected="option==ps.defaultOption?'selected':null" :value="option">{{option}}</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="alert alert-success m-1 container-fluid" style="text-align: center" role="alert">
@@ -321,6 +344,7 @@
                 searchString: '',
                 count: 0,
                 number: 0,
+                ProcedureSettingsList: {},
             }
         },
         methods: {
@@ -337,6 +361,9 @@
                             .catch(err => {
                                 console.log(err);
                             });
+                        axios.get('/getProcedureSettingsList').then((response) => {
+                            this.ProcedureSettingsList = response.data;
+                        })
                     })
                     .catch(err => {
                         console.log(err);
@@ -408,9 +435,7 @@
             insertData() {
                 axios.post('/SchemeDemoAdmin/insert', this.scheme)
                     .then(() => {
-                        for(var i=0;i<this.number;i++){
-                            axios.post('/schemeProcedureDemoAdmin/insert')
-                        };
+                        axios.post('/schemeProcedureDemoAdmin/insert');
                         window.location.reload();
                     })
                     .catch(err => {
@@ -450,6 +475,7 @@
             deleteData(id) {
                 axios.post('/SchemeDemoAdmin/delete/' + id)
                     .then(() => {
+                        axios.post('/schemeProcedureDemoAdmin/delete/' + id);
                         window.location.reload();
                     })
                     .catch(err => {
