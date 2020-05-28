@@ -430,24 +430,16 @@
                 }
                 axios.post('/SchemeDemoAdmin/update', this.scheme)
                     .then(() => {
-                        // for(let i=0;i<this.tempSetting.length;i++){
-                        //     if(this.tempSetting[i].selected.substr(0,1)==='t'||this.tempSetting[i].selected.substr(0,1)==='1'){
-                        //         this.tempSetting[i].selected = 'true';
-                        //     }else if(this.tempSetting[i].selected.substr(0,1)==='f'||this.tempSetting[i].selected.substr(0,1)==='0'){
-                        //         this.tempSetting[i].selected = 'false';
-                        //     }else{
-                        //         alert("请输入false或true,也可仅输入首字母以及0或1");
-                        //         return ;
-                        //     }
-                        //     this.p[i].procedureSettingData = '{"data":"'+this.tempSetting[i].data+'","selected":"'+this.tempSetting[i].selected+'"}';
-                        // }
-                        // axios.post('/schemeProcedureDemoAdmin/update', this.p)
-                        //     .then(() => {
-                        //
-                        //     })
-                        //     .catch(err => {
-                        //         console.log(err);
-                        //     });
+                        for(let i=0;i<this.tempSetting.length;i++){
+                            this.p[i].procedureSettingData = '{"data":"'+this.tempSetting[i].data+'","selected":"'+this.tempSetting[i].selected+'"}';
+                        }
+                        axios.post('/schemeProcedureDemoAdmin/update', this.p)
+                            .then(() => {
+
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            });
                         window.location.reload();
                     })
                     .catch(err => {
