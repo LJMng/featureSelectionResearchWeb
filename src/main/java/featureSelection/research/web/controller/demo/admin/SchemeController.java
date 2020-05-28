@@ -2,7 +2,7 @@ package featureSelection.research.web.controller.demo.admin;
 
 import featureSelection.research.web.entity.demo.admin.DatasetDemoAdmin;
 import featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin;
-import featureSelection.research.web.mybatisMapper.demo.admin.SchemeDemoAdminMapper;
+import featureSelection.research.web.service.demo.admin.impl.SchemeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ import java.util.List;
 public class SchemeController {
 
     @Autowired
-    SchemeDemoAdminMapper schemeDemoAdminMapper;
+    SchemeServiceImpl schemeService;
 
     /**
      * @return 返回所有的方案的信息，返回格式为json
@@ -23,7 +23,7 @@ public class SchemeController {
     //提供查询所有方案的接口
     @GetMapping("/findAll")
     public List<SchemeDemoAdmin> findAll(){
-        return schemeDemoAdminMapper.findAll();
+        return schemeService.findAll();
     }
 
     /**
@@ -34,7 +34,7 @@ public class SchemeController {
     //提供通过ID查询方案的接口
     @GetMapping("/find/{id}")
     public SchemeDemoAdmin getSchemeDemoAdminById(@PathVariable("id") Integer id){
-        return schemeDemoAdminMapper.getSchemeDemoAdminById(id);
+        return schemeService.getSchemeDemoAdminById(id);
     }
 
     /**
@@ -43,10 +43,7 @@ public class SchemeController {
     //提供增加方案的接口
     @PostMapping("/insert")
     public String insertScheme(@RequestBody SchemeDemoAdmin schemeDemoAdmin){
-        //将数据插入参数方案表
-        schemeDemoAdminMapper.insertSchemeDemoAdmin(schemeDemoAdmin);
-        //将数据插入参数方案值表
-        schemeDemoAdminMapper.insertSchemeParameterSchemeIdAndParameterId(schemeDemoAdmin);
+        schemeService.insertScheme(schemeDemoAdmin);
         return null;
     }
 
@@ -58,8 +55,7 @@ public class SchemeController {
     //提供更新方案的接口
     @PostMapping("/update")
     public String updateSchemeDemoAdmin(@RequestBody SchemeDemoAdmin schemeDemoAdmin){
-        schemeDemoAdminMapper.updateSchemeDemoAdmin(schemeDemoAdmin);
-        schemeDemoAdminMapper.updateSchemeParameterDemoAdmin(schemeDemoAdmin);
+        schemeService.updateSchemeDemoAdmin(schemeDemoAdmin);
         return null;
     }
 
@@ -71,8 +67,7 @@ public class SchemeController {
     //提供删除方案的接口
     @PostMapping("/delete/{id}")
     public String deleteSchemeDemoAdmin(@PathVariable("id") Integer id){
-        schemeDemoAdminMapper.deleteSchemeParameterValue(id);
-        schemeDemoAdminMapper.deleteScheme(id);
+        schemeService.deleteSchemeDemoAdmin(id);
         return null;
     }
 
@@ -82,7 +77,7 @@ public class SchemeController {
     //查询所有数据集ID和名称提供方案调用接口
     @GetMapping("/findAllIdAndName")
     public List<DatasetDemoAdmin> findAllIdAndName(){
-        return schemeDemoAdminMapper.findAllIdAndName();
+        return schemeService.findAllIdAndName();
     }
 }
 
