@@ -246,9 +246,12 @@
                                 <div class="alert alert-success m-1 container-fluid" style="text-align: center" role="alert">
                                     基本参数设置
                                 </div>
-                                <div class="row m-0" v-for="param in scheme.algorithmParameterDemoAdmin">
-                                    <label>{{param.parameterName}}</label>
-                                    <input class="form-control" v-model="param.parameterValue">
+                                <div class="row m-0 input-group" v-for="param in scheme.algorithmParameterDemoAdmin">
+                                    <div class="input-group-prepend" style="width: 30%">
+                                        <span class="input-group-text container-fluid">{{param.parameterName}}</span>
+                                    </div>
+                                    <input type="text" class="form-control" v-model="param.value">
+                                    <input type="text" class="form-control" v-model="param.option">
                                 </div>
                             </div>
                             <div class="col-sm-12 mt-3">
@@ -314,6 +317,7 @@
                 params: '',
                 searchString: '',
                 ProcedureSettingsList: {},
+                values: '',
             }
         },
         methods: {
@@ -351,6 +355,12 @@
                         this.scheme.algorithmId = resp.data.algorithmId;
                         this.scheme.algorithmName = resp.data.algorithmName;
                         this.scheme.algorithmParameterDemoAdmin = resp.data.algorithmParameterDemoAdmin;
+                        for(let i=0;i<this.scheme.algorithmParameterDemoAdmin.length;i++){
+                            let string = this.scheme.algorithmParameterDemoAdmin[i].parameterValue;
+                            let str = string.split(",");
+                            this.$set(this.scheme.algorithmParameterDemoAdmin[i],"value",str[0]);
+                            this.$set(this.scheme.algorithmParameterDemoAdmin[i],"option",str[1]);
+                        }
                         this.scheme.datasetId = resp.data.datasetId;
                         this.scheme.datasetName = resp.data.datasetName;
                         axios.get('/schemeProcedureDemoAdmin/find/' + _id)
@@ -431,6 +441,9 @@
                     alert('请输入简介');
                     return;
                 }
+                for(let i=0;i<this.scheme.algorithmParameterDemoAdmin.length;i++){
+                    this.$set(this.scheme.algorithmParameterDemoAdmin[i],"parameterValue",this.scheme.algorithmParameterDemoAdmin[i].value+','+this.scheme.algorithmParameterDemoAdmin[i].option);
+                }
                 axios.post('/SchemeDemoAdmin/update', this.scheme)
                     .then(() => {
                         for(let i=0;i<this.tempSetting.length;i++){
@@ -500,7 +513,6 @@
                 } else {
                     this.tempSetting[i].selected = 'false';
                 }
-                console.log(this.tempSetting)
             },
         },
         //页面生成前获取所有信息
