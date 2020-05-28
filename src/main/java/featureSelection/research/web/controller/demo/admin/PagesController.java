@@ -16,7 +16,7 @@ public class PagesController {
     //管理页面登录页面
     @GetMapping("/login")
     public String toLoginAdminPage(){
-        return "/demoAdmin/DemoAdminLogin.html";
+        return "/pages/demo/admin/DemoAdminLogin.html";
     }
 
     /**
@@ -25,7 +25,7 @@ public class PagesController {
     //管理页面首页
     @GetMapping("/index")
     public String toIndexAdminPage(){
-        return "/demoAdmin/index.html";
+        return "/pages/demo/admin/index.html";
     }
 
     /**
@@ -34,7 +34,7 @@ public class PagesController {
     //方案管理页面
     @GetMapping("/SchemeAdmin")
     public String toSchemeAdminPage(){
-        return "/demoAdmin/SchemeDemoAdmin.html";
+        return "/pages/demo/admin/SchemeDemoAdmin.html";
     }
 
     /**
@@ -43,6 +43,6 @@ public class PagesController {
     //关于我们管理页面
     @GetMapping("/AboutusAdmin")
     public String toAboutusAdmin(){
-        return "/demoAdmin/AboutusDemoAdmin.html";
+        return "/pages/demo/admin/AboutusDemoAdmin.html";
     }
 }
