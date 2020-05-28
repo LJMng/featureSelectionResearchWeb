@@ -91,15 +91,15 @@
                     <hr>
                     <p class="card-text">方案简介:{{scheme.schemeDescription}}</p>
                     <hr>
-                    <h5>基本参数详情</h5>
+                    <h5><b>基本参数详情</b></h5>
                     <span class="card-text" v-for="parameter in scheme.algorithmParameterDemoAdmin">
-                            <p v-if="parameter.selected===true" style="color:green">{{parameter.parameterName}}:{{parameter.parameterValue}}</p>
-                            <p v-else style="color:red">{{parameter.parameterName}}:{{parameter.parameterValue}}</p>
+                            <p>{{parameter.parameterName}}:{{parameter.parameterValue}}</p>
                         </span>
                     <hr>
-                    <h5>参数步骤详情</h5>
+                    <h5><b>参数步骤详情</b></h5>
                     <div v-for="procedure in temp">
                         <p v-if="scheme.schemeId===procedure.schemeId">{{procedure.procedureName}}:{{procedure.procedureSettingData}}</p>
+                        <p v-else>{{procedure.procedureName}}参数步骤未设置，请设置！</p>
                     </div>
                     <hr>
                     <p class="card-text" v-if="scheme.schemeRemark"><small
@@ -158,16 +158,12 @@
                             <label class="col-form-label">方案备注:</label>
                             <input type="text" class="form-control" v-model="scheme.schemeRemark">
                         </div>
-                        <div class="form-group">
-                            <label>步骤个数(一旦确定无法修改):</label>
-                            <input type="text" class="form-control" v-model.number="number">
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                     <button type="button" class="btn btn-primary"
-                            @click="getParameterByalgorithmId(scheme.algorithmId)">确定
+                            @click="getParameterByAlgorithmId(scheme.algorithmId)">确定
                     </button>
                 </div>
             </div>
@@ -263,13 +259,8 @@
                                 <div class="row m-0" v-for="(ps,index2) in ProcedureSettingsList[scheme.algorithmId]">
                                     <div class="col-3 p-2">
                                         <div class="custom-control custom-control-inline custom-radio">
-                                            <input type="checkbox" class="custom-control-input" :id="scheme.algorithmName+ps.name+'Procedure'" :name="scheme.algorithmName+ps.name+'Check'+(index2+1)" :checked="ps.state=='optional'?null:'checked'" :disabled="ps.state=='required'?'disabled':null">
+                                            <input @click="check(index2)" type="checkbox" class="custom-control-input" :id="scheme.algorithmName+ps.name+'Procedure'" :name="scheme.algorithmName+ps.name+'Check'+(index2+1)" :checked="ps.state=='optional'?null:'checked'" :disabled="ps.state=='required'?'disabled':null">
                                             <label class="custom-control-label" :for="scheme.algorithmName+ps.name+'Procedure'">{{ps.name}}</label>
-                                            <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="ps.description">
-                                                        <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
-                                                        </svg>
-                                                    </span>
                                         </div>
                                     </div>
                                     <div class="input-group mb-3 col-9">
@@ -279,25 +270,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="alert alert-success m-1 container-fluid" style="text-align: center" role="alert">
-                                参数步骤设置<br>
-                            </div>
-                            <div v-for="(procedure,index) in tempSetting" class="container-fluid m-1">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">步骤名称</span>
-                                    </div>
-                                    <input class="form-control" v-model="p[index].procedureName">
-                                </div>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">步骤设置</span>
-                                    </div>
-                                    <input class="form-control" v-model="tempSetting[index].data">
-                                    <input spellcheck="true" class="form-control" v-model="tempSetting[index].selected">
-                                </div>
-                            </div>
-
                         </div>
                     </form>
                 </div>
@@ -342,8 +314,6 @@
                 datasets: [],
                 params: '',
                 searchString: '',
-                count: 0,
-                number: 0,
                 ProcedureSettingsList: {},
             }
         },
@@ -394,6 +364,12 @@
                                     temp1[i] = this.tempSetting[i].procedureSettingData;
                                     this.tempSetting[i] = JSON.parse(temp1[i]);
                                 }
+                                let temp = this.ProcedureSettingsList[this.scheme.algorithmId];
+                                console.log(temp[0].defaultOption)
+                                for(let i=0;i<temp.length;i++){
+                                    this.tempSetting[i].data = temp[i].defaultOption;
+                                    console.log(this.tempSetting[i])
+                                }
                             })
                             .catch(err => {
                                 console.log(err);
@@ -404,7 +380,7 @@
                     });
             },
             //通过算法ID获取算法参数
-            getParameterByalgorithmId(id) {
+            getParameterByAlgorithmId(id) {
                 //表单验证
                 if (!this.scheme.algorithmId) {
                     alert('请选择算法');
@@ -515,6 +491,13 @@
                     .catch(err => {
                         console.log(err);
                     });
+            },
+            check(i) {
+                if (event.target.checked) {
+                    this.tempSetting[i].selected = 'true';
+                } else {
+                    this.tempSetting[i].selected = 'false';
+                }
             },
         },
         //页面生成前获取所有信息

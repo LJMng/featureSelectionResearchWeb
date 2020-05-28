@@ -1,6 +1,8 @@
 package featureSelection.research.web.controller.demo.admin;
 
+import featureSelection.research.web.entity.demo.admin.ProcedureSettingsDemoAdmin;
 import featureSelection.research.web.entity.demo.admin.SchemeProcedureDemoAdmin;
+import featureSelection.research.web.mybatisMapper.demo.admin.ProcedureSettingsDemoAdminMapper;
 import featureSelection.research.web.mybatisMapper.demo.admin.SchemeProcedureDemoAdminMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,9 @@ public class SchemeProcedureController {
 
     @Autowired
     SchemeProcedureDemoAdminMapper schemeProcedureDemoAdminMapper;
+
+    @Autowired
+    ProcedureSettingsDemoAdminMapper procedureSettingsDemoAdminMapper;
 
     //提供查询所有步骤的接口
     @GetMapping("/findAll")
@@ -29,8 +34,11 @@ public class SchemeProcedureController {
     //提供增加步骤的接口
     @PostMapping("/insert")
     public String insertSchemeProcedureDemoAdmin(){
-        //将数据插入方案步骤表
-        schemeProcedureDemoAdminMapper.insertSchemeProcedureDemoAdmin();
+        List<ProcedureSettingsDemoAdmin> p = procedureSettingsDemoAdminMapper.count();
+        for(int i=0;i<p.size();i++){
+            //将数据插入方案步骤表
+            schemeProcedureDemoAdminMapper.insertSchemeProcedureDemoAdmin(p.get(i).getName());
+        }
         return null;
     }
 

@@ -20,7 +20,7 @@
 
     <!--    增加步骤-->
     <insert id="insertSchemeProcedureDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.SchemeProcedureDemoAdmin" useGeneratedKeys="true" keyProperty="schemeProcedureId">
-        insert into scheme_procedure (scheme_id, procedure_name, procedure_setting_data) values ((select max(scheme_id) from parameter_scheme), (select procedure_settings.name from procedure_settings where procedure_settings.algorithm_id=(select algorithm_id from parameter_scheme order by id desc limit 1)), "{\"data\":\"data\",\"selected\":\"true\"}");
+        insert into scheme_procedure (scheme_id, procedure_name, procedure_setting_data) values ((select max(scheme_id) from parameter_scheme), #{name}, "{\"data\":\"data\",\"selected\":\"true\"}");
     </insert>
 
     <!--    更新被绑定ID的步骤-->
