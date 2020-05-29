@@ -153,55 +153,44 @@
                         <input v-model="administratorId" PLACEHOLDER="AdministratorId" >
                     </div>
                 </div>
-                <form  action="/addAdministrator" method="post" class="form-horizontal" role="form" id="addAdministratorForm" onsubmit="return">
-                    <div class="modal fade"  id="addAdministrator"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
-                        <div class="modal-dialog">
-                            <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
-                            <div class="modal-content">
-                                <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
-
-                                <div class="btn-info modal-header">
-                                    <!--  模态框标题  -->
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <!--  关闭按钮  -->
-                                    <h4>点击修改页面元素信息</h4>
-                                    <!--  标题内容  -->
-                                </div>
-
-                                <div class="modal-body">
-                                    <!--  模态框内容，我在此处添加一个表单 -->
-                                    <form class="form-horizontal" role="form" >
-                                        <div class="row">
-                                            <div class="col-md-10 offset-md-1">
-                                                <label>管理员id</label>
-                                                <input type="text" class="form-control" name="administratorId" v-model="checkAdministratorId" @blur="fCheckedAdministratorId"  placeholder="administratorId">{{checked.checkedAdministratorId}}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-10 offset-md-1">
-                                                <label>管理员姓名</label>
-                                                <input type="text" class="form-control" name="administratorName" v-model="checkAdministratorName" @blur="fCheckedAdministratorName" placeholder="administratorName">{{checked.checkedAdministratorName}}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-10 offset-md-1">
-                                                <label>管理员密码</label>
-                                                <input type="text" class="form-control" name="administratorPassword" placeholder="Password">
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <!--  模态框底部样式，一般是提交或者确定按钮 -->
-                                    <button type="submit" class="btn btn-info">确定</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                </div>
-
-                            </div><!-- /.modal-content -->
+                <!-- 添加管理员模态框 -->
+                <div class="modal fade" id="addAdministrator" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <!--                                        {{values.modal_addAdministrator_title}}-->
+                                <h5 class="modal-title" id="addAdministratorModalTitle">新增管理员信息</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form >
+                                    <!--                                            {{values.modal_addAdministrator_form_li1}}-->
+                                    <div class="form-group">
+                                        <label for="addAdministratorId" class="col-form-label">管理员id:</label>
+                                        <input type="text"  class="form-control" id="addAdministratorId" v-model="administratorInfo.administratorId"  >
+                                    </div>
+                                    <!--                                            {{values.modal_addAdministrator_form_li2}}-->
+                                    <div class="form-group">
+                                        <label for="addAdministratorName" class="col-form-label">管理员姓名:</label>
+                                        <input type="text"  class="form-control" id="addAdministratorName"  v-model="administratorInfo.administratorName">
+                                    </div>
+                                    <!--                                            {{values.modal_addAdministrator_form_li3}}-->
+                                    <div class="form-group">
+                                        <label for="addAdministratorPassword" class="col-form-label">管理员密码:</label>
+                                        <input type="password"  class="form-control" id="addAdministratorPassword" v-model="administratorInfo.administratorPassword">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary" @click="addAdministrator">添加</button>
+                            </div>
                         </div>
-                    </div> <!-- /.modal -->
-                </form>
+                    </div>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-striped table-sm">
                         <thead>
@@ -218,68 +207,72 @@
                             <td>{{administrator.administratorName}}</td>
                             <td>{{administrator.administratorPassword}}</td>
                             <td>
-                                <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#"+administrator.administratorId'>update</button>
-                                <button class="btn btn-sm btn-danger" @click="deleteAdministrator(administrator.administratorId)">delete</button>
+                                <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#aaa"+administrator.administratorName'>update</button>
+                                <button class="btn btn-sm btn-danger" data-toggle="modal" v-bind:data-target='"#a"+administrator.administratorName'>delete</button>
                             </td>
                             <!--模态框对应的id还没有根据administrator赋值 -->
                         </tr>
                         </tbody>
                     </table>
                     <div v-for="administrator in administrators">
-                    <form  action="/updateAdministrator" method="post" class="form-horizontal" role="form" id="updateDataSet" onsubmit="return">
-                        <div class="modal fade"  v-bind:id="administrator.administratorId"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
-                            <div class="modal-dialog">
-                                <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
+                        <!-- 定义修改管理员信息的模态框 -->
+                        <div class="modal fade" v-bind:id='"aaa"+administrator.administratorName' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable" role="document">
                                 <div class="modal-content">
-                                    <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
-
-                                    <div class="btn-info modal-header">
-                                        <!--  模态框标题  -->
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <!--  关闭按钮  -->
-                                        <h4>点击修改页面元素信息</h4>
-                                        <!--  标题内容  -->
+                                    <div class="modal-header">
+<!--                                        {{values.modal_updateAdministrator_title}}-->
+                                        <h5 class="modal-title" id="exampleModalScrollableTitle">修改管理员信息</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
-
                                     <div class="modal-body">
-                                        <!--  模态框内容，我在此处添加一个表单 -->
-                                        <form class="form-horizontal" role="form" >
-                                            <div class="row">
-                                                <div class="col-md-10 offset-md-1">
-                                                    <input type="hidden" class="form-control" name="administratorId" v-bind:value="administrator.administratorId">
-                                                </div>
+                                        <form >
+<!--                                            {{values.modal_updateAdministrator_form_li1}}-->
+                                            <div class="form-group">
+                                                <label for="administratorId" class="col-form-label">管理员id:</label>
+                                                <input type="text"  class="form-control" id="administratorId" v-bind:placeholder="administrator.administratorId"  disabled>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-10 offset-md-1">
-                                                    <label>管理员id</label>
-                                                    <input type="text" class="form-control"   v-bind:placeholder="administrator.administratorId" disabled>
-                                                </div>
+<!--                                            {{values.modal_updateAdministrator_form_li2}}-->
+                                            <div class="form-group">
+                                                <label for="elementType" class="col-form-label">管理员姓名:</label>
+                                                <input type="text"  class="form-control" id="elementType" v-bind:placeholder="administrator.administratorName" v-model="administratorInfo.administratorName">
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-10 offset-md-1">
-                                                    <label>管理员姓名</label>
-                                                    <input type="text" class="form-control" name="administratorName" v-bind:placeholder="administrator.administratorName" v-model="checkAdministratorName" @blur="fCheckedAdministratorName">{{checked.checkedAdministratorName}}
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-10 offset-md-1">
-                                                    <label>管理员密码</label>
-                                                    <input type="text" class="form-control" name="administratorPassword" v-bind:placeholder="administrator.administratorPassword">
-                                                </div>
+<!--                                            {{values.modal_updateAdministrator_form_li3}}-->
+                                            <div class="form-group">
+                                                <label for="elementChValue" class="col-form-label">管理员密码:</label>
+                                                <input type="password"  class="form-control" id="elementChValue" v-model="administratorInfo.administratorPassword">
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <!--  模态框底部样式，一般是提交或者确定按钮 -->
-                                        <button type="submit" class="btn btn-info">确定</button>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-primary" @click="updateDataset(administrator.administratorId)">修改</button>
                                     </div>
-
-                                </div><!-- /.modal-content -->
+                                </div>
                             </div>
-                        </div> <!-- /.modal -->
-                    </form>
+                        </div>
+                        <!-- 定义删除管理员信息模态框 -->
+                        <div class="modal fade" v-bind:id='"a"+administrator.administratorName' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <!-- values.modal -->
+                                        <h5 class="modal-title" id="exampleModalLabel">删除管理员信息</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        确定删除管理员信息吗？删除后信息不可恢复！
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-danger" @click="deleteAdministrator(administrator.administratorId)">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>

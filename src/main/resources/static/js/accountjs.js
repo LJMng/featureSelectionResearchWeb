@@ -17,14 +17,21 @@ var vm =new Vue({
     el:"#accountData",
     data:{
         applyAccounts:{"5":"25"},
-        accounts: [{"accountId":345,"accountName":"嘤嘤嘤","accountPassword":"123456","accountEmail":"1009710828@qq.com","accountPower":317857},{"accountId":1234,"accountName":"啊九","accountPassword":"123456","accountEmail":"4589565@163.com","accountPower":268692},{"accountId":123114,"accountName":"赵龙","accountPassword":"123456","accountEmail":"1009710828@qq.com","accountPower":455577},{"accountId":123214,"accountName":"赵龙","accountPassword":"123456","accountEmail":"1009710828@qq.com","accountPower":636353},{"accountId":159189,"accountName":"大龙","accountPassword":"123456","accountEmail":"","accountPower":642936},{"accountId":15918944,"accountName":"赵龙","accountPassword":"123456","accountEmail":"4589565@163.com","accountPower":184941},{"accountId":23654885,"accountName":"ma","accountPassword":"123456","accountEmail":"10030928@163.com","accountPower":709006}],
+        accounts: [],
         values:"",
         accountEmail:'',
         checkAccountId:1,
         checkAccountName:"",
         checkEmail:"",
         checkPassword:'',
-        checked:{checkedAccountName:'',checkedEmail:'',checkedAccountId:'',checkedPassword:''}
+        checked:{checkedAccountName:'',checkedEmail:'',checkedAccountId:'',checkedPassword:''},
+        // 用于暂时存放修改、新增、删除用户信息
+        accountInfo:{
+            accountEmail:'',
+            accountId:'',
+            accountName:'',
+            accountPassword:''
+        }
 
     },
     computed:{
@@ -61,6 +68,25 @@ var vm =new Vue({
             }else {
                 this.checked.checkedAccountName="正确！"
             }
+        },
+        addAccount:function () {
+            axios.post('/addAccount',this.accountInfo)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+        updateAccount:function (accountId) {
+            this.accountInfo.accountId=accountId;
+            axios.post('/updateAccount',this.accountInfo)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         }
 
 

@@ -298,10 +298,10 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-2">
-                                                        <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#"+dataset.datasetName'>update</button>
+                                                        <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#updateDataset"+dataset.datasetId'>update</button>
                                                     </div>
                                                     <div class="col-md-4 offset-md-1">
-                                                        <button class="btn btn-danger" @click="deleteDataset(dataset.datasetId)">delete</button>
+                                                        <button class="btn btn-danger" data-toggle="modal" v-bind:data-target='"#deleteDataset"+dataset.datasetId'>delete</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -309,96 +309,94 @@
                                     </div>
                                 </div>
                             </li>
-                            <form  action="/updateDataset" method="post" class="form-horizontal" role="form" id="updateDataSet" onsubmit="return">
-                                <div class="modal fade"  v-bind:id="dataset.datasetName"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
-                                    <div class="modal-dialog">
-                                        <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
-                                        <div class="modal-content">
-                                            <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
+                            <!-- 定义修改数据集信息模态框 -->
+                            <div class="modal fade" v-bind:id='"updateDataset"+dataset.datasetId' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!--                                        {{values.modal_updateAdministrator_title}}-->
+                                            <h5 class="modal-title" id="exampleModalScrollableTitle">修改数据集信息</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form >
+                                                <!--                                            {{values.modal_updateAdministrator_form_li1}}-->
+                                                <div class="form-group">
+                                                    <label for="datasetId" class="col-form-label">管理员id:</label>
+                                                    <input type="text"  class="form-control" id="datasetId" v-bind:placeholder="dataset.datasetId"  disabled>
+                                                </div>
+                                                <!--                                            {{values.modal_updateAdministrator_form_li2}}-->
+                                                <div class="form-group">
+                                                    <label for="datasetName" class="col-form-label">数据集名称:</label>
+                                                    <input type="text"  class="form-control" id="datasetName" v-bind:placeholder="dataset.datasetName" v-model="datasetInfo.datasetName">
+                                                </div>
+                                                <!--                                            {{values.modal_updateAdministrator_form_li3}}-->
+                                                <div class="form-group">
+                                                    <label for="datasetDescription" class="col-form-label">数据集描述:</label>
+                                                    <input type="text"  class="form-control" id="datasetDescription" v-bind:placeholder="dataset.datasetDescription" v-model="datasetInfo.datasetDescription">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="datasetCount" class="col-form-label">数据集记录数:</label>
+                                                    <input type="text"  class="form-control" id="datasetCount" v-bind:placeholder="dataset.datasetCount" v-model="datasetInfo.datasetCount">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="datasetSource" class="col-form-label">数据集来源:</label>
+                                                    <input type="url"  class="form-control" id="datasetSource" v-bind:placeholder="dataset.datasetSource" v-model="datasetInfo.datasetSource">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="datasetDimension" class="col-form-label">数据集维度:</label>
+                                                    <input type="text"  class="form-control" id="datasetDimension" v-bind:placeholder="dataset.datasetDimension" v-model="datasetInfo.datasetDimension">
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>公共数据集</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label class="form-check-label" for="inlineRadio1">是</label>&nbsp;
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" v-model="datasetInfo.datasetIsCommon" id="inlineRadio1" value="true" aria-selected="true" @click="setIsCommon(true)">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label class="form-check-label" for="inlineRadio2">否</label>&nbsp;
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" v-model="datasetInfo.datasetIsCommon" id="inlineRadio2" value="false" @click="setIsCommon(false)">
+                                                        </div>
+                                                    </div>
 
-                                            <div class="btn-info modal-header">
-                                                <!--  模态框标题  -->
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <!--  关闭按钮  -->
-                                                <h4>点击修改页面元素信息</h4>
-                                                <!--  标题内容  -->
-                                            </div>
-
-                                            <div class="modal-body">
-                                                <!--  模态框内容，我在此处添加一个表单 -->
-                                                <form class="form-horizontal" role="form" >
-                                                    <div class="row">
-                                                        <div class="col-md-10 offset-md-1">
-                                                            <input type="hidden" class="form-control" name="datasetId" v-bind:value="dataset.datasetId">
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-10 offset-md-1">
-                                                            <label>数据集id</label>
-                                                            <input type="text" class="form-control"   v-bind:placeholder="dataset.datasetId" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-10 offset-md-1">
-                                                            <label>数据集名称</label>
-                                                            <input type="text" class="form-control" name="datasetName" v-bind:placeholder="dataset.datasetName" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-10 offset-md-1">
-                                                            <label>数据集介绍</label>
-                                                            <input type="text" class="form-control" name="datasetDescription" v-bind:placeholder="dataset.datasetDescription" v-model="checkDatasetDescription" @blur="fCheckDatasetDescription">{{checked.checkedDatasetDescription}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-10 offset-md-1">
-                                                            <label>数据集记录数</label>
-                                                            <input type="text" class="form-control" name="datasetCount" v-bind:placeholder="dataset.datasetCount" v-model="checkDatasetCount" @blur="fCheckDatasetCount">{{checked.checkedDatasetCount}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-10 offset-md-1">
-                                                            <label>数据集来源</label>
-                                                            <input type="url" class="form-control" name="datasetSource" v-bind:placeholder="dataset.datasetSource">
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-10 offset-md-1">
-                                                            <label>数据集维度</label>
-                                                            <input type="text" class="form-control" name="datasetDimension" v-bind:placeholder="dataset.datasetDimension">
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-10 offset-md-1">
-                                                            <label>是否为公共数据集：</label>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="isCommon" v-bind:id="dataset.datasetId" value="true" checked>
-                                                                <label class="form-check-label" v-bind:for="dataset.datasetId">
-                                                                    是
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="isCommon" v-bind:id="dataset.datasetCount" value="false">
-                                                                <label class="form-check-label" v-bind:for="dataset.datasetCount">
-                                                                    否
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <!--  模态框底部样式，一般是提交或者确定按钮 -->
-                                                <button type="submit" class="btn btn-info">确定</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                            </div>
-
-                                        </div><!-- /.modal-content -->
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                            <button type="button" class="btn btn-primary" @click="updateDataset(dataset.datasetId)">修改</button>
+                                        </div>
                                     </div>
-                                </div> <!-- /.modal -->
-                            </form>
+                                </div>
+                            </div>
+                            <!-- 定义删除数据集信息模态框 -->
+                            <div class="modal fade" v-bind:id='"deleteDataset"+dataset.datasetId' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- values.modal -->
+                                            <h5 class="modal-title" id="exampleModalLabel">删除数据集信息</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            确定删除数据集信息吗？删除后信息不可恢复！
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                            <button type="button" class="btn btn-danger" @click="deleteDataset(dataset.datasetId)">确定</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

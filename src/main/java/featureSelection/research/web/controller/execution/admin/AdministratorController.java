@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class AdministratorController {
     }
 
     @PostMapping("/updateAdministrator")
-    public String updateAdministrator(Administrator administrator){
+    public String updateAdministrator(@RequestBody Administrator administrator){
         administratorBusiness.updateAdministrator(administrator);
         return "redirect: /pages/execution/admin/administrator.html";
     }
@@ -34,7 +35,7 @@ public class AdministratorController {
     }
 
     @PostMapping("/addAdministrator")
-    public String addAdministrator(Administrator administrator){
+    public String addAdministrator(@RequestBody Administrator administrator){
         administratorBusiness.addAdministrator(administrator);
         return "redirect: /pages/execution/admin/administrator.html";
     }

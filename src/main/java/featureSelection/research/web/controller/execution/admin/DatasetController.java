@@ -5,10 +5,7 @@ import featureSelection.research.web.entity.execution.admin.DatasetForm;
 import featureSelection.research.web.service.execution.admin.DatasetBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
@@ -44,14 +41,14 @@ public class DatasetController {
         List<Dataset> datasetList=datasetBusiness.getDatasetList();
         return datasetList;
     }
-    @GetMapping("/deleteDataset")
-    public String deleteDatasetById(int datasetId){
-        datasetBusiness.deleteDatasetById(datasetId);
+    @PostMapping("/deleteDataset")
+    public String deleteDatasetById(@RequestBody Dataset dataset){
+        datasetBusiness.deleteDatasetById(dataset.getDatasetId());
         return "redirect:/pages/execution/admin/datasetManage.html";
     }
 
     @PostMapping("/updateDataset")
-    public String updateDataset(Dataset dataset){
+    public String updateDataset(@RequestBody Dataset dataset){
         datasetBusiness.updateDataset(dataset);
         return "redirect:/pages/execution/admin/datasetManage.html";
     }

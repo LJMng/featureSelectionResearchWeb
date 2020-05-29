@@ -53,7 +53,16 @@ var vm =new Vue({
         checkDatasetCount:1,
         checkDatasetSource:"",
         checkDatasetDimension:"",
-        checked:{checkedDatasetName:"",checkedDatasetDescription:"",checkedDatasetCount:"",checkedDatasetDimension:""}
+        checked:{checkedDatasetName:"",checkedDatasetDescription:"",checkedDatasetCount:"",checkedDatasetDimension:""},
+        datasetInfo:{
+            datasetId:1,
+            datasetName:'',
+            datasetDescription:'',
+            datasetSource:'',
+            datasetDimension:'',
+            datasetIsCommon:true,
+            datasetCount:''
+        }
 
     },
     computed:{
@@ -87,8 +96,9 @@ var vm =new Vue({
         setOrderType:function(orderType){
             this.orderType=orderType;
         },
-        deleteDataset:function (datasetId,administratorName) {
-            axios.get('/deleteDataset?datasetId='+datasetId+'&administratorName='+administratorName)
+        deleteDataset:function (datasetId) {
+            this.datasetInfo.datasetId=datasetId;
+            axios.post('/deleteDataset',this.datasetInfo)
             window.location.reload();
         },
         passDatasetForm:function (inputId) {
@@ -126,6 +136,19 @@ var vm =new Vue({
         },
         fCheckDatasetDimension:function () {
 
+        },
+        setIsCommon:function(isCommon){
+            this.datasetInfo.isCommon=isCommon
+        },
+        updateDataset:function (datasetId) {
+            this.datasetInfo.datasetId=datasetId;
+            axios.post('/updateDataset',this.datasetInfo)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         }
 
     }

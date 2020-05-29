@@ -1,6 +1,9 @@
 // 管理输出元素信息的vue
 var pages;
 var state=true;
+var ListCurrPage=9;
+var ListPageSize=10;
+var pageElementslength;
 var vm=new Vue({
     el: '#pageElementControl',
     data: {
@@ -18,7 +21,11 @@ var vm=new Vue({
             chValue:'',
             enValue:'',
             type:''
-        }
+        },
+        vueListCurrPage:1,
+        vueListPageSize:10,
+
+
 
     },
     computed:{
@@ -30,11 +37,30 @@ var vm=new Vue({
             //对datasetMap进行过滤
             fPageElement=pageElements.filter(p => p.moduleKey.indexOf(moduleKey)!==-1)
             return fPageElement;
+        },
+        pagingPageElement:function (){
+            //获取列表大小
+            const totalSize=this.pageElements.length;
+            var pageElementList= new Array();
+            var j=0;
+
+            console.log(ListCurrPage);
+            console.log(ListPageSize);
+            console.log(totalSize)
+            for (var i=0;i<totalSize;i++){
+                if(i>(this.vueListCurrPage-1)*this.vueListPageSize  &&  i<=this.vueListCurrPage*this.vueListPageSize){
+                    pageElementList[j]=this.pageElements[i];
+                    j++;
+                }
+            }
+            return pageElementList;
         }
     },
     methods: {
         deletePageElement:function (htmlName,moduleKey) {
-            axios.get('/deletePageElement?moduleKey='+moduleKey)
+            this.htmlElement.htmlName=htmlName;
+            this.htmlElement.moduleKey=moduleKey;
+            axios.post('/deletePageElement',this.htmlElement)
             window.location.reload();
         },
         fCheckModuleKey:function () {
@@ -58,7 +84,7 @@ var vm=new Vue({
                 this.checked.checkedEnValue="正确！"
             }
 
-    },
+        },
         fCheckChValue:function () {
             var re = /[^\u4e00-\u9fa5]/;
             if(re.test(this.checkChValue)){
@@ -67,7 +93,9 @@ var vm=new Vue({
                 this.checked.checkedChValue="正确！"
             }
         },
-        updateHtmlElement(){
+        updateHtmlElement(htmlName,moduleKey){
+            this.htmlElement.htmlName=htmlName;
+            this.htmlElement.moduleKey=moduleKey;
             axios.post('/updateElement',this.htmlElement)
                 .then(() => {
                     window.location.reload();
@@ -85,7 +113,13 @@ var vm=new Vue({
                     console.log(err);
                 })
 
-            }
+        },
+        //更新分页列表信息
+        updateElementList:function () {
+            this.vueListCurrPage=ListCurrPage;
+            this.vueListPageSize=ListPageSize;
+
+        }
     },
     created: function () {
         // Vue初始方法，可以自行百度一下相关介绍与用法
@@ -95,6 +129,8 @@ var vm=new Vue({
         axios.get('/htmlElements').then(function (response) {
             console.log(response.data);
             that.pageElements=response.data;
+            pageElementslength=that.pageElements.length;
+            console.log(pageElementslength)
         },function (err) {
 
         })
@@ -122,20 +158,27 @@ $(function () {
         labelWidth: "15px"
     });
 
-    $('#default').click(function () {
-        $.ajax({
-            type: 'POST',
-            url: '/HtmlElementDemoAdmin/setDefault',
-            success: function () {
-                setTimeout('alert("设置成功!")',300);
-                setTimeout('window.location.reload()',500);
-            }
-        })
-    });
 });
+// 列表分页样式设置
+$("#pagination_14").whjPaging({
+    css: 'css-4',
+    totalSize: 128,
+    totalPage: 13,
+    pageSize: 10,
+    showPageNum: 10,
+    pageSizeOpt: [
+        {value: 5, text: '5条/页', },
+        {value: 10, text: '10条/页',selected: true},
+        {value: 15, text: '15条/页'},
+        {value: 20, text: '20条/页'}
+    ],
 
-
-
+    callBack: function (currPage, pageSize) {
+        ListCurrPage=currPage;
+        ListPageSize=pageSize;
+        console.log('currPage:' + ListCurrPage + '     pageSize:' + ListPageSize);
+    }
+});
 
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+      xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,11 +12,15 @@
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
     <!---->
     <link rel="stylesheet" href="/webjars/bootstrap-switch/3.3.4/dist/css/bootstrap3/bootstrap-switch.css">
+    <link rel="stylesheet" type="text/css" href="/css/pagination.css"/>
+
     <!-- jquery -->
     <!-- 	Web jars -->
     <!-- 		jquery -->
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/jquery-cookie/jquery.cookie.js"></script>
+    <!-- 引入jquery列表分页 -->
+    <script type="text/javascript" src="/js/pagination.min.js"></script>
     <!-- 		Vue.js -->
     <script src="/webjars/vue/vue.min.js"></script>
     <!-- 		Bootstrap -->
@@ -31,32 +35,32 @@
 <body>
 <div id="pageElementControl">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
-    <div class="container">
-        <a class="navbar-brand" href="/pages/execution/admin/execution.html">AlgGroup</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/pages/execution/admin/htmlElementList.html">htmlElement<span class="sr-only" v-text="Values.nav"></span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/pages/execution/admin/datasetManage.html">dataset</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/pages/execution/admin/administrator.html">account</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About us</a>
-                </li>
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/pages/execution/admin/execution.html">AlgGroup</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/pages/execution/admin/htmlElementList.html">htmlElement<span class="sr-only" v-text="Values.nav"></span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/datasetManage.html">dataset</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/administrator.html">account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About us</a>
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-outline-secondary btn-sm">登录</button>        &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" name="my-checkbox" checked onclick="getElement()">
         </div>
-        <button type="button" class="btn btn-outline-secondary btn-sm">登录</button>        &nbsp;&nbsp;&nbsp;
-        <input type="checkbox" name="my-checkbox" checked onclick="getElement()">
-    </div>
-</nav>
+    </nav>
     <div class="container-fluid">
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar" id="sidebar">
@@ -201,68 +205,6 @@
                         </div>
                     </div>
                 </div>
-<!--                <form method="post" action="/htmlElements" class="form-horizontal" role="form" id="createForm" onsubmit="return ">-->
-<!--                    <div class="modal fade" id="createModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
-<!--                        &lt;!&ndash;  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  &ndash;&gt;-->
-<!--                        <div class="modal-dialog">-->
-<!--                            &lt;!&ndash;  显示模态框对话框模型（若不写下一个div则没有颜色）  &ndash;&gt;-->
-<!--                            <div class="modal-content">-->
-<!--                                &lt;!&ndash;  显示模态框白色背景，所有内容都写在这个div里面  &ndash;&gt;-->
-
-<!--                                <div class="btn-info modal-header">-->
-<!--                                    &lt;!&ndash;  模态框标题  &ndash;&gt;-->
-<!--                                    <button type="button" class="close" data-dismiss="modal">&times;</button>-->
-<!--                                    &lt;!&ndash;  关闭按钮  &ndash;&gt;-->
-<!--                                    <h4>点击修改页面元素信息</h4>-->
-<!--                                    &lt;!&ndash;  标题内容  &ndash;&gt;-->
-<!--                                </div>-->
-
-<!--                                <div class="modal-body">-->
-<!--                                    &lt;!&ndash;  模态框内容，我在此处添加一个表单 &ndash;&gt;-->
-<!--                                    <form class="form-horizontal" role="form">-->
-<!--                                        <div class="row">-->
-<!--                                            <div class="col-md-10 offset-md-1">-->
-<!--                                                <label>htmlName</label>-->
-<!--                                                <input type="text" class="form-control" name="htmlName"   placeholder="htmlName" v-model="checkHtmlName" @blur="fCheckHtmlName">{{checked.checkedHtmlName}}-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="row">-->
-<!--                                            <div class="col-md-10 offset-md-1">-->
-<!--                                                <label>moduleKey</label>-->
-<!--                                                <input type="text" class="form-control" name="moduleKey" placeholder="moduleKey" v-model="checkModuleKey" @blur="fCheckModuleKey">{{checked.checkedModuleKey}}-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="row">-->
-<!--                                        <div class="col-md-10 offset-md-1">-->
-<!--                                            <label>type</label>-->
-<!--                                            <input type="text" class="form-control" name="type" placeholder="type">-->
-<!--                                        </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="row">-->
-<!--                                            <div class="col-md-10 offset-md-1">-->
-<!--                                                <label>chValue</label>-->
-<!--                                                <input type="text" class="form-control" name="chValue" placeholder="中文值" v-model="checkChValue" @blur="fCheckChValue">{{checked.checkedChValue}}-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="row">-->
-<!--                                            <div class="col-md-10 offset-md-1">-->
-<!--                                                <label>enValue</label>-->
-<!--                                                <input type="text" class="form-control" name="enValue" placeholder="英文值" v-model="checkEnValue" @blur="fCheckEnValue">{{checked.checkedEnValue}}-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </form>-->
-<!--                                </div>-->
-
-<!--                                <div class="modal-footer">-->
-<!--                                    &lt;!&ndash;  模态框底部样式，一般是提交或者确定按钮 &ndash;&gt;-->
-<!--                                    <button type="submit" class="btn btn-info">确定</button>-->
-<!--                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>-->
-<!--                                </div>-->
-
-<!--                            </div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
-<!--                        </div>-->
-<!--                    </div> &lt;!&ndash; /.modal &ndash;&gt;-->
-<!--                </form>-->
                 <div class="row">
                     <div class="col-md-2">
                         <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#createModal">
@@ -289,7 +231,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="pageElement in filterPageElement">
+                        <tr v-for="pageElement in pagingPageElement">
                             <td style="width:150px;overflow:hidden;text-overflow:clip;">{{pageElement.htmlName}}</td>
                             <td style="width:150px;overflow:hidden;text-overflow:ellipsis;">{{pageElement.moduleKey}}</td>
                             <td style="width:150px;overflow:hidden;text-overflow:ellipsis;">{{pageElement.type}}</td>
@@ -297,78 +239,84 @@
                             <td><div v-bind:title="pageElement.enValue" style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;display:block;">{{pageElement.enValue}}</div></td>
                             <td>
                                 <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#"+pageElement.moduleKey'>修改</button>
-                                <button class="btn btn-danger" @click="deletePageElement(pageElement.moduleKey)">删除</button>
+                                <button class="btn btn-danger" data-toggle="modal" v-bind:data-target='"#deleteHtmlElement"+pageElement.moduleKey'>删除</button>
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                    <div id="pagination_14" v-on:click="updateElementList"></div>
                 </div>
                 <div v-for="pageElement in filterPageElement">
-                <div class="modal fade" v-bind:id="pageElement.moduleKey" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                    <!-- 定义修改页面元素模态框 -->
+                    <div class="modal fade" v-bind:id="pageElement.moduleKey" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalScrollableTitle">修改页面元素</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="elementPageName" class="col-form-label">页面名称:</label>
+                                            <input type="text" class="form-control" id="elementPageName" v-bind:placeholder="pageElement.htmlName" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="elementModuleKey" class="col-form-label">模块名称:</label>
+                                            <input type="text"  class="form-control" id="elementModuleKey" v-bind:placeholder="pageElement.moduleKey" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="elementType" class="col-form-label">类型:</label>
+                                            <input type="text"  class="form-control" id="elementType" v-model="htmlElement.type">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="elementChValue" class="col-form-label">中文值:</label>
+                                            <input type="text"  class="form-control" id="elementChValue" v-model="htmlElement.chValue">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="elementEnValue" class="col-form-label">英文值:</label>
+                                            <input type="text"  class="form-control" id="elementEnValue" v-model="htmlElement.enValue">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" @click="updateHtmlElement(pageElement.htmlName,pageElement.moduleKey)">Save changes</button>
+                                </div>
                             </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="elementPageName" class="col-form-label">页面名称:</label>
-                                        <input type="text" class="form-control" id="elementPageName" v-model="htmlElement.htmlName">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="elementModuleKey" class="col-form-label">模块名称:</label>
-                                        <input type="text"  class="form-control" id="elementModuleKey" v-model="htmlElement.moduleKey">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="elementType" class="col-form-label">类型:</label>
-                                        <input type="text"  class="form-control" id="elementType" v-model="htmlElement.type">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="elementChValue" class="col-form-label">中文值:</label>
-                                        <input type="text"  class="form-control" id="elementChValue" v-model="htmlElement.chValue">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="elementEnValue" class="col-form-label">类型:</label>
-                                        <input type="text"  class="form-control" id="elementEnValue" v-model="htmlElement.enValue">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" @click="updateHtmlElement()">Save changes</button>
+                        </div>
+                    </div>
+                    <!-- 定义删除页面元素模态框 -->
+                    <div class="modal fade" v-bind:id='"deleteHtmlElement"+pageElement.moduleKey' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <!-- values.modal -->
+                                    <h5 class="modal-title" id="exampleModalLabel">删除页面元素信息</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    确定删除页面元素信息吗？删除后信息不可恢复！
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-danger" @click="deletePageElement(pageElement.htmlName,pageElement.moduleKey)">确定</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                </div>
+
             </main>
         </div>
     </div>
 
-<script type="text/javascript" src="/js/htmlElementListjs.js"></script>
+    <script type="text/javascript" src="/js/htmlElementListjs.js"></script>
 </div>
-
 </body>
 <footer class="container">
     <hr>

@@ -16,12 +16,17 @@ $(function () {
 var vm =new Vue({
     el:"#administratorData",
     data:{
-        administrators:[{"administratorId":"a","administratorName":"s","administratorPassword":"ad"},{"administratorId":"account","administratorName":"吴代漾","administratorPassword":"123456"},{"administratorId":"admin","administratorName":"大帅哥","administratorPassword":"1234"},{"administratorId":"administrator","administratorName":"江均湛","administratorPassword":"123456"},{"administratorId":"Asir","administratorName":"梁家铭","administratorPassword":"123456"},{"administratorId":"user","administratorName":"刘炜健","administratorPassword":"123456"}],
+        administrators:[],
         values:"",
         administratorId:'',
         checkAdministratorId:'',
         checkAdministratorName:'',
-        checked:{checkedAdministratorId:"",checkedAdministratorName:""}
+        checked:{checkedAdministratorId:"",checkedAdministratorName:""},
+        administratorInfo:{
+            administratorId:'',
+            administratorName:'',
+            administratorPassword:''
+        }
 
     },
     computed:{
@@ -53,6 +58,26 @@ var vm =new Vue({
             }else {
                 this.checked.checkedAdministratorName="正确！"
             }
+
+        },
+        updateAdministrator:function (administratorId) {
+            this.administratorInfo.administratorId=administratorId;
+            axios.post('/updateAdministrator',this.administratorInfo)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+        addAdministrator:function () {
+            axios.post('/addAdministrator',this.administratorInfo)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
 
         }
 

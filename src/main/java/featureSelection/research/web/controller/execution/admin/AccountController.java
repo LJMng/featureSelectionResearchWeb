@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.mail.MessagingException;
@@ -17,22 +18,22 @@ import java.util.List;
 public class AccountController {
     @Autowired
     private AccountBusiness accountBusiness;
-
     @GetMapping("/getAccounts")
     public @ResponseBody List<Account> getAccounts(){
+        int[] arr={0,10,15,10};
         System.out.println(1);
         List<Account> accounts=accountBusiness.getAccounts();
         return accounts;
     }
 
     @PostMapping("/updateAccount")
-    public String updateAccount(Account account){
+    public String updateAccount(@RequestBody Account account){
         accountBusiness.updateAccount(account);
         return "redirect: /pages/execution/admin/account.html";
     }
 
     @PostMapping("/addAccount")
-    public String addAccount(Account account){
+    public String addAccount(@RequestBody Account account){
         accountBusiness.addAccount(account);
 
         return "redirect: /pages/execution/admin/account.html";
