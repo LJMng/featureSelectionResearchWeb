@@ -122,6 +122,16 @@ $(function () {
         labelWidth: "15px"
     });
 
+    $('#default').click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '/HtmlElementDemoAdmin/setDefault',
+            success: function () {
+                setTimeout('alert("设置成功!")',300);
+                setTimeout('window.location.reload()',500);
+            }
+        })
+    });
 });
 
 

@@ -15,7 +15,8 @@
             <id property="parameterId" column="parameter_id" />
             <result property="parameterName" column="parameter_name" />
             <result property="parameterType" column="parameter_type" />
-            <result property="parameterValue" column="parameter_value" />
+            <result property="parameterInputValue" column="parameter_input_value" />
+            <result property="parameterOptionValue" column="parameter_option_value" />
             <result property="schemeId" column="scheme_id" />
         </collection>
     </resultMap>
@@ -26,7 +27,7 @@
         select
             algorithm.algorithm_id,parameter_scheme.scheme_id,parameter.parameter_id,
             scheme_name,scheme_description,scheme_remark,dataset_name,
-            algorithm_name,parameter_name,parameter_value,dataset.dataset_id
+            algorithm_name,parameter_name,parameter_input_value,parameter_option_value,dataset.dataset_id
         from
             parameter,parameter_scheme,parameter_scheme_value,algorithm,dataset
         where
@@ -44,7 +45,7 @@
         select
             algorithm.algorithm_id,parameter_scheme.scheme_id,dataset_name,
             parameter.parameter_id,scheme_name,scheme_description,dataset.dataset_id,
-            scheme_remark,algorithm_name,parameter_name,parameter_value,parameter_type
+            scheme_remark,algorithm_name,parameter_name,parameter_input_value,parameter_option_value,parameter_type
         from
             parameter,parameter_scheme,parameter_scheme_value,algorithm,dataset
         where
@@ -100,7 +101,8 @@
             update
                 parameter_scheme_value
             set
-                parameter_value = #{item.parameterValue}
+                parameter_input_value = #{item.parameterInputValue},
+                parameter_option_value = #{item.parameterOptionValue}
             where
                 scheme_id = #{item.schemeId}
             and
@@ -113,13 +115,13 @@
         <foreach collection="algorithmParameterDemoAdmin" item="item">
             <choose>
                 <when test="item.parameterType=='boolean'">
-                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value) values (#{schemeId},#{item.parameterId},'NO,null');
+                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_input_value) values (#{schemeId},#{item.parameterId},'NO','null');
                 </when>
                 <when test="item.parameterType=='selected'">
-                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value) values (#{schemeId},#{item.parameterId},'0,null');
+                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_input_value) values (#{schemeId},#{item.parameterId},'0','null');
                 </when>
                 <otherwise>
-                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_value) values (#{schemeId},#{item.parameterId},'0,null');
+                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_input_value) values (#{schemeId},#{item.parameterId},'0','null');
                 </otherwise>
             </choose>
         </foreach>
