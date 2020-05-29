@@ -409,7 +409,7 @@
                     </div>
                     <!--AlgorithmSettingModal-->
                     <div v-for="(algorithm,key,index1) in algorithmList" class="modal fade" :id="algorithm.algorithmName+'Modal'" tabindex="-1" role="dialog" data-backdrop="static">
-                        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 55%;">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 61.8%;">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">{{algorithm.algorithmName}}</h5>
@@ -434,23 +434,23 @@
                                                         </svg>
                                                     </span>
                                             </label>
-                                            <div class="input-group mb-3 col-7" v-if="param.parameterSettingInfo.type=='text'">
+                                            <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='text'">
                                                 <input type="text" class="form-control" :id="algorithm.algorithmName+param.parameterName+'Basic'" :name="algorithm.algorithmName+param.parameterName">
                                                 <div class="input-group-append">
                                                     <button class="btn btn-outline-secondary" type="button">Default</button>
                                                 </div>
                                             </div>
-                                            <div class="col-3" v-if="param.parameterSettingInfo.type=='text'"></div>
+                                            <div class="col-4" v-if="param.parameterSettingInfo.type=='text'"></div>
 
-                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='select'">{{param.parameterName}}
+                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='selection'">{{param.parameterName}}
                                                 <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
                                                     <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
                                                     </svg>
                                                 </span>
                                             </label>
-                                            <div class="input-group mb-3 col-7" v-if="param.parameterSettingInfo.type=='select'">
-                                                <select class="custom-select" :name="algorithm.algorithmName+param.parameterName" :id="algorithm.algorithmName+param.parameterName+'Basic'">
+                                            <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='selection'">
+                                                <select class="custom-select" :name="algorithm.algorithmName+param.parameterName" :id="algorithm.algorithmName+param.parameterName+'Basic'" @change="appendInfo($event)">
                                                     <option selected>Choose...</option>
                                                     <option v-for="(option,index3) in param.parameterSettingInfo.options" :value="option">{{option}}</option>
                                                 </select>
@@ -458,7 +458,9 @@
                                                     <button class="btn btn-outline-secondary" type="button">Default</button>
                                                 </div>
                                             </div>
-                                            <div class="col-3" v-if="param.parameterSettingInfo.type=='select'"></div>
+                                            <div class="col-4" v-if="param.parameterSettingInfo.type=='selection'">
+                                                <append :algorithm="algorithm" :param="param"></append>
+                                            </div>
 
                                             <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='radio'">{{param.parameterName}}
                                                 <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
@@ -467,12 +469,13 @@
                                                     </svg>
                                                 </span>
                                             </label>
-                                            <div class="input-group mb-3 col-10" v-if="param.parameterSettingInfo.type=='radio'">
+                                            <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='radio'">
                                                 <div class="custom-control-inline custom-control custom-radio" v-for="(option,index4) in param.parameterSettingInfo.options">
                                                     <input class="custom-control-input" type="radio" :id="algorithm.algorithmName+param.parameterName+index4" :value="option" :name="algorithm.algorithmName+param.parameterName">
                                                     <label class="custom-control-label" :for="algorithm.algorithmName+param.parameterName+index4">{{option}}</label>
                                                 </div>
                                             </div>
+                                            <div class="col-4" v-if="param.parameterSettingInfo.type=='radio'"></div>
 
                                             <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='checkbox'">{{param.parameterName}}
                                                 <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
@@ -481,12 +484,13 @@
                                                     </svg>
                                                 </span>
                                             </label>
-                                            <div class="input-group mb-3 col-10" v-if="param.parameterSettingInfo.type=='checkbox'">
+                                            <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='checkbox'">
                                                 <div class="custom-control-inline custom-control custom-checkbox" v-for="(option,index5) in param.parameterSettingInfo.options">
                                                     <input class="custom-control-input" type="checkbox" :id="algorithm.algorithmName+param.parameterName+index5" :value="option" :name="algorithm.algorithmName+param.parameterName">
                                                     <label class="custom-control-label" :for="algorithm.algorithmName+param.parameterName+index5">{{option}}</label>
                                                 </div>
                                             </div>
+                                            <div class="col-4" v-if="param.parameterSettingInfo.type=='checkbox'"></div>
                                         </div>
                                     </div>
                                     <div class="card mb-4 shadow-sm">
@@ -745,6 +749,24 @@
                                                 <div class="invalid-tooltip" style="top: auto" name="datasetFormCheck">Error file type.</div>
                                             </div>
                                         </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-6 mb-4">
+                                                <label for="inputRecords">Record</label>
+                                                <input type="text" class="form-control" id="inputRecords" v-model.trim="dataset_form_record">
+                                            </div>
+                                            <div class="form-group col-6 mb-4">
+                                                <label for="inputDimension">Dimension</label>
+                                                <input type="text" class="form-control" id="inputDimension" v-model.trim="dataset_form_dimension">
+                                            </div>
+                                            <div class="form-group col-6 mb-4">
+                                                <label for="inputTag">Tag</label>
+                                                <input type="text" class="form-control" id="inputTag" v-model.trim="dataset_form_tag">
+                                            </div>
+                                            <div class="form-group col-6 mb-4">
+                                                <label for="inputType">Type</label>
+                                                <input type="text" class="form-control" id="inputType" v-model.trim="dataset_form_type">
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label for="inputSource">{{dataset_info_p2}}</label>
                                             <input v-model.trim="dataset_form_source" type="text" class="form-control" id="inputSource" value="Mark" required>
@@ -883,10 +905,6 @@
                 </div>
             </div>
         </div>
-        <!--NewTaskParameterModal-->
-        <!--<div id="NewTaskParameterModal">
-            <model :ainfo="algorithmList" :param-info="parameterList" @get-params="setParams"></model>
-        </div>-->
         <!-- AlgorithmInfoModal -->
         <div class="modal fade" id="algorithmInfoModal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 50%">
@@ -962,286 +980,43 @@
         </div>
     </div>
 <script type="text/javascript">
-    /*Vue.component('model',{
-        props: ['ainfo','paramInfo'],
-        data: function(){
-            return{
-                gdut1: '',
-                gdut2: '',
-                gdut3: '',
-                gdut4: [],
-                //--------------Selector1-------------
-                gdut2Option: [],
-                //--------------ProcedureSetting1-------------
-                pss1: '',
-                pss2: 'b',
-                pss3: 'b',
-                pss4: 'c',
-                pss5: 'd',
-                psr1: false,
-                psr2: true,
-                psr3: true,
-                psr4: true,
-                psr5: true,
-            };
-        },
-        watch: {
-            paramInfo: function(val) {
-                this.gdut2Option = this.paramInfo[1][1].parameterDefaultValue.split(",");
-            },
-            psr1: function(val) {
-                if (val==false){
-                    this.pss1=null;
-                }else {
-                    this.pss1='a';
-                }
-            },
-            psr3: function(val) {
-                if (val==false){
-                    this.pss3='';
-                    $('#pss3').attr('disabled','disabled');
-                }else {
-                    $('#pss3').removeAttr('disabled');
-                }
-            },
-            psr4: function(val) {
-                if (val==false){
-                    this.pss4='';
-                    $('#pss4').attr('disabled','disabled');
-                }else {
-                    $('#pss4').removeAttr('disabled');
-                }
-            },
-            psr5: function(val) {
-                if (val==false){
-                    this.pss5='';
-                    $('#pss5').attr('disabled','disabled');
-                }else {
-                    $('#pss5').removeAttr('disabled');
-                }
+    Vue.component('append',{
+        props: ['algorithm','param'],
+        data: function() {
+            return {
+                optionName: ''
             }
         },
-        methods: {
-            setParamDefault: function(event,param,value) {
-                this.$set(this,param,value);
-            },
-            saveChange: function() {
-                var params = {};
-                params.gdut1=this.gdut1;
-                params.gdut2=this.gdut2;
-                params.gdut3=this.gdut3;
-                params.gdut4=this.gdut4;
-                params.procedure1=this.pss1;
-                params.procedure2=this.pss2;
-                params.procedure3=this.pss3;
-                params.procedure4=this.pss4;
-                params.procedure5=this.pss5;
-                this.$emit("get-params",params,1);
-                $('#successSave').removeClass("d-none");
-            }
-        },
-        template : `
-    <div>
-        <div class="modal fade" id="NECModal" tabindex="-1" role="dialog" data-backdrop="static">
-            <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 55%;">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ainfo[1].algorithmName}}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card mb-4 shadow-sm">
-                            <img src="pic/timg.jpg" class="card-img-top" alt="several steps">
-                            <div class="card-body">
-                                <p class="card-text">Follow these steps help you get start quickly.</p>
-                            </div>
-                        </div>
-                        <div class="card mb-4 shadow-sm">
-                            <div class="alert alert-warning text-center" role="alert">
-                                Basic Parameters
-                            </div>
-                            <div class="row m-0">
-                                <label for="inputPassword" class="col-2 p-2">{{paramInfo[1][0].parameterName}}
-                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="paramInfo[1][0].parameterDescription">
-                                            <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
-                                            </svg>
-                                    </span>
-                                </label>
-                                <div class="input-group mb-3 col-7">
-                                    <input type="text" class="form-control" v-model="gdut1">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" @click="setParamDefault($event,'gdut1',paramInfo[1][0].parameterDefaultValue)">Default</button>
-                                    </div>
-                                </div>
-                                <div class="col-3"></div>
-
-                                <label for="inputPassword" class="col-2 p-2">{{paramInfo[1][1].parameterName}}
-                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="paramInfo[1][1].parameterDescription">
-                                            <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
-                                            </svg>
-                                    </span>
-                                </label>
-                                <div class="input-group mb-3 col-7">
-                                    <select class="custom-select" id="inputGroupSelect04" v-model="gdut2">
-                                        <option selected>Choose...</option>
-                                        <option v-for="value in gdut2Option" :value="value">{{value}}</option>
-                                    </select>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button">Default</button>
-                                    </div>
-                                </div>
-                                <div class="col-3"></div>
-
-                                <label for="" class="col-2 p-2">{{paramInfo[1][2].parameterName}}
-                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="paramInfo[1][2].parameterDescription">
-                                            <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
-                                            </svg>
-                                    </span>
-                                </label>
-                                <div class="input-group mb-3 col-10">
-                                    <div class="custom-control-inline custom-control custom-radio">
-                                        <input class="custom-control-input" type="radio" id="inlineRadio1" value="true" name="gdut3" v-model="gdut3">
-                                        <label class="custom-control-label" for="inlineRadio1">true</label>
-                                    </div>
-                                    <div class="custom-control-inline custom-control custom-radio">
-                                        <input class="custom-control-input" type="radio" id="inlineRadio2" value="false" name="gdut3" v-model="gdut3">
-                                        <label class="custom-control-label" for="inlineRadio2">false</label>
-                                    </div>
-                                </div>
-
-                                <label for="" class="col-2 p-2">{{paramInfo[1][3].parameterName}}
-                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="paramInfo[1][3].parameterDescription">
-                                            <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
-                                            </svg>
-                                    </span>
-                                </label>
-                                <div class="input-group mb-3 col-10">
-                                    <div class="custom-control-inline custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="inlineCheckbox1" value="奶茶" v-model="gdut4">
-                                        <label class="custom-control-label" for="inlineCheckbox1">奶茶</label>
-                                    </div>
-                                    <div class="custom-control-inline custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="inlineCheckbox2" value="辣子鸡" v-model="gdut4">
-                                        <label class="custom-control-label" for="inlineCheckbox2">辣子鸡</label>
-                                    </div>
-                                    <div class="custom-control-inline custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="inlineCheckbox3" value="臭豆腐" v-model="gdut4">
-                                        <label class="custom-control-label" for="inlineCheckbox3">臭豆腐</label>
-                                    </div>
-                                    <div class="custom-control-inline custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="inlineCheckbox4" value="桂林米粉" v-model="gdut4">
-                                        <label class="custom-control-label" for="inlineCheckbox4">桂林米粉</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-4 shadow-sm">
-                            <div class="alert alert-warning text-center" role="alert">
-                                Procedure Settings
-                            </div>
-                            <div class="row m-0">
-                                <div class="col-3 p-2">
-                                    <div class="custom-control custom-control-inline custom-radio">
-                                        <input type="checkbox" class="custom-control-input" id="psr1" v-model="psr1" value="true">
-                                        <label class="custom-control-label" for="psr1">Procedure1</label>
-                                    </div>
-                                </div>
-                                <div class="input-group mb-3 col-9">
-                                    <select class="custom-select" id="pss1" disabled>
-                                        <option selected>A Method</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-3 p-2">
-                                    <div class="custom-control custom-control-inline custom-radio">
-                                        <input type="checkbox" class="custom-control-input" id="psr2" checked="checked" values="true" disabled>
-                                        <label class="custom-control-label" for="psr2">Procedure2</label>
-                                    </div>
-                                </div>
-                                <div class="input-group mb-3 col-9">
-                                    <select class="custom-select" id="pss2" v-model="pss2">
-                                        <option value="a">a method</option>
-                                        <option value="b">b method</option>
-                                        <option value="c">c method</option>
-                                        <option value="d">d method</option>
-                                        <option value="e">e method</option>
-                                        <option value="f">f method</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-3 p-2">
-                                    <div class="custom-control custom-control-inline custom-radio">
-                                        <input type="checkbox" class="custom-control-input" id="psr3" v-model="psr3" value="true">
-                                        <label class="custom-control-label" for="psr3">Procedure3</label>
-                                    </div>
-                                </div>
-                                <div class="input-group mb-3 col-9">
-                                    <select class="custom-select" id="pss3" v-model="pss3">
-                                        <option selected>Choose...</option>
-                                        <option value="a">a method</option>
-                                        <option value="b">b method</option>
-                                        <option value="c">c method</option>
-                                        <option value="d">d method</option>
-                                        <option value="e">e method</option>
-                                        <option value="f">f method</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-3 p-2">
-                                    <div class="custom-control custom-control-inline custom-radio">
-                                        <input type="checkbox" class="custom-control-input" id="psr4" v-model="psr4" value="true">
-                                        <label class="custom-control-label" for="psr4">Procedure4</label>
-                                    </div>
-                                </div>
-                                <div class="input-group mb-3 col-9">
-                                    <select class="custom-select" id="pss4" v-model="pss4">
-                                        <option selected>Choose...</option>
-                                        <option value="a">a method</option>
-                                        <option value="b">b method</option>
-                                        <option value="c">c method</option>
-                                        <option value="d">d method</option>
-                                        <option value="e">e method</option>
-                                        <option value="f">f method</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-3 p-2">
-                                    <div class="custom-control custom-control-inline custom-radio">
-                                        <input type="checkbox" class="custom-control-input" id="psr5" v-model="psr5" value="true">
-                                        <label class="custom-control-label" for="psr5">Procedure5</label>
-                                    </div>
-                                </div>
-                                <div class="input-group mb-3 col-9">
-                                    <select class="custom-select" id="pss5" v-model="pss5">
-                                        <option selected>Choose...</option>
-                                        <option value="a">a method</option>
-                                        <option value="b">b method</option>
-                                        <option value="c">c method</option>
-                                        <option value="d">d method</option>
-                                        <option value="e">e method</option>
-                                        <option value="f">f method</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <span class="text-success d-none" id="successSave">Success!</span>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" @click="saveChange($event)">Save changes</button>
-                    </div>
+        template: `
+                <div class="input-group" v-if="optionName!=''?param.parameterSettingInfo.optionExtra[optionName].type=='selection':false">
+                    {{optionName}}
+                    <select class="custom-select" :name="algorithm.algorithmName+param.parameterName+optionName" :id="algorithm.algorithmName+param.parameterName+'Basic'+optionName">
+                        <option selected>Choose...</option>
+                        <option v-for="option in param.parameterSettingInfo.optionExtra[optionName].options" :value="option">{{option}}</option>
+                    </select>
                 </div>
-            </div>
-        </div>
-    </div>`,
+                <div class="input-group"v-else-if="optionName!=''?param.parameterSettingInfo.optionExtra[optionName].type=='text':false">
+                    {{optionName}}
+                    <input type="text" class="form-control" :id="algorithm.algorithmName+param.parameterName+'Basic'+optionName" :name="algorithm.algorithmName+param.parameterName+optionName">
+                </div>
+                <div v-else></div>
+        `,
+        mounted: function () {
+            hub.$on('optionName', (val) => {
+                if (val!=null){
+                    for (key in this.param.parameterSettingInfo.optionExtra){
+                        if (key == val){
+                            this.optionName = val;
+                        }
+                    }
+                }else {
+                    this.optionName = '';
+                }
+
+            })
+        }
     });
-    */
+    var hub = new Vue();
     var app = new Vue({
         el: '#app',
         data: {
@@ -1311,6 +1086,10 @@
             dataset_form_description: '',
             dataset_form_preprocessing: '',
             dataset_form_algorithm: '',
+            dataset_form_record: '',
+            dataset_form_dimension: '',
+            dataset_form_tag: '',
+            dataset_form_type: '',
             dataset_forms: {},
             public_dataset_upload_title1: '',
             public_dataset_upload_label1: '',
@@ -1455,6 +1234,10 @@
                     datasetForm.append("inputDescription",this.dataset_form_description);
                     datasetForm.append("inputPreprocess",this.dataset_form_preprocessing);
                     datasetForm.append("inputAlgorithm",this.dataset_form_algorithm);
+                    datasetForm.append("inputRecord",this.dataset_form_record);
+                    datasetForm.append("inputDimension",this.dataset_form_dimension);
+                    datasetForm.append("inputTag",this.dataset_form_tag);
+                    datasetForm.append("inputType",this.dataset_form_type);
                     datasetForm.append("file",this.$refs.inputDataset.files[0]);
                     axios.post('/uploadDatasetForm',datasetForm,{
                         'Content-Type':'multipart/form-data'
@@ -1794,8 +1577,15 @@
                             case 'text':
                                 paramSet.basic[parameters[i].parameterName] = {input: $("input[name="+nameTemp+"]").val(),option: null};
                                 break;
-                            case 'select':
-                                paramSet.basic[parameters[i].parameterName] = {input: $("select[name="+nameTemp+"]").val(),option: null};
+                            case 'selection':
+                                let paramInput = $("select[name="+nameTemp+"]").val();
+                                switch (parameters[i].parameterSettingInfo.optionExtra[paramInput].type) {
+                                    case 'text':
+                                        paramSet.basic[parameters[i].parameterName] = {input: paramInput,option: $("input[name="+nameTemp+paramInput+"]").val()};
+                                        break;
+                                    case 'selection':
+                                        paramSet.basic[parameters[i].parameterName] = {input: paramInput,option: $("select[name="+nameTemp+paramInput+"]").val()};
+                                }
                                 break;
                             case 'radio':
                                 paramSet.basic[parameters[i].parameterName] = {input: $("input[name="+nameTemp+"]:checked").val(),option: null};
@@ -1805,7 +1595,7 @@
                                 $("input[name="+nameTemp+"]:checked").each(function () {
                                     listTemp.push($(this).val());
                                 });
-                                paramSet.basic[parameters[i].parameterName] = {input: null,option: listTemp};
+                                paramSet.basic[parameters[i].parameterName] = {input: listTemp,option: null};
                         }
                     }
                 }
@@ -1836,6 +1626,14 @@
                 }else {
                     $("select[name="+name+"]").attr("disabled","disabled");
                 }
+            },
+            appendInfo: function (event) {
+                if (event.target.value=='Choose...'){
+                    hub.$emit('optionName',null);
+                }else {
+                    hub.$emit('optionName',event.target.value);
+                }
+
             }
         },
         watch: {
