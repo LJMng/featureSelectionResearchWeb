@@ -51,9 +51,11 @@ public class PageElementController {
         }
         return elements;
     }
-    @GetMapping("/deletePageElement")
-    public String deletePageElement(String moduleKey){
-        pageElementBusiness.delete(moduleKey);
+    @PostMapping("/deletePageElement")
+    public String deletePageElement(@RequestBody PageElement pageElement){
+        String htmlName=pageElement.getHtmlName();
+        String moduleKey=pageElement.getModuleKey();
+        pageElementBusiness.delete(htmlName,moduleKey);
         System.out.println("delete");
         return "redirect: /pages/execution/admin/htmlElementList.html";
     }

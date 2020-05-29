@@ -23,7 +23,7 @@ public interface PageElementMapper {
     public void updatePageElement(PageElement pageElement);
 
 
-    @Delete("delete from html_element_control where html_name=#{htmlName} and module_key=#{moduleKey}")
+    @Delete("delete  from html_element_control where html_name=#{htmlName} and module_key=#{moduleKey}")
     public void deletePageElement(String htmlName, String moduleKey);
 
     @Delete("delete from html_element_control where module_key=#{moduleKey}")

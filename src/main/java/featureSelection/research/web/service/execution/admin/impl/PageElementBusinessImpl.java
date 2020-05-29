@@ -34,6 +34,7 @@ public class PageElementBusinessImpl implements PageElementBusiness {
     @Override
     public boolean delete(String htmlName, String moduleKey) {
         pageElementMapper.deletePageElement(htmlName,moduleKey);
+        System.out.println("页面名："+htmlName+"moduleKey:"+moduleKey);
         return true;
     }
 
