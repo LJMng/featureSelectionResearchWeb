@@ -437,7 +437,7 @@
                                             <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='text'">
                                                 <input type="text" class="form-control" :id="algorithm.algorithmName+param.parameterName+'Basic'" :name="algorithm.algorithmName+param.parameterName">
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button">Default</button>
+                                                    <button class="btn btn-outline-secondary" type="button" @click="setDefault(algorithm,param)">Default</button>
                                                 </div>
                                             </div>
                                             <div class="col-4" v-if="param.parameterSettingInfo.type=='text'"></div>
@@ -455,7 +455,7 @@
                                                     <option v-for="(option,index3) in param.parameterSettingInfo.options" :value="option">{{option}}</option>
                                                 </select>
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button">Default</button>
+                                                    <button class="btn btn-outline-secondary" type="button" @click="setDefault(algorithm,param)">Default</button>
                                                 </div>
                                             </div>
                                             <div class="col-4" v-if="param.parameterSettingInfo.type=='selection'">
@@ -988,16 +988,16 @@
             }
         },
         template: `
-                <div class="input-group" v-if="optionName!=''?param.parameterSettingInfo.optionExtra[optionName].type=='selection':false">
-                    {{optionName}}
-                    <select class="custom-select" :name="algorithm.algorithmName+param.parameterName+optionName" :id="algorithm.algorithmName+param.parameterName+'Basic'+optionName">
+                <div class="input-group form-row" v-if="optionName!=''?param.parameterSettingInfo.optionExtra[optionName].type=='selection':false">
+                    <lavel :for="algorithm.algorithmName+param.parameterName+'Basic'+optionName" class="col-3 align-content-center">{{optionName}}</lavel>
+                    <select class="custom-select col-9" :name="algorithm.algorithmName+param.parameterName+optionName" :id="algorithm.algorithmName+param.parameterName+'Basic'+optionName">
                         <option selected>Choose...</option>
                         <option v-for="option in param.parameterSettingInfo.optionExtra[optionName].options" :value="option">{{option}}</option>
                     </select>
                 </div>
-                <div class="input-group"v-else-if="optionName!=''?param.parameterSettingInfo.optionExtra[optionName].type=='text':false">
-                    {{optionName}}
-                    <input type="text" class="form-control" :id="algorithm.algorithmName+param.parameterName+'Basic'+optionName" :name="algorithm.algorithmName+param.parameterName+optionName">
+                <div class="input-groupv form-row"v-else-if="optionName!=''?param.parameterSettingInfo.optionExtra[optionName].type=='text':false">
+                    <lavel :for="algorithm.algorithmName+param.parameterName+'Basic'+optionName" class="col-3 align-content-center">{{optionName}}</lavel>
+                    <input type="text" class="form-control col-9" :id="algorithm.algorithmName+param.parameterName+'Basic'+optionName" :name="algorithm.algorithmName+param.parameterName+optionName">
                 </div>
                 <div v-else></div>
         `,
@@ -1634,6 +1634,18 @@
                     hub.$emit('optionName',event.target.value);
                 }
 
+            },
+            setDefault: function (algorithm,param) {
+                switch (param.parameterSettingInfo.type) {
+                    case 'text':
+                        $("input[name="+algorithm.algorithmName+param.parameterName+"]").val(param.parameterDefaultValue);
+                        hub.$emit('optionName',param.parameterDefaultValue);
+                        break;
+                    case 'selection':
+                        $("select[name="+algorithm.algorithmName+param.parameterName+"]").val(param.parameterDefaultValue);
+                        hub.$emit('optionName',param.parameterDefaultValue);
+                        break;
+                }
             }
         },
         watch: {
