@@ -7,16 +7,25 @@ package featureSelection.research.web.entity.demo.visitor;
  * @Date: 2020-03-30 22:11
  */
 public class ParameterSchemeValue {
-    private String parameterValue;
+    private String parameterInputValue;
+    private String parameterOptionValue;
     private Parameter parameter;
     private ParameterScheme parameterScheme;
 
-    public String getParameterValue() {
-        return parameterValue;
+    public String getParameterInputValue() {
+        return parameterInputValue;
     }
 
-    public void setParameterValue(String parameterValue) {
-        this.parameterValue = parameterValue;
+    public void setParameterInputValue(String parameterInputValue) {
+        this.parameterInputValue = parameterInputValue;
+    }
+
+    public String getParameterOptionValue() {
+        return parameterOptionValue;
+    }
+
+    public void setParameterOptionValue(String parameterOptionValue) {
+        this.parameterOptionValue = parameterOptionValue;
     }
 
     public Parameter getParameter() {
@@ -34,4 +43,5 @@ public class ParameterSchemeValue {
     public void setParameterScheme(ParameterScheme parameterScheme) {
         this.parameterScheme = parameterScheme;
     }
+
 }

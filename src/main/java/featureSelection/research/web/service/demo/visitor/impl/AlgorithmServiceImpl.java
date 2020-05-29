@@ -1,5 +1,6 @@
 package featureSelection.research.web.service.demo.visitor.impl;
 
+import featureSelection.research.web.controller.demo.visitor.AlgorithmEexecuteController;
 import featureSelection.research.web.entity.demo.visitor.Algorithm;
 import featureSelection.research.web.mybatisMapper.demo.visitor.AlgorithmMapper;
 import featureSelection.research.web.service.demo.visitor.AlgorithmService;
@@ -15,7 +16,7 @@ import java.util.List;
  * @Date: 2020-04-12 20:46
  */
 @Service
-public class AlgorithmServiceImpl implements AlgorithmService {
+public  class AlgorithmServiceImpl implements AlgorithmService{
 
     @Autowired
     private AlgorithmMapper algorithmMapper;

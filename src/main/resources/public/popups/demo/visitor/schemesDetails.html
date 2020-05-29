@@ -22,7 +22,7 @@
                     <ul class="list-group-flush">
                         <li class="list-group-item" v-for="parameterInfo in parameterScheme.parameterSchemeValues">
                             {{parameterInfo.parameter!=null? parameterInfo.parameter.parameterName:""}}
-                            :{{parameterInfo.parameterValue}}
+                            : {{parameterInfo.parameterInputValue}}&nbsp&nbsp{{parameterInfo.parameterOptionValue}}
                         </li>
                     </ul>
                     <span>
@@ -83,17 +83,19 @@
                         }
                     }
                 });
+
             }
 
         });
 
         $(function () {
-
+            
         });
 
+    
         function download() {
             window.location.href = "http://localhost:8000/demo/download?datasetid=" + vue_parameterInfo.parameterScheme.dataset.datasetId;
-
+            
         }
 
     </script>

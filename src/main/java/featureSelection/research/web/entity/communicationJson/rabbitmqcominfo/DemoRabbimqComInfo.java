@@ -22,7 +22,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName : DemoRabbimqComInfo
@@ -36,7 +39,7 @@ public class DemoRabbimqComInfo {
     private String demoRabbimqComTaskId;
     private RabbitTemplate rabbitmqTemplate;
     private String statues = "READY";
-    private ArrayList<JSONObject>resultInfos=new ArrayList<>();
+    private Object resultInfo;
 
     private Dataset dataset;
     private String routingkey;
@@ -108,14 +111,10 @@ public class DemoRabbimqComInfo {
         for (ParameterSchemeValue parameterSchemeValue : parameterSchemeValues) {
             //算法基础设置取值
             Map<String, Object> basicSettingValue = new HashMap<>();
-            basicSettingValue.put("input", null);
-            basicSettingValue.put("option", null);
-            String parametervalue = parameterSchemeValue.getParameterValue();
-            String[] values = parametervalue.split(",");
-            basicSettingValue.replace("input",values[0]);
-            basicSettingValue.replace("option",values[1]);
-            basicSettings.put(parameterSchemeValue.getParameter().getParameterName(),
-                    basicSettingValue);
+            basicSettingValue.put("input", parameterSchemeValue.getParameterInputValue());
+            basicSettingValue.put("option", parameterSchemeValue.getParameterOptionValue());
+
+
 
 //            if (parameterSchemeValue.getParameter().getParameterType().equals("option")) {
 //                basicSettingValue.replace("option", parameterSchemeValue.getParameterValue());
@@ -133,9 +132,9 @@ public class DemoRabbimqComInfo {
         Map<String, Map<String, Object>> procedureSetting = new HashMap<>();
         List<SchemeProcedure> schemeProcedures =
                 schemeProcedureMapper.getSchemeProceduresBySchemeId(parameterScheme.getSchemeId());
-        for (SchemeProcedure schemeprocedure : schemeProcedures) {
-            Map prceduredatamap = (Map) JSON.parse(schemeprocedure.getProcedureSettingData());
-            procedureSetting.put(schemeprocedure.getProcedureName(), prceduredatamap);
+        for (SchemeProcedure schemeprocedure:schemeProcedures){
+            Map prceduredatamap=(Map) JSON.parse(schemeprocedure.getProcedureSettingData());
+            procedureSetting.put(schemeprocedure.getProcedureName(),prceduredatamap);
         }
 
         //算法步骤设置放入算法设置实体
@@ -189,12 +188,12 @@ public class DemoRabbimqComInfo {
         }
     }
 
-    public void addResultInfo(JSONObject result){
-        this.resultInfos.add(result);
+    public void setResultInfo(Object resultInfo) {
+        this.resultInfo = resultInfo;
     }
 
-    public ArrayList<JSONObject> getResultInfos() {
-        return resultInfos;
+    public Object getResultInfo() {
+        return resultInfo;
     }
 
     public String getDemoRabbimqComTaskId() {

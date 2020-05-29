@@ -8,7 +8,7 @@ import java.util.List;
  * @Author : WDD
  * @Date: 2020-03-30 21:37
  */
-public class Parameter {
+public class Parameter  {
     private int parameterId;
     private String parameterName;
     private String parameterDescription;

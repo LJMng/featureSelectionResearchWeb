@@ -22,7 +22,6 @@ public class AccountController {
     @Autowired
     private AccountServiceImpl accountService;
 
-
     @PostMapping("/applyAccount")
     public Map<String, Integer> applyAccount(@RequestParam("email") String email,
                                              @RequestParam("password") String password,

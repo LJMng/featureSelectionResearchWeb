@@ -19,10 +19,10 @@
         </div>
         <div id="guideinfo" class="border border-darken-1">
             <div class="mt-2">
-                <h4 class="text-center">{{guideinfotitile}}</h5>
+                <h4 class="text-center" >{{guideinfotitile}}</h5>
             </div>
-            <div class="text-left ml-2 mr-2" style="font-size: 16px;">
-               {{guideinfocontent}}}
+            <div class="text-left ml-2 mr-2" style="font-size: 16px;" v-html="guideinfocontent">
+
             </div>
         </div>
         <br />
@@ -156,7 +156,7 @@
                     console.log(toPostParameterId);
                     var resultcontainerIndex = "resultInfo" + algorithmIndex;
                     echarts.init(document.getElementById(resultcontainerIndex)).dispose();
-                    var myChart = echarts.init(document.getElementById(resultcontainerIndex));
+                        var myChart = echarts.init(document.getElementById(resultcontainerIndex));
                     myChart.setOption({
                         title: [{
                             text: 'Reduct',

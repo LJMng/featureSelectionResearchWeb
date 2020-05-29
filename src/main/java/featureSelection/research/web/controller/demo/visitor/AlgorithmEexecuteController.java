@@ -46,12 +46,10 @@ public class  AlgorithmEexecuteController {
         DemoRabbitmqComServiceSingleton.addDemoRabbitmqComInfo(demoRabbimqComInfo);
         while(true){
         if (demoRabbimqComInfo.getStatues().equals("FINISH")){
-            result=demoRabbimqComInfo.getResultInfos();
-            JSON resultJson=JSONArray.parseArray(result.toString());
-            System.out.println(resultJson);
+            result=demoRabbimqComInfo.getResultInfo();
             //任务结束后删除连接
             DemoRabbitmqComServiceSingleton.deleteRabbitmqComInfo(demoRabbimqComInfo.getDemoRabbimqComTaskId());
-            return resultJson;
+            return result;
 
         }else{
             try {
@@ -75,7 +73,9 @@ public class  AlgorithmEexecuteController {
                          HttpServletResponse response) throws IOException {
         Dataset datasetinfo= datasetServiceImpl.getDatesetInfo(Integer.parseInt(datasetid));
         System.out.println(datasetinfo.toString());
-        String path = this.getClass().getClassLoader().getResource(datasetinfo.getdatasetFile()).getPath();
+        String fileinfo=datasetinfo.getdatasetFile().replace("\\","/");
+        String path = this.getClass().getClassLoader().getResource(fileinfo).getPath();
+        System.out.println(fileinfo);
         //获取输入流
         InputStream bis = new BufferedInputStream(new FileInputStream(new File(path)));
         //转码，免得文件名中文乱码
