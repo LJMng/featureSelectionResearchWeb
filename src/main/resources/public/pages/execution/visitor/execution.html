@@ -988,14 +988,14 @@
             }
         },
         template: `
-                <div class="input-group form-row" v-if="optionName!=''?param.parameterSettingInfo.optionExtra[optionName].type=='selection':false">
+                <div class="input-group form-row" v-if="optionName!=''&&param.parameterSettingInfo.optionExtra[optionName]!=null?param.parameterSettingInfo.optionExtra[optionName].type=='selection':false">
                     <lavel :for="algorithm.algorithmName+param.parameterName+'Basic'+optionName" class="col-3 align-content-center">{{optionName}}</lavel>
                     <select class="custom-select col-9" :name="algorithm.algorithmName+param.parameterName+optionName" :id="algorithm.algorithmName+param.parameterName+'Basic'+optionName">
                         <option selected>Choose...</option>
                         <option v-for="option in param.parameterSettingInfo.optionExtra[optionName].options" :value="option">{{option}}</option>
                     </select>
                 </div>
-                <div class="input-groupv form-row"v-else-if="optionName!=''?param.parameterSettingInfo.optionExtra[optionName].type=='text':false">
+                <div class="input-groupv form-row"v-else-if="optionName!=''&&param.parameterSettingInfo.optionExtra[optionName]!=null?param.parameterSettingInfo.optionExtra[optionName].type=='text':false">
                     <lavel :for="algorithm.algorithmName+param.parameterName+'Basic'+optionName" class="col-3 align-content-center">{{optionName}}</lavel>
                     <input type="text" class="form-control col-9" :id="algorithm.algorithmName+param.parameterName+'Basic'+optionName" :name="algorithm.algorithmName+param.parameterName+optionName">
                 </div>
