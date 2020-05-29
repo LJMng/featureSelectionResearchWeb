@@ -10,11 +10,8 @@ public class AlgorithmParameterDemoAdmin {
     //参数对应的参数类型
     private String parameterType;
     //参数方案对应的算法对应的参数取值
-    private String parameterValue;
-    //参数是否使用
-    private boolean isSelected;
-    //参数步骤
-    private Integer executeStep;
+    private String parameterInputValue;
+    private String parameterOptionValue;
     //参数对应的算法名称
     private String algorithmName;
     //参数对应的方案ID
@@ -46,30 +43,6 @@ public class AlgorithmParameterDemoAdmin {
         this.parameterType = parameterType;
     }
 
-    public String getParameterValue() {
-        return parameterValue;
-    }
-
-    public void setParameterValue(String parameterValue) {
-        this.parameterValue = parameterValue;
-    }
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-    }
-
-    public Integer getExecuteStep() {
-        return executeStep;
-    }
-
-    public void setExecuteStep(Integer executeStep) {
-        this.executeStep = executeStep;
-    }
-
     public String getAlgorithmName() {
         return algorithmName;
     }
@@ -94,15 +67,30 @@ public class AlgorithmParameterDemoAdmin {
         this.schemeName = schemeName;
     }
 
+    public String getParameterInputValue() {
+        return parameterInputValue;
+    }
+
+    public void setParameterInputValue(String parameterInputValue) {
+        this.parameterInputValue = parameterInputValue;
+    }
+
+    public String getParameterOptionValue() {
+        return parameterOptionValue;
+    }
+
+    public void setParameterOptionValue(String parameterOptionValue) {
+        this.parameterOptionValue = parameterOptionValue;
+    }
+
     @Override
     public String toString() {
         return "AlgorithmParameterDemoAdmin{" +
                 "parameterId=" + parameterId +
                 ", parameterName='" + parameterName + '\'' +
                 ", parameterType='" + parameterType + '\'' +
-                ", parameterValue='" + parameterValue + '\'' +
-                ", isSelected=" + isSelected +
-                ", executeStep=" + executeStep +
+                ", parameterInputValue='" + parameterInputValue + '\'' +
+                ", parameterOptionValue='" + parameterOptionValue + '\'' +
                 ", algorithmName='" + algorithmName + '\'' +
                 ", schemeId='" + schemeId + '\'' +
                 ", schemeName='" + schemeName + '\'' +
