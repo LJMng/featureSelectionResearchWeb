@@ -53,27 +53,108 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
             parameter.setAlgorithmId(parameterInfo.getAlgorithmId());
             parameter.setParameterName(parameterInfo.getParameterNames()[i]);
             parameter.setParameterDescription(parameterInfo.getParameterDescriptions()[i]);
-            //获取默认的input值
-            String InputDefaultValue=parameterInfo.getParameterInputDefaultValues()[i];
-            //获取默认的option值
-            String OptionDefaultValue=parameterInfo.getParameterOptionDefaultValues()[i];
-            parameter.setParameterDefaultValue(InputDefaultValue+","+OptionDefaultValue);
+            parameter.setParameterDefaultValue(parameterInfo.getParameterDefaultValues()[i]);
             parameter.setParameterType(parameterInfo.getParameterTypes()[i]);
-            String parameterSettingInfoType=parameterInfo.getParameterSettingInfoTypes()[i];
-            //获取取值数组的字符串
-            String parameterSettingInfoValue=parameterInfo.getParameterSettingInfoValues()[i];
-            String values[]=parameterSettingInfoValue.split(",");
+            /*
+            设置三个数组：第一个参数值，第二个参数类型，第二个参数值
+            1.判断参数类型是否为selection
+            2.如果不是 parameterSettingInfo 设置对应的type,options属性，同时optionExtra赋值为空
+            3.如果是  遍历secondParameterValue数组，取出每种第一个值的具体情况对位Key,取出secondParameterValue数组
+              secondParameterValue中对应的值，拼接成json字符串
+             */
+//            String[] firstParameterValue=parameterInfo.getFirstParameterVales()[i];
+//            String[] secondParameterType=parameterInfo.getSecondParameterTypes()[i];
+//            String[] secondParameterValue=parameterInfo.getSecondParameterValues()[i];
 
-            String parameterSettingInfo="{\"type\":\"";// '{"type":"'
-            parameterSettingInfo=parameterSettingInfo+parameterSettingInfoType+"\",\"options\":[\"";
-            //遍历values数组，取值设置parameterSettingInfo
-            for (int j=0;j<values.length;j++){
-                if (j==values.length-1){
-                    parameterSettingInfo=parameterSettingInfo+values[j]+"\"]}";
-                }else{
-                    parameterSettingInfo=parameterSettingInfo+values[j]+"\",\"";
+            String parameterSettingInfo="{\"type\":";
+            if (parameterInfo.getParameterTypes()[i].equals("selection")){
+                String[] firstParameterValue=parameterInfo.getFirstParameterVales()[i];
+                String[] secondParameterType=parameterInfo.getSecondParameterTypes()[i];
+                String[] secondParameterValue=parameterInfo.getSecondParameterValues()[i];
+                //开始的头部
+                parameterSettingInfo=parameterSettingInfo+"\""+parameterInfo.getParameterTypes()[i]+"\",\"options\":[";
+                //                遍历第一个值，取出对应的值
+                for(int l=0;l<firstParameterValue.length;l++){
+                    //如果为最后一个值
+                    if (l==firstParameterValue.length-1){
+                        parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[l]+"\"],"+"\"optionExtra\":{";
+                    }
+                    //其他情况
+                    else{
+                        parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[l]+"\",";
+                    }
                 }
+                for(int j=0;j<secondParameterType.length;j++){
+                    //遍历到第二个值开始
+                    //判断第二个值的类型,如果为text,则直接添加第二个值的信息
+                    if (secondParameterType[j].equals("text")){
+                        //如果为最后一个
+                        if (j==secondParameterType.length-1){
+                            parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":{\"type\":\""+secondParameterType[j]+"\",\"options\":[]}";
+                        }else{
+                            parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":{\"type\":\""+secondParameterType[j]+"\",\"options\":[]},";
+                        }
+
+                    }else{
+                        parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":{\"type\":\""+secondParameterType[j]+"\",\"options\":[";
+                        String secondParameterValueString=secondParameterValue[j];
+                        String[] secondParameterValueArr=secondParameterValueString.split(",");
+                        //遍历第二个值
+                        for (int k=0;k<secondParameterValueArr.length;k++){
+                            if (k==secondParameterValueArr.length-1 && j==firstParameterValue.length-1){
+                                parameterSettingInfo=parameterSettingInfo+"\""+secondParameterValueArr[k]+"\"]}";
+                            }else if(k==secondParameterValueArr.length-1){
+                                parameterSettingInfo=parameterSettingInfo+"\""+secondParameterValueArr[k]+"\"]},";
+                            }
+                            else{
+                                parameterSettingInfo=parameterSettingInfo+"\""+secondParameterValueArr[k]+"\",";
+                            }
+
+                        }
+                    }
+
+                }
+                //遍历完成 添加尾部
+                parameterSettingInfo=parameterSettingInfo+"}}";
+
+            }else if (parameterInfo.getParameterTypes()[i].equals("text")){
+                parameterSettingInfo=parameterSettingInfo+"\"text\",\"options\":[],\"optionExtra\":null}";
+            }else{
+                String[] firstParameterValue=parameterInfo.getFirstParameterVales()[i];
+                parameterSettingInfo=parameterSettingInfo+"\""+parameterInfo.getParameterTypes()[i]+"\",\"options\":[";
+//                遍历第一个值，取出对应的值
+                for(int l=0;l<firstParameterValue.length;l++){
+                    //如果为最后一个值
+                    if (l==firstParameterValue.length-1){
+                        parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[l]+"\"],";
+                    }
+                    //其他情况
+                    else{
+                        parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[l]+"\",";
+                    }
+                }
+                //添加尾部信息
+                parameterSettingInfo=parameterSettingInfo+"\"optionExtra\":null}";
             }
+
+            parameter.setParameterSettingInfo(parameterSettingInfo);
+
+
+//            String parameterSettingInfoType=parameterInfo.getParameterSettingInfoTypes()[i];
+//            //获取取值数组的字符串
+//            String parameterSettingInfoValue=parameterInfo.getParameterSettingInfoValues()[i];
+//            String values[]=parameterSettingInfoValue.split(",");
+//
+//            String parameterSettingInfo="{\"type\":\"";// '{"type":"'
+//            parameterSettingInfo=parameterSettingInfo+parameterSettingInfoType+"\",\"options\":[\"";
+//            //遍历values数组，取值设置parameterSettingInfo
+//            for (int j=0;j<values.length;j++){
+//                if (j==values.length-1){
+//                    parameterSettingInfo=parameterSettingInfo+values[j]+"\"]}";
+//                }else{
+//                    parameterSettingInfo=parameterSettingInfo+values[j]+"\",\"";
+//                }
+//            }
             parameter.setParameterSettingInfo(parameterSettingInfo);
             algorithmMapper.createParameter(parameter);
 

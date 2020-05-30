@@ -8,11 +8,11 @@ public class ParameterInfo implements Serializable {
     private int algorithmId;
     private String[] parameterNames;
     private String[] parameterDescriptions;
-    private String[] parameterInputDefaultValues;
-    private String[] parameterOptionDefaultValues;
+    private String[] parameterDefaultValues;
     private String[] parameterTypes;
-    private String[] parameterSettingInfoTypes;
-    private String[]  parameterSettingInfoValues;
+    private String[][] firstParameterVales;
+    private String[][] secondParameterTypes;
+    private String[][] secondParameterValues;
 
 
     public int getAlgorithmId() {
@@ -39,20 +39,12 @@ public class ParameterInfo implements Serializable {
         this.parameterDescriptions = parameterDescriptions;
     }
 
-    public String[] getParameterInputDefaultValues() {
-        return parameterInputDefaultValues;
+    public String[] getParameterDefaultValues() {
+        return parameterDefaultValues;
     }
 
-    public void setParameterInputDefaultValues(String[] parameterInputDefaultValues) {
-        this.parameterInputDefaultValues = parameterInputDefaultValues;
-    }
-
-    public String[] getParameterOptionDefaultValues() {
-        return parameterOptionDefaultValues;
-    }
-
-    public void setParameterOptionDefaultValues(String[] parameterOptionDefaultValues) {
-        this.parameterOptionDefaultValues = parameterOptionDefaultValues;
+    public void setParameterDefaultValues(String[] parameterDefaultValues) {
+        this.parameterDefaultValues = parameterDefaultValues;
     }
 
     public String[] getParameterTypes() {
@@ -63,21 +55,28 @@ public class ParameterInfo implements Serializable {
         this.parameterTypes = parameterTypes;
     }
 
-    public String[] getParameterSettingInfoTypes() {
-        return parameterSettingInfoTypes;
+    public String[][] getFirstParameterVales() {
+        return firstParameterVales;
     }
 
-    public void setParameterSettingInfoTypes(String[] parameterSettingInfoTypes) {
-        this.parameterSettingInfoTypes = parameterSettingInfoTypes;
+    public void setFirstParameterVales(String[][] firstParameterVales) {
+        this.firstParameterVales = firstParameterVales;
     }
 
-
-    public String[] getParameterSettingInfoValues() {
-        return parameterSettingInfoValues;
+    public String[][] getSecondParameterTypes() {
+        return secondParameterTypes;
     }
 
-    public void setParameterSettingInfoValues(String[] parameterSettingInfoValues) {
-        this.parameterSettingInfoValues = parameterSettingInfoValues;
+    public void setSecondParameterTypes(String[][] secondParameterTypes) {
+        this.secondParameterTypes = secondParameterTypes;
+    }
+
+    public String[][] getSecondParameterValues() {
+        return secondParameterValues;
+    }
+
+    public void setSecondParameterValues(String[][] secondParameterValues) {
+        this.secondParameterValues = secondParameterValues;
     }
 
     @Override
@@ -86,11 +85,11 @@ public class ParameterInfo implements Serializable {
                 "algorithmId=" + algorithmId +
                 ", parameterNames=" + Arrays.toString(parameterNames) +
                 ", parameterDescriptions=" + Arrays.toString(parameterDescriptions) +
-                ", parameterInputDefaultValues=" + Arrays.toString(parameterInputDefaultValues) +
-                ", parameterOptionDefaultValues=" + Arrays.toString(parameterOptionDefaultValues) +
+                ", parameterDefaultValues=" + Arrays.toString(parameterDefaultValues) +
                 ", parameterTypes=" + Arrays.toString(parameterTypes) +
-                ", parameterSettingInfoTypes=" + Arrays.toString(parameterSettingInfoTypes) +
-                ", parameterSettingInfoValues=" + Arrays.toString(parameterSettingInfoValues) +
+                ", firstParameterVales=" + Arrays.toString(firstParameterVales) +
+                ", secondParameterTypes=" + Arrays.toString(secondParameterTypes) +
+                ", secondParameterValues=" + Arrays.toString(secondParameterValues) +
                 '}';
     }
 }

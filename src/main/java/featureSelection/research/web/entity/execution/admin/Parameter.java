@@ -1,13 +1,14 @@
 package featureSelection.research.web.entity.execution.admin;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Parameter implements Serializable {
     private Integer algorithmId;
     private String parameterName;
     private String parameterDescription;
-    private String parameterType;
     private String parameterDefaultValue;
+    private String parameterType;
     private String parameterSettingInfo;
 
     public Integer getAlgorithmId() {
@@ -64,8 +65,8 @@ public class Parameter implements Serializable {
                 "algorithmId=" + algorithmId +
                 ", parameterName='" + parameterName + '\'' +
                 ", parameterDescription='" + parameterDescription + '\'' +
-                ", parameterType='" + parameterType + '\'' +
                 ", parameterDefaultValue='" + parameterDefaultValue + '\'' +
+                ", parameterType='" + parameterType + '\'' +
                 ", parameterSettingInfo='" + parameterSettingInfo + '\'' +
                 '}';
     }

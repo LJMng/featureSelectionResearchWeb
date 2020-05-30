@@ -47,14 +47,23 @@ var vm =new Vue({
         searchString: '',
 
         parameterInfo:{
+            // 算法id
             algorithmId:1,
+            // 参数名称
             parameterNames:[],
+            // 参数描述
             parameterDescriptions:[],
-            parameterInputDefaultValues:[],
-            parameterOptionDefaultValues:[],
+            // 参数默认值
+            parameterDefaultValues:[],
+            //根据下面四个标识有1的属性进行parameterSettingInfo的封装
+            // 第一个参数值类型      1
             parameterTypes:[],
-            parameterSettingInfoTypes:[],
-            parameterSettingInfoValues:[]
+            //第一个参数值,二维数组  里层是个字符串数组   1
+            firstParameterVales:[],
+            //第二个参数类型,二维    里层是个字符串数组   1
+            secondParameterTypes:[],
+            //第二个参数值,二维      里层是个字符串数组 一个数组包含对应的所有值    1
+            secondParameterValues:[],
         },
         procedureSetting:{
             algorithmId:1,
@@ -63,7 +72,15 @@ var vm =new Vue({
             options:'',
             defaultOption:'',
             description:''
-        }
+        },
+        //暂时存放第一个参数值的数组
+        firstParameterValue:[],
+        //暂时存放第二个参数值的数组
+        secondParameterValue:[],
+        //循环遍历设置第一个参数值的个数
+        paramValuesNumber:[],
+        //暂时存放第二个参数类型的数组
+        secondParameterType:[],
 
     },
     created:function () {
@@ -211,6 +228,25 @@ var vm =new Vue({
                 .catch(err => {
                     console.log(err);
                 })
+        },
+        confirmFirstParameterValue:function (n,m) {
+            if(m >= this.paramValuesNumber[n-1]){
+            // this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
+            // this.firstParameterValue=[];
+            this.parameterInfo.secondParameterTypes[n-1]=this.secondParameterType;
+            this.secondParameterType=[];
+            this.parameterInfo.secondParameterValues[n-1]=this.secondParameterValue;
+            this.secondParameterValue=[];
+            console.log(this.parameterInfo.secondParameterTypes[n-1])
+                console.log("改方法调用了")
+            }
+        },
+        confirmFirstValue:function (n,m) {
+            if(m >= this.paramValuesNumber[n-1]){
+                this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
+                this.firstParameterValue=[];
+                console.log("改方法调用了")
+            }
         }
     },
     computed: {

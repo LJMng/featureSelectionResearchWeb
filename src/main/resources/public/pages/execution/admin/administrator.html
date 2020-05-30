@@ -207,8 +207,8 @@
                             <td>{{administrator.administratorName}}</td>
                             <td>{{administrator.administratorPassword}}</td>
                             <td>
-                                <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#aaa"+administrator.administratorName'>update</button>
-                                <button class="btn btn-sm btn-danger" data-toggle="modal" v-bind:data-target='"#a"+administrator.administratorName'>delete</button>
+                                <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#updateAdministrator"+administrator.administratorId'>update</button>
+                                <button class="btn btn-sm btn-danger" data-toggle="modal" v-bind:data-target='"#deleteAdministrator"+administrator.administratorId'>delete</button>
                             </td>
                             <!--模态框对应的id还没有根据administrator赋值 -->
                         </tr>
@@ -216,7 +216,7 @@
                     </table>
                     <div v-for="administrator in administrators">
                         <!-- 定义修改管理员信息的模态框 -->
-                        <div class="modal fade" v-bind:id='"aaa"+administrator.administratorName' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                        <div class="modal fade" v-bind:id='"updateAdministrator"+administrator.administratorId' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-scrollable" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -247,13 +247,13 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                        <button type="button" class="btn btn-primary" @click="updateDataset(administrator.administratorId)">修改</button>
+                                        <button type="button" class="btn btn-primary" @click="updateAdministrator(administrator.administratorId)">修改</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- 定义删除管理员信息模态框 -->
-                        <div class="modal fade" v-bind:id='"a"+administrator.administratorName' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" v-bind:id='"deleteAdministrator"+administrator.administratorId' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
