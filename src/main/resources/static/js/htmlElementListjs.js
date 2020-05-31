@@ -157,7 +157,17 @@ $(function () {
         size: "small",
         labelWidth: "15px"
     });
-
+    //设为默认值
+    $('#default').click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '/HtmlElementDemoAdmin/setDefault',
+            success: function () {
+                setTimeout('alert("设置成功!")',300);
+                setTimeout('window.location.reload()',500);
+            }
+        })
+    });
 });
 // 列表分页样式设置
 $("#pagination_14").whjPaging({
