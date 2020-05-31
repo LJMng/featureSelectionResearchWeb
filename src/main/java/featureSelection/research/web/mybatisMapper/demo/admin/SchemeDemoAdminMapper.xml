@@ -115,13 +115,13 @@
         <foreach collection="algorithmParameterDemoAdmin" item="item">
             <choose>
                 <when test="item.parameterType=='boolean'">
-                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_input_value) values (#{schemeId},#{item.parameterId},'NO','null');
+                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_input_value, parameter_option_value) values (#{schemeId},#{item.parameterId},'NO','null');
                 </when>
                 <when test="item.parameterType=='selected'">
-                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_input_value) values (#{schemeId},#{item.parameterId},'0','null');
+                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_input_value, parameter_option_value) values (#{schemeId},#{item.parameterId},'0','null');
                 </when>
                 <otherwise>
-                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_input_value) values (#{schemeId},#{item.parameterId},'0','null');
+                    insert into parameter_scheme_value (scheme_id, parameter_id, parameter_input_value, parameter_option_value) values (#{schemeId},#{item.parameterId},'0','null');
                 </otherwise>
             </choose>
         </foreach>

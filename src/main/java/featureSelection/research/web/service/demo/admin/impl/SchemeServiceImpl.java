@@ -6,6 +6,7 @@ import featureSelection.research.web.mybatisMapper.demo.admin.SchemeDemoAdminMap
 import featureSelection.research.web.service.demo.admin.SchemeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class SchemeServiceImpl implements SchemeService {
     }
 
     @Override
+    @Transactional
     public String insertScheme(SchemeDemoAdmin schemeDemoAdmin) {
         //将数据插入参数方案表
         schemeDemoAdminMapper.insertSchemeDemoAdmin(schemeDemoAdmin);
@@ -35,6 +37,7 @@ public class SchemeServiceImpl implements SchemeService {
     }
 
     @Override
+    @Transactional
     public String updateSchemeDemoAdmin(SchemeDemoAdmin schemeDemoAdmin) {
         schemeDemoAdminMapper.updateSchemeDemoAdmin(schemeDemoAdmin);
         schemeDemoAdminMapper.updateSchemeParameterDemoAdmin(schemeDemoAdmin);
@@ -42,6 +45,7 @@ public class SchemeServiceImpl implements SchemeService {
     }
 
     @Override
+    @Transactional
     public String deleteSchemeDemoAdmin(Integer id) {
         schemeDemoAdminMapper.deleteSchemeParameterValue(id);
         schemeDemoAdminMapper.deleteScheme(id);

@@ -9,10 +9,6 @@
         <result column="en_value" property="enValue" />
     </resultMap>
 
-    <!--查询所有信息-->
-    <select id="findAll" resultMap="result">
-        select * from html_element_control
-    </select>
     <!--查询所有图片信息-->
     <select id="findAllImages" resultMap="result">
         select * from html_element_control where html_name = "aboutus" and type = "html_pages"
@@ -21,19 +17,6 @@
     <select id="findByKey" resultMap="result">
         select * from html_element_control where module_key = #{key}
     </select>
-
-    <!--保存更改-->
-    <update id="saveHtmlElement">
-        <foreach collection="list" item="item">
-            update
-            html_element_control
-            set
-            ch_value = #{item.chValue},
-            en_value = #{item.enValue}
-            where
-            module_key = #{item.moduleKey};
-        </foreach>
-    </update>
 
     <!--    保存图片-->
     <insert id="saveImage">

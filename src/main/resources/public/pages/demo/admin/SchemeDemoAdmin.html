@@ -78,7 +78,8 @@
             <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
                     <button class="btn btn-link btn-block" type="button" data-toggle="collapse"
-                            :data-target="'#scheme'+scheme.schemeName+index" aria-expanded="true" aria-controls="collapseOne">
+                            :data-target="'#scheme'+scheme.schemeName+index" aria-expanded="true"
+                            aria-controls="collapseOne">
                         方案名称:{{scheme.schemeName}}
                     </button>
                 </h2>
@@ -93,12 +94,16 @@
                     <hr>
                     <h5><b>基本参数详情</b></h5>
                     <span class="card-text" v-for="parameter in scheme.algorithmParameterDemoAdmin">
-                            <p>{{parameter.parameterName}}:{{parameter.parameterInputValue}},{{parameter.parameterOptionValue}}</p>
+                             <p v-if="parameter.parameterOptionValue!=='null'">{{parameter.parameterName}}:{{parameter.parameterInputValue}},{{parameter.parameterOptionValue}}</p>
+                            <p v-else>{{parameter.parameterName}}:{{parameter.parameterInputValue}}</p>
                         </span>
                     <hr>
                     <h5><b>参数步骤详情</b></h5>
                     <div v-for="procedure in temp">
-                        <p v-if="scheme.schemeId===procedure.schemeId">{{procedure.procedureName}}:{{procedure.procedureSettingData}}</p>
+                        <p v-if="scheme.schemeId===procedure.schemeId&&procedure.selected==='true'">
+                            <i class="fa fa-check-square-o"></i>{{procedure.procedureName}}:{{procedure.data}}</p>
+                        <p v-if="scheme.schemeId===procedure.schemeId&&procedure.selected==='false'">
+                            {{procedure.procedureName}}:{{procedure.data}}</p>
                     </div>
                     <hr>
                     <p class="card-text" v-if="scheme.schemeRemark"><small
@@ -243,15 +248,18 @@
                     <form>
                         <div class="form-group row">
                             <div class="col-sm-12">
-                                <div class="alert alert-success m-1 container-fluid" style="text-align: center" role="alert">
+                                <div class="alert alert-success m-1 container-fluid" style="text-align: center"
+                                     role="alert">
                                     基本参数设置
                                 </div>
                                 <div class="row m-0 input-group" v-for="param in scheme.algorithmParameterDemoAdmin">
                                     <div class="input-group-prepend" style="width: 30%">
                                         <span class="input-group-text container-fluid">{{param.parameterName}}</span>
                                     </div>
-                                    <input type="text" class="form-control" v-model="param.parameterInputValue">
-                                    <input type="text" class="form-control" v-model="param.parameterOptionValue">
+                                    <input type="text" class="form-control" v-model="param.parameterInputValue"
+                                           data-toggle="tooltip" data-placement="bottom" title="data值">
+                                    <input type="text" class="form-control" v-model="param.parameterOptionValue"
+                                           data-toggle="tooltip" data-placement="bottom" title="option值,默认不需要处理">
                                 </div>
                             </div>
                             <div class="col-sm-12 mt-3">
@@ -261,13 +269,23 @@
                                 <div class="row m-0" v-for="(ps,index2) in ProcedureSettingsList[scheme.algorithmId]">
                                     <div class="col-3 p-2">
                                         <div class="custom-control custom-control-inline custom-radio">
-                                            <input @click="check(index2)" type="checkbox" class="custom-control-input" :id="scheme.algorithmName+ps.name+'Procedure'" :name="scheme.algorithmName+ps.name+'Check'+(index2+1)" :checked="ps.state=='optional'?null:'checked'" :disabled="ps.state=='required'?'disabled':null">
-                                            <label class="custom-control-label" :for="scheme.algorithmName+ps.name+'Procedure'">{{ps.name}}</label>
+                                            <input @click="check(index2)" type="checkbox" class="custom-control-input"
+                                                   :id="scheme.algorithmName+ps.name+'Procedure'"
+                                                   :name="scheme.algorithmName+ps.name+'Check'+(index2+1)"
+                                                   :checked="ps.state=='optional'?null:'checked'"
+                                                   :disabled="ps.state=='required'?'disabled':null">
+                                            <label class="custom-control-label"
+                                                   :for="scheme.algorithmName+ps.name+'Procedure'">{{ps.name}}</label>
                                         </div>
                                     </div>
                                     <div class="input-group mb-3 col-9">
-                                        <select class="custom-select" :id="scheme.algorithmName+ps.name+'select'" :name="scheme.algorithmName+ps.name" :disabled="ps.state=='optional'?'disabled':null">
-                                            <option v-for="(option,index3) in ps.options" :selected="option==ps.defaultOption?'selected':null" :value="option">{{option}}</option>
+                                        <select class="custom-select" :id="scheme.algorithmName+ps.name+'select'"
+                                                :name="scheme.algorithmName+ps.name"
+                                                :disabled="ps.state=='optional'?'disabled':null">
+                                            <option v-for="(option,index3) in ps.options"
+                                                    :selected="option==ps.defaultOption?'selected':null"
+                                                    :value="option">{{option}}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -329,6 +347,10 @@
                             .then(resp => {
                                 this.procedures = resp.data;
                                 this.temp = this.procedures;
+                                for(let i=0;i<this.temp.length;i++){
+                                    this.$set(this.temp[i],'data',JSON.parse(this.temp[i].procedureSettingData).data);
+                                    this.$set(this.temp[i],'selected',JSON.parse(this.temp[i].procedureSettingData).selected);
+                                }
                             })
                             .catch(err => {
                                 console.log(err);
@@ -358,20 +380,20 @@
                         this.scheme.datasetName = resp.data.datasetName;
                         axios.get('/schemeProcedureDemoAdmin/find/' + _id)
                             .then(resp => {
-                                $.extend(true,this.p,resp.data);//深拷贝
+                                $.extend(true, this.p, resp.data);//深拷贝
                                 this.procedures = resp.data;
                                 this.tempSetting = resp.data;
                                 let temp1 = resp.data;
-                                for(let i=0;i<this.procedures.length;i++){
+                                for (let i = 0; i < this.procedures.length; i++) {
                                     temp1[i] = this.tempSetting[i].procedureSettingData;
                                     this.tempSetting[i] = JSON.parse(temp1[i]);
                                 }
                                 let temp = this.ProcedureSettingsList[this.scheme.algorithmId];
-                                for(let i=0;i<temp.length;i++){
+                                for (let i = 0; i < temp.length; i++) {
                                     this.tempSetting[i].data = temp[i].defaultOption;
-                                    if(temp[i].state==='optional'){
+                                    if (temp[i].state === 'optional') {
                                         this.tempSetting[i].selected = 'false';
-                                    }else{
+                                    } else {
                                         this.tempSetting[i].selected = 'true';
                                     }
                                 }
@@ -436,8 +458,8 @@
                 }
                 axios.post('/SchemeDemoAdmin/update', this.scheme)
                     .then(() => {
-                        for(let i=0;i<this.tempSetting.length;i++){
-                            this.p[i].procedureSettingData = '{"data":"'+this.tempSetting[i].data+'","selected":"'+this.tempSetting[i].selected+'"}';
+                        for (let i = 0; i < this.tempSetting.length; i++) {
+                            this.p[i].procedureSettingData = '{"data":"' + this.tempSetting[i].data + '","selected":"' + this.tempSetting[i].selected + '"}';
                         }
                         axios.post('/schemeProcedureDemoAdmin/update', this.p)
                             .then(() => {
