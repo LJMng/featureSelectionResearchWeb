@@ -103,7 +103,7 @@ var vm =new Vue({
 
         axios.get('/findAllProcedureSetting')
             .then(function (response){
-                this.procedureSettings = response.data;
+                that.procedureSettings = response.data;
             })
             .catch(function (err){
                 console.log(err);

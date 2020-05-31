@@ -608,7 +608,7 @@
                                     <dt class="col-md-5">算法服务器端口:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmCallPort}}</dd>
                                     <div v-for="procedureSetting in procedureSettings">
-                                        <button type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+procedureSetting.id+"procedure"'>
+                                        <button type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#procedure"+procedureSetting.id'>
                                             点击查看步骤{{procedureSetting.name}}详情
                                         </button>
                                     </div>
@@ -672,7 +672,7 @@
                 </div>
             </div>
             <!-- 修改步骤模态框-->
-            <div v-for="procedureSetting in procedureSettings" class="modal fade" v-bind:id='"#a"+procedureSetting.id+"procedure"' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div v-for="procedureSetting in procedureSettings" class="modal fade" v-bind:id='"#procedure"+procedureSetting.id' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
