@@ -40,6 +40,17 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     }
 
     @Override
+    public List<ProcedureSettings> findAllProcedureSettings() {
+        List<ProcedureSettings> allProcedureSetting = procedureSettingsMapper.findAllProcedureSetting();
+        return allProcedureSetting;
+    }
+
+    @Override
+    public void updateProcedureSettings(ProcedureSettings procedureSettings) {
+        procedureSettingsMapper.updateProcedureSetting(procedureSettings);
+    }
+
+    @Override
     public List<Algorithm> getAlgorithms() {
         return algorithmMapper.getAlgorithms();
     }

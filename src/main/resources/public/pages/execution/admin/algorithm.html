@@ -607,6 +607,11 @@
                                     <dd class="col-md-7">{{algorithm.algorithmCallExecutionRoutingkey}}</dd>
                                     <dt class="col-md-5">算法服务器端口:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmCallPort}}</dd>
+                                    <div v-for="procedureSetting in procedureSettings">
+                                        <button type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+procedureSetting.id+"procedure"'>
+                                            点击查看步骤{{procedureSetting.name}}详情
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -662,6 +667,39 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 修改步骤模态框-->
+            <div v-for="procedureSetting in procedureSettings" class="modal fade" v-bind:id='"#a"+procedureSetting.id+"procedure"' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <div class="row">
+                                    <dt class="col-md-5">步骤名称:</dt>
+                                    <dd class="col-md-7">{{procedureSetting.name}}</dd>
+                                    <dt class="col-md-5">步骤状态:</dt>
+                                    <dd class="col-md-7">{{procedureSetting.state}}</dd>
+                                    <dt class="col-md-5">步骤选项:</dt>
+                                    <dd class="col-md-7">{{procedureSetting.options}}</dd>
+                                    <dt class="col-md-5">步骤默认选项:</dt>
+                                    <dd class="col-md-7">{{procedureSetting.defaultOption}}</dd>
+                                    <dt class="col-md-5">步骤描述:</dt>
+                                    <dd class="col-md-7">{{procedureSetting.description}}</dd>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" @click="updateProcedureSetting(procedureSetting)">Save changes</button>
                         </div>
                     </div>
                 </div>

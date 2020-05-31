@@ -126,6 +126,16 @@ public class AlgorithmController {
         return "redirect:/pages/execution/admin/algorithm.html";
    }
 
+   @GetMapping("/findAllProcedureSetting")
+   public List<ProcedureSettings> findAllProcedureSettings(){
+        return algorithmBusiness.findAllProcedureSettings();
+   }
+
+   @PostMapping("/updateProcedureSetting")
+   public void updateProcedureSettings(@RequestBody ProcedureSettings procedureSettings){
+        algorithmBusiness.updateProcedureSettings(procedureSettings);
+   }
+
    @PostMapping("/createParameters")
    public void createParameters(@RequestBody ParameterInfo parameterInfo){
         algorithmBusiness.createParameters(parameterInfo);

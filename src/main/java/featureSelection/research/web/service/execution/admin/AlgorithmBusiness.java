@@ -10,6 +10,8 @@ import java.util.Map;
 public interface AlgorithmBusiness {
     public void createParamSettingInfo(Map<Integer, String> algorithmMap);
     public void addProcedureSettings(ProcedureSettings procedureSettings);
+    public List<ProcedureSettings> findAllProcedureSettings();
+    public void updateProcedureSettings(ProcedureSettings procedureSettings);
     public List<Algorithm> getAlgorithms();
 
     public void createParameters(ParameterInfo parameterInfo);

@@ -82,6 +82,8 @@ var vm =new Vue({
         //暂时存放第二个参数类型的数组
         secondParameterType:[],
 
+        procedureSettings: '',
+        procedureSettingReturned: '',
     },
     created:function () {
         //初始化数值
@@ -99,8 +101,14 @@ var vm =new Vue({
 
         })
 
+        axios.get('/findAllProcedureSetting')
+            .then(function (response){
+                this.procedureSettings = response.data;
+            })
+            .catch(function (err){
+                console.log(err);
+            })
         this.getData()
-
 
     },
     methods:{
@@ -227,6 +235,15 @@ var vm =new Vue({
                 })
                 .catch(err => {
                     console.log(err);
+                })
+        },
+        updateProcedureSetting(ps){
+            axios.post('/updateProcedureSetting',ps)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err)
                 })
         },
         confirmFirstParameterValue:function (n,m) {
