@@ -10,4 +10,6 @@ public interface TaskInfoBusiness {
 
 
     public void updateTaskInfo(TaskInfo taskInfo);
+
+    public void deleteTaskInfo(TaskInfo taskInfo);
 }

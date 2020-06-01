@@ -170,6 +170,7 @@
                             <td>{{taskInfo.taskEmail}}</td>
                             <td>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#aa"+taskInfo.taskId'>detail</button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" v-bind:data-target='"#deleteTaskInfo"+taskInfo.taskId'>delete</button>
                                 <div class="modal fade" v-bind:id='"aa"+taskInfo.taskId' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-scrollable" role="document">
                                         <div class="modal-content">
@@ -268,8 +269,28 @@
                                         </div>
                                     </div> <!-- /.modal -->
                                 </form>
+                                <!-- 删除任务信息模态框 -->
+                                <div class="modal fade" v-bind:id='"deleteTaskInfo"+taskInfo.taskId' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <!-- values.modal -->
+                                                <h5 class="modal-title" id="exampleModalLabel">删除任务单信息</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                确定删除{{taskInfo.taskId}}号任务单信息吗？删除后信息不可恢复！
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                                <button type="button" class="btn btn-danger" @click="deleteTaskInfo(taskInfo.taskId)">确定</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
-                            <!--模态框对应的id还没有根据administrator赋值 -->
                         </tr>
                         </tbody>
                     </table>

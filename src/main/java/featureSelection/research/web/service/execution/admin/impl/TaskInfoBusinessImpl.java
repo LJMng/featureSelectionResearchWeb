@@ -23,5 +23,10 @@ public class TaskInfoBusinessImpl implements TaskInfoBusiness {
         taskInfoMapper.updateTaskInfo(taskInfo);
     }
 
+    @Override
+    public void deleteTaskInfo(TaskInfo taskInfo) {
+        taskInfoMapper.deleteTaskInfo(taskInfo);
+    }
+
 
 }

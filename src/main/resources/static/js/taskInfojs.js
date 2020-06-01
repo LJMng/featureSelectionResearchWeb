@@ -20,7 +20,14 @@ var vm =new Vue({
         values:"",
         taskEmail:'',
         checkAccountId: 1,
-        checked:{checkedAccountId:""}
+        checked:{checkedAccountId:""},
+        taskInfo:{
+            taskId:1,
+            accountId:1,
+            taskName:'',
+
+
+        }
 
      },
     methods:{
@@ -30,6 +37,17 @@ var vm =new Vue({
             }else {
                 this.checked.checkedAccountId="正确！"
             }
+
+        },
+        deleteTaskInfo:function (taskInfoId) {
+            this.taskInfo.taskId=taskInfoId
+            axios.post('/deleteTaskInfo',this.taskInfo)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
 
         }
     },
