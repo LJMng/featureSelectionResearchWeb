@@ -179,7 +179,7 @@
                     <td>
                         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="getDataById(msg.algorithmId)">修改</button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" @click="getDataById(msg.algorithmId)">删除</button>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#a"+msg.algorithmId'>详情</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#a"+msg.algorithmId' @click="putAlgorithmId(msg.algorithmId)">详情</button>
                     </td>
                 </tr>
                 </tbody>
@@ -454,9 +454,7 @@
                                     <label for='"secondParameterType"+m'>第二个值参数类型：</label>
                                     <select id='"secondParameterType"+m' class="custom-select" v-model="secondParameterType[m-1]" name="paraType"  required>
                                         <option selected>text</option>
-                                        <option>radio</option>
                                         <option>selection</option>
-                                        <option>checkbox</option>
                                     </select>
                                 </div>
                                 <!--根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 -->
@@ -607,11 +605,30 @@
                                     <dd class="col-md-7">{{algorithm.algorithmCallExecutionRoutingkey}}</dd>
                                     <dt class="col-md-5">算法服务器端口:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmCallPort}}</dd>
-                                    <div v-for="procedureSetting in procedureSettings">
+                                </div>
+                            </div>
+                            <hr>
+                            <h4>算法步骤信息</h4>
+                            <div v-for="(procedureSetting,index) in filterProcedureSettingsByAlgorithmId">
+                                <div class="row">
+                                    <dt class="col-md-5">第{{index+1}}个步骤</dt>
+                                    <dd class="col-md-7">
                                         <button type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#procedure"+procedureSetting.id'>
                                             点击查看步骤{{procedureSetting.name}}详情
                                         </button>
-                                    </div>
+                                    </dd>
+                                </div>
+                            </div>
+                            <hr>
+                            <h4>算法参数信息</h4>
+                            <div v-for="(parameter,index) in filterParametersByAlgorithmId">
+                                <div class="row">
+                                    <dt class="col-md-5">第{{index+1}}个参数:</dt>
+                                    <dd class="col-md-7">
+                                        <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target='"#updateParameter"+parameter.parameterId'>
+                                        {{parameter.parameterName}}
+                                        </button>
+                                    </dd>
                                 </div>
                             </div>
 
@@ -625,6 +642,55 @@
             </div>
 
 
+            <!--修改算法参数模态框 -->
+            <div class="modal fade" v-for="parameter in parameters" v-bind:id='"updateParameter"+parameter.parameterId' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!--                                        {{values.modal_updateAccount_title}}-->
+                            <h5 class="modal-title" id="updateParameterModal">修改参数信息</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form >
+                                <!--                                            {{values.modal_updateAccount_form_li1}}-->
+                                <div class="form-group">
+                                    <label for="updateParameterId" class="col-form-label">参数Id</label>
+                                    <input type="text"  class="form-control" id="updateParameterId" v-bind:placeholder="parameter.parameterId"  disabled>
+                                </div>
+                                <!--                                            {{values.modal_updateAdministrator_form_li2}}-->
+                                <div class="form-group">
+                                    <label for="updateParameterName" class="col-form-label">参数名:</label>
+                                    <input type="text"  class="form-control" id="updateParameterName" v-bind:placeholder="parameter.parameterName" v-model="parameterInfo.parameterName">
+                                </div>
+                                <!--                                            {{values.modal_updateAdministrator_form_li3}}-->
+                                <div class="form-group">
+                                    <label for="updateParameterType" class="col-form-label">参数类型:</label>
+                                    <input type="text"  class="form-control" id="updateParameterType" v-bind:placeholder="parameter.parameterType" v-model="parameterInfo.parameterType">
+                                </div>
+                                <div class="form-group">
+                                    <label for="updateParameterDefaultValue" class="col-form-label">参数默认值:</label>
+                                    <input type="text"  class="form-control" id="updateParameterDefaultValue" v-bind:placeholder="parameter.parameterDefaultValue" v-model="parameterInfo.parameterDefaultValue">
+                                </div>
+                                <div class="form-group">
+                                    <label for="updateParameterDescription" class="col-form-label">参数描述:</label>
+                                    <input type="text"  class="form-control" id="updateParameterDescription" v-bind:placeholder="parameter.parameterDescription" v-model="parameterInfo.parameterDescription">
+                                </div>
+                                <div class="form-group">
+                                    <label for="updateParameterSettingInfo" class="col-form-label">参数settingInfo:</label>
+                                    <textarea   class="form-control" id="updateParameterSettingInfo" v-bind:placeholder="parameter.parameterSettingInfo" cols="50" rows="5" disabled></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" @click="updateParameter(parameter.parameterId)">修改</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- modal-->
             <div v-for="algorithm in algorithms" class="modal fade" v-bind:id="algorithm.algorithmName" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -672,34 +738,53 @@
                 </div>
             </div>
             <!-- 修改步骤模态框-->
-            <div v-for="procedureSetting in procedureSettings" class="modal fade" v-bind:id='"#procedure"+procedureSetting.id' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div v-for="procedureSetting in procedureSettings" class="modal fade" v-bind:id='"procedure"+procedureSetting.id' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Modal title</h5>
+                            <h5 class="modal-title">修改算法步骤</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div class="card-body">
-                                <div class="row">
-                                    <dt class="col-md-5">步骤名称:</dt>
-                                    <dd class="col-md-7">{{procedureSetting.name}}</dd>
-                                    <dt class="col-md-5">步骤状态:</dt>
-                                    <dd class="col-md-7">{{procedureSetting.state}}</dd>
-                                    <dt class="col-md-5">步骤选项:</dt>
-                                    <dd class="col-md-7">{{procedureSetting.options}}</dd>
-                                    <dt class="col-md-5">步骤默认选项:</dt>
-                                    <dd class="col-md-7">{{procedureSetting.defaultOption}}</dd>
-                                    <dt class="col-md-5">步骤描述:</dt>
-                                    <dd class="col-md-7">{{procedureSetting.description}}</dd>
+                            <form >
+                                <!--                                            {{values.modal_updateAccount_form_li1}}-->
+                                <div class="form-group">
+                                    <label for="updateProcedureSettingId" class="col-form-label">步骤Id</label>
+                                    <input type="text"  class="form-control" id="updateProcedureSettingId" v-bind:placeholder="procedureSetting.id"  disabled>
                                 </div>
-                            </div>
+                                <!--                                            {{values.modal_updateAdministrator_form_li2}}-->
+                                <div class="form-group">
+                                    <label for="updateProcedureSettingName" class="col-form-label">步骤名称:</label>
+                                    <input type="text"  class="form-control" id="updateProcedureSettingName" v-bind:placeholder="procedureSetting.name" v-model="procedureSettingInfo.name">
+                                </div>
+                                <!--                                            {{values.modal_updateAdministrator_form_li3}}-->
+                                <div class="form-group">
+                                    <label for="updateProcedureSettingState" class="col-form-label">步骤状态(必选,可选...):</label>
+                                    <select class="custom-select" id="updateProcedureSettingState" v-bind:placeholder="procedureSetting.state"  v-model="procedureSettingInfo.state">
+                                        <option>required</option>
+                                        <option>optionalSelected</option>
+                                        <option>optional</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="updateProcedureSettingOptions" class="col-form-label">步骤科选择状态:</label>
+                                    <input type="text"  class="form-control" id="updateProcedureSettingOptions" v-bind:placeholder="procedureSetting.options" v-model="procedureSettingInfo.options">
+                                </div>
+                                <div class="form-group">
+                                    <label for="updateProcedureSettingDefaultOption" class="col-form-label">步骤默认值:</label>
+                                    <input type="text"  class="form-control" id="updateProcedureSettingDefaultOption" v-bind:placeholder="procedureSetting.defaultOption" v-model="procedureSettingInfo.defaultOption">
+                                </div>
+                                <div class="form-group">
+                                    <label for="updateProcedureSettingDescription" class="col-form-label">步骤描述:</label>
+                                    <textarea   class="form-control" id="updateProcedureSettingDescription" v-bind:placeholder="procedureSetting.description" cols="50" rows="5" v-model="procedureSettingInfo.description"></textarea>
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" @click="updateProcedureSetting(procedureSetting)">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" @click="updateProcedureSetting(procedureSetting.id)">修改</button>
                         </div>
                     </div>
                 </div>

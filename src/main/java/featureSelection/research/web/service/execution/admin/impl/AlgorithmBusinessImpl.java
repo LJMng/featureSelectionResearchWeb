@@ -173,4 +173,14 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
 
         }
     }
+
+    @Override
+    public List<Parameter> getParameters() {
+        return algorithmParamMapper.getParameters();
+    }
+
+    @Override
+    public void updateParameter(Parameter parameter) {
+        algorithmParamMapper.updateParameter(parameter);
+    }
 }

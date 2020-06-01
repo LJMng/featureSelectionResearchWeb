@@ -14,4 +14,5 @@ public interface AlgorithmMapper {
     @Insert("insert into parameter (algorithm_id,parameter_name,parameter_description,parameter_type,parameter_default_value,parameter_setting_info)" +
             " values (#{algorithmId},#{parameterName},#{parameterDescription},#{parameterType},#{parameterDefaultValue},#{parameterSettingInfo})")
     public void createParameter(Parameter parameter);
+
 }

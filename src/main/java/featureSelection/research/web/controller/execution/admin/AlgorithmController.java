@@ -1,6 +1,7 @@
 package featureSelection.research.web.controller.execution.admin;
 
 import featureSelection.research.web.entity.execution.admin.Algorithm;
+import featureSelection.research.web.entity.execution.admin.Parameter;
 import featureSelection.research.web.entity.execution.admin.ParameterInfo;
 import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
 import featureSelection.research.web.service.execution.admin.AlgorithmBusiness;
@@ -146,4 +147,13 @@ public class AlgorithmController {
    public @ResponseBody List<Algorithm> getAlgorithms(){
         return algorithmBusiness.getAlgorithms();
    }
+
+   @GetMapping(value = "/getParameters")
+    public @ResponseBody List<Parameter> getParameters(){
+        return algorithmBusiness.getParameters();
+   }
+   @PostMapping(value = "/updateParameter")
+   public void updateParameter(@RequestBody Parameter parameter){
+       algorithmBusiness.updateParameter(parameter);
+    }
 }

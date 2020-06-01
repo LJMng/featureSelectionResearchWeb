@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 public class Parameter implements Serializable {
     private Integer algorithmId;
+    private Integer parameterId;
     private String parameterName;
     private String parameterDescription;
     private String parameterDefaultValue;
@@ -59,10 +60,19 @@ public class Parameter implements Serializable {
         this.parameterSettingInfo = parameterSettingInfo;
     }
 
+    public Integer getParameterId() {
+        return parameterId;
+    }
+
+    public void setParameterId(Integer parameterId) {
+        this.parameterId = parameterId;
+    }
+
     @Override
     public String toString() {
         return "Parameter{" +
                 "algorithmId=" + algorithmId +
+                ", parameterId=" + parameterId +
                 ", parameterName='" + parameterName + '\'' +
                 ", parameterDescription='" + parameterDescription + '\'' +
                 ", parameterDefaultValue='" + parameterDefaultValue + '\'' +

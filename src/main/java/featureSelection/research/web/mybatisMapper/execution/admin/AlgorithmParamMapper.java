@@ -1,8 +1,18 @@
 package featureSelection.research.web.mybatisMapper.execution.admin;
 
+import featureSelection.research.web.entity.execution.admin.Parameter;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 public interface AlgorithmParamMapper {
+    @Select("select * from parameter")
+    public List<Parameter> getParameters() ;
+
     @Update("update parameter set parameter_setting_info=#{parameterSettingInfo}  where  algorithm_id=#{algorithmId}")
     public void createParamSettingInfo(int algorithmId, String parameterSettingInfo);
+
+    @Update("update parameter set parameter_name=#{parameterName},parameter_type=#{parameterType},parameter_default_value=#{parameterDefaultValue},parameter_description=#{parameterDescription} where parameter_id=#{parameterId}")
+    public void updateParameter(Parameter parameter);
 }

@@ -84,6 +84,22 @@ var vm =new Vue({
 
         procedureSettings: '',
         procedureSettingReturned: '',
+        parameters:[],
+        parameterInfo:{
+            parameterId:1,
+            parameterName:'',
+            parameterType:'',
+            parameterDefaultValue:'',
+            parameterDescription:''
+        },
+        procedureSettingInfo:{
+            id:1,
+            name:'',
+            state:'',
+            options:'',
+            defaultOption:'',
+            description:''
+        }
     },
     created:function () {
         //初始化数值
@@ -104,6 +120,15 @@ var vm =new Vue({
         axios.get('/findAllProcedureSetting')
             .then(function (response){
                 that.procedureSettings = response.data;
+            })
+            .catch(function (err){
+                console.log(err);
+            })
+
+
+        axios.get('/getParameters')
+            .then(function (response){
+                that.parameters = response.data;
             })
             .catch(function (err){
                 console.log(err);
@@ -237,8 +262,9 @@ var vm =new Vue({
                     console.log(err);
                 })
         },
-        updateProcedureSetting(ps){
-            axios.post('/updateProcedureSetting',ps)
+        updateProcedureSetting(id){
+            this.procedureSettingInfo.id=id;
+            axios.post('/updateProcedureSetting',this.procedureSettingInfo)
                 .then(() => {
                     window.location.reload();
                 })
@@ -264,6 +290,20 @@ var vm =new Vue({
                 this.firstParameterValue=[];
                 console.log("改方法调用了")
             }
+        },
+        putAlgorithmId:function (algorithmId) {
+            this.algorithmId=algorithmId
+        },
+        updateParameter:function (parameterId) {
+            this.parameterInfo.parameterId=parameterId;
+            axios.post('/updateParameter',this.parameterInfo)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+
         }
     },
     computed: {
@@ -286,6 +326,44 @@ var vm =new Vue({
 
             return info_array;
         },
+        //根据算法id过滤得到算法对应的参数
+        filterParametersByAlgorithmId() {
+            //取出数据
+            const{parameters,algorithmId}=this
+            //过滤获得的属性
+            let fParameters=new Array();
+            let j=0;
+            // //对datasetMap进行过滤
+            // fParameters=parameters.filter(p => p.algorithmId===algorithmId)
+            for(let i=0;i<parameters.length;i++){
+                var parameter=parameters[i];
+                if (parameter.algorithmId===algorithmId){
+                    fParameters[j]=parameter;
+                    j++
+                }
+            }
+
+                return fParameters;
+        },
+        filterProcedureSettingsByAlgorithmId(){
+            //取出数据
+            const{procedureSettings,algorithmId}=this
+            //过滤获得的属性
+            let fProcedureSettings=new Array();
+            let j=0;
+            // //对datasetMap进行过滤
+            // fParameters=parameters.filter(p => p.algorithmId===algorithmId)
+            for(let i=0;i<procedureSettings.length;i++){
+                var procedureSetting=procedureSettings[i];
+                if (procedureSetting.algorithmId===algorithmId){
+                    fProcedureSettings[j]=procedureSetting;
+                    j++
+                }
+            }
+
+            return fProcedureSettings;
+        }
+
     },
     watch:{
         //监听number
