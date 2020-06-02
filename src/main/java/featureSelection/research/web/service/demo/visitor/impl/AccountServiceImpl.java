@@ -1,5 +1,7 @@
 package featureSelection.research.web.service.demo.visitor.impl;
 
+import featureSelection.research.web.common.util.ResultUtil;
+import featureSelection.research.web.entity.Result;
 import featureSelection.research.web.entity.demo.visitor.ApplyAccount;
 import featureSelection.research.web.entity.execution.admin.Account;
 import featureSelection.research.web.mybatisMapper.demo.visitor.AccountMapper;
@@ -8,9 +10,6 @@ import featureSelection.research.web.service.demo.visitor.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @ClassName : ApplyAccountServiceimpl
@@ -26,7 +25,7 @@ public class AccountServiceImpl implements AccountService {
     @Autowired private AccountMapper accountMapper;
     /**
      * 会员账号申请
-     * @param applyAccount
+     * @param applyAccount 账号信息
      */
     @Override
     public void apply(ApplyAccount applyAccount){
@@ -37,23 +36,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Map<String,Object> loginByEmail(String email, String password) {
-        Map<String,Object> result=new HashMap<>();
+    public Result loginByEmail(String email, String password) {
+
         Account account=accountMapper.getAccountByEmail(email);
         if(account==null){
-            result.put("status",400);
-            result.put("reason","no register this account");
-            return result;
-        }
+            return ResultUtil.error(404,"no register this account");
+    }
         if(account.getAccountPassword().equals(DigestUtils.md5DigestAsHex(password.getBytes()))){
-            result.put("status",200);
-            result.put("user",account);
-            System.out.println(DigestUtils.md5DigestAsHex(password.getBytes()));
+            return ResultUtil.success(account);
+
         }
-        else{
-            result.put("status",400);
-            result.put("reason","password error");
+        else {
+            return ResultUtil.error(400,"password error");
         }
-        return result;
     }
 }

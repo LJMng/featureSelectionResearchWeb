@@ -1,5 +1,7 @@
 package featureSelection.research.web.controller.demo.visitor;
 
+import featureSelection.research.web.common.util.ResultUtil;
+import featureSelection.research.web.entity.Result;
 import featureSelection.research.web.entity.demo.visitor.UpdateInfo;
 import featureSelection.research.web.mybatisMapper.demo.visitor.UpdateMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class UpdateInfoController {
     private UpdateMapper updateMapper;
     @ResponseBody
     @GetMapping(value = "/getAllUpdateInfoList")
-    public List<UpdateInfo> getAllUpdateInfoList(){
-        return updateMapper.getAllUpdateInfoList();
+    public Result getAllUpdateInfoList(){
+        return ResultUtil.success(updateMapper.getAllUpdateInfoList());
     }
 }
