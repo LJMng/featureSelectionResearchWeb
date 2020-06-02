@@ -1,0 +1,35 @@
+package featureSelection.research.web.common.util;
+
+
+import featureSelection.research.web.entity.Result;
+import featureSelection.research.web.entity.ResultEnum;
+
+/**
+ * @ClassName : ResultUtil
+ * @Description : 统一返回结果工具类
+ * @Author : WDD
+ * @Date: 2020-02-21 15:16
+ */
+public class ResultUtil {
+
+    /**成功且带数据**/
+    public static Result success(Object object){
+        Result result = new Result();
+        result.setCode(ResultEnum.SUCCESS.getCode());
+        result.setMsg(ResultEnum.SUCCESS.getMsg());
+        result.setData(object);
+        return result;
+    }
+    /**成功但不带数据**/
+    public static Result success(){
+
+        return success(null);
+    }
+    /**失败**/
+    public static Result error(Integer code, String msg){
+        Result result = new Result();
+        result.setCode(code);
+        result.setMsg(msg);
+        return result;
+    }
+}
