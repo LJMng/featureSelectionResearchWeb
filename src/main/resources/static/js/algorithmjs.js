@@ -16,6 +16,10 @@ $(function () {
 var vm =new Vue({
     el:"#algorithmData",
     data:{
+        number:1,
+        test:{
+            test01:[]
+        },
         paramsNumber:0,
         values:"",
         parasType:'',
@@ -46,7 +50,10 @@ var vm =new Vue({
         // parameterName: [],
         parameterType: [],
         searchString: '',
+        //用于封装修改参数信息的对象
+        updateParameterInfo:{
 
+        },
         parameterInfo:{
             // 算法id
             algorithmId:1,
@@ -86,7 +93,7 @@ var vm =new Vue({
         procedureSettings: '',
         procedureSettingReturned: '',
         parameters:[],
-        parameterInfo:{
+        updateParameterInfo:{
             parameterId:1,
             parameterName:'',
             parameterType:'',
@@ -296,8 +303,8 @@ var vm =new Vue({
             this.algorithmId=algorithmId
         },
         updateParameter:function (parameterId) {
-            this.parameterInfo.parameterId=parameterId;
-            axios.post('/updateParameter',this.parameterInfo)
+            this.updateParameterInfo.parameterId=parameterId;
+            axios.post('/updateParameter',this.updateParameterInfo)
                 .then(() => {
                     window.location.reload();
                 })
