@@ -281,7 +281,8 @@
                                     <div class="input-group mb-3 col-9">
                                         <select class="custom-select" :id="scheme.algorithmName+ps.name+'select'"
                                                 :name="scheme.algorithmName+ps.name"
-                                                :disabled="ps.state=='optional'?'disabled':null">
+                                                :disabled="ps.state=='optional'?'disabled':null"
+                                                @change="changeProduct($event,index2)">
                                             <option v-for="(option,index3) in ps.options"
                                                     :selected="option==ps.defaultOption?'selected':null"
                                                     :value="option">{{option}}
@@ -310,6 +311,7 @@
                 procedures: [],
                 p: [],
                 temp: [],
+                tempSettingData: [],
                 scheme: {
                     schemeId: '',
                     schemeName: '',
@@ -391,6 +393,7 @@
                                 let temp = this.ProcedureSettingsList[this.scheme.algorithmId];
                                 for (let i = 0; i < temp.length; i++) {
                                     this.tempSetting[i].data = temp[i].defaultOption;
+                                    this.tempSettingData = temp;
                                     if (temp[i].state === 'optional') {
                                         this.tempSetting[i].selected = 'false';
                                     } else {
@@ -525,6 +528,9 @@
                 } else {
                     this.tempSetting[i].selected = 'false';
                 }
+            },
+            changeProduct(event,index) {
+                this.tempSetting[index].data = event.target.value; //获取option对应的value值
             },
         },
         //页面生成前获取所有信息
