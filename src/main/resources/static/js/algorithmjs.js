@@ -36,7 +36,8 @@ var vm =new Vue({
             algorithmCallHost:'',
             algorithmCallExchange:'',
             algorithmCallDemoRoutingkey:'',
-            algorithmCallExecutionRoutingkey:'',
+            algorithmCallExecutionSendRoutingkey:'',
+            algorithmCallExecutionConnectRoutingkey:'',
             algorithmCallPort:'',
             algorithmCallUsername:'',
             algorithmCallPassword:''

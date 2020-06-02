@@ -230,8 +230,12 @@
                                 <input type="text" class="form-control" v-model="info.algorithmCallDemoRoutingkey">
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label">execution Routingkey:</label>
-                                    <input type="text" class="form-control" v-model="info.algorithmCallExecutionRoutingkey">
+                                    <label class="col-form-label">execution connect routingkey:</label>
+                                    <input type="text" class="form-control" v-model="info.algorithmCallExecutionConnectRoutingkey">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">execution send routingkey:</label>
+                                    <input type="text" class="form-control" v-model="info.algorithmCallExecutionSendRoutingkey">
                                 </div>
                                 <div class="form-group">
                                     <label class="col-form-label">算法服务器端口：</label>
@@ -321,8 +325,12 @@
                                     <input type="text" class="form-control" v-model="info.algorithmCallDemoRoutingkey">
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label">Execution Routingkey:</label>
-                                    <input type="text" class="form-control" v-model="info.algorithmCallExecutionRoutingkey">
+                                    <label class="col-form-label">Execution connect routingkey:</label>
+                                    <input type="text" class="form-control" v-model="info.algorithmCallExecutionConnectRoutingkey">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Execution send routingkey:</label>
+                                    <input type="text" class="form-control" v-model="info.algorithmCallExecutionSendRoutingkey">
                                 </div>
                                 <div class="form-group">
                                     <label class="col-form-label">算法服务器端口：</label>
@@ -515,7 +523,7 @@
                         </select>
                     </div>
                     <div class="row-md-4">
-                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+algorithmId'>
+                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+procedureSetting.algorithmId'>
                             点击查看算法详情
                         </button>
                     </div>
@@ -601,8 +609,10 @@
                                     <dd class="col-md-7">{{algorithm.algorithmCallExchange}}</dd>
                                     <dt class="col-md-5">DemoRoutingKey:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmCallDemoRoutingkey}}</dd>
-                                    <dt class="col-md-5">ExecutionRoutingKey:</dt>
-                                    <dd class="col-md-7">{{algorithm.algorithmCallExecutionRoutingkey}}</dd>
+                                    <dt class="col-md-5">ConnectRoutingKey:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallExecutionConnectRoutingkey}}</dd>
+                                    <dt class="col-md-5">SendRoutingKey:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmCallExecutionSendRoutingkey}}</dd>
                                     <dt class="col-md-5">算法服务器端口:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmCallPort}}</dd>
                                 </div>

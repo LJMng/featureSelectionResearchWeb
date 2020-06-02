@@ -16,7 +16,8 @@ public class Algorithm implements Serializable {
     private String algorithmCallHost;
     private String algorithmCallExchange;
     private String algorithmCallDemoRoutingkey;
-    private String algorithmCallExecutionRoutingkey;
+    private String algorithmCallExecutionSendRoutingkey;
+    private String algorithmCallExecutionConnectRoutingkey;
     private String algorithmCallPort;
     private String algorithmCallUsername;
     private String algorithmCallPassword;
@@ -29,26 +30,6 @@ public class Algorithm implements Serializable {
 
     public List<AlgorithmParameterDemoAdmin> getAlgorithmParameterDemoAdmin() {
         return algorithmParameterDemoAdmin;
-    }
-
-    public void setAlgorithmParameterDemoAdmin(List<AlgorithmParameterDemoAdmin> algorithmParameterDemoAdmin) {
-        this.algorithmParameterDemoAdmin = algorithmParameterDemoAdmin;
-    }
-
-    public List<String> getList() {
-        return list;
-    }
-
-    public void setList(List<String> list) {
-        this.list = list;
-    }
-
-    public List<String> getList2() {
-        return list2;
-    }
-
-    public void setList2(List<String> list2) {
-        this.list2 = list2;
     }
 
     public int getAlgorithmId() {
@@ -91,6 +72,14 @@ public class Algorithm implements Serializable {
         this.algorithmPaperLink = algorithmPaperLink;
     }
 
+    public String getAlgorithmDescription() {
+        return algorithmDescription;
+    }
+
+    public void setAlgorithmDescription(String algorithmDescription) {
+        this.algorithmDescription = algorithmDescription;
+    }
+
     public String getAlgorithmCallInterface() {
         return algorithmCallInterface;
     }
@@ -123,12 +112,20 @@ public class Algorithm implements Serializable {
         this.algorithmCallDemoRoutingkey = algorithmCallDemoRoutingkey;
     }
 
-    public String getAlgorithmCallExecutionRoutingkey() {
-        return algorithmCallExecutionRoutingkey;
+    public String getAlgorithmCallExecutionSendRoutingkey() {
+        return algorithmCallExecutionSendRoutingkey;
     }
 
-    public void setAlgorithmCallExecutionRoutingkey(String algorithmCallExecutionRoutingkey) {
-        this.algorithmCallExecutionRoutingkey = algorithmCallExecutionRoutingkey;
+    public void setAlgorithmCallExecutionSendRoutingkey(String algorithmCallExecutionSendRoutingkey) {
+        this.algorithmCallExecutionSendRoutingkey = algorithmCallExecutionSendRoutingkey;
+    }
+
+    public String getAlgorithmCallExecutionConnectRoutingkey() {
+        return algorithmCallExecutionConnectRoutingkey;
+    }
+
+    public void setAlgorithmCallExecutionConnectRoutingkey(String algorithmCallExecutionConnectRoutingkey) {
+        this.algorithmCallExecutionConnectRoutingkey = algorithmCallExecutionConnectRoutingkey;
     }
 
     public String getAlgorithmCallPort() {
@@ -155,12 +152,24 @@ public class Algorithm implements Serializable {
         this.algorithmCallPassword = algorithmCallPassword;
     }
 
-    public String getAlgorithmDescription() {
-        return algorithmDescription;
+    public void setAlgorithmParameterDemoAdmin(List<AlgorithmParameterDemoAdmin> algorithmParameterDemoAdmin) {
+        this.algorithmParameterDemoAdmin = algorithmParameterDemoAdmin;
     }
 
-    public void setAlgorithmDescription(String algorithmDescription) {
-        this.algorithmDescription = algorithmDescription;
+    public List<String> getList() {
+        return list;
+    }
+
+    public void setList(List<String> list) {
+        this.list = list;
+    }
+
+    public List<String> getList2() {
+        return list2;
+    }
+
+    public void setList2(List<String> list2) {
+        this.list2 = list2;
     }
 
     @Override
@@ -176,7 +185,8 @@ public class Algorithm implements Serializable {
                 ", algorithmCallHost='" + algorithmCallHost + '\'' +
                 ", algorithmCallExchange='" + algorithmCallExchange + '\'' +
                 ", algorithmCallDemoRoutingkey='" + algorithmCallDemoRoutingkey + '\'' +
-                ", algorithmCallExecutionRoutingkey='" + algorithmCallExecutionRoutingkey + '\'' +
+                ", algorithmCallExecutionSendRoutingkey='" + algorithmCallExecutionSendRoutingkey + '\'' +
+                ", algorithmCallExecutionConnectRoutingkey='" + algorithmCallExecutionConnectRoutingkey + '\'' +
                 ", algorithmCallPort='" + algorithmCallPort + '\'' +
                 ", algorithmCallUsername='" + algorithmCallUsername + '\'' +
                 ", algorithmCallPassword='" + algorithmCallPassword + '\'' +
