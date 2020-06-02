@@ -732,7 +732,7 @@
                 </div>
             </div>
             <!-- 修改步骤模态框-->
-            <div v-for="procedureSetting in procedureSettings" class="modal fade" v-bind:id='"procedure"+procedureSetting.id' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div v-for="(procedureSetting,index) in procedureSettings" class="modal fade" v-bind:id='"procedure"+procedureSetting.id' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -745,34 +745,34 @@
                             <form >
                                 <!--                                            {{values.modal_updateAccount_form_li1}}-->
                                 <div class="form-group">
-                                    <label for="updateProcedureSettingId" class="col-form-label">步骤Id</label>
-                                    <input type="text"  class="form-control" id="updateProcedureSettingId" v-bind:placeholder="procedureSetting.id"  disabled>
+                                    <label for='"updateProcedureSettingId"+index' class="col-form-label">步骤Id</label>
+                                    <input type="text"  class="form-control" id='"updateProcedureSettingId"+index' v-bind:placeholder="procedureSetting.id"  disabled>
                                 </div>
                                 <!--                                            {{values.modal_updateAdministrator_form_li2}}-->
                                 <div class="form-group">
-                                    <label for="updateProcedureSettingName" class="col-form-label">步骤名称:</label>
-                                    <input type="text"  class="form-control" id="updateProcedureSettingName" v-bind:placeholder="procedureSetting.name" v-model="procedureSettingInfo.name">
+                                    <label for='"updateProcedureSettingName"+index' class="col-form-label">步骤名称:</label>
+                                    <input type="text"  class="form-control" id='"updateProcedureSettingName"+index' v-bind:placeholder="procedureSetting.name" v-model="procedureSettingInfo.name">
                                 </div>
                                 <!--                                            {{values.modal_updateAdministrator_form_li3}}-->
                                 <div class="form-group">
-                                    <label for="updateProcedureSettingState" class="col-form-label">步骤状态(必选,可选...):</label>
-                                    <select class="custom-select" id="updateProcedureSettingState" v-bind:placeholder="procedureSetting.state"  v-model="procedureSettingInfo.state">
+                                    <label for='"updateProcedureSettingState"+index' class="col-form-label">步骤状态(必选,可选...):</label>
+                                    <select class="custom-select" id='"updateProcedureSettingState"+index'   v-bind:placeholder="procedureSetting.state"  v-model="procedureSettingInfo.state">
                                         <option>required</option>
                                         <option>optionalSelected</option>
                                         <option>optional</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="updateProcedureSettingOptions" class="col-form-label">步骤科选择状态:</label>
-                                    <input type="text"  class="form-control" id="updateProcedureSettingOptions" v-bind:placeholder="procedureSetting.options" v-model="procedureSettingInfo.options">
+                                    <label for='"updateProcedureSettingOptions"+index' class="col-form-label">步骤科选择状态:</label>
+                                    <input type="text"  class="form-control" id='"updateProcedureSettingOptions"+index' v-bind:placeholder="procedureSetting.options" v-model="procedureSettingInfo.options">
                                 </div>
                                 <div class="form-group">
-                                    <label for="updateProcedureSettingDefaultOption" class="col-form-label">步骤默认值:</label>
-                                    <input type="text"  class="form-control" id="updateProcedureSettingDefaultOption" v-bind:placeholder="procedureSetting.defaultOption" v-model="procedureSettingInfo.defaultOption">
+                                    <label for='"updateProcedureSettingDefaultOption"+index' class="col-form-label">步骤默认值:</label>
+                                    <input type="text"  class="form-control" id='"updateProcedureSettingDefaultOption"+index' v-bind:placeholder="procedureSetting.defaultOption" v-model="procedureSettingInfo.defaultOption">
                                 </div>
                                 <div class="form-group">
-                                    <label for="updateProcedureSettingDescription" class="col-form-label">步骤描述:</label>
-                                    <textarea   class="form-control" id="updateProcedureSettingDescription" v-bind:placeholder="procedureSetting.description" cols="50" rows="5" v-model="procedureSettingInfo.description"></textarea>
+                                    <label for='"updateProcedureSettingDescription"+index' class="col-form-label">步骤描述:</label>
+                                    <textarea   class="form-control" id='"updateProcedureSettingDescription"+index' v-bind:placeholder="procedureSetting.description" cols="50" rows="5" v-model="procedureSettingInfo.description"></textarea>
                                 </div>
                             </form>
                         </div>
