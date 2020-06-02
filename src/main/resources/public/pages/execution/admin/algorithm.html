@@ -448,7 +448,7 @@
                         </div>
                     </div>
                     <hr>
-                    <!-- 循环设置第一个参数的值 -->
+<!--                     循环设置第一个参数的值 -->
                     <div v-for="m in paramValuesNumber[n-1]">
                         <div class="row">
                             <div class="col-md-4 offset-md-2">
@@ -475,22 +475,6 @@
                         </div>
                         <hr>
                     </div>
-<!--                    <div class="row">-->
-<!--                        <div class="col-md-2 offset-md-2">-->
-<!--                            <label>第{{n}}个参数类型：</label>-->
-<!--                            <select class="custom-select" v-model="parameterInfo.parameterSettingInfoTypes[n-1]" name="paraType"  required>-->
-<!--                                <option selected>text</option>-->
-<!--                                <option>radio</option>-->
-<!--                                <option>selection</option>-->
-<!--                                <option>checkbox</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash;根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 &ndash;&gt;-->
-<!--                        <div class="col-md-4">-->
-<!--                            <label>取值</label>-->
-<!--                            <input type="text" name="value" class="form-control" v-model="parameterInfo.parameterSettingInfoValues[n-1]" >-->
-<!--                        </div>-->
-<!--                    </div>-->
                     <hr>
                 </div>
                 <div class="row">
@@ -673,20 +657,20 @@
                                 <!--                                            {{values.modal_updateAdministrator_form_li2}}-->
                                 <div class="form-group">
                                     <label for="updateParameterName" class="col-form-label">参数名:</label>
-                                    <input type="text"  class="form-control" id="updateParameterName" v-bind:placeholder="parameter.parameterName" v-model="parameterInfo.parameterName">
+                                    <input type="text"  class="form-control" id="updateParameterName" v-bind:placeholder="parameter.parameterName" v-model="updateParameterInfo.parameterName">
                                 </div>
                                 <!--                                            {{values.modal_updateAdministrator_form_li3}}-->
                                 <div class="form-group">
                                     <label for="updateParameterType" class="col-form-label">参数类型:</label>
-                                    <input type="text"  class="form-control" id="updateParameterType" v-bind:placeholder="parameter.parameterType" v-model="parameterInfo.parameterType">
+                                    <input type="text"  class="form-control" id="updateParameterType" v-bind:placeholder="parameter.parameterType" v-model="updateParameterInfo.parameterType">
                                 </div>
                                 <div class="form-group">
                                     <label for="updateParameterDefaultValue" class="col-form-label">参数默认值:</label>
-                                    <input type="text"  class="form-control" id="updateParameterDefaultValue" v-bind:placeholder="parameter.parameterDefaultValue" v-model="parameterInfo.parameterDefaultValue">
+                                    <input type="text"  class="form-control" id="updateParameterDefaultValue" v-bind:placeholder="parameter.parameterDefaultValue" v-model="updateParameterInfo.parameterDefaultValue">
                                 </div>
                                 <div class="form-group">
                                     <label for="updateParameterDescription" class="col-form-label">参数描述:</label>
-                                    <input type="text"  class="form-control" id="updateParameterDescription" v-bind:placeholder="parameter.parameterDescription" v-model="parameterInfo.parameterDescription">
+                                    <input type="text"  class="form-control" id="updateParameterDescription" v-bind:placeholder="parameter.parameterDescription" v-model="updateParameterInfo.parameterDescription">
                                 </div>
                                 <div class="form-group">
                                     <label for="updateParameterSettingInfo" class="col-form-label">参数settingInfo:</label>
