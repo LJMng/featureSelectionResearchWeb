@@ -6,6 +6,7 @@ import featureSelection.research.web.entity.execution.admin.ParameterInfo;
 import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
 import featureSelection.research.web.mybatisMapper.execution.admin.AlgorithmMapper;
 import featureSelection.research.web.mybatisMapper.execution.admin.AlgorithmParamMapper;
+import featureSelection.research.web.mybatisMapper.execution.admin.ParameterValueMapper;
 import featureSelection.research.web.mybatisMapper.execution.admin.ProcedureSettingsMapper;
 import featureSelection.research.web.service.execution.admin.AlgorithmBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     private ProcedureSettingsMapper procedureSettingsMapper;
     @Autowired
     private AlgorithmMapper algorithmMapper;
+    @Autowired
+    private ParameterValueMapper parameterValueMapper;
+
     @Override
     public void createParamSettingInfo(Map<Integer, String> algorithmMap) {
         for (Map.Entry<Integer, String> algorithmParam : algorithmMap.entrySet()) {
@@ -66,6 +70,7 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
             parameter.setParameterDescription(parameterInfo.getParameterDescriptions()[i]);
             parameter.setParameterDefaultValue(parameterInfo.getParameterDefaultValues()[i]);
             parameter.setParameterType(parameterInfo.getParameterTypes()[i]);
+
             /*
             设置三个数组：第一个参数值，第二个参数类型，第二个参数值
             1.判断参数类型是否为selection
@@ -76,6 +81,9 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
 //            String[] firstParameterValue=parameterInfo.getFirstParameterVales()[i];
 //            String[] secondParameterType=parameterInfo.getSecondParameterTypes()[i];
 //            String[] secondParameterValue=parameterInfo.getSecondParameterValues()[i];
+            //取出算法层对应参数值的数组
+            String [] firstAlgorithmParameterValue=parameterInfo.getFirstAlgorithmParameterValues()[i];
+            String [] secondAlgorithmParameterValue=parameterInfo.getSecondAlgorithmParameterValues()[i];
 
             String parameterSettingInfo="{\"type\":";
             if (parameterInfo.getParameterTypes()[i].equals("selection")){
@@ -94,6 +102,19 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                     else{
                         parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[l]+"\",";
                     }
+                    /*
+                    将第一个算法参数值
+                    1.取出web层的算法参数值作为key,算法层的算法值作为value
+                    2.通过key,查询算法参数映射表中，是否存在该映射关系
+                    3.如果存在，则不添加
+                    4.如果不存在，则调用算法参数映射的Mapper,将参数添加入算法映射表
+                     */
+                    String webParameter=firstParameterValue[l];
+                    String algorithmParameter=firstAlgorithmParameterValue[l];
+                    if (parameterValueMapper.findByWebParameter(webParameter)==null){
+                        parameterValueMapper.insert(webParameter,algorithmParameter);
+                    }
+
                 }
                 for(int j=0;j<secondParameterType.length;j++){
                     //遍历到第二个值开始
@@ -110,6 +131,8 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                         parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":{\"type\":\""+secondParameterType[j]+"\",\"options\":[";
                         String secondParameterValueString=secondParameterValue[j];
                         String[] secondParameterValueArr=secondParameterValueString.split(",");
+                        String secondAlgorithmParameterString=secondAlgorithmParameterValue[j];
+                        String [] secondAlgorithmParameterArr=secondAlgorithmParameterString.split(",");
                         //遍历第二个值
                         for (int k=0;k<secondParameterValueArr.length;k++){
                             if (k==secondParameterValueArr.length-1 && j==firstParameterValue.length-1){
@@ -119,6 +142,19 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                             }
                             else{
                                 parameterSettingInfo=parameterSettingInfo+"\""+secondParameterValueArr[k]+"\",";
+                            }
+                            /*
+                            插入第二个值：
+                            1.获取parameter_value_map的key和value
+                            2.key为第一个web参数值与第二个web参数值的字符串拼接格式为：第一个web参数值+"_"+第二个web参数值
+                            3.判断parameter_value_map是否已经存贮该key对应的value
+                            4.如果存在，则不添加
+                            5.如果存在，则调用算法参数映射的Mapper,将参数添加入算法映射表
+                             */
+                            String webParameter=firstParameterValue[j]+"_"+secondParameterValueArr[k];
+                            String algorithmParameter=secondAlgorithmParameterArr[k];
+                            if (parameterValueMapper.findByWebParameter(webParameter)==null){
+                                parameterValueMapper.insert(webParameter,algorithmParameter);
                             }
 
                         }
@@ -142,6 +178,11 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                     //其他情况
                     else{
                         parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[l]+"\",";
+                    }
+                    String webParameter=firstParameterValue[l];
+                    String algorithmParameter=firstAlgorithmParameterValue[l];
+                    if (parameterValueMapper.findByWebParameter(webParameter)==null){
+                        parameterValueMapper.insert(webParameter,algorithmParameter);
                     }
                 }
                 //添加尾部信息

@@ -68,10 +68,15 @@ var vm =new Vue({
             parameterTypes:[],
             //第一个参数值,二维数组  里层是个字符串数组   1
             firstParameterVales:[],
+            //第一个参数值（算法层）,二维数组     1
+            firstAlgorithmParameterValues:[],
             //第二个参数类型,二维    里层是个字符串数组   1
             secondParameterTypes:[],
             //第二个参数值,二维      里层是个字符串数组 一个数组包含对应的所有值    1
             secondParameterValues:[],
+            //第二个参数值（算法层）,二维数组     1
+            secondAlgorithmParameterValues:[]
+
         },
         procedureSetting:{
             algorithmId:1,
@@ -81,6 +86,8 @@ var vm =new Vue({
             defaultOption:'',
             description:''
         },
+
+
         //暂时存放第一个参数值的数组
         firstParameterValue:[],
         //暂时存放第二个参数值的数组
@@ -89,6 +96,10 @@ var vm =new Vue({
         paramValuesNumber:[],
         //暂时存放第二个参数类型的数组
         secondParameterType:[],
+        //暂时存放第一个算法层参数值的数组
+        firstAlgorithmParameterValue:[],
+        //暂时存放第二个算法层参数值的数组
+        secondAlgorithmParameterValue:[],
 
         procedureSettings: '',
         procedureSettingReturned: '',
@@ -287,7 +298,7 @@ var vm =new Vue({
                     console.log(err)
                 })
         },
-        confirmFirstParameterValue:function (n,m) {
+        confirmSecondParameterValue:function (n,m) {
             if(m >= this.paramValuesNumber[n-1]){
             // this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
             // this.firstParameterValue=[];
@@ -303,6 +314,21 @@ var vm =new Vue({
             if(m >= this.paramValuesNumber[n-1]){
                 this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
                 this.firstParameterValue=[];
+                console.log("改方法调用了")
+            }
+        },
+        confirmFirstAlgorithmValue:function (n,m) {
+            if(m >= this.paramValuesNumber[n-1]){
+                this.parameterInfo.firstAlgorithmParameterValues[n-1]=this.firstAlgorithmParameterValue;
+                this.firstAlgorithmParameterValue=[];
+                console.log("改方法调用了")
+            }
+        }
+        ,
+        confirmSecondAlgorithmParameterValue:function(n,m){
+            if(m >= this.paramValuesNumber[n-1]){
+                this.parameterInfo.secondAlgorithmParameterValues[n-1]=this.secondAlgorithmParameterValue;
+                this.secondAlgorithmParameterValue=[];
                 console.log("改方法调用了")
             }
         },

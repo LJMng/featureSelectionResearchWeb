@@ -13,6 +13,8 @@ public class ParameterInfo implements Serializable {
     private String[][] firstParameterVales;
     private String[][] secondParameterTypes;
     private String[][] secondParameterValues;
+    private String[][] firstAlgorithmParameterValues;
+    private String[][] secondAlgorithmParameterValues;
 
 
     public int getAlgorithmId() {
@@ -79,6 +81,22 @@ public class ParameterInfo implements Serializable {
         this.secondParameterValues = secondParameterValues;
     }
 
+    public String[][] getFirstAlgorithmParameterValues() {
+        return firstAlgorithmParameterValues;
+    }
+
+    public void setFirstAlgorithmParameterValues(String[][] firstAlgorithmParameterValues) {
+        this.firstAlgorithmParameterValues = firstAlgorithmParameterValues;
+    }
+
+    public String[][] getSecondAlgorithmParameterValues() {
+        return secondAlgorithmParameterValues;
+    }
+
+    public void setSecondAlgorithmParameterValues(String[][] secondAlgorithmParameterValues) {
+        this.secondAlgorithmParameterValues = secondAlgorithmParameterValues;
+    }
+
     @Override
     public String toString() {
         return "ParameterInfo{" +
@@ -90,6 +108,8 @@ public class ParameterInfo implements Serializable {
                 ", firstParameterVales=" + Arrays.toString(firstParameterVales) +
                 ", secondParameterTypes=" + Arrays.toString(secondParameterTypes) +
                 ", secondParameterValues=" + Arrays.toString(secondParameterValues) +
+                ", firstAlgorithmParameterValues=" + Arrays.toString(firstAlgorithmParameterValues) +
+                ", secondAlgorithmParameterValues=" + Arrays.toString(secondAlgorithmParameterValues) +
                 '}';
     }
 }
