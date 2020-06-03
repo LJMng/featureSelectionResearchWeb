@@ -20,4 +20,6 @@ public interface AlgorithmBusiness {
     public List<Parameter> getParameters();
 
     public void updateParameter(Parameter parameter);
+
+    public void deleteParameter(int parameterId);
 }

@@ -183,4 +183,9 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     public void updateParameter(Parameter parameter) {
         algorithmParamMapper.updateParameter(parameter);
     }
+
+    @Override
+    public void deleteParameter(int parameterId) {
+        algorithmParamMapper.deleteParameter(parameterId);
+    }
 }

@@ -1,6 +1,7 @@
 package featureSelection.research.web.mybatisMapper.execution.admin;
 
 import featureSelection.research.web.entity.execution.admin.Parameter;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -15,4 +16,7 @@ public interface AlgorithmParamMapper {
 
     @Update("update parameter set parameter_name=#{parameterName},parameter_type=#{parameterType},parameter_default_value=#{parameterDefaultValue},parameter_description=#{parameterDescription} where parameter_id=#{parameterId}")
     public void updateParameter(Parameter parameter);
+
+    @Delete("delete from parameter where parameter_id=#{parameterId}")
+    public void deleteParameter(int parameterId);
 }

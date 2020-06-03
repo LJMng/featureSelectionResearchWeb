@@ -156,4 +156,11 @@ public class AlgorithmController {
    public void updateParameter(@RequestBody Parameter parameter){
        algorithmBusiness.updateParameter(parameter);
     }
+
+    @PostMapping(value = "/deleteParameter")
+    public String deleteParameter(@RequestBody Parameter parameter){
+        algorithmBusiness.deleteParameter(parameter.getParameterId());
+        return "redirect:/pages/execution/admin/algorithm.html";
+    }
+
 }

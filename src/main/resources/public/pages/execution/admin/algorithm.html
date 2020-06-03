@@ -507,7 +507,7 @@
                         </select>
                     </div>
                     <div class="row-md-4">
-                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+procedureSetting.algorithmId'>
+                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+procedureSetting.algorithmId' >
                             点击查看算法详情
                         </button>
                     </div>
@@ -657,16 +657,23 @@
                                 <!--                                            {{values.modal_updateAdministrator_form_li2}}-->
                                 <div class="form-group">
                                     <label for="updateParameterName" class="col-form-label">参数名:</label>
-                                    <input type="text"  class="form-control" id="updateParameterName" v-bind:placeholder="parameter.parameterName" v-model="updateParameterInfo.parameterName">
+                                    <input type="text"  class="form-control" value="parameter.parameterName"  id="updateParameterName" v-bind:placeholder="parameter.parameterName" v-model="updateParameterInfo.parameterName" required>
                                 </div>
                                 <!--                                            {{values.modal_updateAdministrator_form_li3}}-->
                                 <div class="form-group">
                                     <label for="updateParameterType" class="col-form-label">参数类型:</label>
-                                    <input type="text"  class="form-control" id="updateParameterType" v-bind:placeholder="parameter.parameterType" v-model="updateParameterInfo.parameterType">
+                                    <select class="custom-select" id='updateParameterType'  v-model="procedureSettingInfo.state">
+                                        <option selected="selected">{{parameter.parameterType}}</option>
+                                        <option>text</option>
+                                        <option>radio</option>
+                                        <option>checkbox</option>
+                                        <option>selection</option>
+                                    </select>
+<!--                                    <input type="text"  class="form-control" id="updateParameterType" v-bind:placeholder="parameter.parameterType" v-model="updateParameterInfo.parameterType" required>-->
                                 </div>
                                 <div class="form-group">
                                     <label for="updateParameterDefaultValue" class="col-form-label">参数默认值:</label>
-                                    <input type="text"  class="form-control" id="updateParameterDefaultValue" v-bind:placeholder="parameter.parameterDefaultValue" v-model="updateParameterInfo.parameterDefaultValue">
+                                    <input type="text"  class="form-control" id="updateParameterDefaultValue" v-bind:placeholder="parameter.parameterDefaultValue" v-model="updateParameterInfo.parameterDefaultValue" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="updateParameterDescription" class="col-form-label">参数描述:</label>
@@ -680,12 +687,34 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" v-bind:data-target='"#deleteParameter"+parameter.parameterId' >删除</button>
                             <button type="button" class="btn btn-primary" @click="updateParameter(parameter.parameterId)">修改</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- modal-->
+            <!-- 删除算法参数模态框 -->
+            <div v-for="parameter in parameters" class="modal fade" v-bind:id='"deleteParameter"+parameter.parameterId' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!-- values.modal -->
+                            <h5 class="modal-title" id="exampleModalLabel">删除算法参数信息</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            确定删除{{parameter.parameterName}}参数吗？删除后信息不可恢复！
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-danger" @click="deleteParameter(parameter.parameterId)">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 算法详细信息模态框-->
             <div v-for="algorithm in algorithms" class="modal fade" v-bind:id="algorithm.algorithmName" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable" role="document">
                     <div class="modal-content">

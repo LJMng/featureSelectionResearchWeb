@@ -100,6 +100,13 @@ var vm =new Vue({
             parameterDefaultValue:'',
             parameterDescription:''
         },
+        deleteParameterInfo:{
+            parameterId:1,
+            parameterName:'',
+            parameterType:'',
+            parameterDefaultValue:'',
+            parameterDescription:''
+        },
         procedureSettingInfo:{
             id:1,
             name:'',
@@ -305,6 +312,17 @@ var vm =new Vue({
         updateParameter:function (parameterId) {
             this.updateParameterInfo.parameterId=parameterId;
             axios.post('/updateParameter',this.updateParameterInfo)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+
+        },
+        deleteParameter:function (parameterId) {
+            this.updateParameterInfo.parameterId=parameterId
+            axios.post('/deleteParameter',this.updateParameterInfo)
                 .then(() => {
                     window.location.reload();
                 })
