@@ -453,18 +453,18 @@
                         <div class="row">
                             <div class="col-md-4 offset-md-2">
                                 <label for='"firstParamValue"+m' class="col-form-label">Web层取值{{m}}</label>
-                                <input id='"firstParamValue"+m' class="form-control" type="text" v-model="firstParameterValue[m-1]" @blur="confirmFirstValue(n,m)">
+                                <input id='"firstParamValue"+m' class="form-control" type="text" v-model="firstParameterValues[n-1][m-1]" @blur="confirmFirstValue(n,m)">
                             </div>
                             <div class="col-md-4">
                                 <label for='"firstAlgorithmParameter"+m' class="col-form-label">算法层取值{{m}}</label>
-                                <input id='"firstAlgorithmParameter"+m' class="form-control" type="text" v-model="firstAlgorithmParameterValue[m-1]" @blur="confirmFirstAlgorithmValue(n,m)">
+                                <input id='"firstAlgorithmParameter"+m' class="form-control" type="text" v-model="firstAlgorithmParameterValues[n-1][m-1]" @blur="confirmFirstAlgorithmValue(n,m)">
                             </div>
                         </div>
                         <div v-if="parameterInfo.parameterTypes[n-1] === 'selection'">
                             <div class="row">
                                 <div class="col-md-2 offset-md-2">
                                     <label for='"secondParameterType"+m'>第二个值参数类型：</label>
-                                    <select id='"secondParameterType"+m' class="custom-select" v-model="secondParameterType[m-1]" name="paraType"  required>
+                                    <select id='"secondParameterType"+m' class="custom-select" v-model="secondParameterTypes[n-1][m-1]" name="paraType"  required>
                                         <option selected>text</option>
                                         <option>selection</option>
                                     </select>
@@ -476,11 +476,11 @@
                             <div class="row">
                                 <div class="col-md-4 offset-md-2">
                                     <label for='"secondParameterValue"+m'>Web层第二个参数取值</label>
-                                    <input id='"secondParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondParameterValue[m-1]" @blur="confirmSecondParameterValue(n,m)" >
+                                    <input id='"secondParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondParameterValues[n-1][m-1]" @blur="confirmSecondParameterValue(n,m)" >
                                 </div>
                                 <div class="col-md-4">
                                     <label for='"secondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>
-                                    <input id='"secondAlgorithmParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondAlgorithmParameterValue[m-1]" @blur="confirmSecondAlgorithmParameterValue(n,m)" >
+                                    <input id='"secondAlgorithmParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondAlgorithmParameterValues[n-1][m-1]" @blur="confirmSecondAlgorithmParameterValue(n,m)" >
                                 </div>
                             </div>
                         </div>
@@ -846,6 +846,12 @@
                 </div>
             </div>
         </main>
+        <div v-for="n in 3">
+            <div v-for="m in 3">
+                <input class="form-control" v-model="testArray[n-1][m-1]">
+                <br>
+            </div>
+        </div>
     </div>
 </div>
     <script type="text/javascript" src="/js/algorithmjs.js"></script>

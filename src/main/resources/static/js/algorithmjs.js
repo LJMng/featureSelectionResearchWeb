@@ -16,10 +16,8 @@ $(function () {
 var vm =new Vue({
     el:"#algorithmData",
     data:{
-        number:1,
-        test:{
-            test01:[]
-        },
+        //尝试使用二维数组
+        testArray:[[],[],[]],
         paramsNumber:0,
         values:"",
         parasType:'',
@@ -100,6 +98,20 @@ var vm =new Vue({
         firstAlgorithmParameterValue:[],
         //暂时存放第二个算法层参数值的数组
         secondAlgorithmParameterValue:[],
+        /*
+        定义与前端绑定的五个二维数组(默认规则一次最多可以添加十个参数)
+        1.secondParameterTypes
+        2.secondParameterValues
+        3.firstParameterValues
+        4.firstAlgorithmParameterValues
+        5.secondAlgorithmParameterValues
+         */
+        secondParameterTypes:[[],[],[],[],[],[],[],[],[],[]],
+        secondParameterValues:[[],[],[],[],[],[],[],[],[],[]],
+        firstParameterValues:[[],[],[],[],[],[],[],[],[],[]],
+        firstAlgorithmParameterValues:[[],[],[],[],[],[],[],[],[],[]],
+        secondAlgorithmParameterValues:[[],[],[],[],[],[],[],[],[],[]],
+
 
         procedureSettings: '',
         procedureSettingReturned: '',
@@ -301,12 +313,15 @@ var vm =new Vue({
                     console.log(err)
                 })
         },
+        //确认第二个参数web层的值跟类型
         confirmSecondParameterValue:function (n,m) {
             if(m >= this.paramValuesNumber[n-1]){
             // this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
             // this.firstParameterValue=[];
+            this.secondParameterType=this.secondParameterTypes[n-1];
             this.parameterInfo.secondParameterTypes[n-1]=this.secondParameterType;
             this.secondParameterType=[];
+            this.secondParameterValue=this.secondParameterValues[n-1]
             this.parameterInfo.secondParameterValues[n-1]=this.secondParameterValue;
             this.secondParameterValue=[];
             console.log(this.parameterInfo.secondParameterTypes[n-1])
@@ -315,6 +330,7 @@ var vm =new Vue({
         },
         confirmFirstValue:function (n,m) {
             if(m >= this.paramValuesNumber[n-1]){
+                this.firstParameterValue=this.firstParameterValues[n-1];
                 this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
                 this.firstParameterValue=[];
                 console.log("改方法调用了")
@@ -322,6 +338,7 @@ var vm =new Vue({
         },
         confirmFirstAlgorithmValue:function (n,m) {
             if(m >= this.paramValuesNumber[n-1]){
+                this.firstAlgorithmParameterValue=this.firstAlgorithmParameterValues[n-1];
                 this.parameterInfo.firstAlgorithmParameterValues[n-1]=this.firstAlgorithmParameterValue;
                 this.firstAlgorithmParameterValue=[];
                 console.log("改方法调用了")
@@ -330,6 +347,7 @@ var vm =new Vue({
         ,
         confirmSecondAlgorithmParameterValue:function(n,m){
             if(m >= this.paramValuesNumber[n-1]){
+                this.secondAlgorithmParameterValue=this.secondAlgorithmParameterValues[n-1];
                 this.parameterInfo.secondAlgorithmParameterValues[n-1]=this.secondAlgorithmParameterValue;
                 this.secondAlgorithmParameterValue=[];
                 console.log("改方法调用了")
