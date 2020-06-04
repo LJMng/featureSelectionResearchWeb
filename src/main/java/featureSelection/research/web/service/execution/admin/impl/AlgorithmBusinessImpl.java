@@ -229,4 +229,9 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     public void deleteParameter(int parameterId) {
         algorithmParamMapper.deleteParameter(parameterId);
     }
+
+    @Override
+    public void deleteProcedureSetting(int id) {
+        procedureSettingsMapper.deleteProcedureSetting(id);
+    }
 }

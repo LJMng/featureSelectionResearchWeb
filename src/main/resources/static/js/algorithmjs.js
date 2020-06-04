@@ -119,12 +119,15 @@ var vm =new Vue({
             parameterDescription:''
         },
         procedureSettingInfo:{
-            id:1,
+
             name:'',
             state:'',
             options:'',
             defaultOption:'',
             description:''
+        },
+        deleteProcedureSettingInfo:{
+            id:1,
         }
     },
     created:function () {
@@ -347,15 +350,24 @@ var vm =new Vue({
 
         },
         deleteParameter:function (parameterId) {
-            this.updateParameterInfo.parameterId=parameterId
-            axios.post('/deleteParameter',this.updateParameterInfo)
+            this.deleteParameterInfo.parameterId=parameterId
+            axios.post('/deleteParameter',this.deleteParameterInfo)
                 .then(() => {
                     window.location.reload();
                 })
                 .catch(err => {
                     console.log(err);
                 })
-
+        },
+        deleteProcedureSetting:function (procedureSettingId) {
+            this.deleteProcedureSettingInfo.id=procedureSettingId
+            axios.post('/deleteProcedureSetting',this.deleteProcedureSettingInfo)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         }
     },
     computed: {

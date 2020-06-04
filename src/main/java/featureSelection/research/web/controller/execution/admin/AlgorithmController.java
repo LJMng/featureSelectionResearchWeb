@@ -163,4 +163,10 @@ public class AlgorithmController {
         return "redirect:/pages/execution/admin/algorithm.html";
     }
 
+    @PostMapping(value = "/deleteProcedureSetting")
+    public String deleteProcedureSetting(@RequestBody ProcedureSettings procedureSettings){
+        algorithmBusiness.deleteProcedureSetting(procedureSettings.getId());
+        return "redirect:/pages/execution/admin/algorithm.html";
+    }
+
 }

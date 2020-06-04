@@ -1,6 +1,7 @@
 package featureSelection.research.web.mybatisMapper.execution.admin;
 
 import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -16,4 +17,7 @@ public interface ProcedureSettingsMapper {
 
     @Update("update procedure_settings set name=#{name},state=#{state},options=#{options},default_option=#{defaultOption},description=#{description} where id=#{id}")
     public void updateProcedureSetting(ProcedureSettings procedureSettings);
+
+    @Delete("delete from procedure_settings where id=#{id}")
+    public void deleteProcedureSetting(int id);
 }

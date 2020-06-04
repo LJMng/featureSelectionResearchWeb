@@ -22,4 +22,6 @@ public interface AlgorithmBusiness {
     public void updateParameter(Parameter parameter);
 
     public void deleteParameter(int parameterId);
+
+    public void deleteProcedureSetting(int id);
 }

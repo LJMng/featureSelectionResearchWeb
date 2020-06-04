@@ -818,7 +818,29 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-danger"  data-toggle="modal" v-bind:data-target='"#deleteProcedureSetting"+procedureSetting.id'>删除</button>
                             <button type="button" class="btn btn-primary" @click="updateProcedureSetting(procedureSetting.id)">修改</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 删除算法参数模态框 -->
+            <div v-for="procedureSetting in procedureSettings" class="modal fade" v-bind:id='"deleteProcedureSetting"+procedureSetting.id' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!-- values.modal -->
+                            <h5 class="modal-title" id="deleteProcedureSetting">删除算法步骤信息</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            确定删除<p>{{procedureSetting.name}}</p>步骤吗？删除后信息不可恢复！
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-danger" @click="deleteProcedureSetting(procedureSetting.id)">确定</button>
                         </div>
                     </div>
                 </div>
