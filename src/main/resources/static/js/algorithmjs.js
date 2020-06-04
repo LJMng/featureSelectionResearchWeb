@@ -16,8 +16,6 @@ $(function () {
 var vm =new Vue({
     el:"#algorithmData",
     data:{
-        //尝试使用二维数组
-        testArray:[[],[],[]],
         paramsNumber:0,
         values:"",
         parasType:'',
