@@ -83,13 +83,15 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
 //            String[] secondParameterValue=parameterInfo.getSecondParameterValues()[i];
             //取出算法层对应参数值的数组
             String [] firstAlgorithmParameterValue=parameterInfo.getFirstAlgorithmParameterValues()[i];
-            String [] secondAlgorithmParameterValue=parameterInfo.getSecondAlgorithmParameterValues()[i];
+
 
             String parameterSettingInfo="{\"type\":";
             if (parameterInfo.getParameterTypes()[i].equals("selection")){
+
                 String[] firstParameterValue=parameterInfo.getFirstParameterVales()[i];
                 String[] secondParameterType=parameterInfo.getSecondParameterTypes()[i];
                 String[] secondParameterValue=parameterInfo.getSecondParameterValues()[i];
+                String [] secondAlgorithmParameterValue=parameterInfo.getSecondAlgorithmParameterValues()[i];
                 //开始的头部
                 parameterSettingInfo=parameterSettingInfo+"\""+parameterInfo.getParameterTypes()[i]+"\",\"options\":[";
                 //                遍历第一个值，取出对应的值

@@ -39,8 +39,16 @@ var vm=new Vue({
             return fPageElement;
         },
         pagingPageElement:function (){
+            //取出数据
+            const{pageElements,moduleKey}=this
+            //过滤获得的属性
+            let fPageElement;
+            //对datasetMap进行过滤
+            fPageElement=this.pageElements.filter(p => p.moduleKey.indexOf(this.moduleKey)!==-1)
+
+
             //获取列表大小
-            const totalSize=this.pageElements.length;
+            const totalSize=fPageElement.length;
             var pageElementList= new Array();
             var j=0;
 
@@ -49,7 +57,7 @@ var vm=new Vue({
             console.log(totalSize)
             for (var i=0;i<totalSize;i++){
                 if(i>(this.vueListCurrPage-1)*this.vueListPageSize  &&  i<=this.vueListCurrPage*this.vueListPageSize){
-                    pageElementList[j]=this.pageElements[i];
+                    pageElementList[j]=fPageElement[i];
                     j++;
                 }
             }
