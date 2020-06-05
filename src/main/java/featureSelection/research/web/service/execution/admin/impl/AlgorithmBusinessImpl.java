@@ -82,16 +82,15 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
 //            String[] secondParameterType=parameterInfo.getSecondParameterTypes()[i];
 //            String[] secondParameterValue=parameterInfo.getSecondParameterValues()[i];
             //取出算法层对应参数值的数组
-            String [] firstAlgorithmParameterValue=parameterInfo.getFirstAlgorithmParameterValues()[i];
 
 
             String parameterSettingInfo="{\"type\":";
             if (parameterInfo.getParameterTypes()[i].equals("selection")){
-
+                String [] firstAlgorithmParameterValue=parameterInfo.getFirstAlgorithmParameterValues()[i];
+                String [] secondAlgorithmParameterValue=parameterInfo.getSecondAlgorithmParameterValues()[i];
                 String[] firstParameterValue=parameterInfo.getFirstParameterVales()[i];
                 String[] secondParameterType=parameterInfo.getSecondParameterTypes()[i];
                 String[] secondParameterValue=parameterInfo.getSecondParameterValues()[i];
-                String [] secondAlgorithmParameterValue=parameterInfo.getSecondAlgorithmParameterValues()[i];
                 //开始的头部
                 parameterSettingInfo=parameterSettingInfo+"\""+parameterInfo.getParameterTypes()[i]+"\",\"options\":[";
                 //                遍历第一个值，取出对应的值
@@ -169,6 +168,7 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
             }else if (parameterInfo.getParameterTypes()[i].equals("text")){
                 parameterSettingInfo=parameterSettingInfo+"\"text\",\"options\":[],\"optionExtra\":null}";
             }else{
+                String [] firstAlgorithmParameterValue=parameterInfo.getFirstAlgorithmParameterValues()[i];
                 String[] firstParameterValue=parameterInfo.getFirstParameterVales()[i];
                 parameterSettingInfo=parameterSettingInfo+"\""+parameterInfo.getParameterTypes()[i]+"\",\"options\":[";
 //                遍历第一个值，取出对应的值
