@@ -26,18 +26,14 @@
     <select id="findAll" resultMap="result">
         select
             algorithm.algorithm_id,parameter_scheme.scheme_id,parameter.parameter_id,
-            scheme_name,scheme_description,scheme_remark,dataset_name,
-            algorithm_name,parameter_name,parameter_input_value,parameter_option_value,dataset.dataset_id
+            scheme_name,scheme_description,scheme_remark,dataset.dataset_id,dataset_name,
+            algorithm_name,parameter_name,parameter_input_value,parameter_option_value
         from
-            parameter,parameter_scheme,parameter_scheme_value,algorithm,dataset
-        where
-            parameter.algorithm_id=parameter_scheme.algorithm_id
-        and
-            parameter_scheme_value.parameter_id=parameter.parameter_id
-        and
-            parameter_scheme_value.scheme_id=parameter_scheme.scheme_id
-        and
-            parameter.algorithm_id=algorithm.algorithm_id
+            parameter_scheme
+		left join parameter on parameter.algorithm_id=parameter_scheme.algorithm_id
+        left join parameter_scheme_value on parameter_scheme_value.parameter_id=parameter.parameter_id
+        left join algorithm on parameter.algorithm_id=algorithm.algorithm_id
+        left join dataset on parameter_scheme.dataset_id=dataset.dataset_id
     </select>
 
     <!--通过ID查询方案-->
@@ -47,19 +43,12 @@
             parameter.parameter_id,scheme_name,scheme_description,dataset.dataset_id,
             scheme_remark,algorithm_name,parameter_name,parameter_input_value,parameter_option_value,parameter_type
         from
-            parameter,parameter_scheme,parameter_scheme_value,algorithm,dataset
-        where
-            parameter.algorithm_id=parameter_scheme.algorithm_id
-        and
-            parameter_scheme_value.parameter_id=parameter.parameter_id
-        and
-            parameter.algorithm_id=algorithm.algorithm_id
-        and
-			parameter_scheme.dataset_id=dataset.dataset_id
-		and
-			parameter_scheme_value.scheme_id=parameter_scheme.scheme_id
-        and
-            parameter_scheme.scheme_id=#{schemeId}
+            parameter_scheme
+		left join parameter on parameter.algorithm_id=parameter_scheme.algorithm_id
+        left join parameter_scheme_value on parameter_scheme_value.parameter_id=parameter.parameter_id
+        left join algorithm on parameter_scheme.algorithm_id=algorithm.algorithm_id
+        left join dataset on parameter_scheme.dataset_id=dataset.dataset_id
+        where parameter_scheme.scheme_id=#{schemeId}
     </select>
 
     <!--增加方案-->
