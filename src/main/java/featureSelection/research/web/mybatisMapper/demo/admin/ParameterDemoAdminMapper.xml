@@ -13,7 +13,7 @@
     <select id="findAll" resultMap="result">
         select
             algorithm_name,scheme_name,parameter.parameter_id,
-            parameter_value,parameter_name
+            parameter_input_value,parameter_option_value,parameter_name
         from
             algorithm,parameter_scheme,parameter_scheme_value,parameter
         where
