@@ -1,13 +1,7 @@
 package featureSelection.research.web.service.execution.admin.impl;
 
-import featureSelection.research.web.entity.execution.admin.Algorithm;
-import featureSelection.research.web.entity.execution.admin.Parameter;
-import featureSelection.research.web.entity.execution.admin.ParameterInfo;
-import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
-import featureSelection.research.web.mybatisMapper.execution.admin.AlgorithmMapper;
-import featureSelection.research.web.mybatisMapper.execution.admin.AlgorithmParamMapper;
-import featureSelection.research.web.mybatisMapper.execution.admin.ParameterValueMapper;
-import featureSelection.research.web.mybatisMapper.execution.admin.ProcedureSettingsMapper;
+import featureSelection.research.web.entity.execution.admin.*;
+import featureSelection.research.web.mybatisMapper.execution.admin.*;
 import featureSelection.research.web.service.execution.admin.AlgorithmBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +19,8 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     private AlgorithmMapper algorithmMapper;
     @Autowired
     private ParameterValueMapper parameterValueMapper;
+    @Autowired
+    private WebAlgorithmMapper webAlgorithmMapper;
 
     @Override
     public void createParamSettingInfo(Map<Integer, String> algorithmMap) {
@@ -41,6 +37,22 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     @Override
     public void addProcedureSettings(ProcedureSettings procedureSettings) {
         procedureSettingsMapper.addProcedureSetting(procedureSettings);
+        String optionsString=procedureSettings.getOptions();
+        String [] optionsArr=optionsString.split(",");
+        String optionsMapperString=procedureSettings.getOptionsMapper();
+        String[] optionsMapperArr=optionsMapperString.split(",");
+        int algorithmId=procedureSettings.getAlgorithmId();
+        int procedureSettingId=procedureSettingsMapper.getMaxProcedureSettingId();
+        for (int i=0;i<optionsMapperArr.length;i++){
+            WebAlgorithmMapperEntity webAlgorithmMapperEntity=new WebAlgorithmMapperEntity();
+            webAlgorithmMapperEntity.setAlgorithmId(algorithmId);
+            webAlgorithmMapperEntity.setProcedureSettingId(procedureSettingId);
+            webAlgorithmMapperEntity.setWebKey(optionsArr[i]);
+            webAlgorithmMapperEntity.setAlgorithmValue(optionsMapperArr[i]);
+            //向web_algorithm_mapper表中插入参数值对应的算法映射值
+            webAlgorithmMapper.insertProcedureAlgorithmOption(webAlgorithmMapperEntity);
+        }
+
     }
 
     @Override
@@ -63,13 +75,17 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     public void createParameters(ParameterInfo parameterInfo) {
         //遍历parameterInfo里面的一个数组 封装成parameter对象
         String[] parameterNames=parameterInfo.getParameterNames();
+        //存放算法id
+        int algorithmId=parameterInfo.getAlgorithmId();
         for(int i=0;i<parameterNames.length;i++){
+            int parameterId=algorithmParamMapper.getMaxParameterId()+1;
             Parameter parameter=new Parameter();
             parameter.setAlgorithmId(parameterInfo.getAlgorithmId());
             parameter.setParameterName(parameterInfo.getParameterNames()[i]);
             parameter.setParameterDescription(parameterInfo.getParameterDescriptions()[i]);
             parameter.setParameterDefaultValue(parameterInfo.getParameterDefaultValues()[i]);
             parameter.setParameterType(parameterInfo.getParameterTypes()[i]);
+            parameter.setParameterNameMapper(parameterInfo.getParameterNamesMapper()[i]);
 
             /*
             设置三个数组：第一个参数值，第二个参数类型，第二个参数值
@@ -110,11 +126,14 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                     3.如果存在，则不添加
                     4.如果不存在，则调用算法参数映射的Mapper,将参数添加入算法映射表
                      */
-                    String webParameter=firstParameterValue[l];
-                    String algorithmParameter=firstAlgorithmParameterValue[l];
-                    if (parameterValueMapper.findByWebParameter(webParameter)==null){
-                        parameterValueMapper.insert(webParameter,algorithmParameter);
-                    }
+                    String webKey=firstParameterValue[l];
+                    String algorithmValue=firstAlgorithmParameterValue[l];
+                    WebAlgorithmMapperEntity webAlgorithmMapperEntity=new WebAlgorithmMapperEntity();
+                    webAlgorithmMapperEntity.setAlgorithmId(algorithmId);
+                    webAlgorithmMapperEntity.setParameterId(parameterId);
+                    webAlgorithmMapperEntity.setWebKey(webKey);
+                    webAlgorithmMapperEntity.setAlgorithmValue(algorithmValue);
+                    webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
 
                 }
                 for(int j=0;j<secondParameterType.length;j++){
@@ -152,11 +171,14 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                             4.如果存在，则不添加
                             5.如果存在，则调用算法参数映射的Mapper,将参数添加入算法映射表
                              */
-                            String webParameter=firstParameterValue[j]+"_"+secondParameterValueArr[k];
-                            String algorithmParameter=secondAlgorithmParameterArr[k];
-                            if (parameterValueMapper.findByWebParameter(webParameter)==null){
-                                parameterValueMapper.insert(webParameter,algorithmParameter);
-                            }
+                            String webKey=firstParameterValue[j]+"_"+secondParameterValueArr[k];
+                            String algorithmValue=secondAlgorithmParameterArr[k];
+                            WebAlgorithmMapperEntity webAlgorithmMapperEntity=new WebAlgorithmMapperEntity();
+                            webAlgorithmMapperEntity.setAlgorithmId(algorithmId);
+                            webAlgorithmMapperEntity.setParameterId(parameterId);
+                            webAlgorithmMapperEntity.setWebKey(webKey);
+                            webAlgorithmMapperEntity.setAlgorithmValue(algorithmValue);
+                            webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
 
                         }
                     }
@@ -181,11 +203,14 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                     else{
                         parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[l]+"\",";
                     }
-                    String webParameter=firstParameterValue[l];
-                    String algorithmParameter=firstAlgorithmParameterValue[l];
-                    if (parameterValueMapper.findByWebParameter(webParameter)==null){
-                        parameterValueMapper.insert(webParameter,algorithmParameter);
-                    }
+                    String webKey=firstParameterValue[l];
+                    String algorithmValue=firstAlgorithmParameterValue[l];
+                    WebAlgorithmMapperEntity webAlgorithmMapperEntity=new WebAlgorithmMapperEntity();
+                    webAlgorithmMapperEntity.setAlgorithmId(algorithmId);
+                    webAlgorithmMapperEntity.setParameterId(parameterId);
+                    webAlgorithmMapperEntity.setWebKey(webKey);
+                    webAlgorithmMapperEntity.setAlgorithmValue(algorithmValue);
+                    webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
                 }
                 //添加尾部信息
                 parameterSettingInfo=parameterSettingInfo+"\"optionExtra\":null}";

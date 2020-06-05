@@ -202,6 +202,10 @@
                                     <input type="text" class="form-control" v-model="info.algorithmName">
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-form-label">映射到算法层的名称:</label>
+                                    <input type="text" class="form-control" v-model="info.algorithmNameMapper">
+                                </div>
+                                <div class="form-group">
                                     <label class="col-form-label">算法简介:</label>
                                     <textarea class="form-control" v-model="info.algorithmDescription"></textarea>
                                 </div>
@@ -416,6 +420,10 @@
                             <label for="parameterName" class="col-form-label">参数名：</label>
                             <input id="parameterName" class="form-control" type="text" v-model="parameterInfo.parameterNames[n-1]">
                         </div>
+                        <div class="col-md-4 ">
+                            <label for="parameterNameMapper" class="col-form-label">映射到算法层的参数名：</label>
+                            <input id="parameterNameMapper" class="form-control" type="text" v-model="parameterInfo.parameterNamesMapper[n-1]">
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4 offset-md-2">
@@ -531,6 +539,12 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
+                        <label>映射到算法层的步骤名称</label>
+                        <input type="text"  v-model="procedureSetting.nameMapper" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 offset-md-4">
                         <label>运行状态</label>
                         <select class="custom-select"  v-model="procedureSetting.state">
                             <option>required</option>
@@ -541,8 +555,12 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
-                        <label>选择状态</label>
+                        <label>可选择的运行方法</label>
                         <input type="text" class="form-control" title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.options" required>
+                    </div>
+                    <div class="col-md-4 offset-md-4">
+                        <label>映射到算法端可运行的方法</label>
+                        <input type="text" class="form-control" title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.optionsMapper" required>
                     </div>
                 </div>
                 <div class="row">

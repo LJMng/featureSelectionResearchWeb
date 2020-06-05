@@ -11,6 +11,7 @@ public class Parameter implements Serializable {
     private String parameterDefaultValue;
     private String parameterType;
     private String parameterSettingInfo;
+    private String parameterNameMapper;
 
     public Integer getAlgorithmId() {
         return algorithmId;
@@ -68,6 +69,14 @@ public class Parameter implements Serializable {
         this.parameterId = parameterId;
     }
 
+    public String getParameterNameMapper() {
+        return parameterNameMapper;
+    }
+
+    public void setParameterNameMapper(String parameterNameMapper) {
+        this.parameterNameMapper = parameterNameMapper;
+    }
+
     @Override
     public String toString() {
         return "Parameter{" +
@@ -78,6 +87,7 @@ public class Parameter implements Serializable {
                 ", parameterDefaultValue='" + parameterDefaultValue + '\'' +
                 ", parameterType='" + parameterType + '\'' +
                 ", parameterSettingInfo='" + parameterSettingInfo + '\'' +
+                ", parameterNameMapper='" + parameterNameMapper + '\'' +
                 '}';
     }
 }

@@ -19,4 +19,7 @@ public interface AlgorithmParamMapper {
 
     @Delete("delete from parameter where parameter_id=#{parameterId}")
     public void deleteParameter(int parameterId);
+
+    @Select("select max(parameter_id) from parameter")
+    public int getMaxParameterId();
 }

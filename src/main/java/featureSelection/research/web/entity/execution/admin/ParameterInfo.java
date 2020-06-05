@@ -7,6 +7,7 @@ import java.util.List;
 public class ParameterInfo implements Serializable {
     private int algorithmId;
     private String[] parameterNames;
+    private String[] parameterNamesMapper;
     private String[] parameterDescriptions;
     private String[] parameterDefaultValues;
     private String[] parameterTypes;
@@ -97,11 +98,20 @@ public class ParameterInfo implements Serializable {
         this.secondAlgorithmParameterValues = secondAlgorithmParameterValues;
     }
 
+    public String[] getParameterNamesMapper() {
+        return parameterNamesMapper;
+    }
+
+    public void setParameterNamesMapper(String[] parameterNamesMapper) {
+        this.parameterNamesMapper = parameterNamesMapper;
+    }
+
     @Override
     public String toString() {
         return "ParameterInfo{" +
                 "algorithmId=" + algorithmId +
                 ", parameterNames=" + Arrays.toString(parameterNames) +
+                ", parameterNamesMapper=" + Arrays.toString(parameterNamesMapper) +
                 ", parameterDescriptions=" + Arrays.toString(parameterDescriptions) +
                 ", parameterDefaultValues=" + Arrays.toString(parameterDefaultValues) +
                 ", parameterTypes=" + Arrays.toString(parameterTypes) +

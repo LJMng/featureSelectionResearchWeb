@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Update;
 import java.util.List;
 
 public interface ProcedureSettingsMapper {
-    @Insert("insert into procedure_settings (algorithm_id,name,state,options,default_option,description) values (#{algorithmId},#{name},#{state},#{options},#{defaultOption},#{description})")
+    @Insert("insert into procedure_settings (algorithm_id,name,name_mapper,state,options,default_option,description) values (#{algorithmId},#{name},#{nameMapper},#{state},#{options},#{defaultOption},#{description})")
     public void addProcedureSetting(ProcedureSettings procedureSettings);
 
     @Select("select * from procedure_settings")
@@ -20,4 +20,7 @@ public interface ProcedureSettingsMapper {
 
     @Delete("delete from procedure_settings where id=#{id}")
     public void deleteProcedureSetting(int id);
+
+    @Select("select max(id) from procedure_settings")
+    public int getMaxProcedureSettingId();
 }

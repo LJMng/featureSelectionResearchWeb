@@ -28,6 +28,7 @@ var vm =new Vue({
         info:{
             algorithmId:'',
             algorithmName:'',
+            algorithmNameMapper:'',
             algorithmPaperReference:'',
             algorithmPaperLink:'',
             algorithmDescription: '',
@@ -55,6 +56,8 @@ var vm =new Vue({
             algorithmId:1,
             // 参数名称
             parameterNames:[],
+            //参数名称映射到算法端的值
+            parameterNamesMapper:[],
             // 参数描述
             parameterDescriptions:[],
             // 参数默认值
@@ -129,10 +132,11 @@ var vm =new Vue({
             parameterDescription:''
         },
         procedureSettingInfo:{
-
             name:'',
+            nameMapper:'',
             state:'',
             options:'',
+            optionsMapper:'',
             defaultOption:'',
             description:''
         },
