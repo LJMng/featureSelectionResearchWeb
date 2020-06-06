@@ -330,6 +330,7 @@
                     schemeId: '',
                     procedureName: '',
                     procedureSettingData: '',
+                    procedureSettingsId: '',
                 },
                 tempSetting: '',
                 tempName: '',
@@ -396,6 +397,7 @@
                                     let temp = this.ProcedureSettingsList[this.scheme.algorithmId];
                                     for (let i = 0; i < temp.length; i++) {
                                         this.tempSetting[i].data = temp[i].defaultOption;
+                                        this.p[i].procedureSettingsId = temp[i].id;
                                         if (temp[i].state === 'optional') {
                                             this.tempSetting[i].selected = 'false';
                                         } else {
@@ -472,6 +474,7 @@
                             for (let i = 0; i < this.tempSetting.length; i++) {
                                 this.p[i].procedureSettingData = '{"data":"' + this.tempSetting[i].data + '","selected":"' + this.tempSetting[i].selected + '"}';
                             }
+                            console.log(this.p)
                             axios.post('/schemeProcedureDemoAdmin/update', this.p)
                                 .then(() => {
 
@@ -480,7 +483,7 @@
                                     console.log(err);
                                 });
                         }
-                        window.location.reload();
+                        // window.location.reload();
                     })
                     .catch(err => {
                         console.log(err);
