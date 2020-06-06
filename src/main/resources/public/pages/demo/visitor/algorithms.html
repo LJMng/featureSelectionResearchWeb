@@ -72,7 +72,7 @@
                                             <div class="form-group">
                                                 <select class="custom-select is-invalid" required
                                                                  v-model="algorithm.parameterSchemeIndex">
-                                                <option select="selected">choose</option>
+                                                <option select="selected" disabled value="-1">choose</option>
                                                 <option
                                                         v-for="(parameterScheme,parameterSchemeIndex) in algorithm.parameterSchemes"
                                                         v-bind:value="parameterSchemeIndex">
