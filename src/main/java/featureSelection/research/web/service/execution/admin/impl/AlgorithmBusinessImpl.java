@@ -1,5 +1,6 @@
 package featureSelection.research.web.service.execution.admin.impl;
 
+import featureSelection.research.web.common.util.AlgorithmMapperValueUtil;
 import featureSelection.research.web.entity.execution.admin.*;
 import featureSelection.research.web.mybatisMapper.execution.admin.*;
 import featureSelection.research.web.service.execution.admin.AlgorithmBusiness;
@@ -17,8 +18,6 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     private ProcedureSettingsMapper procedureSettingsMapper;
     @Autowired
     private AlgorithmMapper algorithmMapper;
-    @Autowired
-    private ParameterValueMapper parameterValueMapper;
     @Autowired
     private WebAlgorithmMapper webAlgorithmMapper;
 
@@ -179,7 +178,6 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                             webAlgorithmMapperEntity.setWebKey(webKey);
                             webAlgorithmMapperEntity.setAlgorithmValue(algorithmValue);
                             webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
-
                         }
                     }
 
