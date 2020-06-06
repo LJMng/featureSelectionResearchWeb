@@ -24,8 +24,9 @@
                         </div>
                         <ul class="list-group-flush">
                             <li class="list-group-item" v-for="parameterInfo in parameterScheme.parameterSchemeValues">
-                                {{parameterInfo.parameter!=null? parameterInfo.parameter.parameterName:""}}
-                                : {{parameterInfo.parameterInputValue}}&nbsp&nbsp{{parameterInfo.parameterOptionValue}}
+                                <span class="leftkey">{{parameterInfo.parameter!=null? parameterInfo.parameter
+                                    .parameterName:""}}:</span>&nbsp&nbsp
+                                 {{parameterInfo.parameterInputValue}}&nbsp&nbsp{{parameterInfo.parameterOptionValue}}
                             </li>
                         </ul>
                     </div>
@@ -38,13 +39,16 @@
                         </div>
                         <ul class="list-group-flush">
                             <li class="list-group-item">
-                                datasetName:{{parameterScheme.dataset!=null? parameterScheme.dataset.datasetName:""}}
+                                <span class="leftkey">DatasetName:</span>&nbsp&nbsp{{parameterScheme.dataset!=null?
+                                parameterScheme.dataset.datasetName:""}}
                             </li>
                             <li class="list-group-item">
-                                datasetSource:{{parameterScheme.dataset!=null? parameterScheme.dataset.datasetSource:""}}
+                                <span class="leftkey"> DatasetSource:</span>&nbsp&nbsp{{parameterScheme.dataset!=null?
+                                   parameterScheme.dataset.datasetSource:""}}
                             </li>
                             <li class="list-group-item">
-                                datasetDimension:{{parameterScheme.dataset!=null? parameterScheme.dataset.datasetDimension:""}}
+                               <span class="leftkey"> DatasetDimension:</span>&nbsp&nbsp{{parameterScheme.dataset!=null?
+                                parameterScheme.dataset.datasetDimension:""}}
                             </li>
                         </ul>
                         <div class="mb-2 mr-2">
@@ -75,8 +79,8 @@
                         </div>
                         <ul class="list-group-flush">
                             <li class="list-group-item" v-for="schemeProcedure in parameterScheme.schemeProcedures">
-                                {{schemeProcedure.procedureName}}
-                                : {{schemeProcedure.settingData}}&nbsp&nbsp{{schemeProcedure.settingSelect}}
+                                <span class="leftkey">{{schemeProcedure.procedureName}}
+                                :</span>{{schemeProcedure.settingData}}&nbsp&nbsp{{schemeProcedure.settingSelect}}
                             </li>
                         </ul>
                     </div>
