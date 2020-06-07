@@ -3,6 +3,7 @@ package featureSelection.research.web.entity.communicationJson.rabbitmqcominfo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import featureSelection.research.web.common.service.DemoRabbitmqComServiceSingleton;
+import featureSelection.research.web.common.util.AlgorithmMapperValueUtil;
 import featureSelection.research.web.common.util.DemoCsvUtil;
 import featureSelection.research.web.common.util.RabbitmqUtil;
 import featureSelection.research.web.common.util.SpringUtil;
@@ -26,6 +27,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @ClassName : DemoRabbimqComInfo
@@ -35,12 +38,11 @@ import java.util.Map;
  */
 public class DemoRabbimqComInfo {
     private final static Logger log = LoggerFactory.getLogger(DemoRabbimqComInfo.class);
-
     private String demoRabbimqComTaskId;
     private RabbitTemplate rabbitmqTemplate;
     private String statues = "READY";
     private Object resultInfo;
-
+    private int algorithmId;
     private Dataset dataset;
     private String routingkey;
     private String exchange;
@@ -50,6 +52,7 @@ public class DemoRabbimqComInfo {
     private AlgorithmMapper algorithmMapper = SpringUtil.getBean(AlgorithmMapper.class);
     private SchemeProcedureMapper schemeProcedureMapper = SpringUtil.getBean(SchemeProcedureMapper.class);
     private LocalDemoRabbitmqInfo localDemoRabbitmqInfo = SpringUtil.getBean(LocalDemoRabbitmqInfo.class);
+    private AlgorithmMapperValueUtil algorithmMapperValueUtil = SpringUtil.getBean(AlgorithmMapperValueUtil.class);
 
     public DemoRabbimqComInfo() {
     }
@@ -67,9 +70,10 @@ public class DemoRabbimqComInfo {
         CachingConnectionFactory connectionFactory = RabbitmqUtil.getConnectionFactory(host, port, username, password, exchange);
         ParameterScheme parameterScheme = parameterSchemeMapper.getDataSetAndSchemeBySchemeId(schemeId);
 
+        this.algorithmId = algorithmId;
         this.exchange = exchange;
         this.rabbitmqTemplate = RabbitmqUtil.getRabbitTemplate(connectionFactory);
-        this.demoRabbimqComTaskId = algorithm.getAlgorithmName() + System.currentTimeMillis();
+        this.demoRabbimqComTaskId = algorithm.getAlgorithmNameMapper() + System.currentTimeMillis();
         this.dataset = datasetMapper.getDatasetInfo(parameterScheme.getDataset().getDatasetId());
         this.parameterScheme = parameterSchemeMapper.getSchemeWithParameterValueAndDatasetById(schemeId);
     }
@@ -94,7 +98,6 @@ public class DemoRabbimqComInfo {
      * @return 发送至rabbitmq建立通讯的请求信息实体
      */
     private AlgorithmCallTaskInfo schemeInfoToRequestEnity() {
-        //获取方案信息
 
         Dataset dataset = datasetMapper.getDatasetInfo(parameterScheme.getDataset().getDatasetId());
         //定义算法调用任务信息实体类
@@ -109,32 +112,71 @@ public class DemoRabbimqComInfo {
         List<ParameterSchemeValue> parameterSchemeValues = parameterScheme.getParameterSchemeValues();
         //放入参数值
         for (ParameterSchemeValue parameterSchemeValue : parameterSchemeValues) {
-            //算法基础设置取值
+            int paramterid = parameterSchemeValue.getParameter().getParameterId();
+            //算法基础设置参数取值
             Map<String, Object> basicSettingValue = new HashMap<>();
-            basicSettingValue.put("input", parameterSchemeValue.getParameterInputValue());
-            basicSettingValue.put("option", parameterSchemeValue.getParameterOptionValue());
-
-
-
-//            if (parameterSchemeValue.getParameter().getParameterType().equals("option")) {
-//                basicSettingValue.replace("option", parameterSchemeValue.getParameterValue());
-//                basicSettingValue.replace("input", null);
-//                basicSettings.put(parameterSchemeValue.getParameter().getParameterName(),
-//                        basicSettingValue);
-//            } else {
-//                basicSettingValue.replace("option", null);
-//                basicSettingValue.replace("input", parameterSchemeValue.getParameterValue());
-//                basicSettings.put(parameterSchemeValue.getParameter().getParameterName(),
-//                        basicSettingValue);
-//            }
+            //判断参数类型
+            //text类型的情况，此时输入值为数值型类型
+            if (parameterSchemeValue.getParameter().getParameterType().equals("text")) {
+                basicSettingValue.put("input",Integer.parseInt(parameterSchemeValue.getParameterInputValue()));
+            }
+            //selection类型的参数，此时除了input还带有option的参数
+            else if (parameterSchemeValue.getParameter().getParameterType().equals("selection")) {
+                String parameterInputWebKey = parameterSchemeValue.getParameterInputValue();
+                String parameterOptionWebKey = parameterSchemeValue.getParameterOptionValue();
+                String parameterInputValue = algorithmMapperValueUtil.getParameterValue(algorithmId,paramterid,
+                        parameterInputWebKey,null);
+                basicSettingValue.put("input", parameterInputValue);
+                //正则表达式，检验option是否为数字，如果是数字就不需要寻找对应的value，如果为文字则需要寻找对应的value
+                Pattern pattern = Pattern.compile("-?[0-9]+\\.?[0-9]*");
+                Matcher isNum = pattern.matcher(parameterOptionWebKey);
+                //匹配成功,option为数字
+                if (isNum.matches()) {
+                    basicSettingValue.put("option", Integer.parseInt(parameterOptionWebKey));
+                }else{
+                    //寻找option对应的取值
+                    String parameterOptionValue=algorithmMapperValueUtil.getParameterValue(algorithmId,paramterid,
+                            parameterInputWebKey,parameterOptionWebKey);
+                    basicSettingValue.put("option",parameterOptionValue);
+                }
+            }
+            //radio类型的参数：即单选框
+            else if (parameterSchemeValue.getParameter().getParameterType().equals("radio")) {
+                String parameterWebKey = parameterSchemeValue.getParameterInputValue();
+                String parameterMapperName = algorithmMapperValueUtil.getParameterValue(algorithmId,
+                        paramterid, parameterWebKey, null);
+                basicSettingValue.put("input",parameterMapperName);
+            }
+            //checkbox类型的参数：即多选框
+            else if (parameterSchemeValue.getParameter().getParameterType().equals("checkbox")) {
+                String[] parameterWebKeys = parameterSchemeValue.getParameterInputValue().split(",");
+                StringBuilder parameterMapperName =new StringBuilder();
+                for (int i = 0; i <=parameterWebKeys.length - 2; i++) {
+                    parameterMapperName.append(algorithmMapperValueUtil.getParameterValue(algorithmId,
+                            paramterid, parameterWebKeys[i], null) + ",");
+                }
+                //插入最后一个值，末尾不带","
+                parameterMapperName.append(algorithmMapperValueUtil.getParameterValue(algorithmId,
+                        paramterid,
+                        parameterWebKeys[parameterWebKeys.length - 1],
+                        null));
+                basicSettingValue.put("input",parameterMapperName);
+            }
+            basicSettings.put(parameterSchemeValue.getParameter().getParameterNameMapper(),basicSettingValue);
         }
         //步骤信息
         Map<String, Map<String, Object>> procedureSetting = new HashMap<>();
         List<SchemeProcedure> schemeProcedures =
                 schemeProcedureMapper.getSchemeProceduresBySchemeId(parameterScheme.getSchemeId());
-        for (SchemeProcedure schemeprocedure:schemeProcedures){
-            Map prceduredatamap=(Map) JSON.parse(schemeprocedure.getProcedureSettingData());
-            procedureSetting.put(schemeprocedure.getProcedureName(),prceduredatamap);
+        for (SchemeProcedure schemeprocedure : schemeProcedures) {
+            Map proceduredatamap = (Map) JSON.parse(schemeprocedure.getProcedureSettingData());
+            String procedureNameMapper=schemeprocedure.getProcedureSettings().getNameMapper();
+            int procedureSettingId=schemeprocedure.getProcedureSettings().getId();
+            String procedureDataWebkey= (String) proceduredatamap.get("data");
+            String procedureDataValue=algorithmMapperValueUtil.getProcedureValue(algorithmId,procedureSettingId,
+                    procedureDataWebkey);
+            proceduredatamap.replace("data",procedureDataValue);
+            procedureSetting.put(procedureNameMapper, proceduredatamap);
         }
 
         //算法步骤设置放入算法设置实体

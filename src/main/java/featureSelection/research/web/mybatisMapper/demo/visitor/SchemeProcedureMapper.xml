@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="featureSelection.research.web.mybatisMapper.demo.visitor.SchemeProcedureMapper">
+
+    <resultMap id="schemeProcedureAndProcedureSettings"
+               type="featureSelection.research.web.entity.demo.visitor.SchemeProcedure">
+        <id property="schemeProcedureId" column="scheme_procedure_id"></id>
+        <result property="procedureName" column="procedure_name"></result>
+        <result property="procedureSettingData" column="procedure_setting_data"></result>
+        <association property="procedureSettings"
+                     javaType="featureSelection.research.web.entity.execution.admin.ProcedureSettings">
+            <id column="id" property="id"></id>
+            <result column="name_mapper" property="nameMapper"></result>
+            <result column="name" property="name"></result>
+        </association>
+    </resultMap>
+
+    <select id="getSchemeProceduresBySchemeId" resultMap="schemeProcedureAndProcedureSettings" parameterType="Integer">
+        select sp.*,ps.* from scheme_procedure sp,procedure_settings ps where ps.id=sp.procedure_setting_id AND
+        sp.scheme_id=#{schemeid}
+    </select>
+</mapper>

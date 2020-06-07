@@ -15,7 +15,7 @@ public class AlgorithmMapperValueUtil {
     }
 
     public String getParameterValue(int algorithmId,int parameterId,String parameterValue1,String parameterValue2){
-        if (parameterValue2==null){
+            if (parameterValue2==null){
             String webKey=parameterValue1;
             return webAlgorithmMapper.getParameterValue(algorithmId,parameterId,webKey);
         }else {

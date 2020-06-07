@@ -1,6 +1,7 @@
 package featureSelection.research.web.entity.demo.visitor;
 
 import com.alibaba.fastjson.JSONObject;
+import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
 
 /**
  * @ClassName : SchemeProcedure
@@ -9,13 +10,13 @@ import com.alibaba.fastjson.JSONObject;
  * @Date: 2020-05-23 17:07
  */
 public class SchemeProcedure {
+    private ProcedureSettings procedureSettings;
     private int schemeProcedureId;
     private ParameterScheme parameterScheme;
     private String procedureName;
     private String procedureSettingData;
     private String settingData;
     private String settingSelect;
-
 
     public int getSchemeProcedureId() {
         return schemeProcedureId;
@@ -66,6 +67,14 @@ public class SchemeProcedure {
 
     public void setSettingSelect(String settingSelect) {
         this.settingSelect = settingSelect;
+    }
+
+    public ProcedureSettings getProcedureSettings() {
+        return procedureSettings;
+    }
+
+    public void setProcedureSettings(ProcedureSettings procedureSettings) {
+        this.procedureSettings = procedureSettings;
     }
 
     @Override

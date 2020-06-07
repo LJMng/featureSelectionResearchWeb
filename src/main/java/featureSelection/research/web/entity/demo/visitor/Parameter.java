@@ -16,6 +16,7 @@ public class Parameter  {
     private String parameterDefaultValue;
     private String parameterValidityCheckInterface;
     private String parameterValidityDescription;
+    private String parameterNameMapper;
     private Algorithm algorithm;
     private List<ParameterSchemeValue> parameterSchemeValues;
 
@@ -91,6 +92,14 @@ public class Parameter  {
         this.algorithm = algorithm;
     }
 
+    public String getParameterNameMapper() {
+        return parameterNameMapper;
+    }
+
+    public void setParameterNameMapper(String parameterNameMapper) {
+        this.parameterNameMapper = parameterNameMapper;
+    }
+
     @Override
     public String toString() {
         return "Parameter{" +
@@ -101,6 +110,7 @@ public class Parameter  {
                 ", parameterDefaultValue='" + parameterDefaultValue + '\'' +
                 ", parameterValidityCheckInterface='" + parameterValidityCheckInterface + '\'' +
                 ", parameterValidityDescription='" + parameterValidityDescription + '\'' +
+                ", parameterNameMapper='" + parameterNameMapper + '\'' +
                 ", algorithm=" + algorithm +
                 ", parameterSchemeValues=" + parameterSchemeValues +
                 '}';

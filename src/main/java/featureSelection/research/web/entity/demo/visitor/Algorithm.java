@@ -26,11 +26,12 @@ public  class Algorithm {
     private String algorithmCallPort;
     private String algorithmCallUsername;
     private String algorithmCallPassword;
+    private String algorithmNameMapper;
     private Timestamp ut;
     private List<ParameterScheme>parameterSchemes;
     private List<Parameter>parameters;
     private List<Dataset>datasets;
-    private String parameterSchemeIndex;
+    private String parameterSchemeIndex="-1";
 
     public int getAlgorithmId() {
         return algorithmId;
@@ -185,6 +186,14 @@ public  class Algorithm {
         this.algorithmCallPassword = algorithmCallPassword;
     }
 
+    public String getAlgorithmNameMapper() {
+        return algorithmNameMapper;
+    }
+
+    public void setAlgorithmNameMapper(String algorithmNameMapper) {
+        this.algorithmNameMapper = algorithmNameMapper;
+    }
+
     @Override
     public String toString() {
         return "Algorithm{" +
@@ -202,6 +211,7 @@ public  class Algorithm {
                 ", algorithmCallPort='" + algorithmCallPort + '\'' +
                 ", algorithmCallUsername='" + algorithmCallUsername + '\'' +
                 ", algorithmCallPassword='" + algorithmCallPassword + '\'' +
+                ", algorithmNameMapper='" + algorithmNameMapper + '\'' +
                 ", ut=" + ut +
                 ", parameterSchemes=" + parameterSchemes +
                 ", parameters=" + parameters +
