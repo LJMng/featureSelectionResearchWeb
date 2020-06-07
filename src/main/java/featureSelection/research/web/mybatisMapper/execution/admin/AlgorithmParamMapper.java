@@ -21,5 +21,5 @@ public interface AlgorithmParamMapper {
     public void deleteParameter(int parameterId);
 
     @Select("select max(parameter_id) from parameter")
-    public int getMaxParameterId();
+    public Integer getMaxParameterId();
 }

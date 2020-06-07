@@ -7,6 +7,7 @@ import featureSelection.research.web.service.execution.admin.AlgorithmBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +78,12 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         //存放算法id
         int algorithmId=parameterInfo.getAlgorithmId();
         for(int i=0;i<parameterNames.length;i++){
-            int parameterId=algorithmParamMapper.getMaxParameterId()+1;
+            int parameterId;
+            if(algorithmParamMapper.getMaxParameterId() == null){
+                parameterId=1;
+            }else{
+                parameterId=algorithmParamMapper.getMaxParameterId()+1;
+            }
             Parameter parameter=new Parameter();
             parameter.setAlgorithmId(parameterInfo.getAlgorithmId());
             parameter.setParameterName(parameterInfo.getParameterNames()[i]);
@@ -85,7 +91,6 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
             parameter.setParameterDefaultValue(parameterInfo.getParameterDefaultValues()[i]);
             parameter.setParameterType(parameterInfo.getParameterTypes()[i]);
             parameter.setParameterNameMapper(parameterInfo.getParameterNamesMapper()[i]);
-
             /*
             设置三个数组：第一个参数值，第二个参数类型，第二个参数值
             1.判断参数类型是否为selection
