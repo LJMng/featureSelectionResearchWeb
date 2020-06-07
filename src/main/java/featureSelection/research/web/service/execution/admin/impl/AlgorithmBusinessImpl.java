@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -78,12 +79,15 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         //存放算法id
         int algorithmId=parameterInfo.getAlgorithmId();
         for(int i=0;i<parameterNames.length;i++){
-            int parameterId;
-            if(algorithmParamMapper.getMaxParameterId() == null){
-                parameterId=1;
-            }else{
-                parameterId=algorithmParamMapper.getMaxParameterId()+1;
-            }
+            //定义一个存放映射值插入对象的列表
+            List<WebAlgorithmMapperEntity> webAlgorithmMapperEntityList=new ArrayList<>();
+            //参数Id
+//            int parameterId;
+//            if(algorithmParamMapper.getMaxParameterId() == null){
+//                parameterId=1;
+//            }else{
+//                parameterId=algorithmParamMapper.getMaxParameterId()+1;
+//            }
             Parameter parameter=new Parameter();
             parameter.setAlgorithmId(parameterInfo.getAlgorithmId());
             parameter.setParameterName(parameterInfo.getParameterNames()[i]);
@@ -134,10 +138,10 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                     String algorithmValue=firstAlgorithmParameterValue[l];
                     WebAlgorithmMapperEntity webAlgorithmMapperEntity=new WebAlgorithmMapperEntity();
                     webAlgorithmMapperEntity.setAlgorithmId(algorithmId);
-                    webAlgorithmMapperEntity.setParameterId(parameterId);
                     webAlgorithmMapperEntity.setWebKey(webKey);
                     webAlgorithmMapperEntity.setAlgorithmValue(algorithmValue);
-                    webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
+                    webAlgorithmMapperEntityList.add(webAlgorithmMapperEntity);
+
 
                 }
                 for(int j=0;j<secondParameterType.length;j++){
@@ -179,10 +183,10 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                             String algorithmValue=secondAlgorithmParameterArr[k];
                             WebAlgorithmMapperEntity webAlgorithmMapperEntity=new WebAlgorithmMapperEntity();
                             webAlgorithmMapperEntity.setAlgorithmId(algorithmId);
-                            webAlgorithmMapperEntity.setParameterId(parameterId);
                             webAlgorithmMapperEntity.setWebKey(webKey);
                             webAlgorithmMapperEntity.setAlgorithmValue(algorithmValue);
-                            webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
+                            webAlgorithmMapperEntityList.add(webAlgorithmMapperEntity);
+
                         }
                     }
 
@@ -210,10 +214,10 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                     String algorithmValue=firstAlgorithmParameterValue[l];
                     WebAlgorithmMapperEntity webAlgorithmMapperEntity=new WebAlgorithmMapperEntity();
                     webAlgorithmMapperEntity.setAlgorithmId(algorithmId);
-                    webAlgorithmMapperEntity.setParameterId(parameterId);
                     webAlgorithmMapperEntity.setWebKey(webKey);
                     webAlgorithmMapperEntity.setAlgorithmValue(algorithmValue);
-                    webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
+                    webAlgorithmMapperEntityList.add(webAlgorithmMapperEntity);
+
                 }
                 //添加尾部信息
                 parameterSettingInfo=parameterSettingInfo+"\"optionExtra\":null}";
@@ -239,6 +243,11 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
 //            }
             parameter.setParameterSettingInfo(parameterSettingInfo);
             algorithmMapper.createParameter(parameter);
+            int parameterId=algorithmParamMapper.getMaxParameterId();
+            for (WebAlgorithmMapperEntity webAlgorithmMapperEntity:webAlgorithmMapperEntityList){
+                webAlgorithmMapperEntity.setParameterId(parameterId);
+                webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
+            }
 
 
 

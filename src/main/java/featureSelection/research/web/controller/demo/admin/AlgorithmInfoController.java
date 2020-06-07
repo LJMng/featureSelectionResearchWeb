@@ -40,6 +40,11 @@ public class AlgorithmInfoController {
         return algorithmInfoDemoAdminMapper.getAlgorithmInfoDemoAdminById(id);
     }
 
+    @GetMapping("/getAlgorithmInfo/{id}")
+    public Algorithm getAlgorithmInfo(@PathVariable("id") Integer algorithmId){
+        return algorithmInfoDemoAdminMapper.getAlgorithmInfo(algorithmId);
+    }
+
     /**
      * @param algorithm
      *      能接受算法类里面的字段的信息

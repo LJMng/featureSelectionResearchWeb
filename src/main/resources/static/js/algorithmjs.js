@@ -192,7 +192,7 @@ var vm =new Vue({
         }, //获得指定ID算法信息
         getDataById(id) {
             const _id = id;
-            axios.get('/AlgorithmInfoDemoAdmin/find/'+id)
+            axios.get('/AlgorithmInfoDemoAdmin/getAlgorithmInfo/'+id)
                 .then(resp => {
                     this.info.algorithmId = _id;
                     this.info.algorithmName = resp.data.algorithmName;
@@ -200,10 +200,20 @@ var vm =new Vue({
                     this.info.algorithmPaperReference = resp.data.algorithmPaperReference;
                     this.info.algorithmDescription = resp.data.algorithmDescription;
                     this.info.algorithmCallInterface = resp.data.algorithmCallInterface;
+                    this.info.algorithmNameMapper = resp.data.algorithmNameMapper;
+                    this.info.algorithmCallHost = resp.data.algorithmCallHost;
+                    this.info.algorithmCallExchange = resp.data.algorithmCallExchange;
+                    this.info.algorithmCallExecutionConnectRoutingkey = resp.data.algorithmCallExecutionConnectRoutingkey;
+                    this.info.algorithmCallExecutionSendRoutingkey = resp.data.algorithmCallExecutionSendRoutingkey;
+                    this.info.algorithmCallDemoRoutingkey = resp.data.algorithmCallDemoRoutingkey;
+                    this.info.algorithmCallPort = resp.data.algorithmCallPort;
+                    this.info.algorithmCallUsername = resp.data.algorithmCallUsername;
+                    this.info.algorithmCallPassword = resp.data.algorithmCallPassword;
                 })
                 .catch(err => {
                     console.log(err);
                 });
+
         },
         //添加算法参数信息
         createParameter(){

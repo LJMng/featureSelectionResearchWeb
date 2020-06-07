@@ -30,4 +30,12 @@ public interface AlgorithmInfoDemoAdminMapper {
     public List<AlgorithmInfoDemoAdmin> findAllIdAndName();
     //通过算法ID查询算法参数
     public AlgorithmInfoDemoAdmin getParameterById(Integer id);
+
+
+    /**
+     * @param algorithmId
+     * @return Algorithm
+     */
+    //查询算法详情,供修改回显使用
+    public Algorithm getAlgorithmInfo(Integer algorithmId);
 }
