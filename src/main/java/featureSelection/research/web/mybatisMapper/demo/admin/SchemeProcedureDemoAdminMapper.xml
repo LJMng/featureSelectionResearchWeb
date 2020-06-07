@@ -6,6 +6,7 @@
         <result column="scheme_id" property="schemeId" />
         <result column="procedure_name" property="procedureName" />
         <result column="procedure_setting_data" property="procedureSettingData" />
+        <result column="procedure_settings_id" property="procedureSettingsId" />
     </resultMap>
 
     <!--    查询所有步骤-->
@@ -20,7 +21,7 @@
 
     <!--    增加步骤-->
     <insert id="insertSchemeProcedureDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.SchemeProcedureDemoAdmin" useGeneratedKeys="true" keyProperty="schemeProcedureId">
-        insert into scheme_procedure (scheme_id, procedure_name, procedure_setting_data) values ((select max(scheme_id) from parameter_scheme), #{name}, "{\"data\":\"data\",\"selected\":\"true\"}");
+        insert into scheme_procedure (scheme_id, procedure_name, procedure_setting_data, procedure_settings_id) values ((select max(scheme_id) from parameter_scheme), #{name}, "{\"data\":\"data\",\"selected\":\"true\"}", #{procedureSettingsId});
     </insert>
 
     <!--    更新被绑定ID的步骤-->
@@ -28,7 +29,8 @@
         <foreach collection="list" item="item">
             update scheme_procedure set
                 procedure_name = #{item.procedureName},
-                procedure_setting_data = #{item.procedureSettingData}
+                procedure_setting_data = #{item.procedureSettingData},
+                procedure_settings_id = #{item.procedureSettingsId}
             where
                 scheme_id = #{item.schemeId}
             and

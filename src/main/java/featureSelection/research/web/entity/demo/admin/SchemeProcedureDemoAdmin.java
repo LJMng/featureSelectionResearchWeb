@@ -8,6 +8,7 @@ public class SchemeProcedureDemoAdmin {
     public Integer schemeId;
     public String procedureName;
     public String procedureSettingData;
+    public String procedureSettingsId;
 
     public Integer getSchemeProcedureId() {
         return schemeProcedureId;
@@ -41,6 +42,14 @@ public class SchemeProcedureDemoAdmin {
         this.procedureSettingData = procedureSettingData;
     }
 
+    public String getProcedureSettingsId() {
+        return procedureSettingsId;
+    }
+
+    public void setProcedureSettingsId(String procedureSettingsId) {
+        this.procedureSettingsId = procedureSettingsId;
+    }
+
     @Override
     public String toString() {
         return "SchemeProcedureDemoAdmin{" +
@@ -48,6 +57,7 @@ public class SchemeProcedureDemoAdmin {
                 ", schemeId=" + schemeId +
                 ", procedureName='" + procedureName + '\'' +
                 ", procedureSettingData='" + procedureSettingData + '\'' +
+                ", procedureSettingsId='" + procedureSettingsId + '\'' +
                 '}';
     }
 }
