@@ -47,10 +47,10 @@ var vm =new Vue({
         // parameterName: [],
         parameterType: [],
         searchString: '',
-        //用于封装修改参数信息的对象
-        updateParameterInfo:{
-
-        },
+        // //用于封装修改参数信息的对象
+        // updateParameterInfo:{
+        //
+        // },
         parameterInfo:{
             // 算法id
             algorithmId:1,
@@ -122,7 +122,8 @@ var vm =new Vue({
             parameterName:'',
             parameterType:'',
             parameterDefaultValue:'',
-            parameterDescription:''
+            parameterDescription:'',
+            parameterNameMapper:''
         },
         deleteParameterInfo:{
             parameterId:1,
@@ -398,7 +399,14 @@ var vm =new Vue({
                 .catch(err => {
                     console.log(err);
                 })
+        },
+        setUpdateParameterInfo: function (parameter) {
+            this.updateParameterInfo=parameter;
+        },
+        setUpdateProcedureInfo:function (procedureSetting) {
+            this.procedureSettingInfo=procedureSetting;
         }
+
     },
     computed: {
         //搜索功能

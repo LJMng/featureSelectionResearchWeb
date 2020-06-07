@@ -15,7 +15,7 @@ public interface ProcedureSettingsMapper {
     @Select("select * from procedure_settings")
     public List<ProcedureSettings> findAllProcedureSetting();
 
-    @Update("update procedure_settings set name=#{name},state=#{state},options=#{options},default_option=#{defaultOption},description=#{description} where id=#{id}")
+    @Update("update procedure_settings set name=#{name},name_mapper=#{nameMapper},state=#{state},options=#{options},default_option=#{defaultOption},description=#{description} where id=#{id}")
     public void updateProcedureSetting(ProcedureSettings procedureSettings);
 
     @Delete("delete from procedure_settings where id=#{id}")

@@ -14,7 +14,7 @@ public interface AlgorithmParamMapper {
     @Update("update parameter set parameter_setting_info=#{parameterSettingInfo}  where  algorithm_id=#{algorithmId}")
     public void createParamSettingInfo(int algorithmId, String parameterSettingInfo);
 
-    @Update("update parameter set parameter_name=#{parameterName},parameter_type=#{parameterType},parameter_default_value=#{parameterDefaultValue},parameter_description=#{parameterDescription} where parameter_id=#{parameterId}")
+    @Update("update parameter set parameter_name=#{parameterName},parameter_name_mapper=#{parameterNameMapper},parameter_type=#{parameterType},parameter_default_value=#{parameterDefaultValue},parameter_description=#{parameterDescription} where parameter_id=#{parameterId}")
     public void updateParameter(Parameter parameter);
 
     @Delete("delete from parameter where parameter_id=#{parameterId}")
