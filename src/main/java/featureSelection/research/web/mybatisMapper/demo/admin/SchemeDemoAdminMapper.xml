@@ -31,7 +31,7 @@
         from
             parameter_scheme
 		left join parameter on parameter.algorithm_id=parameter_scheme.algorithm_id
-        left join parameter_scheme_value on parameter_scheme_value.parameter_id=parameter.parameter_id
+        left join parameter_scheme_value on parameter_scheme_value.scheme_id=parameter_scheme.scheme_id
         left join algorithm on parameter.algorithm_id=algorithm.algorithm_id
         left join dataset on parameter_scheme.dataset_id=dataset.dataset_id
     </select>
@@ -45,7 +45,7 @@
         from
             parameter_scheme
 		left join parameter on parameter.algorithm_id=parameter_scheme.algorithm_id
-        left join parameter_scheme_value on parameter_scheme_value.parameter_id=parameter.parameter_id
+        left join parameter_scheme_value on parameter_scheme_value.scheme_id=parameter_scheme.scheme_id
         left join algorithm on parameter_scheme.algorithm_id=algorithm.algorithm_id
         left join dataset on parameter_scheme.dataset_id=dataset.dataset_id
         where parameter_scheme.scheme_id=#{schemeId}
