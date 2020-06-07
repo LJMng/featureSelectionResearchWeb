@@ -37,7 +37,7 @@ public class SchemeProcedureController {
         List<ProcedureSettingsDemoAdmin> p = procedureSettingsDemoAdminMapper.count();
         for(int i=0;i<p.size();i++){
             //将数据插入方案步骤表
-            schemeProcedureDemoAdminMapper.insertSchemeProcedureDemoAdmin(p.get(i).getName());
+            schemeProcedureDemoAdminMapper.insertSchemeProcedureDemoAdmin(p.get(i).getName(),p.get(i).getId());
         }
         return null;
     }
