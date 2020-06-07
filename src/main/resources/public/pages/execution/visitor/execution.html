@@ -1505,7 +1505,6 @@
 
             },
             getTaskEcharts: function (task) {
-
                 this.temp_task_info = task;
                 $("#taskEchartsBody").empty();
                 axios.get('/getTaskResult',{
@@ -1571,59 +1570,96 @@
                     alert(msg+' is not in queue and it can not be updated');
                 }
             },
-            saveAlgorithmSettings: function (event,algorithm) {
-                let paramSet = {basic: {},procedure: {}};
+            saveAlgorithmSettings: async function (event, algorithm) {
+                let paramSet = {basic: {}, procedure: {}};
                 let parameters = this.parameterList[algorithm.algorithmId];
                 let procedureSettings = this.ProcedureSettingsList[algorithm.algorithmId];
-                if (parameters!=null) {
+                if (parameters != null) {
                     for (let i = 0; i < parameters.length; i++) {
-                        let nameTemp = algorithm.algorithmName+parameters[i].parameterName;
+                        let nameTemp = algorithm.algorithmName + parameters[i].parameterName;
+                        let value = null;
                         switch (parameters[i].parameterSettingInfo.type) {
                             case 'text':
-                                paramSet.basic[parameters[i].parameterName] = {input: $("input[name="+nameTemp+"]").val(),option: null};
+                                await axios.get('/getValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + $("input[name=" + nameTemp + "]").val()).then((response) => {
+                                    value = response.data;
+                                });
+                                paramSet.basic[parameters[i].parameterNameMapper] = {input: value, option: null};
                                 break;
                             case 'selection':
-                                let paramInput = $("select[name="+nameTemp+"]").val();
-                                switch (parameters[i].parameterSettingInfo.optionExtra[paramInput].type) {
-                                    case 'text':
-                                        paramSet.basic[parameters[i].parameterName] = {input: paramInput,option: $("input[name="+nameTemp+paramInput+"]").val()};
-                                        break;
-                                    case 'selection':
-                                        paramSet.basic[parameters[i].parameterName] = {input: paramInput,option: $("select[name="+nameTemp+paramInput+"]").val()};
+                                console.log("123");
+                                let paramInput = $("select[name=" + nameTemp + "]").val();
+                                await axios.get('/getValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput).then(function (response) {
+                                    value = response.data;
+                                    console.log(response.data)
+                                });
+                                if (parameters[i].parameterSettingInfo.optionExtra[paramInput].type != null) {
+                                    let value2 = null;
+                                    switch (parameters[i].parameterSettingInfo.optionExtra[paramInput].type) {
+                                        case 'text':
+                                            await axios.get('/getValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput + '/' + $("input[name=" + nameTemp + paramInput + "]").val()).then((response) => {
+                                                value2 = response.data;
+                                            });
+                                            paramSet.basic[parameters[i].parameterNameMapper] = {
+                                                option: value,
+                                                input: value2
+                                            };
+                                            break;
+                                        case 'selection':
+                                            await axios.get('/getValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput + '/' + $("select[name=" + nameTemp + paramInput + "]").val()).then((response) => {
+                                                value2 = response.data;
+                                            });
+                                            paramSet.basic[parameters[i].parameterNameMapper] = {
+                                                option: value,
+                                                input: value2
+                                            };
+                                            break;
+                                    }
+                                } else {
+                                    paramSet.basic[parameters[i].parameterNameMapper] = {input: null, option: value};
                                 }
                                 break;
                             case 'radio':
-                                paramSet.basic[parameters[i].parameterName] = {input: $("input[name="+nameTemp+"]:checked").val(),option: null};
+                                await axios.get('/getValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + $("input[name=" + nameTemp + "]:checked").val()).then((response) => {
+                                    value = response.data;
+                                });
+                                paramSet.basic[parameters[i].parameterNameMapper] = {input: null, option: value};
                                 break;
                             case 'checkbox':
                                 let listTemp = [];
-                                $("input[name="+nameTemp+"]:checked").each(function () {
-                                    listTemp.push($(this).val());
+                                $("input[name=" + nameTemp + "]:checked").each(async function () {
+                                    await axios.get('/getValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + $(this).val()).then((response) => {
+                                        value = response.data;
+                                    });
+                                    listTemp.push(value);
                                 });
-                                paramSet.basic[parameters[i].parameterName] = {input: listTemp,option: null};
+                                paramSet.basic[parameters[i].parameterNameMapper] = {input: null, option: listTemp};
                         }
                     }
                 }
-                if (procedureSettings != null){
+                if (procedureSettings != null) {
                     for (let i = 0; i < procedureSettings.length; i++) {
-                        let nameTemp = algorithm.algorithmName+procedureSettings[i].name;
-                        if ($("select[name="+nameTemp+"]").prop("disabled")){
+                        let nameTemp = algorithm.algorithmName + procedureSettings[i].name;
+                        if ($("select[name=" + nameTemp + "]").prop("disabled")) {
                             paramSet.procedure[procedureSettings[i].name] = {data: null, selected: false};
                         } else {
-                            paramSet.procedure[procedureSettings[i].name] = {data: $("select[name="+nameTemp+"]").val(), selected: true};
+                            paramSet.procedure[procedureSettings[i].name] = {
+                                data: $("select[name=" + nameTemp + "]").val(),
+                                selected: true
+                            };
                         }
                     }
                 }
                 this.params = paramSet;
+                console.log(231);
                 this.task_algorithm_id = algorithm.algorithmId;
-                if ($.cookie("language")=='ch'){
+                if ($.cookie("language") == 'ch') {
                     $(event.srcElement).prev().prev().html("成功保存！");
-                }else {
+                } else {
                     $(event.srcElement).prev().prev().html("Success!");
                 }
                 setTimeout(function () {
                     $(event.srcElement).prev().prev().html("");
-                },2000);
+                }, 2000);
             },
             changeDisabled: function (event,name) {
                 if ($(event.srcElement).prop("checked")) {

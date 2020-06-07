@@ -23,6 +23,6 @@ public interface ParameterMapper {
      * 获取所有参数信息
      * @return List<Map<String,Object>>
      */
-    @Select("select parameter_id,algorithm_id,parameter_name,parameter_type,parameter_description,parameter_default_value,parameter_setting_info from parameter")
+    @Select("select parameter_id,algorithm_id,parameter_name,parameter_type,parameter_description,parameter_default_value,parameter_setting_info,parameter_name_mapper from parameter")
     List<Map<String,Object>> getParameterList();
 }

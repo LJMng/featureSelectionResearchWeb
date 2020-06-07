@@ -69,7 +69,8 @@ public class HtmlElementsServiceImpl implements IHtmlElementService {
                         parameterMap.get("parameter_description").toString(),
                         parameterMap.get("parameter_type").toString(),
                         parameterMap.get("parameter_default_value").toString(),
-                        parameterMap.get("parameter_setting_info").toString()
+                        parameterMap.get("parameter_setting_info").toString(),
+                        parameterMap.get("parameter_name_mapper").toString()
                 );
                 parameters = new ArrayList<>();
                 parameters.add(parameter);
@@ -82,7 +83,8 @@ public class HtmlElementsServiceImpl implements IHtmlElementService {
                         parameterMap.get("parameter_description").toString(),
                         parameterMap.get("parameter_type").toString(),
                         parameterMap.get("parameter_default_value").toString(),
-                        parameterMap.get("parameter_setting_info").toString()
+                        parameterMap.get("parameter_setting_info").toString(),
+                        parameterMap.get("parameter_name_mapper").toString()
                 );
                 parameters = resultMap.get(parameter.getAlgorithmId());
                 parameters.add(parameter);
@@ -99,7 +101,6 @@ public class HtmlElementsServiceImpl implements IHtmlElementService {
 
     @Override
     public Map<Integer, List<ProcedureSettings>> getProcedureSettingList() {
-
         List<Map<String, Object>> procedureSettingList = procedureSettingsMapper.getProcedureSettingList();
         Map<Integer, List<ProcedureSettings>> resultMap = new HashMap<>();
         List<ProcedureSettings> settingsList = null;

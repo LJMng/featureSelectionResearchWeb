@@ -84,7 +84,7 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
             parameterFormat.setColumn(datasetMapper.getDatasetDimensionById(task.getDatasetId()));
             parameterFormat.setDatasetName(datasetMapper.getDatasetNameById(task.getDatasetId()));
         }
-        String algorithmName = algorithmMapper.getAlgorithmNameById(task.getAlgorithmId());
+        String algorithmName = algorithmMapper.getAlgorithmNameMapperById(task.getAlgorithmId());
         parameterFormat.setId(algorithmName+"-"+String.valueOf(System.currentTimeMillis()).substring(0,10));
         parameterFormat.setPart(0);
         parameterFormat.setPartDataSize(0);

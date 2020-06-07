@@ -1,17 +1,16 @@
 package featureSelection.research.web.controller.execution.visitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import featureSelection.research.web.common.util.AlgorithmMapperValueUtil;
 import featureSelection.research.web.entity.execution.visitor.DatasetForm;
 import featureSelection.research.web.entity.execution.visitor.TaskInfo;
 import featureSelection.research.web.entity.execution.visitor.TaskResult;
 import featureSelection.research.web.service.execution.visitor.IExecutionFormsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 /**
@@ -27,6 +26,9 @@ public class ExecutionFormsController {
 
     @Autowired
     IExecutionFormsService formsService;
+
+    @Autowired
+    AlgorithmMapperValueUtil valueUtil;
 
     @PostMapping("/uploadDatasetForm")
     public String uploadDatasetForm(DatasetForm dataset,
@@ -77,5 +79,13 @@ public class ExecutionFormsController {
     @GetMapping("/getTaskResult")
     public List<TaskResult> getTaskResults(@RequestParam("taskId")int taskId) {
         return formsService.getTaskResults(taskId);
+    }
+
+    @GetMapping(value = {"/getValue/{algorithmId}/{parameterId}/{param1}/{param2}", "/getValue/{algorithmId}/{parameterId}/{param1}"})
+    public String getParameterValue(@PathVariable(name = "algorithmId") int algorithmId,
+                                    @PathVariable(name = "parameterId") int parameterId,
+                                    @PathVariable(name = "param1") String param1,
+                                    @PathVariable(name = "param2",required = false)String param2){
+        return valueUtil.getParameterValue(algorithmId,parameterId,param1,param2);
     }
 }

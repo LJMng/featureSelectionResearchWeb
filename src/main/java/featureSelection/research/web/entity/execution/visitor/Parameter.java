@@ -1,9 +1,6 @@
 package featureSelection.research.web.entity.execution.visitor;
 
 
-/**
- * @author BuTTer
- */
 public class Parameter {
 
   private int parameterId;
@@ -12,15 +9,13 @@ public class Parameter {
   private String parameterDescription;
   private String parameterType;
   private String parameterDefaultValue;
-  private String parameterSettingInfo;
   private String parameterValidityCheckInterface;
   private String parameterValidityDescription;
   private java.sql.Timestamp ut;
+  private String parameterSettingInfo;
+  private String parameterNameMapper;
 
-  public Parameter() {
-  }
-
-  public Parameter(int parameterId, int algorithmId, String parameterName, String parameterDescription, String parameterType, String parameterDefaultValue, String parameterSettingInfo) {
+  public Parameter(int parameterId, int algorithmId, String parameterName, String parameterDescription, String parameterType, String parameterDefaultValue, String parameterSettingInfo, String parameterNameMapper) {
     this.parameterId = parameterId;
     this.algorithmId = algorithmId;
     this.parameterName = parameterName;
@@ -28,6 +23,7 @@ public class Parameter {
     this.parameterType = parameterType;
     this.parameterDefaultValue = parameterDefaultValue;
     this.parameterSettingInfo = parameterSettingInfo;
+    this.parameterNameMapper = parameterNameMapper;
   }
 
   public int getParameterId() {
@@ -110,6 +106,7 @@ public class Parameter {
     this.ut = ut;
   }
 
+
   public String getParameterSettingInfo() {
     return parameterSettingInfo;
   }
@@ -117,4 +114,14 @@ public class Parameter {
   public void setParameterSettingInfo(String parameterSettingInfo) {
     this.parameterSettingInfo = parameterSettingInfo;
   }
+
+
+  public String getParameterNameMapper() {
+    return parameterNameMapper;
+  }
+
+  public void setParameterNameMapper(String parameterNameMapper) {
+    this.parameterNameMapper = parameterNameMapper;
+  }
+
 }
