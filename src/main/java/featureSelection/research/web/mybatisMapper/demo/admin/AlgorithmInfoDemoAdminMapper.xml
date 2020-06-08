@@ -99,6 +99,6 @@
 
     <!--通过算法id查询算法信息，供回显使用 -->
     <select id="getAlgorithmInfo" resultType="featureSelection.research.web.entity.execution.admin.Algorithm">
-        select * from algorithm where algoribthm_id = #{algorithmId}
+        select * from algorithm where algorithm_id = #{algorithmId}
     </select>
 </mapper>
