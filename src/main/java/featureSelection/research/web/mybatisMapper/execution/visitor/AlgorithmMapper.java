@@ -27,6 +27,6 @@ public interface AlgorithmMapper {
     @MapKey("algorithmId")
     Map<Integer, Algorithm> getAlgorithmsList();
 
-    @Select("select algorithm_name_mapper from test_fs.algorithm where algorithm_id = #{algorithmId}")
+    @Select("select algorithm_name_mapper from algorithm where algorithm_id = #{algorithmId}")
     String getAlgorithmNameMapperById(int algorithmId);
 }

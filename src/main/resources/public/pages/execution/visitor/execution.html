@@ -1590,16 +1590,13 @@
                                     value = response.data;
                                     console.log(response.data)
                                 });
-                                if (parameters[i].parameterSettingInfo.optionExtra[paramInput].type != null) {
+                                if (parameters[i].parameterSettingInfo.optionExtra[paramInput] != null) {
                                     let value2 = null;
                                     switch (parameters[i].parameterSettingInfo.optionExtra[paramInput].type) {
                                         case 'text':
-                                            await axios.get('/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput + '/' + $("input[name=" + nameTemp + paramInput + "]").val()).then((response) => {
-                                                value2 = response.data;
-                                            });
                                             paramSet.basic[parameters[i].parameterNameMapper] = {
                                                 option: value,
-                                                input: value2
+                                                input: $("input[name=" + nameTemp + paramInput + "]").val()
                                             };
                                             break;
                                         case 'selection':
