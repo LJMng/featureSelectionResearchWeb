@@ -437,7 +437,7 @@
                                             <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='text'">
                                                 <input type="text" class="form-control" :id="algorithm.algorithmName+param.parameterName+'Basic'" :name="algorithm.algorithmName+param.parameterName">
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button" @click="setDefault(algorithm,param)">Default</button>
+                                                    <button class="btn btn-outline-secondary" type="button" @click="setParamDefault(algorithm,param)">Default</button>
                                                 </div>
                                             </div>
                                             <div class="col-4" v-if="param.parameterSettingInfo.type=='text'"></div>
@@ -455,7 +455,7 @@
                                                     <option v-for="(option,index3) in param.parameterSettingInfo.options" :value="option">{{option}}</option>
                                                 </select>
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button" @click="setDefault(algorithm,param)">Default</button>
+                                                    <button class="btn btn-outline-secondary" type="button" @click="setParamDefault(algorithm,param)">Default</button>
                                                 </div>
                                             </div>
                                             <div class="col-4" v-if="param.parameterSettingInfo.type=='selection'">
@@ -513,6 +513,9 @@
                                                 <select class="custom-select" :id="algorithm.algorithmName+ps.name+'select'" :name="algorithm.algorithmName+ps.name" :disabled="ps.state=='optional'?'disabled':null">
                                                     <option v-for="(option,index3) in ps.options" :selected="option==ps.defaultOption?'selected':null" :value="option">{{option}}</option>
                                                 </select>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button" @click="setProcedureDefault(algorithm,ps)">Default</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1017,7 +1020,6 @@
                         }
                     }
                 }
-
             })
         }
     });
@@ -1580,15 +1582,11 @@
                         let value = null;
                         switch (parameters[i].parameterSettingInfo.type) {
                             case 'text':
-                                await axios.get('/getValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + $("input[name=" + nameTemp + "]").val()).then((response) => {
-                                    value = response.data;
-                                });
-                                paramSet.basic[parameters[i].parameterNameMapper] = {input: value, option: null};
+                                paramSet.basic[parameters[i].parameterNameMapper] = {input: $("input[name=" + nameTemp + "]").val(), option: null};
                                 break;
                             case 'selection':
-                                console.log("123");
                                 let paramInput = $("select[name=" + nameTemp + "]").val();
-                                await axios.get('/getValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput).then(function (response) {
+                                await axios.get('/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput).then(function (response) {
                                     value = response.data;
                                     console.log(response.data)
                                 });
@@ -1596,7 +1594,7 @@
                                     let value2 = null;
                                     switch (parameters[i].parameterSettingInfo.optionExtra[paramInput].type) {
                                         case 'text':
-                                            await axios.get('/getValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput + '/' + $("input[name=" + nameTemp + paramInput + "]").val()).then((response) => {
+                                            await axios.get('/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput + '/' + $("input[name=" + nameTemp + paramInput + "]").val()).then((response) => {
                                                 value2 = response.data;
                                             });
                                             paramSet.basic[parameters[i].parameterNameMapper] = {
@@ -1605,7 +1603,7 @@
                                             };
                                             break;
                                         case 'selection':
-                                            await axios.get('/getValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput + '/' + $("select[name=" + nameTemp + paramInput + "]").val()).then((response) => {
+                                            await axios.get('/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput + '/' + $("select[name=" + nameTemp + paramInput + "]").val()).then((response) => {
                                                 value2 = response.data;
                                             });
                                             paramSet.basic[parameters[i].parameterNameMapper] = {
@@ -1619,7 +1617,7 @@
                                 }
                                 break;
                             case 'radio':
-                                await axios.get('/getValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + $("input[name=" + nameTemp + "]:checked").val()).then((response) => {
+                                await axios.get('/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + $("input[name=" + nameTemp + "]:checked").val()).then((response) => {
                                     value = response.data;
                                 });
                                 paramSet.basic[parameters[i].parameterNameMapper] = {input: null, option: value};
@@ -1627,7 +1625,7 @@
                             case 'checkbox':
                                 let listTemp = [];
                                 $("input[name=" + nameTemp + "]:checked").each(async function () {
-                                    await axios.get('/getValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + $(this).val()).then((response) => {
+                                    await axios.get('/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + $(this).val()).then((response) => {
                                         value = response.data;
                                     });
                                     listTemp.push(value);
@@ -1638,12 +1636,16 @@
                 }
                 if (procedureSettings != null) {
                     for (let i = 0; i < procedureSettings.length; i++) {
+                        let value = null;
                         let nameTemp = algorithm.algorithmName + procedureSettings[i].name;
                         if ($("select[name=" + nameTemp + "]").prop("disabled")) {
-                            paramSet.procedure[procedureSettings[i].name] = {data: null, selected: false};
+                            paramSet.procedure[procedureSettings[i].nameMapper] = {data: null, selected: false};
                         } else {
-                            paramSet.procedure[procedureSettings[i].name] = {
-                                data: $("select[name=" + nameTemp + "]").val(),
+                            await axios.get('/getProcedureValue' + '/' + algorithm.algorithmId + '/' + procedureSettings[i].id + '/' + $("select[name=" + nameTemp + "]").val()).then((response) => {
+                                value = response.data;
+                            });
+                            paramSet.procedure[procedureSettings[i].nameMapper] = {
+                                data: value,
                                 selected: true
                             };
                         }
@@ -1676,17 +1678,19 @@
                 }
 
             },
-            setDefault: function (algorithm,param) {
+            setParamDefault: function (algorithm,param) {
                 switch (param.parameterSettingInfo.type) {
                     case 'text':
                         $("input[name="+algorithm.algorithmName+param.parameterName+"]").val(param.parameterDefaultValue);
-                        hub.$emit('optionName',param.parameterDefaultValue);
                         break;
                     case 'selection':
                         $("select[name="+algorithm.algorithmName+param.parameterName+"]").val(param.parameterDefaultValue);
                         hub.$emit('optionName',param.parameterDefaultValue);
                         break;
                 }
+            },
+            setProcedureDefault: function (algorithm,procedure) {
+                $("select[name="+algorithm.algorithmName+procedure.name+"]").val(procedure.defaultOption);
             }
         },
         watch: {

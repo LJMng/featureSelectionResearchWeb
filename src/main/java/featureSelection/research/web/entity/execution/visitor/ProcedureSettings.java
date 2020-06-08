@@ -10,8 +10,9 @@ public class ProcedureSettings {
   private String[] options;
   private String defaultOption;
   private String description;
+  private String nameMapper;
 
-  public ProcedureSettings(int id, int algorithmId, String name, String state, String[] options, String defaultOption, String description) {
+  public ProcedureSettings(int id, int algorithmId, String name, String state, String[] options, String defaultOption, String description, String nameMapper) {
     this.id = id;
     this.algorithmId = algorithmId;
     this.name = name;
@@ -19,6 +20,7 @@ public class ProcedureSettings {
     this.options = options;
     this.defaultOption = defaultOption;
     this.description = description;
+    this.nameMapper = nameMapper;
   }
 
   public int getId() {
@@ -81,6 +83,15 @@ public class ProcedureSettings {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+
+  public String getNameMapper() {
+    return nameMapper;
+  }
+
+  public void setNameMapper(String nameMapper) {
+    this.nameMapper = nameMapper;
   }
 
 }

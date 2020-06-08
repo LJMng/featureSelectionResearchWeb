@@ -116,7 +116,8 @@ public class HtmlElementsServiceImpl implements IHtmlElementService {
                         tempMap.get("state").toString(),
                         tempMap.get("options").toString().split(","),
                         tempMap.get("default_option").toString(),
-                        tempMap.get("description").toString()
+                        tempMap.get("description").toString(),
+                        tempMap.get("name_mapper").toString()
                 ));
                 resultMap.put(Integer.parseInt(tempMap.get("algorithm_id").toString()),settingsList);
             }else {
@@ -127,7 +128,8 @@ public class HtmlElementsServiceImpl implements IHtmlElementService {
                         tempMap.get("state").toString(),
                         tempMap.get("options").toString().split(","),
                         tempMap.get("default_option").toString(),
-                        tempMap.get("description").toString()
+                        tempMap.get("description").toString(),
+                        tempMap.get("name_mapper").toString()
                 );
                 List<ProcedureSettings> settingsListTemp = resultMap.get(procedureSettings.getAlgorithmId());
                 settingsListTemp.add(procedureSettings);

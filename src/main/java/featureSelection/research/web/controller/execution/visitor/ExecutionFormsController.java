@@ -81,11 +81,18 @@ public class ExecutionFormsController {
         return formsService.getTaskResults(taskId);
     }
 
-    @GetMapping(value = {"/getValue/{algorithmId}/{parameterId}/{param1}/{param2}", "/getValue/{algorithmId}/{parameterId}/{param1}"})
+    @GetMapping(value = {"/getParamValue/{algorithmId}/{parameterId}/{param1}/{param2}", "/getParamValue/{algorithmId}/{parameterId}/{param1}"})
     public String getParameterValue(@PathVariable(name = "algorithmId") int algorithmId,
                                     @PathVariable(name = "parameterId") int parameterId,
                                     @PathVariable(name = "param1") String param1,
                                     @PathVariable(name = "param2",required = false)String param2){
         return valueUtil.getParameterValue(algorithmId,parameterId,param1,param2);
+    }
+
+    @GetMapping("/getProcedureValue/{algorithmId}/{procedureId}/{procedure}")
+    public String getProcedureValue(@PathVariable(name = "algorithmId") int algorithmId,
+                                    @PathVariable(name = "procedureId") int procedureId,
+                                    @PathVariable(name = "procedure") String procedure){
+        return valueUtil.getProcedureValue(algorithmId,procedureId,procedure);
     }
 }
