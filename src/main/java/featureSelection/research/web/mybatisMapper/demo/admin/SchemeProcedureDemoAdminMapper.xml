@@ -24,6 +24,13 @@
         insert into scheme_procedure (scheme_id, procedure_name, procedure_setting_data, procedure_settings_id) values ((select max(scheme_id) from parameter_scheme), #{name}, "{\"data\":\"data\",\"selected\":\"true\"}", #{procedureSettingsId});
     </insert>
 
+    <!--    增加步骤(步骤被删除后)-->
+    <select id="findSchemeProcedureAfterDeleteSchemeId" resultMap="result">
+        select distinct scheme_id from parameter_scheme,procedure_settings where parameter_scheme.algorithm_id=procedure_settings.algorithm_id
+    </select>
+    <insert id="insertSchemeProcedureAfterDeleteDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.SchemeProcedureDemoAdmin" useGeneratedKeys="true" keyProperty="schemeProcedureId">
+        insert into scheme_procedure (scheme_id, procedure_name, procedure_setting_data, procedure_settings_id) values (#{schemeId}, #{procedureName}, "{\"data\":\"data\",\"selected\":\"true\"}", (select max(id) from procedure_settings));
+    </insert>
     <!--    更新被绑定ID的步骤-->
     <update id="updateSchemeProcedureDemoAdmin">
         <foreach collection="list" item="item">

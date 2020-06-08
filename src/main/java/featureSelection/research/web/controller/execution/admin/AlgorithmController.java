@@ -4,6 +4,7 @@ import featureSelection.research.web.entity.execution.admin.Algorithm;
 import featureSelection.research.web.entity.execution.admin.Parameter;
 import featureSelection.research.web.entity.execution.admin.ParameterInfo;
 import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
+import featureSelection.research.web.service.demo.admin.impl.ProcedureServiceImpl;
 import featureSelection.research.web.service.execution.admin.AlgorithmBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,9 @@ import java.util.Map;
 public class AlgorithmController {
     @Autowired
     private AlgorithmBusiness algorithmBusiness;
+
+    @Autowired
+    private ProcedureServiceImpl procedureService;
 
     @RequestMapping(value = "/addAlgorithm")
     public void addAlgorithm(@RequestBody String algorithm){
@@ -124,6 +128,7 @@ public class AlgorithmController {
     @PostMapping("/addProcedureSetting")
    public String addProcedureSettings(@RequestBody ProcedureSettings procedureSettings){
         algorithmBusiness.addProcedureSettings(procedureSettings);
+        procedureService.insertSchemeProcedureAfterDeleteDemoAdmin(procedureSettings);
         return "redirect:/pages/execution/admin/algorithm.html";
    }
 

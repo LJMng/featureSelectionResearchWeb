@@ -1,5 +1,6 @@
 package featureSelection.research.web.mybatisMapper.demo.admin;
 
+import featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin;
 import featureSelection.research.web.entity.demo.admin.SchemeProcedureDemoAdmin;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,6 +14,9 @@ public interface SchemeProcedureDemoAdminMapper {
     public List<SchemeProcedureDemoAdmin> getSchemeProcedureDemoAdminById(Integer id);
     //增加步骤
     public int insertSchemeProcedureDemoAdmin(String name,Integer procedureSettingsId);
+    //增加步骤(步骤被删除后)
+    public List<SchemeProcedureDemoAdmin> findSchemeProcedureAfterDeleteSchemeId();
+    public int insertSchemeProcedureAfterDeleteDemoAdmin(SchemeProcedureDemoAdmin schemeProcedureDemoAdmin);
     //更新被绑定ID的步骤
     public int updateSchemeProcedureDemoAdmin(List<SchemeProcedureDemoAdmin> list);
     //删除被绑定ID的步骤
