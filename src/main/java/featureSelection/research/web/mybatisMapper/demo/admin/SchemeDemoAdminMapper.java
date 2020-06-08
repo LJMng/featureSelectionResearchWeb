@@ -1,5 +1,6 @@
 package featureSelection.research.web.mybatisMapper.demo.admin;
 
+import featureSelection.research.web.entity.demo.admin.AlgorithmParameterDemoAdmin;
 import featureSelection.research.web.entity.demo.admin.DatasetDemoAdmin;
 import featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin;
 import org.apache.ibatis.annotations.Mapper;
@@ -26,4 +27,7 @@ public interface SchemeDemoAdminMapper {
     public int insertSchemeParameterSchemeIdAndParameterId(SchemeDemoAdmin schemeDemoAdmin);
     //查询所有算法ID和名称提供方案调用
     public List<DatasetDemoAdmin> findAllIdAndName();
+    //当算法添加参数后给参数方案表也对应添加参数
+    public List<Integer> findTheChangedSchemeAffectedByParameter(Integer algorithmId);
+    public int insertSchemeParameterValueAfterDelete(AlgorithmParameterDemoAdmin algorithmParameterDemoAdmin);
 }

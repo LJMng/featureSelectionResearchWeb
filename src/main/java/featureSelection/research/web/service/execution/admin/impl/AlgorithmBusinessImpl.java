@@ -1,8 +1,11 @@
 package featureSelection.research.web.service.execution.admin.impl;
 
 import featureSelection.research.web.common.util.AlgorithmMapperValueUtil;
+import featureSelection.research.web.entity.demo.admin.AlgorithmParameterDemoAdmin;
 import featureSelection.research.web.entity.execution.admin.*;
+import featureSelection.research.web.mybatisMapper.demo.admin.SchemeDemoAdminMapper;
 import featureSelection.research.web.mybatisMapper.execution.admin.*;
+import featureSelection.research.web.service.demo.admin.SchemeService;
 import featureSelection.research.web.service.execution.admin.AlgorithmBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,8 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     private AlgorithmMapper algorithmMapper;
     @Autowired
     private WebAlgorithmMapper webAlgorithmMapper;
+    @Autowired
+    private SchemeDemoAdminMapper schemeDemoAdminMapper;
 
     @Override
     public void createParamSettingInfo(Map<Integer, String> algorithmMap) {
@@ -243,6 +248,17 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
 //            }
             parameter.setParameterSettingInfo(parameterSettingInfo);
             algorithmMapper.createParameter(parameter);
+
+
+            //给参数方案表添加参数
+            List<Integer> list = schemeDemoAdminMapper.findTheChangedSchemeAffectedByParameter(parameter.getAlgorithmId());
+            AlgorithmParameterDemoAdmin a = new AlgorithmParameterDemoAdmin();
+            for(int j=0;j<list.size();j++){
+                a.setSchemeId(list.get(j));
+                schemeDemoAdminMapper.insertSchemeParameterValueAfterDelete(a);
+            }
+
+
             int parameterId=algorithmParamMapper.getMaxParameterId();
             for (WebAlgorithmMapperEntity webAlgorithmMapperEntity:webAlgorithmMapperEntityList){
                 webAlgorithmMapperEntity.setParameterId(parameterId);

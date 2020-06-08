@@ -116,6 +116,14 @@
         </foreach>
     </insert>
 
+    <!--    当算法添加参数后给参数方案表也对应添加参数-->
+    <select id="findTheChangedSchemeAffectedByParameter" resultType="java.lang.Integer">
+        select distinct parameter_scheme.scheme_id from parameter_scheme where parameter_scheme.algorithm_id=#{algorithmId}
+    </select>
+    <insert id="insertSchemeParameterValueAfterDelete">
+        insert into parameter_scheme_value (scheme_id, parameter_id, parameter_input_value, parameter_option_value) values (#{schemeId},(select max(parameter_id) from parameter),'0','null');
+    </insert>
+
     <!--查询所有数据集ID和名称提供方案调用-->
     <select id="findAllIdAndName" resultMap="result">
         select dataset_id,dataset_name

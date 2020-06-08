@@ -94,10 +94,9 @@
                     <hr>
                     <h5><b>基本参数详情</b></h5>
                     <span class="card-text" v-for="parameter in scheme.algorithmParameterDemoAdmin">
-                        <p v-if="parameter.parameterInputValue===null" style="color: red">参数个数有变化请重新添加方案</p>
-                        <p v-else-if="parameter.parameterId===null"></p>
-                             <p v-else-if="parameter.parameterOptionValue!=='null'">{{parameter.parameterName}}:{{parameter.parameterInputValue}},{{parameter.parameterOptionValue}}</p>
-                            <p v-else>{{parameter.parameterName}}:{{parameter.parameterInputValue}}</p>
+                        <p v-if="parameter.parameterInputValue===null" style="color: red">参数被清空请添加参数</p>
+                        <p v-else-if="parameter.parameterOptionValue!=='null'">{{parameter.parameterName}}:{{parameter.parameterInputValue}},{{parameter.parameterOptionValue}}</p>
+                        <p v-else>{{parameter.parameterName}}:{{parameter.parameterInputValue}}</p>
                         </span>
                     <hr>
                     <h5><b>参数步骤详情</b></h5>

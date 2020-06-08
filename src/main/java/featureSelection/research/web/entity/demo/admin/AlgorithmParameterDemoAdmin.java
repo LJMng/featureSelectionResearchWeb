@@ -15,7 +15,7 @@ public class AlgorithmParameterDemoAdmin {
     //参数对应的算法名称
     private String algorithmName;
     //参数对应的方案ID
-    private String schemeId;
+    private Integer schemeId;
     //参数对应的方案名称
     private String schemeName;
 
@@ -51,11 +51,11 @@ public class AlgorithmParameterDemoAdmin {
         this.algorithmName = algorithmName;
     }
 
-    public String getSchemeId() {
+    public Integer getSchemeId() {
         return schemeId;
     }
 
-    public void setSchemeId(String schemeId) {
+    public void setSchemeId(Integer schemeId) {
         this.schemeId = schemeId;
     }
 
@@ -92,7 +92,7 @@ public class AlgorithmParameterDemoAdmin {
                 ", parameterInputValue='" + parameterInputValue + '\'' +
                 ", parameterOptionValue='" + parameterOptionValue + '\'' +
                 ", algorithmName='" + algorithmName + '\'' +
-                ", schemeId='" + schemeId + '\'' +
+                ", schemeId=" + schemeId +
                 ", schemeName='" + schemeName + '\'' +
                 '}';
     }
