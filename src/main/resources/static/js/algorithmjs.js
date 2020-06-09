@@ -326,14 +326,37 @@ var vm =new Vue({
                     console.log(err)
                 })
         },
+        //确认第二个参数类型
+        confirmSecondParameterType:function(n,m){
+            if(m >= this.paramValuesNumber[n-1]){
+                // this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
+                // this.firstParameterValue=[];
+                this.secondParameterType=this.secondParameterTypes[n-1];
+                this.parameterInfo.secondParameterTypes[n-1]=this.secondParameterType;
+                this.secondParameterType=[];
+                console.log(this.parameterInfo.secondParameterTypes[n-1])
+                console.log("改方法调用了")
+            }
+            if (this.secondParameterTypes[n-1][m-1] !== 'selection'){
+                this.secondParameterValues[n-1][m-1]="default";
+                this.secondAlgorithmParameterValues[n-1][m-1]="default";
+            }
+            if(this.secondParameterTypes[n-1][m-1] !== 'selection' && m >= this.paramValuesNumber[n-1] ){
+                this.secondParameterValue=this.secondParameterValues[n-1]
+                this.parameterInfo.secondParameterValues[n-1]=this.secondParameterValue;
+                this.secondParameterValue=[];
+                this.secondAlgorithmParameterValue=this.secondAlgorithmParameterValues[n-1];
+                this.parameterInfo.secondAlgorithmParameterValues[n-1]=this.secondAlgorithmParameterValue;
+                this.secondAlgorithmParameterValue=[];
+                console.log("调用了该方法")
+            }
+
+        },
         //确认第二个参数web层的值跟类型
         confirmSecondParameterValue:function (n,m) {
             if(m >= this.paramValuesNumber[n-1]){
             // this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
             // this.firstParameterValue=[];
-            this.secondParameterType=this.secondParameterTypes[n-1];
-            this.parameterInfo.secondParameterTypes[n-1]=this.secondParameterType;
-            this.secondParameterType=[];
             this.secondParameterValue=this.secondParameterValues[n-1]
             this.parameterInfo.secondParameterValues[n-1]=this.secondParameterValue;
             this.secondParameterValue=[];

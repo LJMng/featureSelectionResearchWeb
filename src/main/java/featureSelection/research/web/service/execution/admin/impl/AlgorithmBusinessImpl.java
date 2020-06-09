@@ -160,7 +160,15 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                             parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":{\"type\":\""+secondParameterType[j]+"\",\"options\":[]},";
                         }
 
+                    } else if (secondParameterType[j].equals("null")){
+                    //如果为最后一个
+                    if (j==secondParameterType.length-1){
+                        parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":null";
                     }else{
+                        parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":null,";
+                    }
+                }
+                    else{
                         parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":{\"type\":\""+secondParameterType[j]+"\",\"options\":[";
                         String secondParameterValueString=secondParameterValue[j];
                         String[] secondParameterValueArr=secondParameterValueString.split(",");

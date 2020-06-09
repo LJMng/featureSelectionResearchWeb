@@ -476,23 +476,26 @@
                             <div class="row">
                                 <div class="col-md-2 offset-md-2">
                                     <label for='"secondParameterType"+m'>第二个值参数类型：</label>
-                                    <select id='"secondParameterType"+m' class="custom-select" v-model="secondParameterTypes[n-1][m-1]" name="paraType"  required>
+                                    <select id='"secondParameterType"+m' class="custom-select" v-model="secondParameterTypes[n-1][m-1]" name="paraType" @blur="confirmSecondParameterType(n,m)"  required>
                                         <option selected>text</option>
                                         <option>selection</option>
+                                        <option>null</option>
                                     </select>
                                 </div>
                                 <!--根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 -->
 
                                 <hr>
                             </div>
-                            <div class="row">
-                                <div class="col-md-4 offset-md-2">
-                                    <label for='"secondParameterValue"+m'>Web层第二个参数取值</label>
-                                    <input id='"secondParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondParameterValues[n-1][m-1]" @blur="confirmSecondParameterValue(n,m)" >
-                                </div>
-                                <div class="col-md-4">
-                                    <label for='"secondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>
-                                    <input id='"secondAlgorithmParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondAlgorithmParameterValues[n-1][m-1]" @blur="confirmSecondAlgorithmParameterValue(n,m)" >
+                            <div v-if="secondParameterTypes[n-1][m-1] === 'selection'">
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-2">
+                                        <label for='"secondParameterValue"+m'>Web层第二个参数取值</label>
+                                        <input id='"secondParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondParameterValues[n-1][m-1]" @blur="confirmSecondParameterValue(n,m)" >
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for='"secondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>
+                                        <input id='"secondAlgorithmParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondAlgorithmParameterValues[n-1][m-1]" @blur="confirmSecondAlgorithmParameterValue(n,m)" >
+                                    </div>
                                 </div>
                             </div>
                         </div>
