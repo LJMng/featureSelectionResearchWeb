@@ -275,7 +275,8 @@
                                                    :id="scheme.algorithmName+ps.name+'Procedure'"
                                                    :name="scheme.algorithmName+ps.name+'Check'+(index2+1)"
                                                    :checked="ps.state=='optional'?null:'checked'"
-                                                   :disabled="ps.state=='required'?'disabled':null">
+                                                   :disabled="ps.state=='required'?'disabled':null"
+                                                   @change="changeDisabled($event,scheme.algorithmName+ps.name)">
                                             <label class="custom-control-label"
                                                    :for="scheme.algorithmName+ps.name+'Procedure'">{{ps.name}}</label>
                                         </div>
@@ -539,6 +540,13 @@
             },
             changeProduct(event, index) {
                 this.tempSetting[index].data = event.target.value; //获取option对应的value值
+            },
+            changeDisabled: function (event,name) {
+                if ($(event.srcElement).prop("checked")) {
+                    $("select[name="+name+"]").removeAttr("disabled");
+                }else {
+                    $("select[name="+name+"]").attr("disabled","disabled");
+                }
             },
         },
         //页面生成前获取所有信息
