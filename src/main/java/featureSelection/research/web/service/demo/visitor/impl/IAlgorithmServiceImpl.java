@@ -1,9 +1,8 @@
 package featureSelection.research.web.service.demo.visitor.impl;
 
-import featureSelection.research.web.controller.demo.visitor.AlgorithmEexecuteController;
 import featureSelection.research.web.entity.demo.visitor.Algorithm;
 import featureSelection.research.web.mybatisMapper.demo.visitor.AlgorithmMapper;
-import featureSelection.research.web.service.demo.visitor.AlgorithmService;
+import featureSelection.research.web.service.demo.visitor.IAlgorithmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ import java.util.List;
  * @Date: 2020-04-12 20:46
  */
 @Service
-public  class AlgorithmServiceImpl implements AlgorithmService{
+public  class IAlgorithmServiceImpl implements IAlgorithmService {
 
     @Autowired
     private AlgorithmMapper algorithmMapper;

@@ -103,7 +103,7 @@
                 parameterScheme: {}
             },
             created: function () {
-                axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=schemesDetails").then((response) => {
+                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=schemesDetails").then((response) => {
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {
                             if (response.data[i].moduleKey == item) {
@@ -127,7 +127,8 @@
 
 
         function download() {
-            window.location.href = "http://localhost:8000/demo/download?datasetid=" + vue_parameterInfo.parameterScheme.dataset.datasetId;
+            window.location.href = demoVisitorBaseURL+"/download?datasetid=" +
+                vue_parameterInfo.parameterScheme.dataset.datasetId;
 
         }
 

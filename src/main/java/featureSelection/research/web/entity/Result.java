@@ -1,9 +1,18 @@
 package featureSelection.research.web.entity;
 
 
+/**
+ * @ClassName : Result
+ * @Description : 接口返回结果信息类
+ * @Author : WDD
+ * @Date: 2020-05-04 20:44
+ */
 public class Result<T> {
+    //状态码
     private Integer code;
+    //状态信息
     private String msg;
+    //返回数据
     private T data;
 
     public Result() {

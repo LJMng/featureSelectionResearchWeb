@@ -23,30 +23,29 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ *
  * @ClassName : DemoRabbimqComInfo
- * @Description : Demo系统rabbitmq通讯信息
+ * @Description :Demo系统rabbitmq通讯信息类，当需要调用算法服务端时，新建该类
  * @Author : WDD
  * @Date: 2020-05-19 15:58
  */
 public class DemoRabbimqComInfo {
     private final static Logger log = LoggerFactory.getLogger(DemoRabbimqComInfo.class);
-    private String demoRabbimqComTaskId;
-    private RabbitTemplate rabbitmqTemplate;
+    private String demoRabbimqComTaskId;  //当前连接任务信息id
+    private RabbitTemplate rabbitmqTemplate; //rabbitmqTemplate 模板,通过该对象发送信息至服务端
+    //任务状态，分别为READY：任务就绪 CONNECTED：与服务端连接成功 FINISH：任务完成
     private String statues = "READY";
-    private Object resultInfo;
-    private int algorithmId;
-    private Dataset dataset;
-    private String routingkey;
-    private String exchange;
-    private ParameterScheme parameterScheme;
+    private Object resultInfo; //任务结果信息
+    private int algorithmId; //当前使用算法id
+    private Dataset dataset; //任务使用数据集
+    private String routingkey; //服务端routingKey
+    private String exchange; //服务端exchange
+    private ParameterScheme parameterScheme; //该任务使用的参数方案
     private ParameterSchemeMapper parameterSchemeMapper = SpringUtil.getBean(ParameterSchemeMapper.class);
     private DatasetMapper datasetMapper = SpringUtil.getBean(DatasetMapper.class);
     private AlgorithmMapper algorithmMapper = SpringUtil.getBean(AlgorithmMapper.class);
@@ -58,26 +57,40 @@ public class DemoRabbimqComInfo {
     }
 
 
+    /**
+     * 根据schemeId和algorithmId初始化通讯信息类信息
+     * 设置demoRabbimqComTaskId、routingkey、algorithmId、exchange、dataset、parameterScheme、rabbitmqTemplate
+     * @param schemeId：参数方案id
+     * @param algorithmId：算法id
+     */
     public DemoRabbimqComInfo(int schemeId, int algorithmId) {
         Algorithm algorithm = algorithmMapper.getAlgorithmInfoById(algorithmId);
+
+        //根据算法id查询该算法对应的服务端rabbitmq的配置，并根据配置信息实例化connectionFactory类
         String routingkey = algorithm.getAlgorithmCallDemoRoutingkey();
-        this.routingkey = routingkey;
         String host = algorithm.getAlgorithmCallHost();
         String exchange = algorithm.getAlgorithmCallExchange();
         int port = Integer.parseInt(algorithm.getAlgorithmCallPort());
         String username = algorithm.getAlgorithmCallUsername();
         String password = algorithm.getAlgorithmCallPassword();
         CachingConnectionFactory connectionFactory = RabbitmqUtil.getConnectionFactory(host, port, username, password, exchange);
+
         ParameterScheme parameterScheme = parameterSchemeMapper.getDataSetAndSchemeBySchemeId(schemeId);
 
+        this.routingkey = routingkey;
         this.algorithmId = algorithmId;
         this.exchange = exchange;
-        this.rabbitmqTemplate = RabbitmqUtil.getRabbitTemplate(connectionFactory);
+        //设置demoRabbimqComTaskId=算法名+当前时间戳
         this.demoRabbimqComTaskId = algorithm.getAlgorithmNameMapper() + System.currentTimeMillis();
         this.dataset = datasetMapper.getDatasetInfo(parameterScheme.getDataset().getDatasetId());
         this.parameterScheme = parameterSchemeMapper.getSchemeWithParameterValueAndDatasetById(schemeId);
+        //通过工具类由connectionFactory实例化rabbitmqTemplate
+        this.rabbitmqTemplate = RabbitmqUtil.getRabbitTemplate(connectionFactory);
     }
 
+    /**
+     * 向算法服务端建立连接
+     */
     public void sendRabbitmqConnectRequestInfo() {
         AlgorithmCallTaskInfo connectenity = schemeInfoToRequestEnity();
         connectenity.setLocalRabbitmqInfo(this.localDemoRabbitmqInfo);
@@ -93,9 +106,8 @@ public class DemoRabbimqComInfo {
     }
 
     /**
-     * 根据方案信息封装发送至rabbitmq建立通讯的请求信息实体
-     *
-     * @return 发送至rabbitmq建立通讯的请求信息实体
+     * 封装发送至rabbitmq建立通讯的请求信息实体
+     * @return AlgorithmCallTaskInfo：发送至rabbitmq建立通讯的请求信息实体
      */
     private AlgorithmCallTaskInfo schemeInfoToRequestEnity() {
 
@@ -124,43 +136,35 @@ public class DemoRabbimqComInfo {
             else if (parameterSchemeValue.getParameter().getParameterType().equals("selection")) {
                 String parameterInputWebKey = parameterSchemeValue.getParameterInputValue();
                 String parameterOptionWebKey = parameterSchemeValue.getParameterOptionValue();
-                String parameterInputValue = algorithmMapperValueUtil.getParameterValue(algorithmId,paramterid,
-                        parameterInputWebKey,null);
-                basicSettingValue.put("input", parameterInputValue);
-                //正则表达式，检验option是否为数字，如果是数字就不需要寻找对应的value，如果为文字则需要寻找对应的value
+                String parameterOptionValue = algorithmMapperValueUtil.getParameterValue(algorithmId,paramterid,
+                        parameterOptionWebKey,null);
+                //先插入select的方法
+                basicSettingValue.put("option",parameterOptionValue);
+                //正则表达式，检验input是否为数字，一般为数字
                 Pattern pattern = Pattern.compile("-?[0-9]+\\.?[0-9]*");
-                Matcher isNum = pattern.matcher(parameterOptionWebKey);
-                //匹配成功,option为数字
+                Matcher isNum = pattern.matcher(parameterInputWebKey);
+                //匹配成功,input为数字
                 if (isNum.matches()) {
-                    basicSettingValue.put("option", Integer.parseInt(parameterOptionWebKey));
-                }else{
-                    //寻找option对应的取值
-                    String parameterOptionValue=algorithmMapperValueUtil.getParameterValue(algorithmId,paramterid,
-                            parameterInputWebKey,parameterOptionWebKey);
-                    basicSettingValue.put("option",parameterOptionValue);
+                    basicSettingValue.put("input", Integer.parseInt(parameterInputWebKey));
                 }
             }
             //radio类型的参数：即单选框
             else if (parameterSchemeValue.getParameter().getParameterType().equals("radio")) {
-                String parameterWebKey = parameterSchemeValue.getParameterInputValue();
+                String parameterWebKey = parameterSchemeValue.getParameterOptionValue();
                 String parameterMapperName = algorithmMapperValueUtil.getParameterValue(algorithmId,
                         paramterid, parameterWebKey, null);
-                basicSettingValue.put("input",parameterMapperName);
+                basicSettingValue.put("option",parameterMapperName);
             }
             //checkbox类型的参数：即多选框
             else if (parameterSchemeValue.getParameter().getParameterType().equals("checkbox")) {
-                String[] parameterWebKeys = parameterSchemeValue.getParameterInputValue().split(",");
-                StringBuilder parameterMapperName =new StringBuilder();
-                for (int i = 0; i <=parameterWebKeys.length - 2; i++) {
-                    parameterMapperName.append(algorithmMapperValueUtil.getParameterValue(algorithmId,
-                            paramterid, parameterWebKeys[i], null) + ",");
+                String[] parameterWebKeys = parameterSchemeValue.getParameterOptionValue().split(",");
+                List<String>parameterMapperNames=new ArrayList<>();
+
+                for (int i = 0; i <parameterWebKeys.length; i++) {
+                    parameterMapperNames.add(algorithmMapperValueUtil.getParameterValue(algorithmId,
+                            paramterid, parameterWebKeys[i], null));
                 }
-                //插入最后一个值，末尾不带","
-                parameterMapperName.append(algorithmMapperValueUtil.getParameterValue(algorithmId,
-                        paramterid,
-                        parameterWebKeys[parameterWebKeys.length - 1],
-                        null));
-                basicSettingValue.put("input",parameterMapperName);
+                basicSettingValue.put("option",parameterMapperNames);
             }
             basicSettings.put(parameterSchemeValue.getParameter().getParameterNameMapper(),basicSettingValue);
         }
@@ -197,22 +201,9 @@ public class DemoRabbimqComInfo {
     }
 
     /**
-     * @param row                     数据为数据集第几行
-     * @param data                    数据
-     * @param requestCommonData(数据实体)
-     * @return
+     * 向算法服务端发送数据集信息
      * @throws IOException
      */
-    private JSONObject RequestJsonData(int row, int[] data, AlgorithmCallTaskInfo requestCommonData) throws IOException {
-        requestCommonData.setLine(row);
-        requestCommonData.setPartTotalLine(data.length);
-        requestCommonData.setData(data);
-        String jsonString = JSONObject.toJSONString(requestCommonData);
-        //将json字符串转换为json对象
-        JSONObject returnData = JSONObject.parseObject(jsonString);
-        return returnData;
-    }
-
     public void sendDataset() throws IOException {
         int[][] data = new DemoCsvUtil(dataset.getdatasetFile()).csvToIntArray();
         //请求数据实体
@@ -229,6 +220,26 @@ public class DemoRabbimqComInfo {
             log.info("article" + i + "data：" + RequestJsonData.toJSONString());
         }
     }
+
+
+    /**
+     * 封装数据集信息
+     * @param row  数据为数据集第几行
+     * @param data 数据
+     * @param requestCommonData(数据实体)
+     * @return
+     * @throws IOException
+     */
+    private JSONObject RequestJsonData(int row, int[] data, AlgorithmCallTaskInfo requestCommonData) throws IOException {
+        requestCommonData.setLine(row);
+        requestCommonData.setPartTotalLine(data.length);
+        requestCommonData.setData(data);
+        String jsonString = JSONObject.toJSONString(requestCommonData);
+        //将json字符串转换为json对象
+        JSONObject returnData = JSONObject.parseObject(jsonString);
+        return returnData;
+    }
+
 
     public void setResultInfo(Object resultInfo) {
         this.resultInfo = resultInfo;

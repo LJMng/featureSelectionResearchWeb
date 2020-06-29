@@ -1,14 +1,15 @@
 package featureSelection.research.web.entity.demo.visitor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * @ClassName : ApplyAccount
- * @Description : VIP申请单
+ * @Description : 会员申请单实体类
  * @Author : WDD
  * @Date: 2020-04-13 15:00
  */
-public class ApplyAccount {
+public class ApplyAccount implements Serializable {
     private int applyId;
     private String applyEmail;
     private String applyReason;

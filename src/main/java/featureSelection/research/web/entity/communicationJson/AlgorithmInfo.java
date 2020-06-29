@@ -2,7 +2,7 @@ package featureSelection.research.web.entity.communicationJson;
 
 /**
  * @ClassName : AlgorithmInfo
- * @Description : 算法信息
+ * @Description : 传输用算法信息
  * @Author : WDD
  * @Date: 2020-04-14 15:03
  */

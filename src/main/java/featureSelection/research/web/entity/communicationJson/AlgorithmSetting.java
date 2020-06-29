@@ -6,13 +6,15 @@ import java.util.Map;
 
 /**
  * @ClassName : AlgorithmSetting
- * @Description : 算法设置
+ * @Description : 算法设置实体类
  * @Author : WDD
  * @Date: 2020-04-14 15:11
  */
 public class AlgorithmSetting {
+    //算法基础参数设置信息
     @JSONField(name = "basic")
     private Map<String,Map<String,Object>> basic;
+    //算法步骤设置信息
     @JSONField(name = "procedure")
     private Map<String,Map<String,Object>>procedure;
 

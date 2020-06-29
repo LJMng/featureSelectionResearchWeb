@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @ClassName : LocalExecutionRabbitmqInfo
- * @Description :
+ * @Description :本地Execution系统rabbitmq信息
  * @Author : WDD
  * @Date: 2020-05-20 17:12
  */

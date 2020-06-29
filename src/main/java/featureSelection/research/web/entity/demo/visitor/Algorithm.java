@@ -31,6 +31,7 @@ public  class Algorithm {
     private List<ParameterScheme>parameterSchemes;
     private List<Parameter>parameters;
     private List<Dataset>datasets;
+    //前端需要使用到的一个数据段
     private String parameterSchemeIndex="-1";
 
     public int getAlgorithmId() {

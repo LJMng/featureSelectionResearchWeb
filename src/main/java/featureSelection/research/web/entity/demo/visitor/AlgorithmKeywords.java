@@ -1,5 +1,6 @@
 package featureSelection.research.web.entity.demo.visitor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -8,7 +9,7 @@ import java.sql.Timestamp;
  * @Author : WDD
  * @Date: 2020-04-01 16:53
  */
-public class AlgorithmKeywords {
+public class AlgorithmKeywords implements Serializable {
     private Algorithm algorithm;
     private String keyword;
     private Timestamp ut;

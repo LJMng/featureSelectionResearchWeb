@@ -177,7 +177,8 @@
                         }]
                     });
                     myChart.showLoading()
-                    $.post("http://localhost:8000/demo/transmitExcuteInfo", { "algorithmId": toPostAlgorithmid, "parameterSchemeId": toPostParameterId }, function (data) {
+                    $.post(demoVisitorBaseURL+"/transmitExcuteInfo", { "algorithmId": toPostAlgorithmid,
+                        "parameterSchemeId": toPostParameterId }, function (data) {
                         myChart.setOption({
                             title: [{
                                 text: 'Reduct',
@@ -196,7 +197,7 @@
                 },
             },
             created: function () {
-                axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=algorithms").then((response) => {
+                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=algorithms").then((response) => {
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {
                             if (response.data[i].moduleKey == item) {
@@ -221,7 +222,7 @@
 
         $(function () {
             $('#schemesdetailspop').load('popups/demo/visitor/schemesDetails.html')
-            $.get("http://localhost:8000/demo/getAllAlgorithmInfo", function (data) {
+            $.get(demoVisitorBaseURL+"/getAllAlgorithmInfo", function (data) {
                 vue_demo_algorithms.algorithms = data;
             });
             $('#algorithmdetailspop').load('popups/demo/visitor/algorithmDetails.html');

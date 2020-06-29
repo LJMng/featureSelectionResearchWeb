@@ -60,7 +60,7 @@
                already:'',
             },
             created: function () {
-                axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=register").then((response) => {
+                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=register").then((response) => {
                     console.log(response.data)
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {
@@ -83,7 +83,8 @@
             var email = $('#email').val();
             var password = $('#password').val();
             var apply = $('#apply').val();
-            $.post("http://localhost:8000/applyAccount", { "email": email, "password": password, "apply": apply }, function (response) {
+            $.post(demoVisitorBaseURL+"/applyAccount", { "email": email, "password": password, "apply": apply }, function
+                (response) {
                 console.log(response);
                 if (response.code == 200) {
                     $('#status').show();

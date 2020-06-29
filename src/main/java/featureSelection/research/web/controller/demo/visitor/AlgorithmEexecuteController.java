@@ -1,18 +1,13 @@
 package featureSelection.research.web.controller.demo.visitor;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import featureSelection.research.web.common.service.DemoRabbitmqComServiceSingleton;
 import featureSelection.research.web.entity.communicationJson.rabbitmqcominfo.DemoRabbimqComInfo;
 import featureSelection.research.web.entity.demo.visitor.Algorithm;
 import featureSelection.research.web.entity.demo.visitor.Dataset;
-import featureSelection.research.web.service.demo.visitor.impl.AlgorithmServiceImpl;
+import featureSelection.research.web.service.demo.visitor.impl.IAlgorithmServiceImpl;
 import featureSelection.research.web.service.demo.visitor.impl.DatasetServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
@@ -28,16 +23,15 @@ import static java.lang.Thread.sleep;
  */
 
 
-@Controller
-@RequestMapping(value = "/demo")
+@RestController
+@RequestMapping(value = "/demo/visitor")
 public class  AlgorithmEexecuteController {
     @Autowired
-    private AlgorithmServiceImpl algorithmserviceImpl;
+    private IAlgorithmServiceImpl algorithmserviceImpl;
     @Autowired
     private DatasetServiceImpl datasetServiceImpl;
 
     @PostMapping(value = "/transmitExcuteInfo")
-    @ResponseBody
     public Object reciveExecuteInfo(@RequestParam("algorithmId") String algorithmId,
                                     @RequestParam("parameterSchemeId") String parameterSchemeId) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         Object result=new Object();
@@ -61,15 +55,19 @@ public class  AlgorithmEexecuteController {
         }
     }
 
-    @ResponseBody
     @GetMapping("getAllAlgorithmInfo")
     public List<Algorithm>getAllAlgorithmInfo(){
         return algorithmserviceImpl.getAllAlgorithmInfo();
     }
 
+    /**
+     * 下载方案使用的数据集 接口
+     * @param datasetid
+     * @param response
+     * @throws IOException
+     */
     @GetMapping(value="/download")
     public void download(@RequestParam(value="datasetid")String datasetid,
-                         HttpServletRequest request,
                          HttpServletResponse response) throws IOException {
         Dataset datasetinfo= datasetServiceImpl.getDatesetInfo(Integer.parseInt(datasetid));
         System.out.println(datasetinfo.toString());

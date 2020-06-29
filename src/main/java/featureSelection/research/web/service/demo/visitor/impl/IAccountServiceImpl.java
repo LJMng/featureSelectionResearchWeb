@@ -6,7 +6,7 @@ import featureSelection.research.web.entity.demo.visitor.ApplyAccount;
 import featureSelection.research.web.entity.execution.admin.Account;
 import featureSelection.research.web.mybatisMapper.demo.visitor.AccountMapper;
 import featureSelection.research.web.mybatisMapper.demo.visitor.ApplyAccountMapper;
-import featureSelection.research.web.service.demo.visitor.AccountService;
+import featureSelection.research.web.service.demo.visitor.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -18,7 +18,7 @@ import org.springframework.util.DigestUtils;
  * @Date: 2020-04-13 15:17
  */
 @Service
-public class AccountServiceImpl implements AccountService {
+public class IAccountServiceImpl implements IAccountService {
 
     @Autowired private ApplyAccountMapper applyAccountMapper;
 

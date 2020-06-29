@@ -22,7 +22,10 @@ import java.util.Map;
 public class ExecutionRabbitmqComServiceSingleton {
     private final static Logger log = LoggerFactory.getLogger(ExecutionRabbitmqComServiceSingleton.class);
 
-    //放置Rabbitmq连接信息
+    /**
+     * Rabbitmq服务处理类集合
+     * String:ExecutionRabbitmqComInfo中的executionRabbimqComInfos，由调用算法名+调用时间戳组成
+     */
     private static Map<String, ExecutionRabbitmqComInfo> executionRabbimqComInfos = new HashMap<>();
 
     public static void addExecutionRabbitmqComInfo(ExecutionRabbitmqComInfo executionRabbitmqComInfo) {
@@ -35,6 +38,10 @@ public class ExecutionRabbitmqComServiceSingleton {
         executionRabbimqComInfos.remove(rabbitmqComInfoTaskId);
     }
 
+    /**
+     * 监听算法服务端返回队列中的返回的信息
+     * @param info：返回的信息
+     */
     @RabbitListener(queues = "executionResultReciverQueue")
     public void listen(JSONObject info) {
         log.info("reciver connect response" + info);

@@ -18,7 +18,7 @@
     </resultMap>
 
     <select id="getSchemeProceduresBySchemeId" resultMap="schemeProcedureAndProcedureSettings" parameterType="Integer">
-        select sp.*,ps.* from scheme_procedure sp,procedure_settings ps where ps.id=sp.procedure_setting_id AND
+        select sp.*,ps.* from scheme_procedure sp,procedure_settings ps where ps.id=sp.procedure_settings_id AND
         sp.scheme_id=#{schemeid}
     </select>
 </mapper>

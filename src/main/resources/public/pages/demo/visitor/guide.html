@@ -37,7 +37,7 @@
                 button_text2: ""
             },
             created: function () {
-                axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=guide").then((response) => {
+                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=guide").then((response) => {
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {
                             if (response.data[i].moduleKey == item) {

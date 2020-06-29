@@ -1,5 +1,6 @@
 package featureSelection.research.web.entity.demo.visitor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * @Author : WDD
  * @Date: 2020-03-30 21:33
  */
-public class Dataset {
+public class Dataset{
     private int datasetId;
     private String datasetName;
     private String datasetDescription;

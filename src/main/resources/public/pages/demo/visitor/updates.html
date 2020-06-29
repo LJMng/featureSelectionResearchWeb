@@ -21,7 +21,7 @@
                 updates: []
             },
             created: function () {
-                axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=updates").then((response) => {
+                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=updates").then((response) => {
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {
                             if (response.data[i].moduleKey == item) {
@@ -43,7 +43,7 @@
         });
 
         function getUpdateInfo() {
-            $.get("http://localhost:8000/getAllUpdateInfoList", function (response) {
+            $.get(demoVisitorBaseURL+"/getAllUpdateInfoList", function (response) {
                 if(response.code==200)
                 vue_demo_update.updates = response.data;
             });

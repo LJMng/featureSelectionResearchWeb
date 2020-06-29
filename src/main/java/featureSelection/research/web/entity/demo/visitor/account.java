@@ -1,12 +1,14 @@
 package featureSelection.research.web.entity.demo.visitor;
 
+import java.io.Serializable;
+
 /**
  * @ClassName : account
- * @Description : 用户类
+ * @Description : 用户实体类
  * @Author : WDD
  * @Date: 2020-05-04 20:44
  */
-public class account {
+public class account implements Serializable {
     private int accountId;
     private String accountName;
     private String accountPassword;

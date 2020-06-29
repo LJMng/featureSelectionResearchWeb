@@ -4,7 +4,7 @@ package featureSelection.research.web.entity.demo.visitor;
 
 import java.io.Serializable;
 
-public class PageElement{
+public class PageElement implements Serializable{
     private String htmlName;
     private String moduleKey;
     private String chValue;

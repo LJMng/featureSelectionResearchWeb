@@ -2,20 +2,20 @@ package featureSelection.research.web.service.demo.visitor.impl;
 
 import featureSelection.research.web.entity.demo.visitor.PageElement;
 import featureSelection.research.web.mybatisMapper.demo.visitor.PageElementMapper;
-import featureSelection.research.web.service.demo.visitor.PageElementService;
+import featureSelection.research.web.service.demo.visitor.IPageElementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
- * @ClassName : pageElementServiceImpl
+ * @ClassName : IPageElementServiceImpl
  * @Description : 页面元素服务类
  * @Author : WDD
  * @Date: 2020-04-24 11:45
  */
 @Service
-public class pageElementServiceImpl implements PageElementService {
+public class IPageElementServiceImpl implements IPageElementService {
 
     @Autowired
     private PageElementMapper pageElementMapper;

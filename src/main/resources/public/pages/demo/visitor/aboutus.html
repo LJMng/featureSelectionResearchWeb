@@ -65,7 +65,7 @@
                 pages: '',
             },
             created: function () {
-                axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=aboutus").then((response) => {
+                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=aboutus").then((response) => {
                     console.log(response.data)
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {

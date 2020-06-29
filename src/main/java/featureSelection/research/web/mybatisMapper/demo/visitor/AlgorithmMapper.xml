@@ -3,8 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="featureSelection.research.web.mybatisMapper.demo.visitor.AlgorithmMapper">
-
-
     <resultMap id="algorithmInfo" type="featureSelection.research.web.entity.demo.visitor.Algorithm">
         <id column="algorithm_id" property="algorithmId"></id>
         <result column="algorithm_name" property="algorithmName"></result>

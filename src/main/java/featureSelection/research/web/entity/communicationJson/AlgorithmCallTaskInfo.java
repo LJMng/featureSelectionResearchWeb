@@ -2,12 +2,44 @@ package featureSelection.research.web.entity.communicationJson;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import featureSelection.research.web.entity.communicationJson.localrabbitmqinfo.LocalRabbitmqInfo;
-
 import java.util.Arrays;
 
 /**
+ * 示例：
+ * {
+   "id": " Client1-GA-IP-NEC-1586701877",
+   "dataset-name": "test.data",
+   "part": 0,
+   "column": 5,
+   "part-data-size": 30,
+   "algorithm-info": {
+   "alg": "GA-IP-NEC(Dynamic)-External",
+   "setting": {
+   "basic": {
+   "[GA] Population": {
+   "input": "100",
+   "option": null
+     },
+   "[GA] Chromosome switch number": {
+   "input": "0.9",
+   "option": null
+   },
+   },
+   "procedure": {
+   "[GA] Initiate": {
+   "data":
+   "tester.impl.optimization.geneticAlgorithm.component.roughEquivalentClassBased.
+    original.gaInitiate.GeneticAlgorithmInitiateProcedureContainer4REC",
+   "selected": true
+   },
+   }
+   }
+   },
+   "previous-reducts": null,
+   "run-times": 1,
+   "attributes": [ 1, 2, 3, 4] }
  * @ClassName : AlgorithmCallTaskInfo
- * @Description : 调用服务器算法服务数据传输格式
+ * @Description : 调用服务器算法服务数据传输格式实体类
  * @Author : WDD
  * @Date: 2020-04-13 21:32
  */
@@ -31,6 +63,7 @@ public class AlgorithmCallTaskInfo {
     private int[]data;
     private String attributes;
     @JSONField(name = "rabbitmqInfo")
+
     private LocalRabbitmqInfo localRabbitmqInfo;
     public String getId() {
         return id;

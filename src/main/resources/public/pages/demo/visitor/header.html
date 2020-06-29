@@ -49,7 +49,7 @@
                 login:''
             },
             created: function () {
-                axios.get(baseURL + "/demo/getPageelementByHtmlName?htmlname=header").then((response) => {
+                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=header").then((response) => {
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {
                             if (response.data[i].moduleKey == item) {
