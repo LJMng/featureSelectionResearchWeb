@@ -53,15 +53,15 @@ public class DemoRabbitmqComServiceSingleton {
     @RabbitListener(queues = "demoResultReciverQueue")
     public void listen(JSONObject info) {
         log.info("reciver connect response" + info);
-        //判断连接任务是否存在
+        //1.判断连接任务是否存在
         if (demoRabbimqComInfos.get(info.get("id")) != null) {
-            //获取请求连接信息类
+            //2.1获取请求连接信息类
             DemoRabbimqComInfo demoRabbimqComInfo = demoRabbimqComInfos.get(info.get("id"));
-            //判断是否为连接请求结果
+            //2.2判断是否为连接请求结果
             if (info.get("connect-status") != null) {
-                //判断连接请求是否成功
+                //3.判断连接请求是否成功
                 if (info.get("connect-status").equals(200)) {
-                    //判断状态是否为准备状态（即服务等待连接状态）
+                    //4.判断状态是否为准备状态（即服务等待连接状态）
                     if (demoRabbimqComInfo.getStatues().equals("READY")) {
                         try {
                             log.info("connected");
@@ -81,12 +81,12 @@ public class DemoRabbitmqComServiceSingleton {
                     log.info("connect falied");
                 }
             }
-            //判断是否存在数据传输错误信息
+            //5.判断是否存在数据传输错误信息
             if (info.get("data-error-info") != null) {
                 demoRabbimqComInfos.get(info.get("id")).setStatues("dataerror");
                 log.error(info.get("data-error-info").toString());
             }
-            //如果信息中包含退出信息，则任务完成，接收任务结果并设置任务完成
+            //6.如果信息中包含退出信息，则任务完成，接收任务结果并设置任务完成
             if (info.get("exitInfos")!=null){
                 demoRabbimqComInfo.setResultInfo(info);
                 demoRabbimqComInfo.setStatues("FINISH");

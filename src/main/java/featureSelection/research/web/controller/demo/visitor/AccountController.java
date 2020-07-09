@@ -39,8 +39,7 @@ public class AccountController {
         applyAccount.setApplyEmail(email);
         applyAccount.setApplyReason(apply);
         applyAccount.setapplyPassword(password);
-        accountService.apply(applyAccount);
-        return ResultUtil.success();
+        return accountService.apply(applyAccount);
 
     }
 

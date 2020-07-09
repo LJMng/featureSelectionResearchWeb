@@ -19,6 +19,11 @@ public class ISchemeProcedureServiceImpl implements ISchemeProcedureService {
 
     @Autowired private SchemeProcedureMapper schemeProcedureMapper;
 
+    /**
+     *
+     * @param schemeid
+     * @return 根据方案id获取方案信息
+     */
     @Override
     public List<SchemeProcedure> getSchemeProceduresBySchemeId(int schemeid) {
         return schemeProcedureMapper.getSchemeProceduresBySchemeId(schemeid);

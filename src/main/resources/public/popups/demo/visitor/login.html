@@ -27,9 +27,13 @@
                     <input type="password" class="form-control" id="password">
                 </div>
                 <button class="btn btn-primary"><a onclick="login()">{{log}}</a></button>
-                <small id="emailHelp" class="form-text text-muted">{{notaccount}}</small>
-                <small id="emailHelp" class="form-text text-muted" data-dismiss="modal"><a
-                        onclick="toRegister()" href="#">{{register}}</a></small>
+                <small class="form-text text-muted">{{notaccount}}</small>
+                <small class="form-text text-muted" data-dismiss="modal">
+                    <a onclick="toRegister()" href="#">{{register}}</a>
+                </small>
+                <small id="forget" class="form-text text-muted">
+                    <a href="#">forgetPassWord</a>
+                </small>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

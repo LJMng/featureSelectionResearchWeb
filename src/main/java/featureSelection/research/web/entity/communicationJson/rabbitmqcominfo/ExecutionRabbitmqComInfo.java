@@ -35,26 +35,35 @@ import java.io.IOException;
 public class ExecutionRabbitmqComInfo {
     private final static Logger log= LoggerFactory.getLogger(ExecutionRabbitmqComInfo.class);
 
-    private String executionRabbimqComTaskId;
-    private RabbitTemplate rabbitmqTemplate;
+    private String executionRabbimqComTaskId; //当前连接任务信息id
+    private RabbitTemplate rabbitmqTemplate;//rabbitmqTemplate 模板,通过该对象发送信息至服务端
+    //任务状态，分别为READY：任务就绪 CONNECTED：与服务端连接成功 FINISH：任务完成
     private String statues = "READY";
-    private Object resultInfo;
-    private Dataset dataset;
-    private String connectRoutingkey;
-    private String sendRoutingkey;
-    private String exchange;
-    private TaskInfo taskInfo;
+    private Object resultInfo; //任务结果信息
+    private Dataset dataset;//任务使用数据集
+    private String connectRoutingkey;//与服务端进行连接时发送队列所绑定的routingKey
+    private String sendRoutingkey;//与服务端进行数据传输时数据传输队列所绑定的routingKey
+    private String exchange;//服务端exchange
+    private TaskInfo taskInfo; //任务信息
     //通过工具类取得bean
     private TaskInfoMapper taskInfoMapper = (TaskInfoMapper) SpringUtil.getBean(TaskInfoMapper.class);
     private DatasetMapper datasetMapper = (DatasetMapper) SpringUtil.getBean(DatasetMapper.class);
     private AlgorithmMapper algorithmMapper = (AlgorithmMapper) SpringUtil.getBean(AlgorithmMapper.class);
     private TaskResultMapper taskResultMapper = (TaskResultMapper) SpringUtil.getBean(TaskResultMapper.class);
     private EmailUtil emailUtil = (EmailUtil) SpringUtil.getBean(EmailUtil.class);
+    //excution系统使用的rabbitmq信息
     private LocalExecutionRabbitmqInfo localExecutionRabbitmqInfo =
             (LocalExecutionRabbitmqInfo) SpringUtil.getBean(LocalExecutionRabbitmqInfo.class);
 
+    /**
+     * 根据taskId初始化通讯信息类信息
+     * 设置executionRabbimqComTaskId、routingkey、algorithmId、exchange、dataset、、rabbitmqTemplate
+     * @param taskId：任务id
+     */
     public ExecutionRabbitmqComInfo(int taskId){
+        //获取任务信息
         TaskInfo taskInfo = taskInfoMapper.getTaskInfoByTaskId(taskId);
+
         JSONObject taskParamaterInfo=JSONObject.parseObject(taskInfo.getAlgorithmParameters());
         log.info(taskParamaterInfo.toString());
         int algorithmid = taskInfo.getAlgorithmId();
@@ -66,7 +75,9 @@ public class ExecutionRabbitmqComInfo {
         int port = Integer.parseInt(algorithm.getAlgorithmCallPort());
         String username = algorithm.getAlgorithmCallUsername();
         String password = algorithm.getAlgorithmCallPassword();
+
         CachingConnectionFactory connectionFactory = RabbitmqUtil.getConnectionFactory(host, port, username, password, exchange);
+
         this.executionRabbimqComTaskId = taskParamaterInfo.getString("id");
         this.exchange=exchange;
         this.taskInfo=taskInfoMapper.getTaskInfoByTaskId(taskId);
@@ -77,18 +88,18 @@ public class ExecutionRabbitmqComInfo {
     }
 
     /**
-     * 发送rabbitmq连接请求信息
+     * 发送rabbitmq连接请求信息的方法
      */
-    public void sendRabbitmqConnectRequestInfo(){
-        String localRabbitmqInfoString= JSON.toJSONString(this.localExecutionRabbitmqInfo);
-        JSONObject localRabbitmqInfo=JSONObject.parseObject(localRabbitmqInfoString);
-        JSONObject taskParamaterInfo=JSONObject.parseObject(taskInfo.getAlgorithmParameters());
-        taskParamaterInfo.put("rabbitmqInfo",localRabbitmqInfo);
-        //发送信息请求与rabbitmq建立通讯
-        log.info("进行连接请求,请求数据：" + taskParamaterInfo.toJSONString());
-        this.rabbitmqTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
-        this.rabbitmqTemplate.convertAndSend(exchange, connectRoutingkey,taskParamaterInfo);
-    }
+     public void sendRabbitmqConnectRequestInfo(){
+     String localRabbitmqInfoString= JSON.toJSONString(this.localExecutionRabbitmqInfo);
+     JSONObject localRabbitmqInfo=JSONObject.parseObject(localRabbitmqInfoString);
+     JSONObject taskParamaterInfo=JSONObject.parseObject(taskInfo.getAlgorithmParameters());
+     taskParamaterInfo.put("rabbitmqInfo",localRabbitmqInfo);
+     //发送信息请求与rabbitmq建立通讯
+     log.info("进行连接请求,请求数据：" + taskParamaterInfo.toJSONString());
+     this.rabbitmqTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+     this.rabbitmqTemplate.convertAndSend(exchange, connectRoutingkey,taskParamaterInfo);
+     }
 
 
 

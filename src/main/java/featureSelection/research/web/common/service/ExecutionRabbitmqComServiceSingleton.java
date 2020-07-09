@@ -14,7 +14,8 @@ import java.util.Map;
 
 /**
  * @ClassName : ExecutionRabbitmqComServiceSingleton
- * @Description : Execution系统进行通信服务单例
+ * @Description : Execution系统通过rabbitmq进行通信服务单例,管理所有的通讯信息类
+ * 监听算法服务端返回的信息，找到对应的通讯信息类进行下一步处理（发送数据或完成任务）
  * @Author : WDD
  * @Date: 2020-05-20 11:27
  */

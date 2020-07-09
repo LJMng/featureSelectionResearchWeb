@@ -2,14 +2,14 @@ server:
   port: 8000
 # Spring
 spring:
-  rabbitmq:
-    port: 5672
-    host: 192.168.99.100
-    username: guest
-    password: guest
   application:
     name: biz-publisher
   # 服务器邮箱
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: featureselectionreciver
+    password: reciver
   mail:
     host: smtp.qq.com
     username: 1009710828@qq.com
@@ -25,6 +25,7 @@ spring:
     default-encoding: UTF-8
     test-connection: true
 
+
 # MyBatis
 mybatis:
   mapper-locations: classpath:featureselection/research/web/mybatisMapper/*.xml
@@ -33,5 +34,5 @@ mybatis:
 # Logback
 logging:
   path: '/logs'
-#  level:
-#    featureSelection.research.web.mybatisMapper: debug
+  level:
+    featureSelection.research.web.mybatisMapper: debug

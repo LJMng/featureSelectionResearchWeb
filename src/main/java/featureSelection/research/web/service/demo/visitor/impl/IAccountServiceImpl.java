@@ -28,13 +28,23 @@ public class IAccountServiceImpl implements IAccountService {
      * @param applyAccount 账号信息
      */
     @Override
-    public void apply(ApplyAccount applyAccount){
+    public Result apply(ApplyAccount applyAccount){
+        if(accountMapper.getAccountByEmail(applyAccount.getApplyEmail())!=null){
+            return ResultUtil.error(400,"this email had registered");
+        }
         //md5加密密码
         String md5password=DigestUtils.md5DigestAsHex(applyAccount.getapplyPassword().getBytes());
         applyAccount.setapplyPassword(md5password);
         applyAccountMapper.insertApplyAccount(applyAccount);
+        return ResultUtil.success();
     }
 
+    /**
+     * 登陆验证
+     * @param email
+     * @param password
+     * @return
+     */
     @Override
     public Result loginByEmail(String email, String password) {
 

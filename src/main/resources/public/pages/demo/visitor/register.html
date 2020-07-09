@@ -37,6 +37,9 @@
                         {{register}}
                     </button>
                 </div>
+                <div id="registerError" class="alert alert-danger" style="text-align: center">
+
+                </div>
                 <div id="status" class="alert alert-success">
                     <a href="#" class="alert-link" onclick="backIndex()">{{registersuccess}}</a>
                 </div>
@@ -77,6 +80,7 @@
             }
         });   
         $(function () {
+            $('#registerError').hide();
             $('#status').hide();
         })
         function register() {
@@ -88,6 +92,9 @@
                 console.log(response);
                 if (response.code == 200) {
                     $('#status').show();
+                }else {
+                    $("#registerError").text(response.msg);
+                    $("#registerError").show();
                 }
             });
         }

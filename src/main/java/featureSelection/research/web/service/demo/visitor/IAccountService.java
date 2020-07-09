@@ -4,6 +4,6 @@ import featureSelection.research.web.entity.Result;
 import featureSelection.research.web.entity.demo.visitor.ApplyAccount;
 
 public interface IAccountService {
-    public void apply(ApplyAccount applyAccount);
+    public Result apply(ApplyAccount applyAccount);
     public Result loginByEmail(String email, String password);
 }
