@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Execution系统中与页面基础内容展示的Service
  * @author Stephen
  * @date 2020/4/21 16:36
  */
@@ -25,7 +26,7 @@ public interface IHtmlElementService {
 
     /**
      * 获取所有算法的参数的信息
-     * @return Map<Integer, List<Parameter>> key为algorithmId
+     * @return Map<Integer, List<Parameter>> key为algorithmId，value为该算法所有参数设置的信息
      */
     Map<Integer, List<Parameter>> getParametersList();
 
@@ -35,5 +36,9 @@ public interface IHtmlElementService {
      */
     Map<Integer, Dataset> getDatasetList();
 
+    /**
+     * 获取算法任务步骤设置的信息
+     * @return Map<Integer,List<ProcedureSettings>> key为算法id，value为改算法所有步骤设置的信息
+     */
     Map<Integer,List<ProcedureSettings>> getProcedureSettingList();
 }

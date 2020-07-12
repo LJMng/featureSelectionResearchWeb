@@ -46,6 +46,7 @@ public class HtmlElementsServiceImpl implements IHtmlElementService {
         Map<Integer, Algorithm> algorithmsList = algorithmMapper.getAlgorithmsList();
         for (int key: algorithmsList.keySet()){
             Algorithm algorithm = algorithmsList.get(key);
+            //设置算法信息中更新时间的格式
             String tempUt = algorithm.getUt().substring(0,10);
             algorithm.setUt(tempUt);
             algorithmsList.put(key,algorithm);
@@ -55,13 +56,19 @@ public class HtmlElementsServiceImpl implements IHtmlElementService {
 
     @Override
     public Map<Integer, List<Parameter>> getParametersList() {
+        /**
+         * 将从数据库获取所有的算法信息转化为Map<Integer,List<Parameter>>对象进行存储，key为算法id，value为该算法含有的所有参数的信息
+         */
         List<Map<String, Object>> parameterList = parameterMapper.getParameterList();
         Map<Integer,List<Parameter>> resultMap = new HashMap<>();
         Parameter parameter = null;
         List<Parameter> parameters = null;
         for (int i = 0; i < parameterList.size(); i++) {
+            //获取一条记录
             Map<String, Object> parameterMap = parameterList.get(i);
+            //判断resultMap的key中是否已经有某个算法id
             if (!resultMap.containsKey(Integer.parseInt(parameterMap.get("algorithm_id").toString()))){
+                //将当前记录转化Parameter对象
                 parameter = new Parameter(
                         Integer.parseInt(parameterMap.get("parameter_id").toString()),
                         Integer.parseInt(parameterMap.get("algorithm_id").toString()),
@@ -101,14 +108,20 @@ public class HtmlElementsServiceImpl implements IHtmlElementService {
 
     @Override
     public Map<Integer, List<ProcedureSettings>> getProcedureSettingList() {
+        /*
+            将从数据库中获取的所有算法步骤设置信息用Map<Integer, List<ProcedureSettings>>对象进行存储，key为算法id，value为算法步骤设置信息的数组
+         */
         List<Map<String, Object>> procedureSettingList = procedureSettingsMapper.getProcedureSettingList();
         Map<Integer, List<ProcedureSettings>> resultMap = new HashMap<>();
         List<ProcedureSettings> settingsList = null;
         ProcedureSettings procedureSettings = null;
         for (int i = 0; i < procedureSettingList.size(); i++) {
+            //获取一条记录
             Map<String,Object> tempMap = procedureSettingList.get(i);
+            //判断resultMap中是否已经存在某算法id
             if (!resultMap.containsKey(Integer.parseInt(tempMap.get("algorithm_id").toString()))){
                 settingsList = new ArrayList<>();
+                //将当前记录转化为ProcedureSettings对象
                 settingsList.add(new ProcedureSettings(
                         Integer.parseInt(tempMap.get("id").toString()),
                         Integer.parseInt(tempMap.get("algorithm_id").toString()),

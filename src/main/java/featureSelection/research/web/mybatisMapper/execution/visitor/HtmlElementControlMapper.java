@@ -17,7 +17,7 @@ public interface HtmlElementControlMapper {
 
     /**
      * 获取页面元素的内容
-     * @return List<HtmlElementsControl>
+     * @return List<HtmlElementsControl> 页面元素对象数组
      */
     @Select("select * from html_element_control")
     List<HtmlElementControl> getLanguageElements();

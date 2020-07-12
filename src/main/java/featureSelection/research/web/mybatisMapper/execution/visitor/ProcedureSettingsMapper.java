@@ -15,6 +15,10 @@ import java.util.Map;
 @Repository
 public interface ProcedureSettingsMapper {
 
+    /**
+     * 获取所有算法步骤设置信息
+     * @return List<Map<String, Object>> Map对象数组，一个记录为一个Map对象，Map对象中Key为字段，Value为该字段对应的值
+     */
     @Select("select * from procedure_settings")
     List<Map<String, Object>> getProcedureSettingList();
 }

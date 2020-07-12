@@ -16,17 +16,27 @@ import java.util.Map;
 @Repository
 public interface AlgorithmMapper {
 
+    /**
+     * 通过Id查询算法名称
+     * @param id 算法id
+     * @return AlgorithmId 算法名称
+     */
     @Select("select algorithm_name from algorithm where algorithm_id = #{id}")
     String getAlgorithmNameById(int id);
 
     /**
      * 获取所有算法的信息
-     * @return List<Map<String,Object>>
+     * @return Map<Integer, Algorithm> 返回一个Map对象以算法id作为key
      */
     @Select("select * from algorithm")
     @MapKey("algorithmId")
     Map<Integer, Algorithm> getAlgorithmsList();
 
+    /**
+     * 通过算法id查询算法名称映射的值
+     * @param algorithmId 算法id
+     * @return String 算法名称映射的值
+     */
     @Select("select algorithm_name_mapper from algorithm where algorithm_id = #{algorithmId}")
     String getAlgorithmNameMapperById(int algorithmId);
 }

@@ -56,6 +56,7 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
 
     @Override
     public String uploadDatasetForm(DatasetForm dataset, MultipartFile uploadFile, String path) {
+        //存储数据集到本地
         String uploadResult = fileUpload.uploadFIle(uploadFile, path);
         if (!"fail".equals(uploadFile)) {
             dataset.setInputFile(uploadResult);
@@ -74,7 +75,9 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
     public String submitTaskForm(TaskInfo task, MultipartFile uploadFile, String path) throws JsonProcessingException {
         String filePath = null;
         ParameterFormat parameterFormat = new ParameterFormat();
+        //判断算法任务是否是使用用户上传的数据集
         if (task.getDatasetId() == 0) {
+            //存储数据集到本地
             filePath = fileUpload.uploadFIle(uploadFile, path);
             task.setDatasetUpload(filePath);
             task.setDatasetId(null);
@@ -84,6 +87,7 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
             parameterFormat.setColumn(datasetMapper.getDatasetDimensionById(task.getDatasetId()));
             parameterFormat.setDatasetName(datasetMapper.getDatasetNameById(task.getDatasetId()));
         }
+        //获取算法名称映射的值
         String algorithmName = algorithmMapper.getAlgorithmNameMapperById(task.getAlgorithmId());
         parameterFormat.setId(algorithmName+"-"+String.valueOf(System.currentTimeMillis()).substring(0,10));
         parameterFormat.setPart(0);
@@ -95,6 +99,7 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
         parameterFormat.setAttributes(parameterMapper.getParamsIdByAlgorithmId(task.getAlgorithmId()));
         task.setAlgorithmParameters(objectMapper.writeValueAsString(parameterFormat));
         taskInfoMapper.addTaskInfo(task);
+        //加入到任务队列中
         ExecutionRabbitmqComInfo executionRabbitmqComInfo=new ExecutionRabbitmqComInfo(task.getTaskId());
         ExecutionRabbitmqComServiceSingleton.addExecutionRabbitmqComInfo(executionRabbitmqComInfo);
         return String.valueOf(task.getTaskId());

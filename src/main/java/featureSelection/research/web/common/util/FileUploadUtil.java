@@ -15,6 +15,12 @@ import java.util.UUID;
 @Component
 public class FileUploadUtil {
 
+    /**
+     * 将文件存到指定的路径中
+     * @param uploadFile 文件
+     * @param UPLOAD_PATH_PREFIX 文件路径（相对路径）
+     * @return
+     */
     public String uploadFIle(MultipartFile uploadFile,String UPLOAD_PATH_PREFIX){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
         //构建文件上传所要保存的"文件夹路径"--这里是相对路径，保存到项目根路径的文件夹下
