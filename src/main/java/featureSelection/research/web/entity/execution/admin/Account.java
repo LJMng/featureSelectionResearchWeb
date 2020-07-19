@@ -2,6 +2,12 @@ package featureSelection.research.web.entity.execution.admin;
 
 import java.io.Serializable;
 
+/**
+ * @ClassName: Account
+ * @Description: 用户实体类
+ * @Author: 马凯健
+ * @Date: 2020-07-18
+ */
 public class Account implements Serializable {
     private int accountId;
     private String accountName;

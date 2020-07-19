@@ -4,6 +4,12 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
+/**
+ * @ClassName: TaskInfo
+ * @Description: 任务单实体类
+ * @Author: 马凯健
+ * @Date: 2020-07-18
+ */
 public class TaskInfo implements Serializable {
     private int taskId;
     private int accountId;

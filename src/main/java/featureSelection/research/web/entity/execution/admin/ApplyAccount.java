@@ -3,6 +3,12 @@ package featureSelection.research.web.entity.execution.admin;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+/**
+ * @ClassName: ApplyAccount
+ * @Description: 申请用户实体类
+ * @Author: 马凯健
+ * @Date: 2020-07-18
+ */
 public class ApplyAccount implements Serializable {
     private int applyId;
     private String applyEmail;

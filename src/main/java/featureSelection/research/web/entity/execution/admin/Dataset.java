@@ -3,6 +3,12 @@ package featureSelection.research.web.entity.execution.admin;
 import java.io.Serializable;
 
 
+/**
+ * @ClassName: Dataset
+ * @Description: 数据集实体类
+ * @Author: 马凯健
+ * @Date: 2020-07-18
+ */
 public class Dataset implements Serializable {
     private int datasetId;
     private String datasetName;

@@ -167,8 +167,7 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                     }else{
                         parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":null,";
                     }
-                }
-                    else{
+                }else{
                         parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":{\"type\":\""+secondParameterType[j]+"\",\"options\":[";
                         String secondParameterValueString=secondParameterValue[j];
                         String[] secondParameterValueArr=secondParameterValueString.split(",");

@@ -2,6 +2,12 @@ package featureSelection.research.web.entity.execution.admin;
 
 import java.io.Serializable;
 
+/**
+ * @ClassName: WebAlgorithmMapperEntity
+ * @Description: Web层的算法信息跟Algorithm算法信息映射关系实体类
+ * @Author: 马凯健
+ * @Date: 2020-07-18
+ */
 public class WebAlgorithmMapperEntity implements Serializable {
     private int webAlgorithmMapperId;
     private int algorithmId;

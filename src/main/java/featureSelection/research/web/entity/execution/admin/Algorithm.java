@@ -5,6 +5,12 @@ import featureSelection.research.web.entity.demo.admin.AlgorithmParameterDemoAdm
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @ClassName: Algorithm
+ * @Description: 算法实体类
+ * @Author: 马凯健
+ * @Date: 2020-07-18
+ */
 public class Algorithm implements Serializable {
     private int algorithmId;
     private String algorithmName;

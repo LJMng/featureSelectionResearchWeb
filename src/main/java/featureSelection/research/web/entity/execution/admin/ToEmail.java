@@ -2,6 +2,12 @@ package featureSelection.research.web.entity.execution.admin;
 
 import java.io.Serializable;
 
+/**
+ * @ClassName: ToEmail
+ * @Description: 用于封装发送邮件信息的实体类
+ * @Author: 马凯健
+ * @Date: 2020-07-18
+ */
 public class ToEmail implements Serializable {
     public String toAccount;
     private String subject;

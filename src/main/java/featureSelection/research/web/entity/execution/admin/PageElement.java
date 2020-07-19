@@ -4,6 +4,12 @@ package featureSelection.research.web.entity.execution.admin;
 
 import java.io.Serializable;
 
+/**
+ * @ClassName: PageElement
+ * @Description: 页面元素实体类
+ * @Author: 马凯健
+ * @Date: 2020-07-18
+ */
 public class PageElement implements Serializable {
     private String htmlName;
     private String moduleKey;

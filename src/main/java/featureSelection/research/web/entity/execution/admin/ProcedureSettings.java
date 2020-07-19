@@ -2,6 +2,12 @@ package featureSelection.research.web.entity.execution.admin;
 
 import java.io.Serializable;
 
+/**
+ * @ClassName: ProcedureSettings
+ * @Description: 算法步骤实体类
+ * @Author: 马凯健
+ * @Date: 2020-07-18
+ */
 public class ProcedureSettings implements Serializable {
     private int id;
     private int algorithmId;

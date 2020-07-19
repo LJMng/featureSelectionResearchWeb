@@ -4,6 +4,12 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
+/**
+ * @ClassName: DatasetForm
+ * @Description: 申请数据集实体类
+ * @Author: 马凯健
+ * @Date: 2020-07-18
+ */
 public class DatasetForm implements Serializable {
     private int inputId;
     private int accountId;

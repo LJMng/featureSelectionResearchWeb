@@ -2,6 +2,12 @@ package featureSelection.research.web.entity.execution.admin;
 
 import java.io.Serializable;
 
+/**
+ * @ClassName: Power
+ * @Description: 用户权限实体类
+ * @Author: 马凯健
+ * @Date: 2020-07-18
+ */
 public class Power implements Serializable {
     private int accountPower;
     private int accountId;

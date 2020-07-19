@@ -4,6 +4,12 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @ClassName: ParameterInfo
+ * @Description: 用各个数组封装Parameter信息的实体类
+ * @Author: 马凯健
+ * @Date: 2020-07-18
+ */
 public class ParameterInfo implements Serializable {
     private int algorithmId;
     private String[] parameterNames;
