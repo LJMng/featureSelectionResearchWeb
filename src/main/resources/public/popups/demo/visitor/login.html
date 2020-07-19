@@ -75,18 +75,26 @@
         });
 
     function login() {
-        var account = $("#account").val();
-        var password = $("#password").val();
-        $.post(demoVisitorBaseURL + "/demologinbyemail", {"email": account, "password": password},
-            function (response) {
-            console.log(response.code)
-                if (response.code==200) {
-                    $.cookie("account", account);
-                    window.location.href = baseURL + "execution";
-                }else{
-                    alert(response.msg);
-                }
-            });
+        if($.cookie('account')!=null){
+            var r=confirm("按下按钮");
+            if (r==true){
+                $.removeCookie('account');
+            }
+        }
+        else if ($.cookie('account')==null) {
+            var account = $("#account").val();
+            var password = $("#password").val();
+            $.post(demoVisitorBaseURL + "/demologinbyemail", {"email": account, "password": password},
+                function (response) {
+                    console.log(response.code)
+                    if (response.code == 200) {
+                        $.cookie("account", account);
+                        window.location.href = baseURL + "execution";
+                    } else {
+                        alert(response.msg);
+                    }
+                });
+        }
     }
 </script>
 </body>

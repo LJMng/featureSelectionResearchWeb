@@ -6,6 +6,7 @@
     <resultMap id="updateInfo" type="featureSelection.research.web.entity.demo.visitor.UpdateInfo">
         <id property="updateId" column="update_id"></id>
         <result property="updateContent" column="update_content"></result>
+        <result property="updateEnContent" column="update_en_content"></result>
         <result property="ut" column="ut"></result>
     </resultMap>
     <sql id="Base_Column_List">

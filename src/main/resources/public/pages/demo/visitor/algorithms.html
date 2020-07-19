@@ -62,8 +62,9 @@
                         data-parent="#accordionExample">
                         <div class="card-body">
                             <span class="h4 text-center ml-auto mr-auto">{{givittry}}</span>
-                            <hr width="30%" />
                             <br>
+                            <p>{{algorithm.algorithmDescription}}</p>
+                            <hr width="30%" />
                             <div class="row border border-darken-1 m-2">
                                 <!--左边框-->
                                 <div class="col-6  border border-darken-1 bg-light">
@@ -145,13 +146,14 @@
                 run: '',
                 schemehead: '',
                 resulttext: '',
-                
+
                 //-----------algorithmData------------
                 selected: '',
                 algorithms: []
             },
             methods: {
                 submitParameterToExecute(algorithmIndex, parameterSchemeIndex) {
+                    $('#resulterror').hide();
                     var toPostAlgorithmid = this.algorithms[algorithmIndex].algorithmId;
                     var toPostParameterId = this.algorithms[algorithmIndex].parameterSchemes[parameterSchemeIndex].schemeId;
                     console.log(toPostParameterId);
@@ -179,6 +181,8 @@
                     myChart.showLoading()
                     $.post(demoVisitorBaseURL+"/transmitExcuteInfo", { "algorithmId": toPostAlgorithmid,
                         "parameterSchemeId": toPostParameterId }, function (data) {
+                        console.log(data)
+                        if (data.code==200){
                         myChart.setOption({
                             title: [{
                                 text: 'Reduct',
@@ -191,8 +195,13 @@
 
                             }],
                         });
-                        myChart.hideLoading();
-                        console.log(data)
+                            myChart.hideLoading();
+                        }else if(data.code==400){
+                            myChart.hideLoading();
+                            echarts.init(document.getElementById(resultcontainerIndex)).dispose();
+                            alert("please do it again")
+                        }
+
                     });
                 },
             },
@@ -235,7 +244,7 @@
             var option="<option selected=\"true\" disabled=\"true\" value=\"\">Choose...</option>"
             $("select").prepend(option)
         }
-        
+
         //获取参数详情
         function getParameterInfo(algorithmIndex, parameterSchemeIndex) {
             vue_parameterInfo.parameterScheme = vue_demo_algorithms.algorithms[algorithmIndex].parameterSchemes[parameterSchemeIndex];

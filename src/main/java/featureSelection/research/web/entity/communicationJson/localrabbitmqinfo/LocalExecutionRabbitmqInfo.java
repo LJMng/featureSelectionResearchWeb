@@ -19,8 +19,10 @@ public class LocalExecutionRabbitmqInfo implements LocalRabbitmqInfo{
     private String username;
     @Value(value ="${spring.rabbitmq.password}")
     private String password;
-    private String exchange="resultReciverExchange";
-    private String routingkey="executionResultReciverRoutingkey";
+    @Value(value ="${spring.rabbitmq.localResultReciverExchange}")
+    private String exchange;
+    @Value(value ="${spring.rabbitmq.localExecutionResultReciverRoutingkey}")
+    private String routingkey;
 
     public String getHost() {
         return host;

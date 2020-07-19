@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @ClassName : DemoRabbitmqComServiceSingleton
@@ -25,7 +27,7 @@ public class DemoRabbitmqComServiceSingleton {
      * Rabbitmq服务处理类集合
      * String:DemoRabbimqComInfo中的demoRabbimqComTaskId，由调用算法名+调用时间戳组成
      */
-    private static Map<String, DemoRabbimqComInfo> demoRabbimqComInfos = new HashMap<>();
+    private static Map<String, DemoRabbimqComInfo> demoRabbimqComInfos = new ConcurrentHashMap<>(64);
 
 
     /**
@@ -64,33 +66,42 @@ public class DemoRabbitmqComServiceSingleton {
                     //4.判断状态是否为准备状态（即服务等待连接状态）
                     if (demoRabbimqComInfo.getStatues().equals("READY")) {
                         try {
-                            log.info("connected");
+                            log.info(new Date().toString()+"--"+"demoService:"+demoRabbimqComInfo.getDemoRabbimqComTaskId()+"connected");
                             //连接成功，开始发送数据
                             demoRabbimqComInfo.sendDataset();
                         } catch (IOException e) {
-                            e.printStackTrace();
+                           e.printStackTrace();
+                            ExceptionHistroyService.addDemoExceptionCount();
+                            log.error(new Date().toString()+"---"+"demoService:"+demoRabbimqComInfo.getDemoRabbimqComTaskId()+":datasetIoProblem in"+demoRabbimqComInfo.getDatasetName());
+
                         }
                         //设置状态为连接状态
                         demoRabbimqComInfo.setStatues("CONNECTED");
                     } else {
-                        log.info("repeat connect");
+                        log.info(new Date().toString()+"--"+"demoService:"+demoRabbimqComInfo.getDemoRabbimqComTaskId()+
+                                ":reconnect");
                     }
                 }
                 //连接失败
                 else if (info.get("connect-status").equals(404)) {
-                    log.info("connect falied");
+                    ExceptionHistroyService.addDemoExceptionCount();
+                    log.error(new Date().toString()+"--"+"demoService:"+demoRabbimqComInfo.getDemoRabbimqComTaskId()+
+                            "connect falied");
                 }
             }
             //5.判断是否存在数据传输错误信息
             if (info.get("data-error-info") != null) {
                 demoRabbimqComInfos.get(info.get("id")).setStatues("dataerror");
-                log.error(info.get("data-error-info").toString());
+                log.error(new Date().toString()+"--"+"demoService:"+demoRabbimqComInfo.getDemoRabbimqComTaskId()+
+                        ":"+info.get("data-error-info").toString());
+                ExceptionHistroyService.addDemoExceptionCount();
+                demoRabbimqComInfo.setResultInfo(info.get("data-error-info").toString());
             }
             //6.如果信息中包含退出信息，则任务完成，接收任务结果并设置任务完成
             if (info.get("exitInfos")!=null){
                 demoRabbimqComInfo.setResultInfo(info);
                 demoRabbimqComInfo.setStatues("FINISH");
-                log.info("FINISH");
+                log.info(new Date().toString()+"--"+"demoService:"+demoRabbimqComInfo.getDemoRabbimqComTaskId()+"FINISH");
             }
 
         }

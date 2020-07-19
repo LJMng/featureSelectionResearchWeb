@@ -9,8 +9,10 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @ClassName : ExecutionRabbitmqComServiceSingleton
@@ -26,13 +28,15 @@ public class ExecutionRabbitmqComServiceSingleton {
     /**
      * Rabbitmq服务处理类集合
      * String:ExecutionRabbitmqComInfo中的executionRabbimqComInfos，由调用算法名+调用时间戳组成
+     * return:int 排队号
      */
-    private static Map<String, ExecutionRabbitmqComInfo> executionRabbimqComInfos = new HashMap<>();
+    private static Map<String, ExecutionRabbitmqComInfo> executionRabbimqComInfos = new ConcurrentHashMap<>(64);
 
-    public static void addExecutionRabbitmqComInfo(ExecutionRabbitmqComInfo executionRabbitmqComInfo) {
+    public static int addExecutionRabbitmqComInfo(ExecutionRabbitmqComInfo executionRabbitmqComInfo) {
         executionRabbimqComInfos.put(executionRabbitmqComInfo.getExecutionRabbimqComTaskId(), executionRabbitmqComInfo);
         //开始发送rabbitmq连接信息
         executionRabbitmqComInfo.sendRabbitmqConnectRequestInfo();
+        return executionRabbimqComInfos.size();
     }
 
     public static void deleteRabbitmqComInfo(String rabbitmqComInfoTaskId) {
@@ -59,21 +63,29 @@ public class ExecutionRabbitmqComServiceSingleton {
                     //判断状态是否为准备状态（即服务等待连接状态）
                     if (executionRabbitmqComInfo.getStatues().equals("READY")) {
                         try {
-                            log.info("connected");
+                            log.info("excutionService:"+executionRabbitmqComInfo.getTaskAccoutEmail()+"-"
+                                    +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":"+"connected");
                             //连接成功，开始发送数据
                             executionRabbitmqComInfo.sendDataset();
+
                         } catch (IOException e) {
                             e.printStackTrace();
+                            log.error(new Date().toString()+"excutionService:"+executionRabbitmqComInfo.getTaskAccoutEmail()+"-"
+                                    +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":datasetIoProblem:"+executionRabbitmqComInfo.getDataSetName());
+                            executionRabbimqComInfos.get(info.get("id")).setStatues("datasetIoError");
                         }
                         //设置状态为连接状态
                         executionRabbitmqComInfo.setStatues("CONNECTED");
                     } else {
-                        log.info("repeat connect");
+                        log.info("excutionService:"+executionRabbitmqComInfo.getTaskAccoutEmail()+"-"
+                                +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":"+"reconnect");
                     }
                 }
                 //连接失败
                 else if (info.get("connect-status").equals(404)) {
-                    log.info("connect falied");
+                    log.warn("excutionService:"+executionRabbitmqComInfo.getTaskAccoutEmail()+"-"
+                    +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":"+"connect " +
+                        "falied");
                 }
             }
             //判断是否存在数据传输错误信息
@@ -86,7 +98,8 @@ public class ExecutionRabbitmqComServiceSingleton {
                 executionRabbitmqComInfo.setResultInfo(info);
                 executionRabbitmqComInfo.setStatues("FINISH");
                 executionRabbitmqComInfo.sendEmailAndWriteResult();
-                log.info("FINISH");
+                log.info("excutionService:"+executionRabbitmqComInfo.getTaskAccoutEmail()+"-"
+                        +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":"+"FINISH");
             }
         }
     }

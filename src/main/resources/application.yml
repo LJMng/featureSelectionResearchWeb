@@ -10,10 +10,13 @@ spring:
     port: 5672
     username: featureselectionreciver
     password: reciver
+    localResultReciverExchange: resultReciverExchange
+    localDemoResultReciverRoutingkey: demoResultReciverRoutingkey
+    localExecutionResultReciverRoutingkey: executionResultReciverRoutingkey
   mail:
     host: smtp.qq.com
     username: 1009710828@qq.com
-    password: lxrcpmnozinfbeei
+    password:
     properties:
       mail:
         smtp:
@@ -25,7 +28,6 @@ spring:
     default-encoding: UTF-8
     test-connection: true
 
-
 # MyBatis
 mybatis:
   mapper-locations: classpath:featureselection/research/web/mybatisMapper/*.xml
@@ -36,3 +38,7 @@ logging:
   path: '/logs'
   level:
     featureSelection.research.web.mybatisMapper: debug
+
+appconfigs:
+  MaxExceptionNumberPerMinute4Exit: 100
+  ReciverExceptionNoticeEmail:

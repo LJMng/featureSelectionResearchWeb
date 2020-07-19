@@ -23,6 +23,15 @@ import java.util.concurrent.TimeoutException;
  */
 public class RabbitmqUtil {
 
+    /**
+     * 获取CachingConnectionFactory对象
+     * @param host
+     * @param port
+     * @param username
+     * @param password
+     * @param exchangename
+     * @return
+     */
     public static CachingConnectionFactory getConnectionFactory(String host,
                                                          int port,
                                                          String username,
@@ -39,6 +48,11 @@ public class RabbitmqUtil {
         return factory;
     }
 
+    /**
+     * 获取RabbitTemplate模板对象
+     * @param factory
+     * @return
+     */
     public static RabbitTemplate getRabbitTemplate(CachingConnectionFactory factory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(factory);
         return rabbitTemplate;

@@ -1,5 +1,7 @@
 package featureSelection.research.web.controller.demo.visitor;
 import featureSelection.research.web.common.service.DemoRabbitmqComServiceSingleton;
+import featureSelection.research.web.common.util.ResultUtil;
+import featureSelection.research.web.entity.Result;
 import featureSelection.research.web.entity.communicationJson.rabbitmqcominfo.DemoRabbimqComInfo;
 import featureSelection.research.web.entity.demo.visitor.Algorithm;
 import featureSelection.research.web.entity.demo.visitor.Dataset;
@@ -32,19 +34,21 @@ public class  AlgorithmEexecuteController {
     private DatasetServiceImpl datasetServiceImpl;
 
     @PostMapping(value = "/transmitExcuteInfo")
-    public Object reciveExecuteInfo(@RequestParam("algorithmId") String algorithmId,
+    public Result reciveExecuteInfo(@RequestParam("algorithmId") String algorithmId,
                                     @RequestParam("parameterSchemeId") String parameterSchemeId) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        Object result=new Object();
+
         DemoRabbimqComInfo demoRabbimqComInfo=new DemoRabbimqComInfo(Integer.parseInt(parameterSchemeId),
                 Integer.parseInt(algorithmId));
         DemoRabbitmqComServiceSingleton.addDemoRabbitmqComInfo(demoRabbimqComInfo);
         while(true){
         if (demoRabbimqComInfo.getStatues().equals("FINISH")){
-            result=demoRabbimqComInfo.getResultInfo();
             //任务结束后删除连接
+            Result result=ResultUtil.success(demoRabbimqComInfo.getResultInfo());
             DemoRabbitmqComServiceSingleton.deleteRabbitmqComInfo(demoRabbimqComInfo.getDemoRabbimqComTaskId());
             return result;
 
+        }else if(demoRabbimqComInfo.getStatues().equals("dataerror")){
+            Result result=ResultUtil.error(400,(String)demoRabbimqComInfo.getResultInfo());
         }else{
             try {
                 sleep(1000);

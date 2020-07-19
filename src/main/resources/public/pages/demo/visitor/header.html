@@ -66,6 +66,7 @@
         });
 
         $(function () {
+            loginStateShow();
             //语言选择
             var sta;
             var lang = $.cookie("language");
@@ -98,6 +99,13 @@
                 }
             });
         })
+        
+        function loginStateShow() {
+            if ($.cookie('account')!=null){
+                $("#loginbutton").html($.cookie('account'))
+            }
+            
+        }
     </script>
 </body>
 

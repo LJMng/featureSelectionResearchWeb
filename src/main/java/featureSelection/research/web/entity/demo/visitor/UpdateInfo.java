@@ -11,7 +11,8 @@ import java.sql.Timestamp;
 public class UpdateInfo {
     private int updateId;
     private String updateContent;
-    private Timestamp ut;
+    private String updateEnContent;
+    private String ut;
 
     public int getUpdateId() {
         return updateId;
@@ -29,12 +30,21 @@ public class UpdateInfo {
         this.updateContent = updateContent;
     }
 
-    public Timestamp getUt() {
+    public String getUt() {
         return ut;
     }
 
-    public void setUt(Timestamp ut) {
-        this.ut = ut;
+    public void setUt(String ut) {
+        String [] time=ut.split(" ");
+        this.ut =time[0];
+    }
+
+    public String getUpdateEnContent() {
+        return updateEnContent;
+    }
+
+    public void setUpdateEnContent(String updateEnContent) {
+        this.updateEnContent = updateEnContent;
     }
 
     @Override
@@ -42,7 +52,8 @@ public class UpdateInfo {
         return "UpdateInfo{" +
                 "updateId=" + updateId +
                 ", updateContent='" + updateContent + '\'' +
-                ", ut=" + ut +
+                ", updateEnContent='" + updateEnContent + '\'' +
+                ", ut='" + ut + '\'' +
                 '}';
     }
 }

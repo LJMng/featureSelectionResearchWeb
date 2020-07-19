@@ -13,6 +13,7 @@ import featureSelection.research.web.entity.demo.visitor.Algorithm;
 import featureSelection.research.web.entity.demo.visitor.Dataset;
 import featureSelection.research.web.entity.execution.admin.ToEmail;
 import featureSelection.research.web.entity.execution.visitor.TaskInfo;
+import featureSelection.research.web.mybatisMapper.demo.visitor.AccountMapper;
 import featureSelection.research.web.mybatisMapper.demo.visitor.AlgorithmMapper;
 import featureSelection.research.web.mybatisMapper.demo.visitor.DatasetMapper;
 import featureSelection.research.web.mybatisMapper.demo.visitor.ParameterSchemeMapper;
@@ -35,6 +36,7 @@ import java.io.IOException;
 public class ExecutionRabbitmqComInfo {
     private final static Logger log= LoggerFactory.getLogger(ExecutionRabbitmqComInfo.class);
 
+    private String accoutEmail; //用户邮箱
     private String executionRabbimqComTaskId; //当前连接任务信息id
     private RabbitTemplate rabbitmqTemplate;//rabbitmqTemplate 模板,通过该对象发送信息至服务端
     //任务状态，分别为READY：任务就绪 CONNECTED：与服务端连接成功 FINISH：任务完成
@@ -49,6 +51,7 @@ public class ExecutionRabbitmqComInfo {
     private TaskInfoMapper taskInfoMapper = (TaskInfoMapper) SpringUtil.getBean(TaskInfoMapper.class);
     private DatasetMapper datasetMapper = (DatasetMapper) SpringUtil.getBean(DatasetMapper.class);
     private AlgorithmMapper algorithmMapper = (AlgorithmMapper) SpringUtil.getBean(AlgorithmMapper.class);
+    private AccountMapper accountMapper=(AccountMapper)SpringUtil.getBean(AccountMapper.class);
     private TaskResultMapper taskResultMapper = (TaskResultMapper) SpringUtil.getBean(TaskResultMapper.class);
     private EmailUtil emailUtil = (EmailUtil) SpringUtil.getBean(EmailUtil.class);
     //excution系统使用的rabbitmq信息
@@ -78,6 +81,7 @@ public class ExecutionRabbitmqComInfo {
 
         CachingConnectionFactory connectionFactory = RabbitmqUtil.getConnectionFactory(host, port, username, password, exchange);
 
+        this.accoutEmail=accountMapper.getAccountByPower(taskInfo.getAccountId()).getAccountEmail();
         this.executionRabbimqComTaskId = taskParamaterInfo.getString("id");
         this.exchange=exchange;
         this.taskInfo=taskInfoMapper.getTaskInfoByTaskId(taskId);
@@ -175,4 +179,8 @@ public class ExecutionRabbitmqComInfo {
         this.statues = statues;
     }
 
+    public String getTaskAccoutEmail(){
+        return accoutEmail;
+    }
+    public String getDataSetName(){return dataset.getDatasetName();}
 }

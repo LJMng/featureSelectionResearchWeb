@@ -19,9 +19,10 @@ public class LocalDemoRabbitmqInfo implements LocalRabbitmqInfo {
     private String username;
     @Value(value ="${spring.rabbitmq.password}")
     private String password;
-    private String exchange="resultReciverExchange";
-    private String routingkey="demoResultReciverRoutingkey";
-
+    @Value(value ="${spring.rabbitmq.localResultReciverExchange}")
+    private String exchange;
+    @Value(value ="${spring.rabbitmq.localDemoResultReciverRoutingkey}")
+    private String routingkey;
     public String getHost() {
         return host;
     }

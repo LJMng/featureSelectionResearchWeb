@@ -102,7 +102,7 @@ public class DemoRabbimqComInfo {
         //发送信息请求与rabbitmq建立通讯
         this.rabbitmqTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
         this.rabbitmqTemplate.convertAndSend(exchange, routingkey, connectJsondata);
-        log.info("connecting：" + connectJsondata.toJSONString());
+
     }
 
     /**
@@ -261,4 +261,7 @@ public class DemoRabbimqComInfo {
         this.statues = statues;
     }
 
+    public String getDatasetName(){
+        return dataset.getDatasetName();
+    }
 }
