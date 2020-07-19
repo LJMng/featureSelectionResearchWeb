@@ -1,5 +1,7 @@
 package featureSelection.research.web.entity.demo.admin;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -32,6 +34,7 @@ public class UpdateInfoDemoAdmin {
         this.updateContent = updateContent;
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     public Date getUt() {
         return ut;
     }

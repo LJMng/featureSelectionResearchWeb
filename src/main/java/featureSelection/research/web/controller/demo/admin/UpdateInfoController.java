@@ -13,7 +13,7 @@ import java.util.List;
  * @create 2020-07-19 9:15
  **/
 @RequestMapping("/UpdateInfoDemoAdmin")
-@Controller
+@RestController
 public class UpdateInfoController {
 
     @Autowired

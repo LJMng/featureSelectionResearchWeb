@@ -1,9 +1,8 @@
 package featureSelection.research.web.service.demo.admin.impl;
 
-import featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin;
 import featureSelection.research.web.entity.demo.admin.UpdateInfoDemoAdmin;
 import featureSelection.research.web.mybatisMapper.demo.admin.UpdateInfoDemoAdminMapper;
-import featureSelection.research.web.service.demo.admin.UpdateInfo;
+import featureSelection.research.web.service.demo.admin.UpdateInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,7 @@ import java.util.List;
  * @create 2020-07-19 9:08
  **/
 @Service
-public class UpdateInfoServiceImpl implements UpdateInfo {
+public class UpdateInfoServiceImpl implements UpdateInfoService {
     @Autowired
     UpdateInfoDemoAdminMapper updateInfoDemoAdminMapper;
 

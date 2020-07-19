@@ -9,7 +9,7 @@ import java.util.List;
  * @author jjz
  * @create 2020-07-19 9:06
  **/
-public interface UpdateInfo {
+public interface UpdateInfoService {
     public List<UpdateInfoDemoAdmin> findAll();
     public UpdateInfoDemoAdmin getUpdateInfoDemoAdminById(Integer id);
     public String insertUpdateInfoDemoAdmin(UpdateInfoDemoAdmin updateInfoDemoAdmin);

@@ -77,5 +77,208 @@
             <p class="lead">界面有点简陋请见谅</p>
         </div>
     </div>
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">更新信息</th>
+            <th scope="col">update info</th>
+            <th scope="col">更新时间</th>
+            <th scope="col">操作<button style="padding: 0px" type="button"  class="btn btn-link" data-toggle="modal" data-target="#insertModal" @click="clearData()">添加更新信息</button></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="updateInfo in updateInfos">
+            <th scope="row">{{updateInfo.updateId}}</th>
+            <td>{{updateInfo.updateContent}}</td>
+            <td>{{updateInfo.updateEnContent}}</td>
+            <td>{{updateInfo.ut}}</td>
+            <td>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="getDataById(updateInfo)">修改</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" @click="getDataById(updateInfo)">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <!--新增模态框-->
+    <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">新增算法信息</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label class="col-form-label">更新信息:</label>
+                            <textarea type="text" class="form-control" v-model="updateInfo.updateContent"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">update info:</label>
+                            <textarea type="text" class="form-control" v-model="updateInfo.updateEnContent"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary submitBtn" @click="insertData()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--修改模态框-->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">修改更新信息</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label class="col-form-label">更新信息:</label>
+                            <textarea type="text" class="form-control" v-model="updateInfo.updateContent"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">update info:</label>
+                            <textarea type="text" class="form-control" v-model="updateInfo.updateEnContent"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" @click="updateData()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--删除模态框-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">删除更新信息</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label class="col-form-label">确定删除序号<b><i>{{updateInfo.updateId}}</i></b>的信息吗?</label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" @click="deleteData(updateInfo)">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#div_id',
+        data() {
+            return {
+                updateInfos: [],
+                updateInfo: {
+                    updateId: '',
+                    updateContent: '',
+                    updateEnContent: '',
+                    ut: '',
+                },
+            }
+        },
+        methods: {
+            //获得所有更新信息
+            getData() {
+                axios.get('/UpdateInfoDemoAdmin/findAll')
+                    .then(resp => {
+                        this.updateInfos = resp.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            },
+            //获得指定ID更新信息(编辑)
+            getDataById(updateInfo) {
+                this.clearData();
+                axios.get('/UpdateInfoDemoAdmin/find/' + updateInfo.updateId)
+                    .then(resp => {
+                        this.updateInfo.updateId = resp.data.updateId;
+                        this.updateInfo.updateContent = resp.data.updateContent;
+                        this.updateInfo.updateEnContent = resp.data.updateEnContent;
+                        this.updateInfo.ut = resp.data.ut;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            },
+            //新增更新信息
+            insertData() {
+                //表单验证
+                if (!this.updateInfo.updateContent) {
+                    alert('请输入中文信息');
+                    return;
+                }
+                if (!this.updateInfo.updateEnContent) {
+                    alert('请输入英文信息');
+                    return;
+                }
+                axios.post('/UpdateInfoDemoAdmin/insert', this.updateInfo)
+                    .then(() => {
+                        window.location.reload();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            //修改更新信息
+            updateData() {
+                //表单验证
+                if (!this.updateInfo.updateContent) {
+                    alert('请输入中文信息');
+                    return;
+                }
+                if (!this.updateInfo.updateEnContent) {
+                    alert('请输入英文信息');
+                    return;
+                }
+                axios.post('/UpdateInfoDemoAdmin/update', this.updateInfo)
+                    .then(() => {
+                        window.location.reload();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            //删除更新信息
+            deleteData(updateInfo) {
+                axios.post('/UpdateInfoDemoAdmin/delete/' + updateInfo.updateId)
+                    .then(() => {
+                        window.location.reload();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            //清空数据
+            clearData() {
+                this.updateInfo.updateId = '';
+                this.updateInfo.updateContent = '';
+                this.updateInfo.updateEnContent = '';
+                this.updateInfo.ut = '';
+            },
+        },
+        //页面生成前获取所有信息
+        created() {
+            this.getData();
+        }
+    })
+</script>
 </body>
 </html>

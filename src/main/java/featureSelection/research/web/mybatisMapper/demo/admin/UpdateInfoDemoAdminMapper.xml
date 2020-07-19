@@ -10,7 +10,7 @@
 
     <!--查找所有更新信息-->
     <select id="findAll" resultMap="result">
-        select * from update_info
+        select * from update_info order by ut desc
     </select>
 
     <!--通过ID查询算法信息-->
@@ -23,7 +23,7 @@
         insert into update_info (update_content,update_en_content)
         values (
             #{updateContent},
-            #{updateEnContent},
+            #{updateEnContent}
         )
     </insert>
 
@@ -33,10 +33,11 @@
     </delete>
 
     <!--更新被绑定ID的更新信息-->
-    <update id="updateAlgorithmInfoDemoAdmin">
+    <update id="updateUpdateInfoDemoAdmin">
         update update_info set
             update_content = #{updateContent},
             update_en_content = #{updateEnContent},
+            ut = now()
         where update_id = #{updateId}
     </update>
 </mapper>
