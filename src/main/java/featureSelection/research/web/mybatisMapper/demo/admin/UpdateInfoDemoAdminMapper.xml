@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="featureSelection.research.web.mybatisMapper.demo.admin.UpdateInfoDemoAdminMapper">
+    <resultMap id= "result" type = "featureSelection.research.web.entity.demo.admin.UpdateInfoDemoAdmin">
+        <id column="update_id" property="updateId" />
+        <result column="update_content" property="updateContent" />
+        <result column="update_en_content" property="updateEnContent" />
+        <result column="ut" property="ut" />
+    </resultMap>
+
+    <!--查找所有更新信息-->
+    <select id="findAll" resultMap="result">
+        select * from update_info
+    </select>
+
+    <!--通过ID查询算法信息-->
+    <select id="getUpdateInfoDemoAdminById" resultMap="result" parameterType="int">
+        select * from update_info where update_id = #{updateId}
+    </select>
+
+    <!--增加更新信息-->
+    <insert id="insertUpdateInfoDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.UpdateInfoDemoAdmin" useGeneratedKeys="true" keyProperty="algorithmId">
+        insert into update_info (update_content,update_en_content)
+        values (
+            #{updateContent},
+            #{updateEnContent},
+        )
+    </insert>
+
+    <!--删除被绑定ID的更新信息-->
+    <delete id="deleteUpdateInfoDemoAdmin">
+        delete from update_info where update_id = #{updateId}
+    </delete>
+
+    <!--更新被绑定ID的更新信息-->
+    <update id="updateAlgorithmInfoDemoAdmin">
+        update update_info set
+            update_content = #{updateContent},
+            update_en_content = #{updateEnContent},
+        where update_id = #{updateId}
+    </update>
+</mapper>
