@@ -30,39 +30,39 @@ public class ExecutionFormsController {
     @Autowired
     AlgorithmMapperValueUtil valueUtil;
 
-    @PostMapping("/uploadDatasetForm")
+    @PostMapping("/execution/uploadDatasetForm")
     public String uploadDatasetForm(DatasetForm dataset,
             @RequestParam(name = "file") MultipartFile uploadFile) {
         return formsService.uploadDatasetForm(dataset,uploadFile,tempPath);
     }
 
-    @PostMapping("/getDatasetForms")
+    @PostMapping("/execution/getDatasetForms")
     public List<DatasetForm> getDatasetForms(@RequestParam("accountId")int accountId){
         return formsService.getDatasetForms(accountId);
     }
 
-    @PostMapping("/uploadTaskForm")
+    @PostMapping("/execution/uploadTaskForm")
     public String submitTaskForm(TaskInfo task,
              @RequestParam(name = "file",required = false) MultipartFile uploadFile) throws JsonProcessingException {
         return formsService.submitTaskForm(task,uploadFile,taskPath);
     }
 
-    @PostMapping("/getTaskListByAccountId")
+    @PostMapping("/execution/getTaskListByAccountId")
     public List<TaskInfo> getTaskListByAccountId(@RequestParam("accountId")int accountId){
         return formsService.getTaskListByAccountId(accountId);
     }
 
-    @GetMapping("/queryDatasetName")
+    @GetMapping("/execution/queryDatasetName")
     public String queryDatasetName(@RequestParam("datasetName") String datasetName) {
         return formsService.queryDatasetName(datasetName);
     }
 
-    @GetMapping("/queryTaskName")
+    @GetMapping("/execution/queryTaskName")
     public String queryTaskName(@RequestParam("taskName")String taskName,@RequestParam("accountId")int accountId){
         return formsService.queryTaskName(taskName,accountId);
     }
 
-    @PostMapping("/updateTask")
+    @PostMapping("/execution/updateTask")
     public String updateTask(
             @RequestParam("taskId")int taskId,
             @RequestParam("taskName")String taskName,
@@ -71,17 +71,17 @@ public class ExecutionFormsController {
         return formsService.updateTask(taskId,taskName,taskEmail,taskComment);
     }
 
-    @PostMapping("/deleteTask")
+    @PostMapping("/execution/deleteTask")
     public String deleteTask(@RequestParam("taskId")int taskId){
         return formsService.deleteTask(taskId);
     }
 
-    @GetMapping("/getTaskResult")
+    @GetMapping("/execution/getTaskResult")
     public List<TaskResult> getTaskResults(@RequestParam("taskId")int taskId) {
         return formsService.getTaskResults(taskId);
     }
 
-    @GetMapping(value = {"/getParamValue/{algorithmId}/{parameterId}/{param1}/{param2}", "/getParamValue/{algorithmId}/{parameterId}/{param1}"})
+    @GetMapping(value = {"/execution/getParamValue/{algorithmId}/{parameterId}/{param1}/{param2}", "/execution/getParamValue/{algorithmId}/{parameterId}/{param1}"})
     public String getParameterValue(@PathVariable(name = "algorithmId") int algorithmId,
                                     @PathVariable(name = "parameterId") int parameterId,
                                     @PathVariable(name = "param1") String param1,
@@ -89,7 +89,7 @@ public class ExecutionFormsController {
         return valueUtil.getParameterValue(algorithmId,parameterId,param1,param2);
     }
 
-    @GetMapping("/getProcedureValue/{algorithmId}/{procedureId}/{procedure}")
+    @GetMapping("/execution/getProcedureValue/{algorithmId}/{procedureId}/{procedure}")
     public String getProcedureValue(@PathVariable(name = "algorithmId") int algorithmId,
                                     @PathVariable(name = "procedureId") int procedureId,
                                     @PathVariable(name = "procedure") String procedure){

@@ -4,17 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/webjars/bootstrap-switch/3.3.4/dist/css/bootstrap3/bootstrap-switch.css">
+    <link rel="stylesheet" href="css/demovisitor.css">
+    <!-- jquery -->
+    <!-- 	Web jars -->
+    <!-- 		jquery -->
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/jquery-cookie/jquery.cookie.js"></script>
+    <!-- 		Vue.js -->
+    <script src="/webjars/vue/vue.js"></script>
+    <!--axios-->
+    <script src="/webjars/axios/dist/axios.js"></script>
+    <!-- 		Bootstrap -->
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <!-- 		Bootstrap core JavaScript-->
+    <script src="/webjars/bootstrap/js/bootstrap.bundle.js"></script>
+    <!--bootstrap-switch-->
+    <script src="/webjars/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+    <!--echrat.js-->
+    <script src="https://cdn.bootcss.com/echarts/4.7.0/echarts-en.common.js"></script>
 </head>
 <body>
 <!-- Modal -->
-<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+<div id="loginmodal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="loginmodal">{{logintitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title">{{logintitle}}</h5>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -35,13 +52,12 @@
                     <a href="#">forgetPassWord</a>
                 </small>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
         </div>
     </div>
 </div>
 <script type="text/javascript">
+    var demoVisitorBaseURL= "http://localhost:8000/demo/visitor/";
+    var baseURL = "http://localhost:8000/";
     var vue_demo_loginmodal = new Vue({
         el: '#loginmodal',
         data: {
@@ -75,26 +91,23 @@
         });
 
     function login() {
-        if($.cookie('account')!=null){
-            var r=confirm("按下按钮");
-            if (r==true){
-                $.removeCookie('account');
-            }
-        }
-        else if ($.cookie('account')==null) {
-            var account = $("#account").val();
-            var password = $("#password").val();
-            $.post(demoVisitorBaseURL + "/demologinbyemail", {"email": account, "password": password},
-                function (response) {
-                    console.log(response.code)
-                    if (response.code == 200) {
-                        $.cookie("account", account);
+        var account = $("#account").val();
+        var password = $("#password").val();
+        $.post("/demologinbyemail", {"email": account, "password": password},
+            function (response) {
+            console.log(response.code)
+                if (response.code==200) {
+                    $.cookie("account", account, {path: '/'});
+                    if ($.cookie("loginTo") != null && $.cookie("loginTo") == 'execution') {
                         window.location.href = baseURL + "execution";
                     } else {
-                        alert(response.msg);
+                        window.location.href = baseURL;
                     }
-                });
-        }
+
+                }else{
+                    alert(response.msg);
+                }
+            });
     }
 </script>
 </body>

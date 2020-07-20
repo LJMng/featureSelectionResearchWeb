@@ -24,22 +24,22 @@ public class HtmlElementsController {
         return htmlElementsServiceImpl.getElementsContext();
     }
 
-    @GetMapping("/getAlgorithmsList")
+    @GetMapping("/execution/getAlgorithmsList")
     public Map<Integer, Algorithm> getAlgorithmsList() {
         return htmlElementsServiceImpl.getAlgorithmsList();
     }
 
-    @GetMapping("/getParameterList")
+    @GetMapping("/execution/getParameterList")
     public Map<Integer, List<Parameter>> getParametersList() {
         return htmlElementsServiceImpl.getParametersList();
     }
 
-    @GetMapping("/getDatasetList")
+    @GetMapping("/execution/getDatasetList")
     public Map<Integer, Dataset> getDatasetList(){
         return htmlElementsServiceImpl.getDatasetList();
     }
 
-    @GetMapping("/getProcedureSettingsList")
+    @GetMapping("/execution/getProcedureSettingsList")
     public Map<Integer,List<ProcedureSettings>> getProcedureSettingsList() {
         return htmlElementsServiceImpl.getProcedureSettingList();
     }

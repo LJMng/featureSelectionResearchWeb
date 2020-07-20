@@ -3,12 +3,19 @@ package featureSelection.research.web.controller.demo.visitor;
 import featureSelection.research.web.common.util.ResultUtil;
 import featureSelection.research.web.entity.Result;
 import featureSelection.research.web.entity.demo.visitor.ApplyAccount;
+import featureSelection.research.web.entity.execution.admin.Account;
 import featureSelection.research.web.service.demo.visitor.impl.IAccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpRequest;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.View;
+import java.io.IOException;
 
 /**
  * @ClassName : AccountController
@@ -17,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date: 2020-04-13 15:19
  */
 @RestController
-@RequestMapping(value = "/demo/visitor")
 public class AccountController {
 
     @Autowired
@@ -46,7 +52,37 @@ public class AccountController {
 
     @PostMapping("/demologinbyemail")
     public Result loginByEmail(@RequestParam("email") String email,
-                               @RequestParam("password") String password) {
-        return accountService.loginByEmail(email, password);
+                               @RequestParam("password") String password,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
+        Result result = accountService.loginByEmail(email, password);
+        if (result.getCode() == 200) {
+            Account account = new Account();
+            account.setAccountEmail(email);
+            request.getSession().setAttribute("account", account);
+            Cookie cookie = new Cookie("accountId", String.valueOf(accountService.getAccountIdByEmail(email)));
+            response.addCookie(cookie);
+        }
+        return result;
+    }
+
+    @GetMapping("/signout/{page}/{account}")
+    public void signOut(@PathVariable String account, @PathVariable String page, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (account != null) {
+            request.getSession().removeAttribute("account");
+            Cookie cookie = new Cookie("account", null);
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            Cookie cookie2 = new Cookie("accountId", null);
+            cookie2.setPath("/");
+            cookie2.setMaxAge(0);
+            response.addCookie(cookie);
+            response.addCookie(cookie2);
+            if (page.equals("index")) {
+                response.sendRedirect("/");
+            } else {
+                response.sendRedirect("/"+page);
+            }
+        }
     }
 }

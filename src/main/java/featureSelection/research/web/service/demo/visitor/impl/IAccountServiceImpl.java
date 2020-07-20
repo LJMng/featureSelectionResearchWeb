@@ -60,4 +60,9 @@ public class IAccountServiceImpl implements IAccountService {
             return ResultUtil.error(400,"password error");
         }
     }
+
+    @Override
+    public int getAccountIdByEmail(String email) {
+        return accountMapper.getAccountIdByEmail(email);
+    }
 }

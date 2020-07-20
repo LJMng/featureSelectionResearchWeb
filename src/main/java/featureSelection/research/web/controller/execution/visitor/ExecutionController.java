@@ -19,4 +19,9 @@ public class ExecutionController {
     public String getExecutionIndex(){
         return "/pages/execution/visitor/execution.html";
     }
+
+    @GetMapping("/accountLogin")
+    public String accountLogin() {
+        return "/pages/demo/visitor/login.html";
+    }
 }

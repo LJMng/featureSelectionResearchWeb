@@ -87,7 +87,7 @@
             var email = $('#email').val();
             var password = $('#password').val();
             var apply = $('#apply').val();
-            $.post(demoVisitorBaseURL+"/applyAccount", { "email": email, "password": password, "apply": apply }, function
+            $.post("/applyAccount", { "email": email, "password": password, "apply": apply }, function
                 (response) {
                 console.log(response);
                 if (response.code == 200) {

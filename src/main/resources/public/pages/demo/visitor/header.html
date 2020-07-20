@@ -31,14 +31,15 @@
                         </li>
                     </ul>
                 </div>
-                <button type="button" id="loginbutton" class="btn btn-outline-secondary btn-sm" data-toggle="modal"
-                    data-target="#loginmodal">{{login}}</button>
+                <button type="button" id="loginbutton" class="btn btn-outline-secondary btn-sm" onclick="javascript:window.location.href='/pages/demo/visitor/login.html'">{{login}}</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm mr-2 d-none" id="signOutButton" onclick="javascript:window.location.href = '/signout/index'+'/'+$.cookie('account')">{{logout}}</button>
+
                 &nbsp;&nbsp;&nbsp;
                 <input type="checkbox" name="my-checkbox" checked id="language">
+            </div>
         </nav>
     </div>
     <script type="text/javascript">
-
         var vue_demo_header = new Vue({
             el: '#header',
             data: {
@@ -46,7 +47,8 @@
                 gettingstart:'',
                 executions:'',
                 aboutus:'',
-                login:''
+                login:'',
+                logout: ''
             },
             created: function () {
                 axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=header").then((response) => {
@@ -60,6 +62,14 @@
                                 }
                             }
                         }
+                    }
+                    let account = $.cookie("account")
+                    if (account != null && account != ''){
+                        $('#loginbutton').text(account);
+                        $('#signOutButton').removeClass('d-none');
+                    } else {
+                        $('#loginbutton').text(this.navHead_btn1);
+                        $('#signOutButton').addClass('d-none');
                     }
                 });
             }

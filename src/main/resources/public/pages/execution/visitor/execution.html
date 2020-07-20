@@ -42,14 +42,16 @@
                             <a class="nav-link" href="http://localhost:8000/">{{navHead_li1}}<span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="execution">{{navHead_li2}}</a>
+                            <a class="nav-link" href="/execution">{{navHead_li2}}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">{{navHead_li3}}</a>
                         </li>
                     </ul>
                 </div>
-                <button type="button" class="btn btn-outline-secondary btn-sm mr-2">{{navHead_btn1}}</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm mr-2" id="loginButton" @click="login()">{{navHead_btn1}}</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm mr-2 d-none" id="signOutButton" onclick="javascript:window.location.href = '/signout/execution'+'/'+$.cookie('account')">{{navHead_btn2}}</button>
+
                 <input type="checkbox" name="my-checkbox" checked id="language">
             </div>
         </nav>
@@ -981,6 +983,42 @@
                 </div>
             </div>
         </div>
+
+        <!-- LoginModal -->
+        <div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginmodaltitle">{{logintitle}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="loginAccount">{{accounttitle}}</label>
+                            <input type="email" class="form-control" id="loginAccount" aria-describedby="accountHelp">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">{{passwordtitle}}</label>
+                            <input type="password" class="form-control" id="loginPassword">
+                        </div>
+                        <button class="btn btn-primary"><a onclick="login()">{{log}}</a></button>
+                        <small class="form-text text-muted">{{notaccount}}</small>
+                        <small class="form-text text-muted" data-dismiss="modal">
+                            <a onclick="toRegister()" href="#">{{register}}</a>
+                        </small>
+                        <small id="forget" class="form-text text-muted">
+                            <a href="#">forgetPassWord</a>
+                        </small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 <script type="text/javascript">
     Vue.component('append',{
@@ -1050,6 +1088,7 @@
             navHead_li2: '',
             navHead_li3: '',
             navHead_btn1: '',
+            navHead_btn2: '',
             //------------------BodyNav-----------------
             navBody_a1: '',
             navBody_a2: '',
@@ -1159,6 +1198,13 @@
             query_task_delete_warning: '',
             query_task_delete_context: '',
             query_task_chart_title: '',
+            //------------------LoginModal-----------------
+            logintitle: '',
+            accounttitle: '',
+            passwordtitle: '',
+            notaccount: '',
+
+
         },
         created: function () {
             /*
@@ -1176,12 +1222,19 @@
                         }
                     }
                 }
+                let account = $.cookie("account")
+                if (account != null && account != ''){
+                    $('#loginButton').text(account);
+                    $('#signOutButton').removeClass('d-none');
+                } else {
+                    $('#loginButton').text(this.navHead_btn1);
+                    $('#signOutButton').addClass('d-none');
+                }
             });
-            axios.get('/getAlgorithmsList').then((response) => {
+            axios.get('/execution/getAlgorithmsList').then((response) => {
                 this.algorithmList=response.data;
-                // this.algorithm_info_temp=this.algorithmList[1];
             });
-            axios.get('/getParameterList').then((response) => {
+            axios.get('/execution/getParameterList').then((response) => {
                 let params = response.data;
                 for (let key in params){
                     for (let i = 0; i < params[key].length; i++) {
@@ -1190,21 +1243,27 @@
                 }
                 this.parameterList=params;
             });
-            axios.get('/getDatasetList').then((response) => {
+            axios.get('/execution/getDatasetList').then((response) => {
                 this.datasetList=response.data;
             });
-            axios.get('/getProcedureSettingsList').then((response) => {
+            axios.get('/execution/getProcedureSettingsList').then((response) => {
                 this.ProcedureSettingsList = response.data;
             })
             let param = new URLSearchParams();
-            param.append("accountId",303030);
-            axios.post('/getTaskListByAccountId',param).then((response) => {
+            param.append("accountId",$.cookie('accountId'));
+            axios.post('/execution/getTaskListByAccountId',param).then((response) => {
                 this.task_list=response.data;
             });
         },
         methods: {
             currentTag: function (event) {
-                sessionStorage.setItem('currentTag',event.target.id);
+                if ($.cookie('account') == null) {
+                    alert('您还未登录');
+                    sessionStorage.setItem('currentTag','nav-home-tab');
+                    window.location.href = '/accountLogin';
+                } else {
+                    sessionStorage.setItem('currentTag',event.target.id);
+                }
             },
             searchAlgorithm: function (event) {
                 $('#v-pills-tab').children().each((index,element) => {
@@ -1235,7 +1294,7 @@
                 };
                 if (iFcorrect){
                     let datasetForm = new FormData();
-                    datasetForm.append("accountId",303030);
+                    datasetForm.append("accountId",$.cookie('accountId'));
                     datasetForm.append("inputName",this.dataset_form_name);
                     datasetForm.append("inputHref",this.dataset_form_source);
                     datasetForm.append("inputDescription",this.dataset_form_description);
@@ -1246,7 +1305,7 @@
                     datasetForm.append("inputTag",this.dataset_form_tag);
                     datasetForm.append("inputType",this.dataset_form_type);
                     datasetForm.append("file",this.$refs.inputDataset.files[0]);
-                    axios.post('/uploadDatasetForm',datasetForm,{
+                    axios.post('/execution/uploadDatasetForm',datasetForm,{
                         'Content-Type':'multipart/form-data'
                     }).then((response) => {
                         if (response.data=="success"){
@@ -1307,8 +1366,8 @@
             },
             getDatasetForms: function () {
                 let param = new URLSearchParams();
-                param.append("accountId",303030);
-                axios.post('/getDatasetForms',param).then((response) => {
+                param.append("accountId",$.cookie('accountId'));
+                axios.post('/execution/getDatasetForms',param).then((response) => {
                     this.dataset_forms = response.data;
                 });
             },
@@ -1361,7 +1420,7 @@
                 }
                 if (ifCorrect) {
                     let taskForm = new FormData();
-                    taskForm.append("accountId",303030);
+                    taskForm.append("accountId",$.cookie('accountId'));
                     taskForm.append("taskName",this.task_name);
                     taskForm.append("taskComment",this.task_description);
                     taskForm.append("algorithmId",this.task_algorithm_id);
@@ -1369,12 +1428,12 @@
                     taskForm.append("algorithmParameters",JSON.stringify(this.params));
                     taskForm.append("datasetId",this.task_dataset);
                     taskForm.append("file",this.$refs.taskDataset.files[0]);
-                    axios.post('/uploadTaskForm',taskForm,{
+                    axios.post('/execution/uploadTaskForm',taskForm,{
                         'Content-Type':'multipart/form-data'
                     }).then((response) => {
                         let param2 = new URLSearchParams();
-                        param2.append("accountId",303030);
-                        axios.post('/getTaskListByAccountId',param2).then((response) => {
+                        param2.append("accountId",$.cookie('accountId'));
+                        axios.post('/execution/getTaskListByAccountId',param2).then((response) => {
                             this.task_list=response.data;
                         });
                         $('#taskFormResult').html('<div class="alert alert-success alert-dismissible fade show" role="alert" id="taskFormAlert">' +
@@ -1405,7 +1464,7 @@
                 }
             },
             datasetNameCheck: function (event) {
-                axios.get('/queryDatasetName',{
+                axios.get('/execution/queryDatasetName',{
                     params: {
                         datasetName: $.trim(event.target.value)
                     }
@@ -1431,10 +1490,10 @@
                 if (this.task_name!=''){
                     $(event.srcElement).removeClass('border-danger');
                 }
-                axios.get('/queryTaskName',{
+                axios.get('/execution/queryTaskName',{
                     params: {
                         taskName: $.trim(event.target.value),
-                        accountId: 303030
+                        accountId: $.cookie('accountId')
                     }
                 }).then(response => {
                     if (response.data=="exist"){
@@ -1451,7 +1510,6 @@
                 this.update_task_name = task.taskName;
                 this.update_task_email = task.taskEmail;
                 this.update_task_comment = task.taskComment;
-                console.log($("div[name='updateTaskCheck']"));
                 let checks = $("div[name='updateTaskCheck']");
                 for (let i = 0; i < checks.length; i++) {
                     $(checks[i]).css('display','none');
@@ -1467,11 +1525,11 @@
                     form.append('taskName',this.update_task_name);
                     form.append('taskEmail',this.update_task_email);
                     form.append('taskComment',this.update_task_comment);
-                    axios.post('/updateTask',form).then((response) => {
+                    axios.post('/execution/updateTask',form).then((response) => {
                         if (response.data=="success"){
                             let param2 = new FormData();
-                            param2.append("accountId",303030);
-                            axios.post('/getTaskListByAccountId',param2).then((response2) => {
+                            param2.append("accountId",$.cookie('accountId'));
+                            axios.post('/execution/getTaskListByAccountId',param2).then((response2) => {
                                 this.task_list=response2.data;
                             });
                             if ($.cookie("language")=='ch'){
@@ -1487,9 +1545,9 @@
             deleteTask: function (event,task) {
                 let param = new FormData();
                 param.append("taskId",task.taskId);
-                axios.post('/deleteTask',param).then((response) => {
+                axios.post('/execution/deleteTask',param).then((response) => {
                     let param2 = new FormData();
-                    param2.append("accountId",303030);
+                    param2.append("accountId",$.cookie('accountId'));
                     axios.post('/getTaskListByAccountId',param2).then((response2) => {
                         this.task_list=response2.data;
                     });
@@ -1509,7 +1567,7 @@
             getTaskEcharts: function (task) {
                 this.temp_task_info = task;
                 $("#taskEchartsBody").empty();
-                axios.get('/getTaskResult',{
+                axios.get('/execution/getTaskResult',{
                     params: {
                         taskId: task.taskId
                     }
@@ -1586,9 +1644,8 @@
                                 break;
                             case 'selection':
                                 let paramInput = $("select[name=" + nameTemp + "]").val();
-                                await axios.get('/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput).then(function (response) {
+                                await axios.get('/execution/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput).then(function (response) {
                                     value = response.data;
-                                    console.log(response.data)
                                 });
                                 if (parameters[i].parameterSettingInfo.optionExtra[paramInput] != null) {
                                     let value2 = null;
@@ -1600,7 +1657,7 @@
                                             };
                                             break;
                                         case 'selection':
-                                            await axios.get('/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput + '/' + $("select[name=" + nameTemp + paramInput + "]").val()).then((response) => {
+                                            await axios.get('/execution/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput + '/' + $("select[name=" + nameTemp + paramInput + "]").val()).then((response) => {
                                                 value2 = response.data;
                                             });
                                             paramSet.basic[parameters[i].parameterNameMapper] = {
@@ -1614,7 +1671,7 @@
                                 }
                                 break;
                             case 'radio':
-                                await axios.get('/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + $("input[name=" + nameTemp + "]:checked").val()).then((response) => {
+                                await axios.get('/execution/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + $("input[name=" + nameTemp + "]:checked").val()).then((response) => {
                                     value = response.data;
                                 });
                                 paramSet.basic[parameters[i].parameterNameMapper] = {input: null, option: value};
@@ -1622,7 +1679,7 @@
                             case 'checkbox':
                                 let listTemp = [];
                                 $("input[name=" + nameTemp + "]:checked").each(async function () {
-                                    await axios.get('/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + $(this).val()).then((response) => {
+                                    await axios.get('/execution/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + $(this).val()).then((response) => {
                                         value = response.data;
                                     });
                                     listTemp.push(value);
@@ -1638,7 +1695,7 @@
                         if ($("select[name=" + nameTemp + "]").prop("disabled")) {
                             paramSet.procedure[procedureSettings[i].nameMapper] = {data: null, selected: false};
                         } else {
-                            await axios.get('/getProcedureValue' + '/' + algorithm.algorithmId + '/' + procedureSettings[i].id + '/' + $("select[name=" + nameTemp + "]").val()).then((response) => {
+                            await axios.get('/execution/getProcedureValue' + '/' + algorithm.algorithmId + '/' + procedureSettings[i].id + '/' + $("select[name=" + nameTemp + "]").val()).then((response) => {
                                 value = response.data;
                             });
                             paramSet.procedure[procedureSettings[i].nameMapper] = {
@@ -1649,7 +1706,6 @@
                     }
                 }
                 this.params = paramSet;
-                console.log(231);
                 this.task_algorithm_id = algorithm.algorithmId;
                 if ($.cookie("language") == 'ch') {
                     $(event.srcElement).prev().prev().html("成功保存！");
@@ -1688,6 +1744,11 @@
             },
             setProcedureDefault: function (algorithm,procedure) {
                 $("select[name="+algorithm.algorithmName+procedure.name+"]").val(procedure.defaultOption);
+            },
+            login: function () {
+                if ($.cookie("account") == null) {
+                    window.location.href = '/accountLogin';
+                }
             }
         },
         watch: {
