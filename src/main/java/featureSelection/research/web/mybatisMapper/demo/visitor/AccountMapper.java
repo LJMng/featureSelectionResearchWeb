@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface AccountMapper {
     @Select("select * from account where account_email=#{email}")
     public Account getAccountByEmail(@Param("email") String email);
-
+    @Select("select * from account where account_power=#{power}")
+    public Account getAccountByPower(@Param("power") int power);
     @Select("select account_id from account where account_email = #{email}")
     public int getAccountIdByEmail(@Param("email") String email);
 }

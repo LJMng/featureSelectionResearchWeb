@@ -99,6 +99,7 @@
                 if (response.code==200) {
                     $.cookie("account", account, {path: '/'});
                     if ($.cookie("loginTo") != null && $.cookie("loginTo") == 'execution') {
+                        $.removeCookie("loginTo");
                         window.location.href = baseURL + "execution";
                     } else {
                         window.location.href = baseURL;

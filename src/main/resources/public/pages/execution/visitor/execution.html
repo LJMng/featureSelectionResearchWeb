@@ -1747,6 +1747,7 @@
             },
             login: function () {
                 if ($.cookie("account") == null) {
+                    $.cookie("loginTo",'execution');
                     window.location.href = '/accountLogin';
                 }
             }
