@@ -62,6 +62,9 @@ var vm =new Vue({
             }
 
         },
+        setUpdateAccountInfo:function(account){
+            this.accountInfo=account;
+        },
         fCheckAccountName:function () {
             if (this.checkAccountName.length>30){
                 this.checked.checkedAccountName="用户名太长！"

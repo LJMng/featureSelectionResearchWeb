@@ -137,53 +137,325 @@
             </div>
         </nav>
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <div class="col-md-12">
-                <div class="col-md-10">
-                    <h1>Algorithm Manage</h1>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <p class="text-lg-left">search algorithm Info and change algorithm message</p>
-            </div>
-            <hr/>
-            <div class="row">
-                <div class="col-md-2">
-                    <button type="button"  class="btn btn-success" data-toggle="modal" data-target="#insertModal" @click="clearData()">添加算法</button>
-                </div>
-                <div class="col-md-2 offset-md-8">
-                    <input v-model="searchString" style="width: 200px;margin:5px;padding: 6px 12px;float: right" type="search" class="form-control" id="search-input" placeholder="Search...">
-                </div>
 
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true" @click="currentTag">算法管理</a>
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" @click="currentTag">新增参数</a>
+                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false" @click="currentTag">新增步骤</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="col-md-12">
+                        <div class="col-md-10">
+                            <h1>Algorithm Manage</h1>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="text-lg-left">search algorithm Info and change algorithm message</p>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <button type="button"  class="btn btn-success" data-toggle="modal" data-target="#insertModal" @click="clearData()">添加算法</button>
+                        </div>
+                        <div class="col-md-2 offset-md-8">
+                            <input v-model="searchString" style="width: 200px;margin:5px;padding: 6px 12px;float: right" type="search" class="form-control" id="search-input" placeholder="Search...">
+                        </div>
+
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">算法ID</th>
+                            <th scope="col">算法名称</th>
+                            <th scope="col">算法简介</th>
+                            <th scope="col">引用论文信息</th>
+                            <th scope="col">引用论文链接</th>
+                            <th scope="col">算法接口</th>
+                            <th scope="col">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="msg in filterInfo">
+                            <th scope="row">{{msg.algorithmId}}</th>
+                            <td>{{msg.algorithmName}}</td>
+                            <td>{{msg.algorithmDescription}}</td>
+                            <td>{{msg.algorithmPaperReference}}</td>
+                            <td>{{msg.algorithmPaperLink}}</td>
+                            <td>{{msg.algorithmCallInterface}}</td>
+                            <td>
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="getDataById(msg.algorithmId)">修改</button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" @click="getDataById(msg.algorithmId)">删除</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#a"+msg.algorithmId' @click="putAlgorithmId(msg.algorithmId)">详情</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div class="col-md-12">
+                        <h1>Add Algorithm Params</h1>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="text-lg-left">u can choose the algorithm,and add some params for execution System</p>
+                    </div>
+                    <!--            添加参数内容表单-->
+                    <form>
+                        <!--选择算法 -->
+                        <div class="row">
+                            <div class="col-md-4 offset-md-2">
+                                <label>选择算法id：</label>
+                                <select v-model="parameterInfo.algorithmId">
+                                    <option v-for="algorithm in algorithms">
+                                        {{algorithm.algorithmId}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="row-md-4">
+                                <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+parameterInfo.algorithmId'>
+                                    点击查看算法详情
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 offset-md-2">
+                                <label>参数个数：</label>
+                                <input class="form-control" type="number" v-model.number="paramsNumber">
+                            </div>
+                        </div>
+                        <div v-for="n in paramsNumber">
+                            <div class="row">
+                                <div class="col-md-4 offset-md-2">
+                                    <h2>第{{n}}个参数</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 offset-md-2">
+                                    <label for="parameterName" class="col-form-label">参数名：</label>
+                                    <input id="parameterName" class="form-control" type="text" v-model="parameterInfo.parameterNames[n-1]">
+                                </div>
+                                <div class="col-md-4 ">
+                                    <label for="parameterNameMapper" class="col-form-label">映射到算法层的参数名：</label>
+                                    <input id="parameterNameMapper" class="form-control" type="text" v-model="parameterInfo.parameterNamesMapper[n-1]">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 offset-md-2">
+                                    <label for="parameterType" class="col-form-label">参数类型：</label>
+                                    <select id="parameterType" class="form-control"  v-model="parameterInfo.parameterTypes[n-1]">
+                                        <option>text</option>
+                                        <option>radio</option>
+                                        <option>checkbox</option>
+                                        <option>selection</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 offset-md-2">
+                                    <label for="parameterDescription" class="col-form-label">参数描述：</label>
+                                    <input id="parameterDescription" class="form-control" type="text" v-model="parameterInfo.parameterDescriptions[n-1]">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 offset-md-2">
+                                    <label for="parameterDefaultValue">参数默认值</label>
+                                    <input id="parameterDefaultValue" class="form-control" type="text" v-model="parameterInfo.parameterDefaultValues[n-1]">
+                                </div>
+                            </div>
+                            <!--判断第一个参数类型是否为input -->
+                            <div class="row" v-if="parameterInfo.parameterTypes[n-1] !== 'text'">
+                                <div class="col-md-2 offset-md-2">
+                                    <label>第一个值的个数：</label>
+                                    <input class="form-control" type="number" v-model.number="paramValuesNumber[n-1]">
+                                </div>
+                            </div>
+                            <hr>
+                            <!--                     循环设置第一个参数的值 -->
+                            <div v-for="m in paramValuesNumber[n-1]">
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-2">
+                                        <label for='"firstParamValue"+m' class="col-form-label">Web层取值{{m}}</label>
+                                        <input id='"firstParamValue"+m' class="form-control" type="text" v-model="firstParameterValues[n-1][m-1]" @blur="confirmFirstValue(n,m)">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for='"firstAlgorithmParameter"+m' class="col-form-label">算法层取值{{m}}</label>
+                                        <input id='"firstAlgorithmParameter"+m' class="form-control" type="text" v-model="firstAlgorithmParameterValues[n-1][m-1]" @blur="confirmFirstAlgorithmValue(n,m)">
+                                    </div>
+                                </div>
+                                <div v-if="parameterInfo.parameterTypes[n-1] === 'selection'">
+                                    <div class="row">
+                                        <div class="col-md-2 offset-md-2">
+                                            <label for='"secondParameterType"+m'>第二个值参数类型：</label>
+                                            <select id='"secondParameterType"+m' class="custom-select" v-model="secondParameterTypes[n-1][m-1]" name="paraType" @blur="confirmSecondParameterType(n,m)"  required>
+                                                <option selected>text</option>
+                                                <option>selection</option>
+                                                <option>null</option>
+                                            </select>
+                                        </div>
+                                        <!--根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 -->
+
+                                        <hr>
+                                    </div>
+                                    <div v-if="secondParameterTypes[n-1][m-1] === 'selection'">
+                                        <div class="row">
+                                            <div class="col-md-4 offset-md-2">
+                                                <label for='"secondParameterValue"+m'>Web层第二个参数取值</label>
+                                                <input id='"secondParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondParameterValues[n-1][m-1]" @blur="confirmSecondParameterValue(n,m)" >
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for='"secondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>
+                                                <input id='"secondAlgorithmParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondAlgorithmParameterValues[n-1][m-1]" @blur="confirmSecondAlgorithmParameterValue(n,m)" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 offset-md-4">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary submitBtn" @click="createParameter()">确定</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <div class="col-md-12">
+                        <h1>Set the produceSettings</h1>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="text-lg-left">set the procedure for execution System when account use the system.they can chose which procedure want to run and how to run.</p>
+                    </div>
+                    <hr/>
+                    <!--添加算法步骤的表内容：
+                    1.根据算法名称进行添加，选择算法名称后可以点击算法详细内容
+                    2.表单内容包括 algorithm_id name state options defaultOption description
+                    3.通过表单直接提交，提交地址为 ： /addProduceSettings
+                    -->
+                    <form>
+                        <div class="row">
+                            <div class="col-md-4 offset-md-4">
+                                <label>选择算法：</label>
+                                <select name="algorithmId" v-model="procedureSetting.algorithmId">
+                                    <option v-for="algorithm in algorithms">{{algorithm.algorithmId}}</option>
+                                </select>
+                            </div>
+                            <div class="row-md-4">
+                                <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+procedureSetting.algorithmId' >
+                                    点击查看算法详情
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 offset-md-4">
+                                <label>步骤名称</label>
+                                <input type="text"  v-model="procedureSetting.name" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 offset-md-4">
+                                <label>映射到算法层的步骤名称</label>
+                                <input type="text"  v-model="procedureSetting.nameMapper" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 offset-md-4">
+                                <label>运行状态</label>
+                                <select class="custom-select"  v-model="procedureSetting.state">
+                                    <option>required</option>
+                                    <option>optionalSelected</option>
+                                    <option>optional</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 offset-md-4">
+                                <label>可选择的运行方法</label>
+                                <input type="text" class="form-control" title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.options" required>
+                            </div>
+                            <div class="col-md-4 offset-md-4">
+                                <label>映射到算法端可运行的方法</label>
+                                <input type="text" class="form-control" title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.optionsMapper" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 offset-md-4">
+                                <label>默认选择</label>
+                                <input type="text" v-model="procedureSetting.defaultOption" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 offset-md-4">
+                                <label>步骤描述</label>
+                                <input type="text" v-model="procedureSetting.description" class="form-control" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-2 offset-md-4">
+                                <input type="submit" value="添加步骤" class="form-control" @click="createProcedureSetting()">
+                            </div>
+                            <div class="col-md-2">
+                                <input type="reset" value="重置" class="form-control">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
             </div>
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">算法ID</th>
-                    <th scope="col">算法名称</th>
-                    <th scope="col">算法简介</th>
-                    <th scope="col">引用论文信息</th>
-                    <th scope="col">引用论文链接</th>
-                    <th scope="col">算法接口</th>
-                    <th scope="col">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="msg in filterInfo">
-                    <th scope="row">{{msg.algorithmId}}</th>
-                    <td>{{msg.algorithmName}}</td>
-                    <td>{{msg.algorithmDescription}}</td>
-                    <td>{{msg.algorithmPaperReference}}</td>
-                    <td>{{msg.algorithmPaperLink}}</td>
-                    <td>{{msg.algorithmCallInterface}}</td>
-                    <td>
-                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="getDataById(msg.algorithmId)">修改</button>
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" @click="getDataById(msg.algorithmId)">删除</button>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#a"+msg.algorithmId' @click="putAlgorithmId(msg.algorithmId)">详情</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+
+<!--            <div class="col-md-12">-->
+<!--                <div class="col-md-10">-->
+<!--                    <h1>Algorithm Manage</h1>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-md-6">-->
+<!--                <p class="text-lg-left">search algorithm Info and change algorithm message</p>-->
+<!--            </div>-->
+<!--            <hr/>-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-2">-->
+<!--                    <button type="button"  class="btn btn-success" data-toggle="modal" data-target="#insertModal" @click="clearData()">添加算法</button>-->
+<!--                </div>-->
+<!--                <div class="col-md-2 offset-md-8">-->
+<!--                    <input v-model="searchString" style="width: 200px;margin:5px;padding: 6px 12px;float: right" type="search" class="form-control" id="search-input" placeholder="Search...">-->
+<!--                </div>-->
+
+<!--            </div>-->
+<!--            <table class="table table-hover">-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <th scope="col">算法ID</th>-->
+<!--                    <th scope="col">算法名称</th>-->
+<!--                    <th scope="col">算法简介</th>-->
+<!--                    <th scope="col">引用论文信息</th>-->
+<!--                    <th scope="col">引用论文链接</th>-->
+<!--                    <th scope="col">算法接口</th>-->
+<!--                    <th scope="col">操作</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr v-for="msg in filterInfo">-->
+<!--                    <th scope="row">{{msg.algorithmId}}</th>-->
+<!--                    <td>{{msg.algorithmName}}</td>-->
+<!--                    <td>{{msg.algorithmDescription}}</td>-->
+<!--                    <td>{{msg.algorithmPaperReference}}</td>-->
+<!--                    <td>{{msg.algorithmPaperLink}}</td>-->
+<!--                    <td>{{msg.algorithmCallInterface}}</td>-->
+<!--                    <td>-->
+<!--                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="getDataById(msg.algorithmId)">修改</button>-->
+<!--                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" @click="getDataById(msg.algorithmId)">删除</button>-->
+<!--                        <button type="button" class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#a"+msg.algorithmId' @click="putAlgorithmId(msg.algorithmId)">详情</button>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+
 
             <!--新增模态框-->
             <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
@@ -382,217 +654,217 @@
                 </div>
             </div>
             <hr>
+<!--            <div class="col-md-12">-->
+<!--                <h1>Add Algorithm Params</h1>-->
+<!--            </div>-->
+<!--            <div class="col-md-6">-->
+<!--                <p class="text-lg-left">u can choose the algorithm,and add some params for execution System</p>-->
+<!--            </div>-->
+<!--            &lt;!&ndash;            添加参数内容表单&ndash;&gt;-->
+<!--            <form>-->
+<!--                &lt;!&ndash;选择算法 &ndash;&gt;-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-4 offset-md-2">-->
+<!--                        <label>选择算法id：</label>-->
+<!--                        <select v-model="parameterInfo.algorithmId">-->
+<!--                            <option v-for="algorithm in algorithms">-->
+<!--                                {{algorithm.algorithmId}}-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="row-md-4">-->
+<!--                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+parameterInfo.algorithmId'>-->
+<!--                            点击查看算法详情-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-4 offset-md-2">-->
+<!--                        <label>参数个数：</label>-->
+<!--                        <input class="form-control" type="number" v-model.number="paramsNumber">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div v-for="n in paramsNumber">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-4 offset-md-2">-->
+<!--                            <h2>第{{n}}个参数</h2>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-4 offset-md-2">-->
+<!--                            <label for="parameterName" class="col-form-label">参数名：</label>-->
+<!--                            <input id="parameterName" class="form-control" type="text" v-model="parameterInfo.parameterNames[n-1]">-->
+<!--                        </div>-->
+<!--                        <div class="col-md-4 ">-->
+<!--                            <label for="parameterNameMapper" class="col-form-label">映射到算法层的参数名：</label>-->
+<!--                            <input id="parameterNameMapper" class="form-control" type="text" v-model="parameterInfo.parameterNamesMapper[n-1]">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-4 offset-md-2">-->
+<!--                            <label for="parameterType" class="col-form-label">参数类型：</label>-->
+<!--                            <select id="parameterType" class="form-control"  v-model="parameterInfo.parameterTypes[n-1]">-->
+<!--                                <option>text</option>-->
+<!--                                <option>radio</option>-->
+<!--                                <option>checkbox</option>-->
+<!--                                <option>selection</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-4 offset-md-2">-->
+<!--                            <label for="parameterDescription" class="col-form-label">参数描述：</label>-->
+<!--                            <input id="parameterDescription" class="form-control" type="text" v-model="parameterInfo.parameterDescriptions[n-1]">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-4 offset-md-2">-->
+<!--                            <label for="parameterDefaultValue">参数默认值</label>-->
+<!--                            <input id="parameterDefaultValue" class="form-control" type="text" v-model="parameterInfo.parameterDefaultValues[n-1]">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash;判断第一个参数类型是否为input &ndash;&gt;-->
+<!--                    <div class="row" v-if="parameterInfo.parameterTypes[n-1] !== 'text'">-->
+<!--                        <div class="col-md-2 offset-md-2">-->
+<!--                                <label>第一个值的个数：</label>-->
+<!--                                <input class="form-control" type="number" v-model.number="paramValuesNumber[n-1]">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <hr>-->
+<!--&lt;!&ndash;                     循环设置第一个参数的值 &ndash;&gt;-->
+<!--                    <div v-for="m in paramValuesNumber[n-1]">-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-md-4 offset-md-2">-->
+<!--                                <label for='"firstParamValue"+m' class="col-form-label">Web层取值{{m}}</label>-->
+<!--                                <input id='"firstParamValue"+m' class="form-control" type="text" v-model="firstParameterValues[n-1][m-1]" @blur="confirmFirstValue(n,m)">-->
+<!--                            </div>-->
+<!--                            <div class="col-md-4">-->
+<!--                                <label for='"firstAlgorithmParameter"+m' class="col-form-label">算法层取值{{m}}</label>-->
+<!--                                <input id='"firstAlgorithmParameter"+m' class="form-control" type="text" v-model="firstAlgorithmParameterValues[n-1][m-1]" @blur="confirmFirstAlgorithmValue(n,m)">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div v-if="parameterInfo.parameterTypes[n-1] === 'selection'">-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-md-2 offset-md-2">-->
+<!--                                    <label for='"secondParameterType"+m'>第二个值参数类型：</label>-->
+<!--                                    <select id='"secondParameterType"+m' class="custom-select" v-model="secondParameterTypes[n-1][m-1]" name="paraType" @blur="confirmSecondParameterType(n,m)"  required>-->
+<!--                                        <option selected>text</option>-->
+<!--                                        <option>selection</option>-->
+<!--                                        <option>null</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                                &lt;!&ndash;根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 &ndash;&gt;-->
 
-            <div class="col-md-12">
-                <h1>Add Algorithm Params</h1>
-            </div>
-            <div class="col-md-6">
-                <p class="text-lg-left">u can choose the algorithm,and add some params for execution System</p>
-            </div>
-            <!--            添加参数内容表单-->
-            <form>
-                <!--选择算法 -->
-                <div class="row">
-                    <div class="col-md-4 offset-md-2">
-                        <label>选择算法id：</label>
-                        <select v-model="parameterInfo.algorithmId">
-                            <option v-for="algorithm in algorithms">
-                                {{algorithm.algorithmId}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="row-md-4">
-                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+parameterInfo.algorithmId'>
-                            点击查看算法详情
-                        </button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 offset-md-2">
-                        <label>参数个数：</label>
-                        <input class="form-control" type="number" v-model.number="paramsNumber">
-                    </div>
-                </div>
-                <div v-for="n in paramsNumber">
-                    <div class="row">
-                        <div class="col-md-4 offset-md-2">
-                            <h2>第{{n}}个参数</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 offset-md-2">
-                            <label for="parameterName" class="col-form-label">参数名：</label>
-                            <input id="parameterName" class="form-control" type="text" v-model="parameterInfo.parameterNames[n-1]">
-                        </div>
-                        <div class="col-md-4 ">
-                            <label for="parameterNameMapper" class="col-form-label">映射到算法层的参数名：</label>
-                            <input id="parameterNameMapper" class="form-control" type="text" v-model="parameterInfo.parameterNamesMapper[n-1]">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 offset-md-2">
-                            <label for="parameterType" class="col-form-label">参数类型：</label>
-                            <select id="parameterType" class="form-control"  v-model="parameterInfo.parameterTypes[n-1]">
-                                <option>text</option>
-                                <option>radio</option>
-                                <option>checkbox</option>
-                                <option>selection</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 offset-md-2">
-                            <label for="parameterDescription" class="col-form-label">参数描述：</label>
-                            <input id="parameterDescription" class="form-control" type="text" v-model="parameterInfo.parameterDescriptions[n-1]">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 offset-md-2">
-                            <label for="parameterDefaultValue">参数默认值</label>
-                            <input id="parameterDefaultValue" class="form-control" type="text" v-model="parameterInfo.parameterDefaultValues[n-1]">
-                        </div>
-                    </div>
-                    <!--判断第一个参数类型是否为input -->
-                    <div class="row" v-if="parameterInfo.parameterTypes[n-1] !== 'text'">
-                        <div class="col-md-2 offset-md-2">
-                                <label>第一个值的个数：</label>
-                                <input class="form-control" type="number" v-model.number="paramValuesNumber[n-1]">
-                        </div>
-                    </div>
-                    <hr>
-<!--                     循环设置第一个参数的值 -->
-                    <div v-for="m in paramValuesNumber[n-1]">
-                        <div class="row">
-                            <div class="col-md-4 offset-md-2">
-                                <label for='"firstParamValue"+m' class="col-form-label">Web层取值{{m}}</label>
-                                <input id='"firstParamValue"+m' class="form-control" type="text" v-model="firstParameterValues[n-1][m-1]" @blur="confirmFirstValue(n,m)">
-                            </div>
-                            <div class="col-md-4">
-                                <label for='"firstAlgorithmParameter"+m' class="col-form-label">算法层取值{{m}}</label>
-                                <input id='"firstAlgorithmParameter"+m' class="form-control" type="text" v-model="firstAlgorithmParameterValues[n-1][m-1]" @blur="confirmFirstAlgorithmValue(n,m)">
-                            </div>
-                        </div>
-                        <div v-if="parameterInfo.parameterTypes[n-1] === 'selection'">
-                            <div class="row">
-                                <div class="col-md-2 offset-md-2">
-                                    <label for='"secondParameterType"+m'>第二个值参数类型：</label>
-                                    <select id='"secondParameterType"+m' class="custom-select" v-model="secondParameterTypes[n-1][m-1]" name="paraType" @blur="confirmSecondParameterType(n,m)"  required>
-                                        <option selected>text</option>
-                                        <option>selection</option>
-                                        <option>null</option>
-                                    </select>
-                                </div>
-                                <!--根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 -->
+<!--                                <hr>-->
+<!--                            </div>-->
+<!--                            <div v-if="secondParameterTypes[n-1][m-1] === 'selection'">-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-4 offset-md-2">-->
+<!--                                        <label for='"secondParameterValue"+m'>Web层第二个参数取值</label>-->
+<!--                                        <input id='"secondParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondParameterValues[n-1][m-1]" @blur="confirmSecondParameterValue(n,m)" >-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-4">-->
+<!--                                        <label for='"secondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>-->
+<!--                                        <input id='"secondAlgorithmParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondAlgorithmParameterValues[n-1][m-1]" @blur="confirmSecondAlgorithmParameterValue(n,m)" >-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <hr>-->
+<!--                    </div>-->
+<!--                    <hr>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-2 offset-md-4">-->
+<!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>-->
+<!--                        <button type="button" class="btn btn-primary submitBtn" @click="createParameter()">确定</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
 
-                                <hr>
-                            </div>
-                            <div v-if="secondParameterTypes[n-1][m-1] === 'selection'">
-                                <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <label for='"secondParameterValue"+m'>Web层第二个参数取值</label>
-                                        <input id='"secondParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondParameterValues[n-1][m-1]" @blur="confirmSecondParameterValue(n,m)" >
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for='"secondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>
-                                        <input id='"secondAlgorithmParameterValue"+m' title="取值用逗号分割开" type="text" name="value" class="form-control" v-model="secondAlgorithmParameterValues[n-1][m-1]" @blur="confirmSecondAlgorithmParameterValue(n,m)" >
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                    </div>
-                    <hr>
-                </div>
-                <div class="row">
-                    <div class="col-md-2 offset-md-4">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary submitBtn" @click="createParameter()">确定</button>
-                    </div>
-                </div>
-            </form>
             <hr/>
 
-            <div class="col-md-12">
-                <h1>Set the produceSettings</h1>
-            </div>
-            <div class="col-md-6">
-                <p class="text-lg-left">set the procedure for execution System when account use the system.they can chose which procedure want to run and how to run.</p>
-            </div>
-            <hr/>
-            <!--添加算法步骤的表内容：
-            1.根据算法名称进行添加，选择算法名称后可以点击算法详细内容
-            2.表单内容包括 algorithm_id name state options defaultOption description
-            3.通过表单直接提交，提交地址为 ： /addProduceSettings
-            -->
-            <form>
-                <div class="row">
-                    <div class="col-md-4 offset-md-4">
-                        <label>选择算法：</label>
-                        <select name="algorithmId" v-model="procedureSetting.algorithmId">
-                            <option v-for="algorithm in algorithms">{{algorithm.algorithmId}}</option>
-                        </select>
-                    </div>
-                    <div class="row-md-4">
-                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+procedureSetting.algorithmId' >
-                            点击查看算法详情
-                        </button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 offset-md-4">
-                        <label>步骤名称</label>
-                        <input type="text"  v-model="procedureSetting.name" class="form-control" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 offset-md-4">
-                        <label>映射到算法层的步骤名称</label>
-                        <input type="text"  v-model="procedureSetting.nameMapper" class="form-control" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 offset-md-4">
-                        <label>运行状态</label>
-                        <select class="custom-select"  v-model="procedureSetting.state">
-                            <option>required</option>
-                            <option>optionalSelected</option>
-                            <option>optional</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 offset-md-4">
-                        <label>可选择的运行方法</label>
-                        <input type="text" class="form-control" title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.options" required>
-                    </div>
-                    <div class="col-md-4 offset-md-4">
-                        <label>映射到算法端可运行的方法</label>
-                        <input type="text" class="form-control" title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.optionsMapper" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 offset-md-4">
-                        <label>默认选择</label>
-                        <input type="text" v-model="procedureSetting.defaultOption" class="form-control" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 offset-md-4">
-                        <label>步骤描述</label>
-                        <input type="text" v-model="procedureSetting.description" class="form-control" required>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-md-2 offset-md-4">
-                        <input type="submit" value="添加步骤" class="form-control" @click="createProcedureSetting()">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="reset" value="重置" class="form-control">
-                    </div>
-                </div>
+<!--            <div class="col-md-12">-->
+<!--                <h1>Set the produceSettings</h1>-->
+<!--            </div>-->
+<!--            <div class="col-md-6">-->
+<!--                <p class="text-lg-left">set the procedure for execution System when account use the system.they can chose which procedure want to run and how to run.</p>-->
+<!--            </div>-->
+<!--            <hr/>-->
+<!--            &lt;!&ndash;添加算法步骤的表内容：-->
+<!--            1.根据算法名称进行添加，选择算法名称后可以点击算法详细内容-->
+<!--            2.表单内容包括 algorithm_id name state options defaultOption description-->
+<!--            3.通过表单直接提交，提交地址为 ： /addProduceSettings-->
+<!--            &ndash;&gt;-->
+<!--            <form>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-4 offset-md-4">-->
+<!--                        <label>选择算法：</label>-->
+<!--                        <select name="algorithmId" v-model="procedureSetting.algorithmId">-->
+<!--                            <option v-for="algorithm in algorithms">{{algorithm.algorithmId}}</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="row-md-4">-->
+<!--                        <button  type="button" class="btn btn-link"  data-toggle="modal" v-bind:data-target='"#a"+procedureSetting.algorithmId' >-->
+<!--                            点击查看算法详情-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-4 offset-md-4">-->
+<!--                        <label>步骤名称</label>-->
+<!--                        <input type="text"  v-model="procedureSetting.name" class="form-control" required>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-4 offset-md-4">-->
+<!--                        <label>映射到算法层的步骤名称</label>-->
+<!--                        <input type="text"  v-model="procedureSetting.nameMapper" class="form-control" required>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-4 offset-md-4">-->
+<!--                        <label>运行状态</label>-->
+<!--                        <select class="custom-select"  v-model="procedureSetting.state">-->
+<!--                            <option>required</option>-->
+<!--                            <option>optionalSelected</option>-->
+<!--                            <option>optional</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-4 offset-md-4">-->
+<!--                        <label>可选择的运行方法</label>-->
+<!--                        <input type="text" class="form-control" title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.options" required>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-4 offset-md-4">-->
+<!--                        <label>映射到算法端可运行的方法</label>-->
+<!--                        <input type="text" class="form-control" title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.optionsMapper" required>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-4 offset-md-4">-->
+<!--                        <label>默认选择</label>-->
+<!--                        <input type="text" v-model="procedureSetting.defaultOption" class="form-control" required>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-4 offset-md-4">-->
+<!--                        <label>步骤描述</label>-->
+<!--                        <input type="text" v-model="procedureSetting.description" class="form-control" required>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <br>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-2 offset-md-4">-->
+<!--                        <input type="submit" value="添加步骤" class="form-control" @click="createProcedureSetting()">-->
+<!--                    </div>-->
+<!--                    <div class="col-md-2">-->
+<!--                        <input type="reset" value="重置" class="form-control">-->
+<!--                    </div>-->
+<!--                </div>-->
 
-            </form>
+<!--            </form>-->
 
 
             <!--模态框目标区域，遍历算法对象， -->
@@ -690,7 +962,7 @@
                                     <label for="updateParameterId" class="col-form-label">参数Id</label>
                                     <input type="text"  class="form-control" id="updateParameterId" v-bind:placeholder="parameter.parameterId"   disabled>
                                 </div>
-                                <!--                                            {{values.modal_updateAdministrator_form_li2}}-->
+                                <!--                               value="parameter.parameterName"             {{values.modal_updateAdministrator_form_li2}}-->
                                 <div class="form-group">
                                     <label for="updateParameterName" class="col-form-label">参数名:</label>
                                     <input type="text"  class="form-control" value="parameter.parameterName"  id="updateParameterName"  v-model="updateParameterInfo.parameterName" required>
@@ -699,7 +971,7 @@
                                     <label for="updateParameterNameMapper" class="col-form-label">映射到算法名的参数名:</label>
                                     <input type="text"  class="form-control" value="parameter.parameterNameMapper"  id="updateParameterNameMapper"  v-model="updateParameterInfo.parameterNameMapper" required>
                                 </div>
-                                <!--                                            {{values.modal_updateAdministrator_form_li3}}-->
+                                <!--                                          {{values.modal_updateAdministrator_form_li3}}-->
                                 <div class="form-group">
                                     <label for="updateParameterType" class="col-form-label">参数类型:</label>
                                     <select class="custom-select" id='updateParameterType'  v-model="updateParameterInfo.parameterType" disabled>

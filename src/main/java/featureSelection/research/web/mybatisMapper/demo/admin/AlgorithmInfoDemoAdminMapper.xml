@@ -62,6 +62,7 @@
     <update id="updateAlgorithmInfoDemoAdmin">
         update algorithm set
             algorithm_name = #{algorithmName},
+            algorithm_name_mapper = #{algorithmNameMapper},
             algorithm_paper_reference = #{algorithmPaperReference},
             algorithm_description = #{algorithmDescription},
             algorithm_paper_link = #{algorithmPaperLink},

@@ -212,7 +212,7 @@
                             <td>{{account.accountName}}</td>
                             <td>{{account.accountEmail}}</td>
                             <td>
-                                <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#updateAccount"+account.accountId'>update</button>
+                                <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#updateAccount"+account.accountId' @click="setUpdateAccountInfo(account)">update</button>
                                 <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#updateAccountPower"+account.accountPower'>updatePower</button>
                                 <button class="btn btn-md btn-danger" data-toggle="modal" v-bind:data-target='"#deleteAccount"+account.accountId' >delete</button>
                             </td>

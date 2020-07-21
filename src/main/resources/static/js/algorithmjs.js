@@ -181,6 +181,9 @@ var vm =new Vue({
 
     },
     methods:{
+        currentTag: function (event) {
+            sessionStorage.setItem('currentTag',event.target.id);
+        },
         //获得所有算法信息
         getData() {
             axios.get('/AlgorithmInfoDemoAdmin/findAll')
