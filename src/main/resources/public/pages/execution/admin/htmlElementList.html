@@ -238,7 +238,7 @@
                             <td><div v-bind:title="pageElement.chValue" style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;display:block;">{{pageElement.chValue}}</div></td>
                             <td><div v-bind:title="pageElement.enValue" style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;display:block;">{{pageElement.enValue}}</div></td>
                             <td>
-                                <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#"+pageElement.moduleKey'>修改</button>
+                                <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#"+pageElement.moduleKey' @click="setUpdateHtmlElementInfo(pageElement)">修改</button>
                                 <button class="btn btn-danger" data-toggle="modal" v-bind:data-target='"#deleteHtmlElement"+pageElement.moduleKey'>删除</button>
                             </td>
                         </tr>
@@ -269,15 +269,15 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="elementType" class="col-form-label">类型:</label>
-                                            <input type="text"  class="form-control" id="elementType" v-model="htmlElement.type">
+                                            <input type="text"  class="form-control" value="pageElement.type" id="elementType" v-model="updateHtmlElementInfo.type">
                                         </div>
                                         <div class="form-group">
                                             <label for="elementChValue" class="col-form-label">中文值:</label>
-                                            <input type="text"  class="form-control" id="elementChValue" v-model="htmlElement.chValue">
+                                            <input type="text"  class="form-control" value="pageElement.chValue" id="elementChValue" v-model="updateHtmlElementInfo.chValue">
                                         </div>
                                         <div class="form-group">
                                             <label for="elementEnValue" class="col-form-label">英文值:</label>
-                                            <input type="text"  class="form-control" id="elementEnValue" v-model="htmlElement.enValue">
+                                            <input type="text"  class="form-control" value="pageElement.enValue" id="elementEnValue" v-model="updateHtmlElementInfo .enValue">
                                         </div>
                                     </form>
                                 </div>

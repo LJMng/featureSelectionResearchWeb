@@ -22,6 +22,16 @@ var vm=new Vue({
             enValue:'',
             type:''
         },
+        //封装修改页面元素信息
+        updateHtmlElementInfo:{
+            htmlName:'',
+            moduleKey:'',
+            chValue:'',
+            enValue:'',
+            type:''
+        },
+
+
         vueListCurrPage:1,
         vueListPageSize:10,
 
@@ -101,10 +111,14 @@ var vm=new Vue({
                 this.checked.checkedChValue="正确！"
             }
         },
+        setUpdateHtmlElementInfo:function (pageElement) {
+            this.updateHtmlElementInfo=pageElement;
+        }
+        ,
         updateHtmlElement(htmlName,moduleKey){
-            this.htmlElement.htmlName=htmlName;
-            this.htmlElement.moduleKey=moduleKey;
-            axios.post('/updateElement',this.htmlElement)
+            this.updateHtmlElementInfo.htmlName=htmlName;
+            this.updateHtmlElementInfo.moduleKey=moduleKey;
+            axios.post('/updateElement',this.updateHtmlElementInfo)
                 .then(() => {
                     window.location.reload();
                 })
