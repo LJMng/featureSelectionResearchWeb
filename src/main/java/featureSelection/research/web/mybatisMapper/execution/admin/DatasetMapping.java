@@ -20,7 +20,7 @@ public interface DatasetMapping {
     @Delete("delete from dataset where dataset_id=#{datasetId}")
     public void deleteDatasetById(int datasetId);
 
-    @Update("update dataset set dataset_description=#{datasetDescription},dataset_count=#{datasetCount},dataset_source=#{datasetSource},dataset_dimension=#{datasetDimension},is_common=#{isCommon}" +
+    @Update("update dataset set dataset_name=#{datasetName},dataset_description=#{datasetDescription},dataset_count=#{datasetCount},dataset_source=#{datasetSource},dataset_dimension=#{datasetDimension},is_common=#{isCommon}" +
             " where dataset_id=#{datasetId}")
     public void updateDataset(Dataset dataset);
 

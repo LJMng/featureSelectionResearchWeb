@@ -106,6 +106,9 @@ var vm =new Vue({
 
             window.location.reload();
         },
+        setDatasetInfo:function(dataset){
+            this.datasetInfo=dataset;
+        },
         unPassDatasetForm:function (inputId,advice,administratorName) {
             axios.get('/unPassDatasetForm?inputId='+inputId+'&advice='+advice+'&administratorName='+administratorName)
             window.location.reload();

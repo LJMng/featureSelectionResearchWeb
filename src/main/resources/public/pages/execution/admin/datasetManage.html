@@ -146,11 +146,24 @@
                     <p class="text-lg-left">provide some operation for dataset of CRUD</p>
                 </div>
                 <hr>
-                <div class="col-md-2">
-                    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createModal">
-                        添加数据集
-                    </button>
+                <div class="row">
+                    <div class="col-md-2">
+                        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createModal">
+                            添加数据集
+                        </button>
+                    </div>
+                    <div class="col-md-4 offset-md-6">
+                        <div class="row">
+                            <div class="col-md-1">
+                                <label class="bootstrap-switch-label">Search:</label>
+                            </div>
+                            <div class="col-md-2 offset-md-1">
+                                <input type="text" v-model="searchName" placeholder="searchByDatasetName">
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <form  action="/createDataset" method="post" class="form-horizontal" role="form" id="createDataset" enctype="multipart/form-data" onsubmit="return" >
                     <div class="modal fade" id="createModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
@@ -232,83 +245,36 @@
                     </div> <!-- /.modal -->
                 </form>
                 <br>
+                <!--列表内容换成斑马线表格来进行显示 -->
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>数据集ID</th>
+                        <th>数据集名称</th>
+                        <th>数据源</th>
+                        <th>公共数据集</th>
+                        <th>数据集描述</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="dataset in filterDatasetMap">
+                        <td style="width:150px;overflow:hidden;text-overflow:clip;">{{dataset.datasetId}}</td>
+                        <td style="width:150px;overflow:hidden;text-overflow:ellipsis;">{{dataset.datasetName}}</td>
+                        <td v-bind:title="dataset.datasetSource" style="width:150px;overflow:hidden;text-overflow:ellipsis;">{{dataset.datasetSource}}</td>
+                        <td><div v-bind:title="dataset.isCommon" style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;display:block;">{{dataset.isCommon}}</div></td>
+                        <td><div v-bind:title="dataset.datasetDescription" style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;display:block;">{{dataset.datasetDescription}}</div></td>
+                        <td>
+                            <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#updateDataset"+dataset.datasetId' @click="setDatasetInfo(dataset)">修改</button>
+                            <button class="btn btn-danger" data-toggle="modal" v-bind:data-target='"#deleteDataset"+dataset.datasetId'>删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="row">
-                            <div class="col-md-1">
-                                <label class="bootstrap-switch-label">Search:</label>
-                            </div>
-                            <div class="col-md-2 offset-md-1">
-                                <input type="text" v-model="searchName" placeholder="searchKey">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-1">
-                                <button type="button"margin="1px" padding="1px" class="btn btn-outline-primary " @click="setOrderType(0)">All</button>
-                            </div>
-                            <div class="col-md-2 offset-md-1">
-                                <button type="button" class="btn btn-outline-primary" @click="setOrderType(1)">记录数大于100</button>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-2">
-                                <button type="button" class="btn btn-outline-primary" @click="setOrderType(2)">维度大于100</button>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-2 ">
-                                <button type="button" class="btn btn-outline-primary" @click="setOrderType(3)">公共数据集</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <li class="list-group-item list-group-item-action active">
-                            datasetList
-                        </li>
+                    <div>
                         <!--            测试过滤功能的使用-->
                         <div class="ist-group" v-for="dataset in filterDatasetMap">
-                            <li class="list-group-item list-group-item-action">
-                                <div id="accordionExample">
-                                    <!--class="accordion"  btn btn-link btn-block text-left -->
-                                    <div class="card">
-                                        <div class="card-header" id="datasetLi">
-                                            <h2 class="mb-0">
-                                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" v-bind:data-target='"#"+dataset.datasetName+"1"' aria-expanded="true" aria-controls="collapseOne">
-                                                    {{dataset.datasetName}}
-                                                </button>
-                                            </h2>
-                                        </div>
-                                        <div v-bind:id='dataset.datasetName+"1"' class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <dt class="col-md-5">datasetName:</dt>
-                                                    <dd class="col-md-7">{{dataset.datasetName}}</dd>
-                                                    <dt class="col-md-5">count:</dt>
-                                                    <dd class="col-md-7">{{dataset.datasetCount}}</dd>
-                                                    <dt class="col-md-5">source:</dt>
-                                                    <dd class="col-md-7">{{dataset.datasetSource}}</dd>
-                                                    <dt class="col-md-5">dimension:</dt>
-                                                    <dd class="col-md-7">{{dataset.datasetDimension}}</dd>
-                                                    <dt class="col-md-5">isCommon:</dt>
-                                                    <dd class="col-md-7">{{dataset.common}}</dd>
-                                                    <dt class="col-md-5">description:</dt>
-                                                    <dd class="col-md-7">{{dataset.datasetDescription}}</dd>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-2">
-                                                        <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#updateDataset"+dataset.datasetId'>update</button>
-                                                    </div>
-                                                    <div class="col-md-4 offset-md-1">
-                                                        <button class="btn btn-danger" data-toggle="modal" v-bind:data-target='"#deleteDataset"+dataset.datasetId'>delete</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
                             <!-- 定义修改数据集信息模态框 -->
                             <div class="modal fade" v-bind:id='"updateDataset"+dataset.datasetId' tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -350,19 +316,16 @@
                                                     <input type="text"  class="form-control" id="datasetDimension" v-bind:placeholder="dataset.datasetDimension" v-model="datasetInfo.datasetDimension">
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label>公共数据集</label>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <div class="form-check form-check-inline">
-                                                            <label class="form-check-label" for="inlineRadio1">是</label>&nbsp;
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" v-model="datasetInfo.datasetIsCommon" id="inlineRadio1" value="true" aria-selected="true" @click="setIsCommon(true)">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <div class="form-check form-check-inline">
-                                                            <label class="form-check-label" for="inlineRadio2">否</label>&nbsp;
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" v-model="datasetInfo.datasetIsCommon" id="inlineRadio2" value="false" @click="setIsCommon(false)">
+<!--                                                    <div class="col-md-6">-->
+<!--                                                        <label>公共数据集:</label>-->
+<!--                                                    </div>-->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="updateDatasetIsCommon" class="col-form-label">公共数据集:</label>
+                                                            <select class="custom-select" id='updateDatasetIsCommon'  v-model="datasetInfo.isCommon">
+                                                                <option value="true">true</option>
+                                                                <option value="false">false</option>
+                                                            </select>
                                                         </div>
                                                     </div>
 
