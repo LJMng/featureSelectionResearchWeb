@@ -32,5 +32,5 @@ public interface AdministratorBusiness {
      * 添加管理员信息，根据管理员实体类，在数据库中添加管理员信息
      * @param administrator 封装管理员信息的实体类
      */
-    public void addAdministrator(Administrator administrator);
+    public boolean addAdministrator(Administrator administrator);
 }

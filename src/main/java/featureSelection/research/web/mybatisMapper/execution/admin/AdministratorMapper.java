@@ -19,7 +19,9 @@ public interface AdministratorMapper {
     @Delete("delete from administrator where administrator_id=#{administratorId}")
     public void deleteAdministratorById(String administratorId);
 
-    @Insert("insert into administrator (administrator_id,administrator_name,administrator_password)" +
-            " values (#{administratorId},#{administratorName},#{administratorPassword})")
+    @Insert("insert into administrator (administrator_name,administrator_password)" +
+            " values (#{administratorName},#{administratorPassword})")
     public void addAdministrator(Administrator administrator);
+
+
 }

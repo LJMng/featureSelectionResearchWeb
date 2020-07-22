@@ -1,6 +1,7 @@
 package featureSelection.research.web.config.interceptor;
 
 import featureSelection.research.web.entity.execution.admin.Account;
+import featureSelection.research.web.entity.execution.admin.Administrator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -20,6 +21,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         try {
             Account account = (Account) request.getSession().getAttribute("account");
             if (account != null) {
+                return true;
+            }
+            Administrator administrator= (Administrator) request.getSession().getAttribute("administrator");
+            if (administrator != null){
                 return true;
             }
             response.sendRedirect("http://www.baidu.com");

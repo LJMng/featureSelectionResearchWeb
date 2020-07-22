@@ -29,7 +29,13 @@ public class AdministratorBusinessImpl implements AdministratorBusiness {
     }
 
     @Override
-    public void addAdministrator(Administrator administrator) {
-        administratorMapper.addAdministrator(administrator);
+    public boolean addAdministrator(Administrator administrator) {
+        if(administrator.getAdministratorPassword().equals(administrator.getConfirmAdministratorPassword())){
+            administratorMapper.addAdministrator(administrator);
+            return true;
+        }else {
+            return false;
+        }
+
     }
 }

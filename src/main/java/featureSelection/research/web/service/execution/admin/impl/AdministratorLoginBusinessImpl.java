@@ -13,13 +13,16 @@ public class AdministratorLoginBusinessImpl implements AdministratorLoginBusines
     @Override
     public boolean administratorLogin(Administrator administrator) {
         Administrator administrator1=
-        administratorLoginMapper.findById(administrator.getAdministratorId());
-        if (administrator1.getAdministratorPassword()
-                .equals(administrator.getAdministratorPassword())){
-            System.out.println(administrator1);
-            return true;
-        }else {
-            return false;
+        administratorLoginMapper.findByAdministratorName(administrator.getAdministratorName());
+        if (administrator1!=null){
+            if (administrator1.getAdministratorPassword()
+                    .equals(administrator.getAdministratorPassword())){
+                System.out.println(administrator1);
+                return true;
+            }else {
+                return false;
+            }
         }
+        return  false;
     }
 }

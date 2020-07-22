@@ -166,20 +166,20 @@
                             </div>
                             <div class="modal-body">
                                 <form >
-                                    <!--                                            {{values.modal_addAdministrator_form_li1}}-->
-                                    <div class="form-group">
-                                        <label for="addAdministratorId" class="col-form-label">管理员id:</label>
-                                        <input type="text"  class="form-control" id="addAdministratorId" v-model="administratorInfo.administratorId"  >
-                                    </div>
                                     <!--                                            {{values.modal_addAdministrator_form_li2}}-->
                                     <div class="form-group">
-                                        <label for="addAdministratorName" class="col-form-label">管理员姓名:</label>
+                                        <label for="addAdministratorName" class="col-form-label">管理员账号:</label>
                                         <input type="text"  class="form-control" id="addAdministratorName"  v-model="administratorInfo.administratorName">
                                     </div>
                                     <!--                                            {{values.modal_addAdministrator_form_li3}}-->
                                     <div class="form-group">
                                         <label for="addAdministratorPassword" class="col-form-label">管理员密码:</label>
                                         <input type="password"  class="form-control" id="addAdministratorPassword" v-model="administratorInfo.administratorPassword">
+                                    </div>
+                                    <!--                                            {{values.modal_addAdministrator_form_li3}}-->
+                                    <div class="form-group">
+                                        <label for="addConfirmAdministratorPassword" class="col-form-label">确认:</label>
+                                        <input type="password"  class="form-control" id="addConfirmAdministratorPassword" v-model="administratorInfo.confirmAdministratorPassword">
                                     </div>
                                 </form>
                             </div>

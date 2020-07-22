@@ -10,8 +10,10 @@ import java.io.Serializable;
  */
 public class Administrator implements Serializable {
     private String administratorId;
+    //管理员账号
     private String administratorName;
     private String administratorPassword;
+    private String confirmAdministratorPassword;
 
     public String getAdministratorId() {
         return administratorId;
@@ -37,12 +39,21 @@ public class Administrator implements Serializable {
         this.administratorPassword = administratorPassword;
     }
 
+    public String getConfirmAdministratorPassword() {
+        return confirmAdministratorPassword;
+    }
+
+    public void setConfirmAdministratorPassword(String confirmAdministratorPassword) {
+        this.confirmAdministratorPassword = confirmAdministratorPassword;
+    }
+
     @Override
     public String toString() {
         return "Administrator{" +
                 "administratorId='" + administratorId + '\'' +
                 ", administratorName='" + administratorName + '\'' +
                 ", administratorPassword='" + administratorPassword + '\'' +
+                ", confirmAdministratorPassword='" + confirmAdministratorPassword + '\'' +
                 '}';
     }
 }

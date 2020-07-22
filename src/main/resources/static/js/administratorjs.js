@@ -25,7 +25,8 @@ var vm =new Vue({
         administratorInfo:{
             administratorId:'',
             administratorName:'',
-            administratorPassword:''
+            administratorPassword:'',
+            confirmAdministrator:''
         }
 
     },
