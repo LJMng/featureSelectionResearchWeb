@@ -23,10 +23,10 @@ public class PagesController {
      * @return 进入管理页面首页
      * */
     //管理页面首页
-    @GetMapping("/index")
-    public String toIndexAdminPage(){
-        return "/pages/demo/admin/index.html";
-    }
+//    @GetMapping("/index")
+//    public String toIndexAdminPage(){
+//        return "/pages/demo/admin/index.html";
+//    }
 
     /**
      * @return 进入方案管理页面

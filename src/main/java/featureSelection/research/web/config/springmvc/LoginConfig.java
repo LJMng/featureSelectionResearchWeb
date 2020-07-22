@@ -16,6 +16,8 @@ public class LoginConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/execution/**").excludePathPatterns(
                         "/execution",
+                        "/execution/getProcedureSettingsList",
+                        "/execution/getParameterList",      //开放接口提供内部调用
                         "/index",
                         "/",
                         "/index.html",

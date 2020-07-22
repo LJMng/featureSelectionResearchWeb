@@ -28,9 +28,9 @@ public class LoginController {
         //执行登录方法
         try {
             subject.login(token);
-            return "/DemoAdmin/index";
+            return "/pages/demo/admin/index.html";
         }catch (AuthenticationException e){
-            return "/DemoAdmin/login";
+            return "/pages/demo/admin/DemoAdminLogin.html";
         }
     }
 

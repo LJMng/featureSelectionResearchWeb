@@ -22,8 +22,8 @@
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <!-- 		Bootstrap core JavaScript-->
     <script src="/webjars/bootstrap/js/bootstrap.bundle.js"></script>
-    <!--		axios-->
-    <script src="../js/axios.js"></script>
+    <!--        axios-->
+    <script src="/webjars/axios/dist/axios.js"></script>
     <!--    fontawesome-->
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -35,7 +35,7 @@
 <body>
 <div id="div_id">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/DemoAdmin/index">AlgGroupDemoAdmin</a>
+        <a class="navbar-brand" href="/pages/demo/admin/index.html">AlgGroupDemoAdmin</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -44,7 +44,7 @@
             <ul class="navbar-nav ml-auto">
                 <!--首页-->
                 <li class="nav-item">
-                    <a class="nav-link" href="/DemoAdmin/index">
+                    <a class="nav-link" href="/pages/demo/admin/index.html">
                         <i class="fa fa-home"></i>
                         Home
                     </a>
@@ -75,7 +75,7 @@
         </div>
     </nav>
     <div class="alert alert-warning m-1" role="alert">
-        请使用下面的文本框来录入关于我们页面需要展示的内容，如有上传图片请勿删除上传完成后回显的文本！完成后请点击保存按钮！
+        请使用下面的文本框来录入关于我们页面需要展示的内容，完成后请点击保存按钮！
     </div>
     <button id="save" class="btn btn-primary m-1" @click="save()">保存</button>
     <div class="input-group mb-3">
