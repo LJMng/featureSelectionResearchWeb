@@ -213,7 +213,7 @@
                                     </svg>{{algorithms_info_intro}}</h4>
                                     <div class="jumbotron jumbotron-fluid mb-4 pt-2 pb-2 rounded">
                                         <div class="container">
-                                            <p class="lead mb-0">{{algorithm.algorithmDescription}}</p>
+                                            <p class="lead mb-0" v-html="algorithm.algorithmDescription"></p>
                                         </div>
                                     </div>
                                     <!--introduction2-->
@@ -222,9 +222,7 @@
                                         <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
                                     </svg>{{algorithms_info_how}}</h4>
                                     <div class="card mb-3 mb-4">
-                                        <img :src="algorithms_info_how_img" class="card-img-top" alt="several steps">
-                                        <div class="card-body" v-html="algorithms_info_how_context">
-
+                                        <div class="card-body" v-html="algorithm.algorithmUsage">
                                         </div>
                                     </div>
                                     <!--parameterInfo-->
@@ -783,10 +781,6 @@
                                         <div class="mb-3">
                                             <label for="inputPreprocessing">{{public_dataset_upload_label1}}</label>
                                             <textarea v-model="dataset_form_preprocessing" class="form-control" id="inputPreprocessing" required></textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="inputAlgorithm">{{public_dataset_upload_label2}}</label>
-                                            <textarea v-model.trim="dataset_form_algorithm" :class="dataset_form_algorithm==''?'form-control border-danger':'form-control'" id="inputAlgorithm" required></textarea>
                                         </div>
                                         <div id="formResult">
                                         </div>

@@ -13,6 +13,8 @@ import featureSelection.research.web.entity.execution.visitor.parameterFormat.Al
 import featureSelection.research.web.entity.execution.visitor.parameterFormat.ParameterFormat;
 import featureSelection.research.web.mybatisMapper.execution.visitor.*;
 import featureSelection.research.web.service.execution.visitor.IExecutionFormsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,6 +57,8 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
     @Autowired
     private CSVUtill csvUtill;
 
+    private Logger logger = LoggerFactory.getLogger(ExecutionFormsServiceImpl.class);
+
     @Override
     public String uploadDatasetForm(DatasetForm dataset, MultipartFile uploadFile, String path) {
         //存储数据集到本地
@@ -62,6 +66,7 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
         if (!"fail".equals(uploadFile)) {
             dataset.setInputFile(uploadResult);
             datasetFormMapper.addDatasetForm(dataset);
+            logger.info("向DatasetForm表添加一个id为："+dataset.getInputId() + "字段");
             return "success";
         }
         return "fail";
@@ -99,10 +104,10 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
         parameterFormat.setRunTimes(1);
         parameterFormat.setAttributes(parameterMapper.getParamsIdByAlgorithmId(task.getAlgorithmId()));
         task.setAlgorithmParameters(objectMapper.writeValueAsString(parameterFormat));
-        taskInfoMapper.addTaskInfo(task);
         //加入到任务队列中
         ExecutionRabbitmqComInfo executionRabbitmqComInfo=new ExecutionRabbitmqComInfo(task.getTaskId());
         ExecutionRabbitmqComServiceSingleton.addExecutionRabbitmqComInfo(executionRabbitmqComInfo);
+        taskInfoMapper.addTaskInfo(task);
         return String.valueOf(task.getTaskId());
     }
 
@@ -132,6 +137,8 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
     @Override
     public String updateTask(int taskId, String taskName, String taskEmail, String taskComment) {
         if (taskInfoMapper.updateTaskInfo(taskId, taskName, taskEmail, taskComment) == 1) {
+            logger.info("TaskId为" + taskId + "被修改了");
+
             return "success";
         } else {
             return "fail";
@@ -140,7 +147,11 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
 
     @Override
     public String deleteTask(int taskId) {
-        return String.valueOf(taskInfoMapper.deleteTask(taskId));
+        int i = taskInfoMapper.deleteTask(taskId);
+        if (i == 1) {
+            logger.info("TaskId为" + taskId + "被删除了");
+        }
+        return String.valueOf(i);
     }
 
     @Override
