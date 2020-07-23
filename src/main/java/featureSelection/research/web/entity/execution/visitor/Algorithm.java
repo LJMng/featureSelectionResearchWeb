@@ -20,6 +20,7 @@ public class Algorithm {
   private String algorithmCallExecutionConnectRoutingkey;
   private String algorithmCallExecutionRoutingkey;
   private String algorithmNameMapper;
+  private String algorithmUsage;
 
 
   public int getAlgorithmId() {
@@ -174,4 +175,11 @@ public class Algorithm {
     this.algorithmNameMapper = algorithmNameMapper;
   }
 
+  public String getAlgorithmUsage() {
+    return algorithmUsage;
+  }
+
+  public void setAlgorithmUsage(String algorithmUsage) {
+    this.algorithmUsage = algorithmUsage;
+  }
 }

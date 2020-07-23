@@ -6,6 +6,8 @@ import featureSelection.research.web.entity.execution.visitor.DatasetForm;
 import featureSelection.research.web.entity.execution.visitor.TaskInfo;
 import featureSelection.research.web.entity.execution.visitor.TaskResult;
 import featureSelection.research.web.service.execution.visitor.IExecutionFormsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +32,8 @@ public class ExecutionFormsController {
     @Autowired
     AlgorithmMapperValueUtil valueUtil;
 
+    private Logger logger = LoggerFactory.getLogger(ExecutionFormsController.class);
+
     @PostMapping("/execution/uploadDatasetForm")
     public String uploadDatasetForm(DatasetForm dataset,
             @RequestParam(name = "file") MultipartFile uploadFile) {
@@ -44,7 +48,13 @@ public class ExecutionFormsController {
     @PostMapping("/execution/uploadTaskForm")
     public String submitTaskForm(TaskInfo task,
              @RequestParam(name = "file",required = false) MultipartFile uploadFile) throws JsonProcessingException {
-        return formsService.submitTaskForm(task,uploadFile,taskPath);
+        String s = null;
+        try {
+            s = formsService.submitTaskForm(task, uploadFile, taskPath);
+        } catch (JsonProcessingException e) {
+            logger.error("用户" + task.getAccountId() + "提交任务失败。" + "错误信息为：" + e.getMessage());
+        }
+        return s;
     }
 
     @PostMapping("/execution/getTaskListByAccountId")
