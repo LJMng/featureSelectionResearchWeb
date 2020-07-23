@@ -129,7 +129,7 @@
 
                                                             </div>
                                                         </td>
-                                                        <td>Otto</td>
+                                                        <td>1.221s</td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
@@ -159,11 +159,11 @@
                                                 <p class="resulttext mt-3">{{resulttext}}</p>
                                             </div>
                                         </div>
-                                        <div id="copy" style="position: absolute;right: 10px;bottom: 10px">
-                                            <button type="button" class="btn btn-primary"
-                                                    v-on:click="copyreducts(algorithmIndex)">copy
-                                            </button>
-                                        </div>
+<!--                                        <div id="copy" style="position: absolute;right: 10px;bottom: 10px">-->
+<!--                                            <button type="button" class="btn btn-primary"-->
+<!--                                                    v-on:click="copyreducts(algorithmIndex)">copy-->
+<!--                                            </button>-->
+<!--                                        </div>-->
                                     </div>
                                 </div>
                             </div>
@@ -235,7 +235,8 @@
                                 radius:'50%',
                                 name: '结果',
                                 type: 'pie',
-                                data: [response.data.reductSize, response.data.notReduct]
+                                data:
+                                    [{value:response.data.reductSize,name:"reductResultSize"},{value:response.data.notReduct,name:"notreductResultSize"}, ]
                             }]
                         });
                         //     title: [{
