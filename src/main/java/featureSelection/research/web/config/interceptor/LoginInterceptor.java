@@ -23,9 +23,6 @@ public class LoginInterceptor implements HandlerInterceptor {
             if (account != null) {
                 return true;
             }
-            System.out.println("请求在visitor拦截");
-
-            response.sendRedirect("http://www.baidu.com");
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

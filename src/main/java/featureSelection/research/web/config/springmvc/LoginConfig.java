@@ -22,7 +22,7 @@ public class LoginConfig implements WebMvcConfigurer {
                         "/index",
                         "/",
                         "/index.html",
-                        "http://www.baidu.com",          //登录
+                        "/accountLogin",          //登录
                         "/**/*.html",            //html静态资源
                         "/**/*.js",              //js静态资源
                         "/**/*.css",             //css静态资源

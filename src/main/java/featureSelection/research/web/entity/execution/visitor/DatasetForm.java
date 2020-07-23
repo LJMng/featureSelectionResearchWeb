@@ -9,7 +9,6 @@ public class DatasetForm {
   private String inputDescription;
   private String inputHref;
   private String inputPreprocess;
-  private String inputAlgorithm;
   private int inputRecord;
   private String inputDimension;
   private String inputTag;
@@ -77,16 +76,6 @@ public class DatasetForm {
   public void setInputPreprocess(String inputPreprocess) {
     this.inputPreprocess = inputPreprocess;
   }
-
-
-  public String getInputAlgorithm() {
-    return inputAlgorithm;
-  }
-
-  public void setInputAlgorithm(String inputAlgorithm) {
-    this.inputAlgorithm = inputAlgorithm;
-  }
-
 
   public int getInputRecord() {
     return inputRecord;

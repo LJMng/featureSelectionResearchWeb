@@ -20,8 +20,8 @@ public interface DatasetFormMapper {
      * 向数据库添加数据集上传表单
      * @param datasetForm 算法表单对象
      */
-    @Insert("insert into dataset_form(account_id,input_name,input_description,input_href,input_preprocess,input_algorithm,input_file,input_record,input_dimension,input_tag,input_type) " +
-            "values (#{accountId},#{inputName},#{inputDescription},#{inputHref},#{inputPreprocess},#{inputAlgorithm},#{inputFile},#{inputRecord},#{inputDimension},#{inputTag},#{inputType})")
+    @Insert("insert into dataset_form(account_id,input_name,input_description,input_href,input_preprocess,input_file,input_record,input_dimension,input_tag,input_type) " +
+            "values (#{accountId},#{inputName},#{inputDescription},#{inputHref},#{inputPreprocess},#{inputFile},#{inputRecord},#{inputDimension},#{inputTag},#{inputType})")
     void addDatasetForm(DatasetForm datasetForm);
 
     /**

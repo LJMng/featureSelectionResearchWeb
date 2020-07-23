@@ -104,7 +104,7 @@ CREATE TABLE `algorithm` (
 
 LOCK TABLES `algorithm` WRITE;
 /*!40000 ALTER TABLE `algorithm` DISABLE KEYS */;
-INSERT INTO `algorithm` VALUES (15,'算法1','算法1','www.baidu.com','www.baidu.com','2020-05-22 07:54:12','算法1','192.168.56.1','algotihmservice1exchange','algotihmservice1routingkey','5672','test1','test','algotihmservice1routingkey','algotihmservice1routingkey',NULL,NULL),(16,'算法儿','尝试使用算法2','interface','www.apache.com','2020-05-31 05:54:35','尝试使用算法2','127.1.1.1','mqexchaneg','mqexchaneg','5672','root','123456',NULL,NULL,'mqexchaneg',NULL),(17,'算法三','算法三','算法三','算法三','2020-05-31 06:07:41','算法三','127.1.1.1','算法三','算法三','算法三','guest','guest',NULL,NULL,'算法三',NULL),(18,'算法id为18','新的算法算法id为18','新的算法算法id为18','新的算法算法id为18','2020-06-02 07:43:56','新的算法算法id为18','算法id为18','算法id为18','算法id为18','算法id为18','算法id为18','算法id为18','算法id为18','算法id为18',NULL,NULL);
+INSERT INTO `algorithm` VALUES (15,'算法1','算法1','www.baidu.com','www.baidu.com','2020-05-22 07:54:12','算法1','192.168.56.1','algotihmservice1exchange','algotihmservice1routingkey','5672','test1','test','algotihmservice1routingkey','algotihmservice1routingkey',NULL,NULL,''),(16,'算法儿','尝试使用算法2','interface','www.apache.com','2020-05-31 05:54:35','尝试使用算法2','127.1.1.1','mqexchaneg','mqexchaneg','5672','root','123456',NULL,NULL,'mqexchaneg',NULL,''),(17,'算法三','算法三','算法三','算法三','2020-05-31 06:07:41','算法三','127.1.1.1','算法三','算法三','算法三','guest','guest',NULL,NULL,'算法三',NULL,''),(18,'算法id为18','新的算法算法id为18','新的算法算法id为18','新的算法算法id为18','2020-06-02 07:43:56','新的算法算法id为18','算法id为18','算法id为18','算法id为18','算法id为18','算法id为18','算法id为18','算法id为18','算法id为18',NULL,NULL,'');
 /*!40000 ALTER TABLE `algorithm` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,7 +211,6 @@ CREATE TABLE `dataset_form` (
   `input_description` text,
   `input_href` text,
   `input_preprocess` text,
-  `input_algorithm` text,
   `input_record` int(11) DEFAULT NULL,
   `input_dimension` varchar(20) DEFAULT NULL,
   `input_tag` varchar(100) DEFAULT NULL,
@@ -233,7 +232,7 @@ CREATE TABLE `dataset_form` (
 
 LOCK TABLES `dataset_form` WRITE;
 /*!40000 ALTER TABLE `dataset_form` DISABLE KEYS */;
-INSERT INTO `dataset_form` VALUES (4,303030,'wine','wine','wine','wine','11',NULL,NULL,NULL,NULL,'通过审核','static\\dataset\\temp\\2020\\05\\15\\e7a193bb-2b2e-421c-bc2d-b8f1daa470da.csv',NULL,NULL,NULL,'2020-05-15 11:45:41','2020-05-15 03:45:09'),(5,303030,'wine-D','wine-D','wine-D','wine-D','wine-D',NULL,NULL,NULL,NULL,'不通过','static\\dataset\\temp\\2020\\05\\27\\79d98c7b-726b-4703-9b27-c339ec5635d5.csv',NULL,NULL,NULL,'2020-05-27 17:50:24','2020-05-27 09:49:59'),(6,303030,'wine-D','wine-D','wine-D','wine-D','wine-D',NULL,NULL,NULL,NULL,'通过审核','static\\dataset\\temp\\2020\\05\\27\\757df62d-d7f1-49a1-9601-d0aaf4bc286c.csv',NULL,NULL,NULL,'2020-05-27 17:50:43','2020-05-27 09:50:31');
+INSERT INTO `dataset_form` VALUES (4,303030,'wine','wine','wine','wine',NULL,NULL,NULL,NULL,'通过审核','static\\dataset\\temp\\2020\\05\\15\\e7a193bb-2b2e-421c-bc2d-b8f1daa470da.csv',NULL,NULL,NULL,'2020-05-15 11:45:41','2020-05-15 03:45:09'),(5,303030,'wine-D','wine-D','wine-D','wine-D',NULL,NULL,NULL,NULL,'不通过','static\\dataset\\temp\\2020\\05\\27\\79d98c7b-726b-4703-9b27-c339ec5635d5.csv',NULL,NULL,NULL,'2020-05-27 17:50:24','2020-05-27 09:49:59'),(6,303030,'wine-D','wine-D','wine-D','wine-D',NULL,NULL,NULL,NULL,'通过审核','static\\dataset\\temp\\2020\\05\\27\\757df62d-d7f1-49a1-9601-d0aaf4bc286c.csv',NULL,NULL,NULL,'2020-05-27 17:50:43','2020-05-27 09:50:31');
 /*!40000 ALTER TABLE `dataset_form` ENABLE KEYS */;
 UNLOCK TABLES;
 

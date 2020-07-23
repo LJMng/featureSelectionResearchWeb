@@ -1125,7 +1125,6 @@
             dataset_form_source: '',
             dataset_form_description: '',
             dataset_form_preprocessing: '',
-            dataset_form_algorithm: '',
             dataset_form_record: '',
             dataset_form_dimension: '',
             dataset_form_tag: '',
@@ -1283,7 +1282,7 @@
                         break;
                     }
                 };
-                if(this.dataset_form_name=='' || this.$refs.inputDataset.files[0]==null || this.dataset_form_algorithm==''){
+                if(this.dataset_form_name=='' || this.$refs.inputDataset.files[0]==null){
                     iFcorrect = false;
                 };
                 if (iFcorrect){
@@ -1293,7 +1292,6 @@
                     datasetForm.append("inputHref",this.dataset_form_source);
                     datasetForm.append("inputDescription",this.dataset_form_description);
                     datasetForm.append("inputPreprocess",this.dataset_form_preprocessing);
-                    datasetForm.append("inputAlgorithm",this.dataset_form_algorithm);
                     datasetForm.append("inputRecord",this.dataset_form_record);
                     datasetForm.append("inputDimension",this.dataset_form_dimension);
                     datasetForm.append("inputTag",this.dataset_form_tag);
