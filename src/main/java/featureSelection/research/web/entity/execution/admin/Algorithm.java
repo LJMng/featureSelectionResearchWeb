@@ -28,6 +28,7 @@ public class Algorithm implements Serializable {
     private String algorithmCallUsername;
     private String algorithmCallPassword;
     private String algorithmNameMapper;
+    private String algorithmUsage;
     //算法参数
     private List<AlgorithmParameterDemoAdmin> algorithmParameterDemoAdmin;
     //存放参数名称
@@ -163,6 +164,14 @@ public class Algorithm implements Serializable {
         this.algorithmParameterDemoAdmin = algorithmParameterDemoAdmin;
     }
 
+    public String getAlgorithmUsage() {
+        return algorithmUsage;
+    }
+
+    public void setAlgorithmUsage(String algorithmUsage) {
+        this.algorithmUsage = algorithmUsage;
+    }
+
     public List<String> getList() {
         return list;
     }
@@ -206,6 +215,7 @@ public class Algorithm implements Serializable {
                 ", algorithmCallUsername='" + algorithmCallUsername + '\'' +
                 ", algorithmCallPassword='" + algorithmCallPassword + '\'' +
                 ", algorithmNameMapper='" + algorithmNameMapper + '\'' +
+                ", algorithmUsage='" + algorithmUsage + '\'' +
                 ", algorithmParameterDemoAdmin=" + algorithmParameterDemoAdmin +
                 ", list=" + list +
                 ", list2=" + list2 +

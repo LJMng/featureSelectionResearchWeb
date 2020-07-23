@@ -137,7 +137,6 @@
             </div>
         </nav>
 
-
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -202,6 +201,7 @@
                     <div class="col-md-6">
                         <p class="text-lg-left">u can choose the algorithm,and add some params for execution System</p>
                     </div>
+                    <hr>
                     <!--            添加参数内容表单-->
                     <form>
                         <!--选择算法 -->
@@ -490,6 +490,10 @@
                                     <textarea class="form-control" v-model="info.algorithmPaperLink"></textarea>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-form-label">算法图文介绍信息(输入html文本):</label>
+                                    <textarea class="form-control" v-model="info.algorithmUsage"></textarea>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-form-label">算法接口:</label>
                                     <input type="text" class="form-control" v-model="info.algorithmCallInterface">
                                 </div>
@@ -587,6 +591,10 @@
                                 <div class="form-group">
                                     <label class="col-form-label">引用论文链接:</label>
                                     <textarea class="form-control" v-model="info.algorithmPaperLink"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">算法图文介绍信息(输入html文本):</label>
+                                    <textarea class="form-control" v-model="info.algorithmUsage"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-form-label">算法接口:</label>
@@ -893,6 +901,8 @@
                                     <dd class="col-md-7">{{algorithm.algorithmPaperReference}}</dd>
                                     <dt class="col-md-5">引用论文链接:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmPaperLink}}</dd>
+                                    <dt class="col-md-5">算法图文介绍信息（html文本）:</dt>
+                                    <dd class="col-md-7">{{algorithm.algorithmUsage}}</dd>
                                     <dt class="col-md-5">算法接口:</dt>
                                     <dd class="col-md-7">{{algorithm.algorithmCallInterface}}</dd>
                                     <dt class="col-md-5">算法服务主机:</dt>

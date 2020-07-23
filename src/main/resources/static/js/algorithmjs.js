@@ -41,7 +41,8 @@ var vm =new Vue({
             algorithmCallExecutionConnectRoutingkey:'',
             algorithmCallPort:'',
             algorithmCallUsername:'',
-            algorithmCallPassword:''
+            algorithmCallPassword:'',
+            algorithmUsage:'',
         },
         number: 0,
         // parameterName: [],
@@ -206,6 +207,7 @@ var vm =new Vue({
                     this.info.algorithmCallInterface = resp.data.algorithmCallInterface;
                     this.info.algorithmNameMapper = resp.data.algorithmNameMapper;
                     this.info.algorithmCallHost = resp.data.algorithmCallHost;
+                    this.info.algorithmUsage = resp.data.algorithmUsage;
                     this.info.algorithmCallExchange = resp.data.algorithmCallExchange;
                     this.info.algorithmCallExecutionConnectRoutingkey = resp.data.algorithmCallExecutionConnectRoutingkey;
                     this.info.algorithmCallExecutionSendRoutingkey = resp.data.algorithmCallExecutionSendRoutingkey;
