@@ -73,7 +73,7 @@ var vm =new Vue({
             }
         },
         addAccount:function () {
-            axios.post('/addAccount',this.accountInfo)
+            axios.post('/administratorAddAccount',this.accountInfo)
                 .then(() => {
                     window.location.reload();
                 })

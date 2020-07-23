@@ -194,7 +194,7 @@ $(function () {
 // 列表分页样式设置
 $("#pagination_14").whjPaging({
     css: 'css-4',
-    totalSize: 128,
+    totalSize: 127,
     totalPage: 13,
     pageSize: 10,
     showPageNum: 10,

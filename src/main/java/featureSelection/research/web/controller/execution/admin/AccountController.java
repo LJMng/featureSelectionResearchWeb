@@ -32,7 +32,7 @@ public class AccountController {
         return "redirect: /pages/execution/admin/account.html";
     }
 
-    @PostMapping("/addAccount")
+    @PostMapping("/administratorAddAccount")
     public String addAccount(@RequestBody Account account){
         accountBusiness.addAccount(account);
 

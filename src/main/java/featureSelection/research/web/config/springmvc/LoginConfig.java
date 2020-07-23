@@ -16,16 +16,17 @@ public class LoginConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/execution/**").excludePathPatterns(
                         "/execution",
+                        "localhost:8000/pages/execution/admin/executionAdminLogin.html",
                         "/execution/getProcedureSettingsList",
                         "/execution/getParameterList",      //开放接口提供内部调用
                         "/index",
                         "/",
                         "/index.html",
-                        "http://www.baidu.com",            //登录
+                        "http://www.baidu.com",          //登录
                         "/**/*.html",            //html静态资源
                         "/**/*.js",              //js静态资源
                         "/**/*.css",             //css静态资源
-                        "/**/*.jpg",             //图片静态资源
+                        "/**/*.jpg",            //图片静态资源
                         "/**/*.woff",
                         "/**/*.ttf");
     }
