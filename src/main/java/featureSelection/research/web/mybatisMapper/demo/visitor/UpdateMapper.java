@@ -10,4 +10,5 @@ public interface UpdateMapper {
 
     public List<UpdateInfo>getAllUpdateInfoList();
 
+
 }

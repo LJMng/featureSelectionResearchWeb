@@ -33,14 +33,20 @@ public class ExecutionRabbitmqComServiceSingleton {
     private static Map<String, ExecutionRabbitmqComInfo> executionRabbimqComInfos = new ConcurrentHashMap<>(64);
 
     public static int addExecutionRabbitmqComInfo(ExecutionRabbitmqComInfo executionRabbitmqComInfo) {
+        //设置排队中状态
+        executionRabbitmqComInfo.setStatues("in the line:"+executionRabbimqComInfos.size());
         executionRabbimqComInfos.put(executionRabbitmqComInfo.getExecutionRabbimqComTaskId(), executionRabbitmqComInfo);
         //开始发送rabbitmq连接信息
         executionRabbitmqComInfo.sendRabbitmqConnectRequestInfo();
+        log.info("excutionService:"+executionRabbitmqComInfo.getTaskAccoutEmail()+"-"
+                +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":"+"send connectInfo");
         return executionRabbimqComInfos.size();
     }
 
     public static void deleteRabbitmqComInfo(String rabbitmqComInfoTaskId) {
         executionRabbimqComInfos.remove(rabbitmqComInfoTaskId);
+        log.info(new Date().toString()+"--"+"excutionService:"+rabbitmqComInfoTaskId+
+                "destroy");
     }
 
     /**
@@ -86,12 +92,16 @@ public class ExecutionRabbitmqComServiceSingleton {
                     log.warn("excutionService:"+executionRabbitmqComInfo.getTaskAccoutEmail()+"-"
                     +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":"+"connect " +
                         "falied");
+
+                    executionRabbitmqComInfo.getTaskInfo().setAlgorithmStatus("alg client could not connect");
                 }
             }
             //判断是否存在数据传输错误信息
             if (info.get("data-error-info") != null) {
                 executionRabbimqComInfos.get(info.get("id")).setStatues("dataerror");
                 log.error(info.get("data-error-info").toString());
+                executionRabbitmqComInfo.setResultInfo(info.get("data-error-info").toString());
+                executionRabbitmqComInfo.getTaskInfo().setAlgorithmStatus("data-error:"+info.get("data-error-info").toString());
             }
             //如果信息中包含退出信息，则任务完成，接收任务结果并设置任务完成
             if (info.get("exitInfos") != null) {

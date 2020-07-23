@@ -21,7 +21,7 @@ import java.io.IOException;
 @SpringBootApplication
 @EnableAsync
 @ComponentScan(nameGenerator = UniqueNameGenerator.class)
-@MapperScan(basePackages="featureselection.research.web.mybatisMapper",nameGenerator =UniqueNameGenerator.class )
+@MapperScan(basePackages="featureSelection.research.web.mybatisMapper.**",nameGenerator =UniqueNameGenerator.class )
 @EnableScheduling
 @Import(SpringUtil.class)
 @ServletComponentScan({"featureselection.research.web.controller"})

@@ -29,8 +29,9 @@
 	<script src="/webjars/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
 	<!--echrat.js-->
 	<script src="https://cdn.bootcss.com/echarts/4.7.0/echarts-en.common.js"></script>
+	<script type="text/javascript" src="/js/demo/visitor/common.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
 	<style type="text/css">
-
 	</style>
 </head>
 
@@ -39,18 +40,12 @@
 	<!--导航栏-->
 	<div id="demo-header"></div>
 	<div class="container">
-		<!--demo首页头部-->
+		<!--demo首页指引 public/page/demo/visitor/index-guide.html-->
 		<div id="demo-guide"></div>
-		<!--demo首页算法-->
+		<!--demo首页算法-- public/page/demo/visitor/algorithm.html-->
 		<div id="demo-algorithms" name="algorithms"></div>
-		<!--demo首页更新板-->
+		<!--demo首页更新板 public/page/demo/visitor/update.html-->
 		<div id="demo-updates"></div>
-		<!--关于我们-->
-		<div id="aboutus"></div>
-		<!--注册-->
-		<div id="register"></div>
-		<!--登陆弹窗-->
-		<div id="loginpup"></div>
 		<!--算法方案细节弹窗-->
 		<div id="algorithmdetailspop"></div>
 	</div>
@@ -64,51 +59,14 @@
 	</div>
 
 	<script type="text/javascript">
-		var demoVisitorBaseURL= "http://localhost:8000/demo/visitor/";
-		var baseURL = "http://localhost:8000/";
-		// 上面created与下面$(function(){})的调用顺序自行百度和查看Vue.js文档说明，或者自行尝试
 		$(function () {
 			//加载页面
-			$("#demo-header").load('pages/demo/visitor/header.html');
-			$("#demo-guide").load('pages/demo/visitor/guide.html');
-			$("#demo-algorithms").load('pages/demo/visitor/algorithms.html');
-			$("#demo-updates").load('pages/demo/visitor/updates.html');
-			$("#loginpup").load('popups/demo/visitor/login.html')
+			$("#demo-header").load('pages/demo/visitor/index-header.html');
+			$("#demo-guide").load('pages/demo/visitor/index-guide.html');
+			$("#demo-algorithms").load('pages/demo/visitor/index-algorithms.html');
+			$("#demo-updates").load('pages/demo/visitor/index-updates.html');
 		});
 
-		//加载注册页面
-		function toRegister() {
-			$("#demo-guide").empty();
-			$("#demo-algorithms").empty();
-			$("#demo-updates").empty();
-			$('#aboutus').empty();
-			$('#register').load('pages/demo/visitor/register.html');
-		};
-
-		//回到首页
-		function backIndex() {
-			window.location.href = baseURL;
-		};
-
-		//进入execution系统
-		function toexecution() {
-			if ($.cookie("account") != null) {
-				window.location.href = baseURL + "execution";
-			}
-			else {
-				$.cookie("loginTo", 'execution');
-				$("#loginbutton").click()
-			}
-		};
-
-		//加载关于我们界面
-		function toaboutus() {
-			$("#demo-guide").empty();
-			$("#demo-algorithms").empty();
-			$("#demo-updates").empty();
-			$('#register').empty();
-			$('#aboutus').load('pages/demo/visitor/aboutus.html');
-		};
 	</script>
 </body>
 

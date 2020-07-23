@@ -240,6 +240,9 @@ public class DemoRabbimqComInfo {
         return returnData;
     }
 
+    public Dataset getDataset() {
+        return dataset;
+    }
 
     public void setResultInfo(Object resultInfo) {
         this.resultInfo = resultInfo;

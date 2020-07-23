@@ -1,10 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>featureSelection</title>
+
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/webjars/bootstrap-switch/3.3.4/dist/css/bootstrap3/bootstrap-switch.css">
+    <link rel="stylesheet" href="css/demovisitor.css">
+    <!-- jquery -->
+    <!-- 	Web jars -->
+    <!-- 		jquery -->
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/jquery-cookie/jquery.cookie.js"></script>
+    <!-- 		Vue.js -->
+    <script src="/webjars/vue/vue.min.js"></script>
+    <!--axios-->
+    <script src="/webjars/axios/dist/axios.js"></script>
+    <!-- 		Bootstrap -->
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <!-- 		Bootstrap core JavaScript-->
+    <script src="/webjars/bootstrap/js/bootstrap.bundle.js"></script>
+    <!--bootstrap-switch-->
+    <script src="/webjars/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+    <!--echrat.js-->
+    <script src="https://cdn.bootcss.com/echarts/4.7.0/echarts-en.common.js"></script>
+    <script type="text/javascript" src="/js/demo/visitor/common.js"></script>
     <style type="text/css">
         .aboutushead {
             background: #425861 url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590167346327&di=c36e7130faddb25a6fce56183f830723&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20180330%2F2d407cf0d07e412485166c8368b8601e.jpeg);
@@ -16,6 +40,8 @@
 </head>
 
 <body>
+<div class="container">
+    <div id="demoheader"></div>
     <div id="aboutuspage">
         <div class="aboutushead">
             <h1 style="color: aliceblue">
@@ -52,6 +78,7 @@
             </div>
         </div>
     </div>
+</div>
     <script type="text/javascript">
         var vue_demo_aboutus = new Vue({
             el: '#aboutuspage',
@@ -88,7 +115,7 @@
         });
 
         $(function () {
-            $('#algorithmdetailspop').hide();
+            $("#demoheader").load('index-header.html');
         });
     </script>
 </body>

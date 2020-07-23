@@ -81,7 +81,7 @@ public class ExecutionRabbitmqComInfo {
 
         CachingConnectionFactory connectionFactory = RabbitmqUtil.getConnectionFactory(host, port, username, password, exchange);
 
-        this.accoutEmail=accountMapper.getAccountByPower(taskInfo.getAccountId()).getAccountEmail();
+        this.accoutEmail=taskInfo.getTaskEmail();
         this.executionRabbimqComTaskId = taskParamaterInfo.getString("id");
         this.exchange=exchange;
         this.taskInfo=taskInfoMapper.getTaskInfoByTaskId(taskId);
@@ -183,4 +183,12 @@ public class ExecutionRabbitmqComInfo {
         return accoutEmail;
     }
     public String getDataSetName(){return dataset.getDatasetName();}
+
+    public TaskInfo getTaskInfo() {
+        return taskInfo;
+    }
+
+    public void setTaskInfo(TaskInfo taskInfo) {
+        this.taskInfo = taskInfo;
+    }
 }

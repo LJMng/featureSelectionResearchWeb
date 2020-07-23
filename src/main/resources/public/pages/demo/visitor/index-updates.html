@@ -10,7 +10,7 @@
         </div>
         <div v-for="item of updates" class="alert alert-secondary pb-0" role="alert">
             <p class="text-left">{{item.ut}}</p>
-            <p class="text-left">{{item.updateEnContent}}</p>
+            <p class="text-left">{{item.updateContent}}</p>
         </div>
     </div>
     <script type="text/javascript">
@@ -43,10 +43,19 @@
         });
 
         function getUpdateInfo() {
-            $.get(demoVisitorBaseURL+"/getAllUpdateInfoList", function (response) {
-                if(response.code==200)
-                vue_demo_update.updates = response.data;
-            });
+            if ($.cookie("language") == 'ch'){
+                $.get(demoVisitorBaseURL+"/getAllUpdateInfoList?language=ch",function (response) {
+                    if(response.code==200)
+                        vue_demo_update.updates = response.data;
+                });
+            }
+            else {
+                $.get(demoVisitorBaseURL+"/getAllUpdateInfoList?language=eh", function (response) {
+                    if(response.code==200)
+                        vue_demo_update.updates = response.data;
+                });
+            }
+
         }
     </script>
 </body>

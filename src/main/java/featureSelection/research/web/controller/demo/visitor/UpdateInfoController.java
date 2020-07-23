@@ -4,12 +4,10 @@ import featureSelection.research.web.common.util.ResultUtil;
 import featureSelection.research.web.entity.Result;
 import featureSelection.research.web.entity.demo.visitor.UpdateInfo;
 import featureSelection.research.web.mybatisMapper.demo.visitor.UpdateMapper;
+import featureSelection.research.web.service.demo.visitor.impl.IUpdateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,10 +21,21 @@ import java.util.List;
 @RequestMapping(value = "/demo/visitor")
 public class UpdateInfoController {
     @Autowired
-    private UpdateMapper updateMapper;
+    private IUpdateServiceImpl iUpdateService;
 
+    /**
+     * 根据语言种类获取更新信息
+     * @param language
+     * @return
+     */
     @GetMapping(value = "/getAllUpdateInfoList")
-    public Result getAllUpdateInfoList(){
-        return ResultUtil.success(updateMapper.getAllUpdateInfoList());
+    public Result getAllUpdateInfoList(@RequestParam("language") String language) {
+        if (language.equals("eh")) {
+            return ResultUtil.success(iUpdateService.getAllEnUpdateInfoList());
+        } else if (language.equals("ch")) {
+            return ResultUtil.success(iUpdateService.getAllChUpdateInfoList());
+        }else {
+            return ResultUtil.error(400,"please submit the type of language");
+        }
     }
 }

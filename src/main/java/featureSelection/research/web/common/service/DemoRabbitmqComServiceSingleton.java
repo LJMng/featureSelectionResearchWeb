@@ -1,4 +1,5 @@
 package featureSelection.research.web.common.service;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import featureSelection.research.web.controller.demo.visitor.AlgorithmEexecuteController;
 import featureSelection.research.web.entity.communicationJson.rabbitmqcominfo.DemoRabbimqComInfo;
@@ -38,6 +39,8 @@ public class DemoRabbitmqComServiceSingleton {
         demoRabbimqComInfos.put(demoRabbimqComInfo.getDemoRabbimqComTaskId(), demoRabbimqComInfo);
         //Rabbitmq服务处理类开始发送rabbitmq连接信息
         demoRabbimqComInfo.sendRabbitmqConnectRequestInfo();
+        log.info(new Date().toString()+"--"+"demoService:"+demoRabbimqComInfo.getDemoRabbimqComTaskId()+
+                "send connectInfo");
     }
 
     /**
@@ -46,6 +49,8 @@ public class DemoRabbitmqComServiceSingleton {
      */
     public static void deleteRabbitmqComInfo(String rabbitmqComInfoTaskId) {
         demoRabbimqComInfos.remove(rabbitmqComInfoTaskId);
+        log.info(new Date().toString()+"--"+"demoService:"+rabbitmqComInfoTaskId+
+                "destroy");
     }
 
     /**
@@ -99,11 +104,18 @@ public class DemoRabbitmqComServiceSingleton {
             }
             //6.如果信息中包含退出信息，则任务完成，接收任务结果并设置任务完成
             if (info.get("exitInfos")!=null){
+                int DatasetDimension=Integer.parseInt(demoRabbimqComInfo.getDataset().getDatasetDimension());
+                JSONArray reductJSONArray=JSONArray.parseArray(info.get("reducts").toString());
+                int reductSize=reductJSONArray.size();
+                info.put("notReduct",DatasetDimension-reductSize);
+                info.put("reductSize",reductSize);
                 demoRabbimqComInfo.setResultInfo(info);
                 demoRabbimqComInfo.setStatues("FINISH");
                 log.info(new Date().toString()+"--"+"demoService:"+demoRabbimqComInfo.getDemoRabbimqComTaskId()+"FINISH");
             }
 
+        }else {
+            log.warn(new Date().toString()+"--"+"demoService:task ");
         }
     }
 }

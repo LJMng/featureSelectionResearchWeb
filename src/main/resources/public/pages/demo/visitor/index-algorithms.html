@@ -105,22 +105,64 @@
                                 <div class="col-6  border border-darken-1">
                                     <div class="row bg-light" style="height:100%">
                                         <!--运行结果展示-->
-                                        <div :id="'resultInfo'+algorithmIndex" class=" m-auto" style="width:90%;height:80%;display: flex;
+                                        <div :id="'resultInfotable'+algorithmIndex" class="m-auto"
+                                             style="width:60%;height:80%;position:absolute;
+                                             align-items: center;text-align: right;right:0px;display:none;">
+                                            <div class="mr-2 mt-5">
+                                                <div>
+                                                <table class="table">
+                                                    <thead class="thead-dark">
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">reducts</th>
+                                                        <th scope="col">time</th>
+
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td style="text-align: center">
+                                                            <div :id="'reductsvalue'+algorithmIndex" style="display:
+                                                            inline-block"></div>
+                                                            <div style="display: inline-block">
+
+                                                            </div>
+                                                        </td>
+                                                        <td>Otto</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div :id="'resultInfo'+algorithmIndex" class="m-auto"
+                                             style="width:40%;height:80%;position:absolute;
+                                             align-items: center;float: right;">
+                                        </div>
+                                        <div :id="'resultnavicat'+algorithmIndex" class="m-auto"
+                                             style="width:90%;height:80%;display:flex;
                                             justify-content: center;
                                             align-items: center;">
-                                            <div class="m-auto text-center"><svg class="bi bi-graph-up" width="7em"
-                                                    height="7em" viewBox="0 0 16 16" fill="currentColor"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M0 0h1v16H0V0zm1 15h15v1H1v-1z" />
-                                                    <path fill-rule="evenodd"
-                                                        d="M14.39 4.312L10.041 9.75 7 6.707l-3.646 3.647-.708-.708L7 5.293 9.959 8.25l3.65-4.563.781.624z"
-                                                        clip-rule="evenodd" />
-                                                    <path fill-rule="evenodd"
-                                                        d="M10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4h-3.5a.5.5 0 0 1-.5-.5z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
+                                            <div class="m-auto text-center">
+                                                <svg class="bi bi-graph-up" width="7em"
+                                                     height="7em" viewBox="0 0 16 16" fill="currentColor"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M0 0h1v16H0V0zm1 15h15v1H1v-1z" />
+                                                <path fill-rule="evenodd"
+                                                      d="M14.39 4.312L10.041 9.75 7 6.707l-3.646 3.647-.708-.708L7 5.293 9.959 8.25l3.65-4.563.781.624z"
+                                                      clip-rule="evenodd" />
+                                                <path fill-rule="evenodd"
+                                                      d="M10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4h-3.5a.5.5 0 0 1-.5-.5z"
+                                                      clip-rule="evenodd" />
+                                            </svg>
                                                 <p class="resulttext mt-3">{{resulttext}}</p>
                                             </div>
+                                        </div>
+                                        <div id="copy" style="position: absolute;right: 10px;bottom: 10px">
+                                            <button type="button" class="btn btn-primary"
+                                                    v-on:click="copyreducts(algorithmIndex)">copy
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -133,6 +175,7 @@
     </div>
     <hr>
     <div id="schemesdetailspop"></div>
+    <textarea id="copyinput" style="display:none">copy内容</textarea>
     <script type="text/javascript">
         var vue_demo_algorithms = new Vue({
             el: '#algorithms',
@@ -158,45 +201,58 @@
                     var toPostParameterId = this.algorithms[algorithmIndex].parameterSchemes[parameterSchemeIndex].schemeId;
                     console.log(toPostParameterId);
                     var resultcontainerIndex = "resultInfo" + algorithmIndex;
+                    var resultnavicat="resultnavicat"+algorithmIndex;
+                    var resultInfotable="resultInfotable"+algorithmIndex
+                    var reductsvalues="reductsvalue"+algorithmIndex
+                    $('#'+resultnavicat).hide()
+                    $('#'+resultInfotable).hide()
                     echarts.init(document.getElementById(resultcontainerIndex)).dispose();
                         var myChart = echarts.init(document.getElementById(resultcontainerIndex));
                     myChart.setOption({
-                        title: [{
-                            text: 'Reduct',
-                            left: 'center'
-                        },
-                        {
-                            text: 'rudcts is',
-                            left: '30%',
-                            bottom: '10%'
-                        }],
+                        // title: [{
+                        //     text: 'Reduct',
+                        //     left: 'center'
+                        // },
+                        // {
+                        //     text: 'rudcts is',
+                        //     left: '30%',
+                        //     bottom: '10%'
+                        // }],
                         series: [{
                             radius: '50%',
-                            center: ['17%', '50%'],
                             name: '结果',
                             type: 'pie',
-                            data: [3, 7]
+                            data: [1,7]
                         }]
                     });
                     myChart.showLoading()
                     $.post(demoVisitorBaseURL+"/transmitExcuteInfo", { "algorithmId": toPostAlgorithmid,
-                        "parameterSchemeId": toPostParameterId }, function (data) {
-                        console.log(data)
-                        if (data.code==200){
+                        "parameterSchemeId": toPostParameterId }, function (response) {
+                        console.log(response)
+                        if (response.code==200){
                         myChart.setOption({
-                            title: [{
-                                text: 'Reduct',
-                                left: 'center'
-                            },
-                            {
-                                text: 'rudcts is {' + data.reducts + '}',
-                                left: 'center',
-                                bottom: '10%'
-
-                            }],
+                            series: [{
+                                radius:'50%',
+                                name: '结果',
+                                type: 'pie',
+                                data: [response.data.reductSize, response.data.notReduct]
+                            }]
                         });
+                        //     title: [{
+                        //         text: 'Reduct',
+                        //         left: 'center'
+                        //     },
+                        //     {
+                        //         text: 'rudcts is {' + response.data.reducts + '}',
+                        //         left: 'center',
+                        //         bottom: '10%'
+                        //
+                        //     }],
+
                             myChart.hideLoading();
-                        }else if(data.code==400){
+                            $('#'+reductsvalues).text(response.data.reducts)
+                            $('#'+resultInfotable).show()
+                        }else if(response.code==400){
                             myChart.hideLoading();
                             echarts.init(document.getElementById(resultcontainerIndex)).dispose();
                             alert("please do it again")
@@ -239,6 +295,16 @@
 
         });
 
+        function copyreducts(index) {
+            var reductsvalues="reductsvalue"+index;
+            var text = document.getElementById(reductsvalues).innerText;
+            console.log(text)
+            copyinput.value = text;
+            copyinput.focus();
+            copyinput.select()
+            console.log(copyinput.value)
+            document.execCommand('copy')
+        }
         //给select添加默认option
         function addOption() {
             var option="<option selected=\"true\" disabled=\"true\" value=\"\">Choose...</option>"

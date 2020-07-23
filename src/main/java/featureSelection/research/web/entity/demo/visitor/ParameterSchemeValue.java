@@ -17,7 +17,12 @@ public class ParameterSchemeValue {
     }
 
     public void setParameterInputValue(String parameterInputValue) {
-        this.parameterInputValue = parameterInputValue;
+        if(parameterInputValue.equals("null")){
+            this.parameterInputValue=null;
+        }else {
+            this.parameterInputValue = parameterInputValue;
+        }
+
     }
 
     public String getParameterOptionValue() {
@@ -25,10 +30,25 @@ public class ParameterSchemeValue {
     }
 
     public void setParameterOptionValue(String parameterOptionValue) {
-        this.parameterOptionValue = parameterOptionValue;
+        if(parameterOptionValue.equals("null")){
+            this.parameterOptionValue=null;
+            return;
+        }
+        else if(parameterOptionValue.length()>0&&parameterOptionValue.charAt(0)=='['){
+            parameterOptionValue=parameterOptionValue.substring(1,parameterOptionValue.length()-2);
+            parameterOptionValue=parameterOptionValue.replace("\"","");
+            this.parameterOptionValue=parameterOptionValue;
+            return;
+        }
+        else {
+            this.parameterOptionValue = parameterOptionValue;
+            return;
+        }
+
     }
 
     public Parameter getParameter() {
+
         return parameter;
     }
 
