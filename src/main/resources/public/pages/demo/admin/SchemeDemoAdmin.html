@@ -88,14 +88,12 @@
                  data-parent="#accordionExample">
                 <div class="card-body" style="text-align:center">
                     <h6 class="card-subtitle mb-2 text-muted ">算法名称:{{scheme.algorithmName}}</h6>
-                    <h6 class="card-subtitle mb-2 text-muted">数据集:{{scheme.datasetName}}</h6>
                     <hr>
                     <p class="card-text">方案简介:{{scheme.schemeDescription}}</p>
                     <hr>
                     <h5><b>基本参数详情</b></h5>
                     <span class="card-text" v-for="parameter in scheme.algorithmParameterDemoAdmin">
                         <p v-if="parameter.parameterInputValue===null" style="color: red">参数被清空请添加参数</p>
-<!--                        <p v-else-if="parameter.parameterOptionValue!=='null'">{{parameter.parameterName}}:{{parameter.parameterInputValue}},{{parameter.parameterOptionValue}}</p>-->
                         <p v-else>{{parameter.parameterName}}:input:<span style="color: red">{{parameter.parameterInputValue}}</span> option:<span style="color: red">{{parameter.parameterOptionValue}}</span></p>
                         </span>
                     <hr>
@@ -145,11 +143,13 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="ControlSelect2">选择数据集:</label>
-                            <select class="form-control" id="ControlSelect2" v-model="scheme.datasetId">
-                                <option v-for="dataset in datasets" :value="dataset.datasetId">{{dataset.datasetName}}
-                                </option>
-                            </select>
+                            <label>给用户提供可选数据集:</label>
+                            <div class="input-group mb-3">
+                                <div class="custom-control-inline custom-control custom-checkbox" v-for="dataset in datasets">
+                                    <input class="custom-control-input" type="checkbox" :id="'datasets'+dataset.datasetId" :value="dataset.datasetId" name="insert_datasets">
+                                    <label class="custom-control-label" :for="'datasets'+dataset.datasetId">{{dataset.datasetName}}</label>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-form-label">方案名称:</label>
@@ -187,11 +187,13 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="ControlSelect3">数据集:</label>
-                            <select class="form-control" id="ControlSelect3" v-model="scheme.datasetId">
-                                <option v-for="dataset in datasets" :value="dataset.datasetId">{{dataset.datasetName}}
-                                </option>
-                            </select>
+                            <label>给用户提供可选数据集:</label>
+                            <div class="input-group mb-3">
+                                <div class="custom-control-inline custom-control custom-checkbox" v-for="dataset in datasets">
+                                    <input class="custom-control-input" type="checkbox" :id="dataset.datasetId" :value="dataset.datasetId" name="datasets">
+                                    <label class="custom-control-label" :for="dataset.datasetId">{{dataset.datasetName}}</label>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-form-label">方案名称:</label>
@@ -237,7 +239,7 @@
     <!--参数设置模态框-->
     <div class="modal fade" id="settingParameterModal" tabindex="-1" role="dialog" aria-hidden="true"
          data-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">参数设置</h5>
@@ -249,7 +251,7 @@
                     <form>
                         <div class="col-sm-12 mt-3">
                                 <div class="alert alert-warning text-center" role="alert">
-                                    Basic Parameters
+                                    基本参数设置
                                 </div>
                                 <div class="row m-0" v-for="(param,index2) in parameterList[scheme.algorithmId]" v-if="param.parameterSettingInfo!=null">
                                     <label :for="scheme.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='text'">{{param.parameterName}}
@@ -413,8 +415,7 @@
                     algorithmId: '',
                     algorithmName: '',
                     algorithmParameterDemoAdmin: [],
-                    datasetId: '',
-                    datasetName: ''
+                    availableDatasets: '',
                 },
                 procedure: {
                     schemeProcedureId: '',
@@ -480,8 +481,23 @@
                         this.scheme.algorithmId = resp.data.algorithmId;
                         this.scheme.algorithmName = resp.data.algorithmName;
                         this.scheme.algorithmParameterDemoAdmin = resp.data.algorithmParameterDemoAdmin;
-                        this.scheme.datasetId = resp.data.datasetId;
-                        this.scheme.datasetName = resp.data.datasetName;
+                        this.scheme.availableDatasets = resp.data.availableDatasets;
+                        let strRoles = this.scheme.availableDatasets;
+                        if(strRoles.length>0){
+                            //当strRoles有值时，清楚所有页面上的原选项
+                            $('input[name="datasets"]').each(function(){
+                                $(this).attr("checked",false);
+                            });
+                            let roleArr = strRoles.replace(/[^0-9,]*/g,"").split(',');
+                            $.each(roleArr,function(index,roleName){
+                                //获取页面所有checkbox，然后迭代
+                                $('input[name="datasets"]').each(function(){
+                                    if($(this).val() == roleName){
+                                        $(this).attr("checked",true);
+                                    }
+                                });
+                            });
+                        }
                         axios.get('/schemeProcedureDemoAdmin/find/' + _id)
                             .then(resp => {
                                 if (resp.data.length !== 0) {
@@ -520,10 +536,6 @@
                     alert('请选择算法');
                     return;
                 }
-                if (!this.scheme.datasetId) {
-                    alert('请选择数据集');
-                    return;
-                }
                 if (!this.scheme.schemeName) {
                     alert('请输入方案名称');
                     return;
@@ -547,6 +559,24 @@
                     alert("请确认该算法是否设定参数");
                     return;
                 }
+                let tmp_datasets = [];
+                $('input[name="insert_datasets"]:checked').each(function(){//遍历每一个名字为datasets的复选框
+                    tmp_datasets.push($(this).val());//将选中的值添加到数组中
+                });
+                this.scheme.availableDatasets = JSON.stringify(tmp_datasets);
+                let TypeID =$("input[name='insert_datasets']");
+                let objYN=false;
+                for(let i=0;i<TypeID.length;i++){
+                    if(TypeID[i].checked){
+                        objYN = true;
+                        break;
+                    }
+                }
+                if(!objYN)
+                {
+                    alert('请至少选择一个数据集');
+                    return false;
+                }
                 axios.post('/SchemeDemoAdmin/insert', this.scheme)
                     .then(() => {
                         axios.post('/schemeProcedureDemoAdmin/insert');
@@ -567,7 +597,26 @@
                     alert('请输入简介');
                     return;
                 }
+                let tmp_datasets = [];
+                $('input[name="datasets"]:checked').each(function(){//遍历每一个名字为datasets的复选框
+                    tmp_datasets.push($(this).val());//将选中的值添加到数组中
+                });
+                this.scheme.availableDatasets = JSON.stringify(tmp_datasets);
+                let TypeID =$("input[name='datasets']");
+                let objYN=false;
+                for(let i=0;i<TypeID.length;i++){
+                    if(TypeID[i].checked){
+                        objYN = true;
+                        break;
+                    }
+                }
+                if(!objYN)
+                {
+                    alert('请至少选择一个数据集');
+                    return false;
+                }
                 this.saveAlgorithmSettings();
+                console.log(this.scheme)
                 axios.post('/SchemeDemoAdmin/update', this.scheme)
                     .then(() => {
                         if (this.tempSetting.length) {
@@ -601,6 +650,9 @@
             },
             //清空数据
             clearData() {
+                $('input[name="insert_datasets"]').each(function(){
+                    $(this).attr("checked", false);
+                });
                 this.scheme.schemeId = '';
                 this.scheme.schemeName = '';
                 this.scheme.schemeDescription = '';
@@ -608,8 +660,7 @@
                 this.scheme.algorithmId = '';
                 this.scheme.algorithmName = '';
                 this.scheme.algorithmParameterDemoAdmin = [];
-                this.scheme.datasetId = '';
-                this.scheme.datasetName = '';
+                this.scheme.availableDatasets = '';
                 this.procedure.schemeId = '';
                 this.procedure.procedureName = '';
                 this.procedure.schemeProcedureId = '';

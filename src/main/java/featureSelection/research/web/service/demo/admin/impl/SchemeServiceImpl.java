@@ -29,6 +29,8 @@ public class SchemeServiceImpl implements SchemeService {
     @Override
     @Transactional
     public String insertScheme(SchemeDemoAdmin schemeDemoAdmin) {
+        //更新算法可选数据集
+        schemeDemoAdminMapper.updateAlgorithmAvailableDatasets(schemeDemoAdmin);
         //将数据插入参数方案表
         schemeDemoAdminMapper.insertSchemeDemoAdmin(schemeDemoAdmin);
         //将数据插入参数方案值表
@@ -39,6 +41,7 @@ public class SchemeServiceImpl implements SchemeService {
     @Override
     @Transactional
     public String updateSchemeDemoAdmin(SchemeDemoAdmin schemeDemoAdmin) {
+        schemeDemoAdminMapper.updateAlgorithmAvailableDatasets(schemeDemoAdmin);
         schemeDemoAdminMapper.updateSchemeDemoAdmin(schemeDemoAdmin);
         schemeDemoAdminMapper.updateSchemeParameterDemoAdmin(schemeDemoAdmin);
         return null;
