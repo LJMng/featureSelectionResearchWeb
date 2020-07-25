@@ -72,7 +72,26 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">欢迎使用演示系统的后台管理系统</h1>
-            <p class="lead">界面有点简陋请见谅</p>
+            <p class="lead">本系统能够对首页展示出的方案以及更新信息和关于我们的页面进行管理</p>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <h1>更新信息管理</h1>
+    </div>
+    <div class="col-md-10">
+        <p class="text-lg-left">这里能修改更新的信息的中文和英文，你可以通过提供的按钮进行相应的操作</p>
+    </div>
+    <hr>
+    <div role="alert" aria-live="assertive" aria-atomic="true" class="toast col-md-10" data-autohide="false">
+        <div class="toast-header">
+            <strong class="mr-auto">tips</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" @Click="hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            <p>1.更新信息填写更新的中文信息，update info填写更新的英文信息</p>
+            <p>2.建议更新条数不要超过5条噢，所以需要定期删除</p>
         </div>
     </div>
     <table class="table">
@@ -194,6 +213,12 @@
         methods: {
             //获得所有更新信息
             getData() {
+                window.onload = function(){
+                    var arrStr = document.cookie;
+                    if(arrStr.indexOf("isClose") > -1){
+                        $('.toast').remove();
+                    }
+                }
                 axios.get('/UpdateInfoDemoAdmin/findAll')
                     .then(resp => {
                         this.updateInfos = resp.data;
@@ -271,6 +296,10 @@
                 this.updateInfo.updateEnContent = '';
                 this.updateInfo.ut = '';
             },
+            hide(){
+                $('.toast').remove();
+                document.cookie = 'isClose';
+            }
         },
         //页面生成前获取所有信息
         created() {

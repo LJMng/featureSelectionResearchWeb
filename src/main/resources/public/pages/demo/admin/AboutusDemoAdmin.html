@@ -91,8 +91,11 @@
         });
     </script>
 
-    <div class="alert alert-primary m-1" role="alert">
-        下面的是每一个信息的内容！
+    <div class="alert alert-primary m-1" role="alert" v-if="images != ''">
+        下面的是每一个信息的内容，点击标题即可查看详情信息！
+    </div>
+    <div class="alert alert-danger m-1" role="alert" v-else>
+        目前还没有信息噢，请添加标题和内容吧！
     </div>
     <div class="accordion m-5" id="accordionExample">
         <div class="card" v-for="image in images">
@@ -190,6 +193,10 @@
             },
             save(){
                 let title = $('#title').val();
+                if(title == ''){
+                    alert('请输入标题');
+                    return;
+                }
                 let markupStr = $('#summernote').summernote('code');
                 let data = new FormData();
                 data.append("html", markupStr);

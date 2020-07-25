@@ -30,7 +30,6 @@ public class UploadController {
                                                      file) throws IOException {
 
         Resource resource = new ClassPathResource("");
-        System.out.println(resource.getFile().getAbsolutePath());
         Map<String,Object> map = new HashMap<String,Object>();
         String returnName = null;
         if(!file.isEmpty()) {

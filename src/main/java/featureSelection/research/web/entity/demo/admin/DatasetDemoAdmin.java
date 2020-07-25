@@ -7,6 +7,8 @@ public class DatasetDemoAdmin{
         private Integer datasetId;
         //方案对应数据集名称
         private String datasetName;
+        //数据集描述
+        private String datasetDescription;
 
         public Integer getDatasetId() {
                 return datasetId;
@@ -24,11 +26,20 @@ public class DatasetDemoAdmin{
                 this.datasetName = datasetName;
         }
 
+        public String getDatasetDescription() {
+                return datasetDescription;
+        }
+
+        public void setDatasetDescription(String datasetDescription) {
+                this.datasetDescription = datasetDescription;
+        }
+
         @Override
         public String toString() {
                 return "DatasetDemoAdmin{" +
                         "datasetId=" + datasetId +
                         ", datasetName='" + datasetName + '\'' +
+                        ", datasetDescription='" + datasetDescription + '\'' +
                         '}';
         }
 }

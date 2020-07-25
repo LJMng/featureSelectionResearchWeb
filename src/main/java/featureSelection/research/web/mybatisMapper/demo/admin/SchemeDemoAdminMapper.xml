@@ -130,10 +130,11 @@
     <resultMap id="result1" type = "featureSelection.research.web.entity.demo.admin.DatasetDemoAdmin">
         <id column="dataset_id" property="datasetId" />
         <result column="dataset_name" property="datasetName" />
+        <result column="dataset_description" property="datasetDescription" />
     </resultMap>
     <!--查询所有数据集ID和名称提供方案调用-->
     <select id="findAllIdAndName" resultMap="result1">
-        select dataset_id,dataset_name
+        select dataset_id,dataset_name,dataset_description
         from dataset;
     </select>
 </mapper>
