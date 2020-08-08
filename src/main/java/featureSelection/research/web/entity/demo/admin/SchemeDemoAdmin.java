@@ -13,10 +13,8 @@ public class SchemeDemoAdmin {
     private String schemeDescription;
     //方案备注
     private String schemeRemark;
-    //数据集ID
-    private Integer datasetId;
-    //数据集名称
-    private String datasetName;
+    //算法可用数据集
+    private String availableDatasets;
     //方案算法ID
     private String algorithmId;
     //方案算法名称
@@ -65,12 +63,12 @@ public class SchemeDemoAdmin {
         this.algorithmId = algorithmId;
     }
 
-    public String getDatasetName() {
-        return datasetName;
+    public String getAvailableDatasets() {
+        return availableDatasets;
     }
 
-    public void setDatasetName(String datasetName) {
-        this.datasetName = datasetName;
+    public void setAvailableDatasets(String availableDatasets) {
+        this.availableDatasets = availableDatasets;
     }
 
     public String getAlgorithmName() {
@@ -89,14 +87,6 @@ public class SchemeDemoAdmin {
         this.algorithmParameterDemoAdmin = algorithmParameterDemoAdmin;
     }
 
-    public Integer getDatasetId() {
-        return datasetId;
-    }
-
-    public void setDatasetId(Integer datasetId) {
-        this.datasetId = datasetId;
-    }
-
     @Override
     public String toString() {
         return "SchemeDemoAdmin{" +
@@ -104,8 +94,7 @@ public class SchemeDemoAdmin {
                 ", schemeName='" + schemeName + '\'' +
                 ", schemeDescription='" + schemeDescription + '\'' +
                 ", schemeRemark='" + schemeRemark + '\'' +
-                ", datasetId=" + datasetId +
-                ", datasetName='" + datasetName + '\'' +
+                ", availableDatasets='" + availableDatasets + '\'' +
                 ", algorithmId='" + algorithmId + '\'' +
                 ", algorithmName='" + algorithmName + '\'' +
                 ", algorithmParameterDemoAdmin=" + algorithmParameterDemoAdmin +

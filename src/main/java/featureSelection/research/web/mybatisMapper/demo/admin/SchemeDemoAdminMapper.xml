@@ -8,8 +8,7 @@
         <result column="scheme_remark" property="schemeRemark" />
         <result column="algorithm_id" property="algorithmId" />
         <result column="algorithm_name" property="algorithmName" />
-        <result column="dataset_id" property="datasetId" />
-        <result column="dataset_name" property="datasetName" />
+        <result column="available_datasets" property="availableDatasets" />
         <!--一对多-->
         <collection property="algorithmParameterDemoAdmin" ofType="featureSelection.research.web.entity.demo.admin.AlgorithmParameterDemoAdmin">
             <id property="parameterId" column="parameter_id" />
@@ -21,47 +20,52 @@
         </collection>
     </resultMap>
 
-    <!--需要优化-->
     <!--查询所有方案信息-->
     <select id="findAll" resultMap="result">
         select
             algorithm.algorithm_id,parameter_scheme.scheme_id,parameter.parameter_id,
-            scheme_name,scheme_description,scheme_remark,dataset.dataset_id,dataset_name,
-            algorithm_name,parameter_name,parameter_input_value,parameter_option_value
+            scheme_name,scheme_description,scheme_remark,algorithm_name,parameter_name,
+            parameter_input_value,parameter_option_value
         from
             parameter_scheme
 		left join parameter on parameter.algorithm_id=parameter_scheme.algorithm_id
         left join parameter_scheme_value on parameter_scheme_value.scheme_id=parameter_scheme.scheme_id and parameter_scheme_value.parameter_id=parameter.parameter_id
         left join algorithm on parameter.algorithm_id=algorithm.algorithm_id
-        left join dataset on parameter_scheme.dataset_id=dataset.dataset_id
     </select>
 
     <!--通过ID查询方案-->
     <select id="getSchemeDemoAdminById" resultMap="result" parameterType="int">
         select
-            algorithm.algorithm_id,parameter_scheme.scheme_id,dataset_name,
-            parameter.parameter_id,scheme_name,scheme_description,dataset.dataset_id,
-            scheme_remark,algorithm_name,parameter_name,parameter_input_value,parameter_option_value,parameter_type
+            algorithm.algorithm_id,parameter_scheme.scheme_id,
+            parameter.parameter_id,scheme_name,scheme_description,
+            scheme_remark,algorithm_name,parameter_name,parameter_input_value,
+            parameter_option_value,parameter_type,available_datasets
         from
             parameter_scheme
 		left join parameter on parameter.algorithm_id=parameter_scheme.algorithm_id
         left join parameter_scheme_value on parameter_scheme_value.scheme_id=parameter_scheme.scheme_id and parameter_scheme_value.parameter_id=parameter.parameter_id
         left join algorithm on parameter_scheme.algorithm_id=algorithm.algorithm_id
-        left join dataset on parameter_scheme.dataset_id=dataset.dataset_id
         where parameter_scheme.scheme_id=#{schemeId}
     </select>
 
     <!--增加方案-->
     <insert id="insertSchemeDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin" useGeneratedKeys="true" keyProperty="schemeId">
-        insert into parameter_scheme (algorithm_id, scheme_name, scheme_description, scheme_remark, dataset_id)
+        insert into parameter_scheme (algorithm_id, scheme_name, scheme_description, scheme_remark)
         values (
             #{algorithmId},
             #{schemeName},
             #{schemeDescription},
-            #{schemeRemark},
-            #{datasetId}
+            #{schemeRemark}
         )
     </insert>
+    <update id="updateAlgorithmAvailableDatasets">
+        update
+            algorithm
+        set
+            available_datasets = #{availableDatasets}
+        where
+            algorithm_id = #{algorithmId}
+    </update>
 
     <!--更新被绑定ID的方案信息-->
     <update id="updateSchemeDemoAdmin">
@@ -70,8 +74,7 @@
         set
             scheme_name = #{schemeName},
             scheme_description = #{schemeDescription},
-            scheme_remark = #{schemeRemark},
-            dataset_id = #{datasetId}
+            scheme_remark = #{schemeRemark}
         where
             scheme_id = #{schemeId}
     </update>
@@ -124,8 +127,12 @@
         insert into parameter_scheme_value (scheme_id, parameter_id, parameter_input_value, parameter_option_value) values (#{schemeId},(select max(parameter_id) from parameter),'null','null');
     </insert>
 
+    <resultMap id="result1" type = "featureSelection.research.web.entity.demo.admin.DatasetDemoAdmin">
+        <id column="dataset_id" property="datasetId" />
+        <result column="dataset_name" property="datasetName" />
+    </resultMap>
     <!--查询所有数据集ID和名称提供方案调用-->
-    <select id="findAllIdAndName" resultMap="result">
+    <select id="findAllIdAndName" resultMap="result1">
         select dataset_id,dataset_name
         from dataset;
     </select>

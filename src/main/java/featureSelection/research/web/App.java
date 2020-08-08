@@ -24,7 +24,7 @@ import java.io.IOException;
 @MapperScan(basePackages="featureSelection.research.web.mybatisMapper.**",nameGenerator =UniqueNameGenerator.class )
 @EnableScheduling
 @Import(SpringUtil.class)
-@ServletComponentScan({"featureselection.research.web.controller"})
+@ServletComponentScan({"featureSelection.research.web.controller"})
 public class App {
     public static void main(String[] args) throws IOException {
         ApplicationContext  context = SpringApplication.run(App.class, args);
