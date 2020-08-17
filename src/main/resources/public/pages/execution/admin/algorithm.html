@@ -14,12 +14,14 @@
     <!-- jquery -->
     <!-- 	Web jars -->
     <!-- 		jquery -->
-    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="/webjars/jquery-cookie/jquery.cookie.js"></script>
     <!-- 		Vue.js -->
     <script src="/webjars/vue/vue.min.js"></script>
+    <!-- popper -->
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
     <!-- 		Bootstrap -->
-    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <!-- 		Bootstrap core JavaScript-->
     <script src="/webjars/bootstrap/js/bootstrap.bundle.js"></script>
     <!--bootstrap-switch-->
@@ -136,8 +138,8 @@
                 </ul>
             </div>
         </nav>
-
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <a href="/docx/operationOfExecution.docx"  >操作文档</a>
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true" @click="currentTag">算法管理</a>
@@ -226,7 +228,7 @@
                                 <input class="form-control" type="number" v-model.number="paramsNumber">
                             </div>
                         </div>
-                        <div v-for="n in paramsNumber">
+                        <div v-for="n in 1">
                             <div class="row">
                                 <div class="col-md-4 offset-md-2">
                                     <h2>第{{n}}个参数</h2>
@@ -235,11 +237,11 @@
                             <div class="row">
                                 <div class="col-md-4 offset-md-2">
                                     <label for="parameterName" class="col-form-label">参数名：</label>
-                                    <input id="parameterName" class="form-control" type="text" v-model="parameterInfo.parameterNames[n-1]">
+                                    <input data-toggle="popover" title="弹出框标题" data-content="弹出框内容" id="parameterName" class="form-control" type="text" v-model="parameterInfo.parameterNames[n-1]">
                                 </div>
                                 <div class="col-md-4 ">
                                     <label for="parameterNameMapper" class="col-form-label">映射到算法层的参数名：</label>
-                                    <input id="parameterNameMapper" class="form-control" type="text" v-model="parameterInfo.parameterNamesMapper[n-1]">
+                                    <input data-toggle="popover" title="弹出框标题" data-content="弹出框内容" id="parameterNameMapper" class="form-control" type="text" v-model="parameterInfo.parameterNamesMapper[n-1]">
                                 </div>
                             </div>
                             <div class="row">
@@ -256,13 +258,13 @@
                             <div class="row">
                                 <div class="col-md-4 offset-md-2">
                                     <label for="parameterDescription" class="col-form-label">参数描述：</label>
-                                    <input id="parameterDescription" class="form-control" type="text" v-model="parameterInfo.parameterDescriptions[n-1]">
+                                    <input data-toggle="popover" title="弹出框标题" data-content="弹出框内容" id="parameterDescription" class="form-control" type="text" v-model="parameterInfo.parameterDescriptions[n-1]">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4 offset-md-2">
                                     <label for="parameterDefaultValue">参数默认值</label>
-                                    <input id="parameterDefaultValue" class="form-control" type="text" v-model="parameterInfo.parameterDefaultValues[n-1]">
+                                    <input data-toggle="popover" title="弹出框标题" data-content="弹出框内容" id="parameterDefaultValue" class="form-control" type="text" v-model="parameterInfo.parameterDefaultValues[n-1]">
                                 </div>
                             </div>
                             <!--判断第一个参数类型是否为input -->
@@ -278,11 +280,11 @@
                                 <div class="row">
                                     <div class="col-md-4 offset-md-2">
                                         <label for='"firstParamValue"+m' class="col-form-label">Web层取值{{m}}</label>
-                                        <input id='"firstParamValue"+m' class="form-control" type="text" v-model="firstParameterValues[n-1][m-1]" @blur="confirmFirstValue(n,m)">
+                                        <input data-toggle="popover" title="弹出框标题" data-content="弹出框内容" id='"firstParamValue"+m' class="form-control" type="text" v-model="firstParameterValues[n-1][m-1]" @blur="confirmFirstValue(n,m)">
                                     </div>
                                     <div class="col-md-4">
                                         <label for='"firstAlgorithmParameter"+m' class="col-form-label">算法层取值{{m}}</label>
-                                        <input id='"firstAlgorithmParameter"+m' class="form-control" type="text" v-model="firstAlgorithmParameterValues[n-1][m-1]" @blur="confirmFirstAlgorithmValue(n,m)">
+                                        <input data-toggle="popover" title="弹出框标题" data-content="弹出框内容" id='"firstAlgorithmParameter"+m' class="form-control" type="text" v-model="firstAlgorithmParameterValues[n-1][m-1]" @blur="confirmFirstAlgorithmValue(n,m)">
                                     </div>
                                 </div>
                                 <div v-if="parameterInfo.parameterTypes[n-1] === 'selection'">
@@ -354,19 +356,19 @@
                         <div class="row">
                             <div class="col-md-4 offset-md-4">
                                 <label>步骤名称</label>
-                                <input type="text"  v-model="procedureSetting.name" class="form-control" required>
+                                <input data-toggle="popover" title="步骤名称" data-content="算法步骤名称的填写,填写的该参数为用户选择算法时，所选择执行的算法步骤。例如在XX算法中，可执行的步骤有3个，第一个步骤为初始化（init）步骤，则在该处添加初始化步骤。" data-placement="right"  type="text"  v-model="procedureSetting.name" class="form-control" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 offset-md-4">
                                 <label>映射到算法层的步骤名称</label>
-                                <input type="text"  v-model="procedureSetting.nameMapper" class="form-control" required>
+                                <input data-toggle="popover" title="算法层步骤名称" data-content="该参数为用户在选择算法步骤后，实际传递只算法系统的实际参数。例如在XXX算法中，执行了XX步骤，在用户选择时显示的是XXX步骤参数，实际传递至算法层运算时为XX参数。" data-placement="right"  type="text"  v-model="procedureSetting.nameMapper" class="form-control" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 offset-md-4">
                                 <label>运行状态</label>
-                                <select class="custom-select"  v-model="procedureSetting.state">
+                                <select data-toggle="popover" title="步骤名称" data-content="算法运行状态的选择有三种：required为必选的步骤；optionalSelected为可自主选择的步骤，默认为选择；optional为可自主选择的步骤，默认为不选择。" data-placement="right"  class="custom-select"  v-model="procedureSetting.state">
                                     <option>required</option>
                                     <option>optionalSelected</option>
                                     <option>optional</option>
@@ -376,23 +378,23 @@
                         <div class="row">
                             <div class="col-md-4 offset-md-4">
                                 <label>可选择的运行方法</label>
-                                <input type="text" class="form-control" title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.options" required>
+                                <input data-toggle="popover" title="运行方法" data-content="在算法执行过程中，选择该步骤后，执行调用的方法，被调用的方法必须在算法层中有接口可以执行。例如在XXX算法中,执行初始化（init）步骤的方法有多个,xxx方法,xxx方法...。在设置多个方法的时候，每个方法的名字需要要英文“,”进行分隔。" data-placement="right"  type="text" class="form-control" title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.options" required>
                             </div>
                             <div class="col-md-4 offset-md-4">
                                 <label>映射到算法端可运行的方法</label>
-                                <input type="text" class="form-control" title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.optionsMapper" required>
+                                <input data-toggle="popover" title="映射到算法端的方法" data-content="该方法为用户在前端选择的方法后,对应将该方法参数传递至算法层的参数值,被调用的方法必须在算法层中有接口可以执行。例如在XXX算法中,执行初始化（init）步骤的方法有多个,xxx方法,xxx方法...。在设置多个方法的时候，每个方法的名字需要要英文“,”进行分隔（逗号分隔开来的方法需要与上个方框所填的方法对应）。" data-placement="right"    type="text" class="form-control"  v-model="procedureSetting.optionsMapper" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 offset-md-4">
                                 <label>默认选择</label>
-                                <input type="text" v-model="procedureSetting.defaultOption" class="form-control" required>
+                                <input data-toggle="popover" title="默认选择的方法" data-content="该参数可以设置算法步骤在执行的过程中，默认选择执行的步骤方法。如在XXX算法中，默认初始化步骤执行的是XX方法，则在此出填写XX方法。" data-placement="right" type="text" v-model="procedureSetting.defaultOption" class="form-control" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 offset-md-4">
                                 <label>步骤描述</label>
-                                <input type="text" v-model="procedureSetting.description" class="form-control" required>
+                                <input data-toggle="popover" title="默认选择的方法" data-content="在此处可以文字描述该步骤的功能以及用法。" data-placement="right" type="text" v-model="procedureSetting.description" class="form-control" required>
                             </div>
                         </div>
                         <br>
