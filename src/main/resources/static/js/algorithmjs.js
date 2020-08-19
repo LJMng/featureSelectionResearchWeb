@@ -1,3 +1,7 @@
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+});
+
 $(function () {
     // 网页一打开，就执行这个js初始方法，可以自行百度一下相关介绍与用法
     // 1. 调用js方法获取页面涉及的URL, 赋值到js变量中.

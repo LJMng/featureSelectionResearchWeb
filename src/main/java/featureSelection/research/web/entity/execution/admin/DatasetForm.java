@@ -27,7 +27,6 @@ public class DatasetForm implements Serializable {
     private Date inputEndTime;
     private Timestamp updateTime;
     private String inputPreprocess;
-    private String inputAlgorithm;
     private String inputDescription;
 
     public int getInputId() {
@@ -158,13 +157,6 @@ public class DatasetForm implements Serializable {
         this.inputPreprocess = inputPreprocess;
     }
 
-    public String getInputAlgorithm() {
-        return inputAlgorithm;
-    }
-
-    public void setInputAlgorithm(String inputAlgorithm) {
-        this.inputAlgorithm = inputAlgorithm;
-    }
 
     public String getInputDescription() {
         return inputDescription;
@@ -192,7 +184,6 @@ public class DatasetForm implements Serializable {
                 ", inputEndTime=" + inputEndTime +
                 ",inputFile="+inputFile+'\''+
                 ",inputPreprocess="+inputPreprocess+'\''+
-                ",inputAlgorithm="+inputAlgorithm+'\''+
                 ",inputDescription"+inputDescription+'\''+
                 ", updateTime=" + updateTime +
                 '}';
