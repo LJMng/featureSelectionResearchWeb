@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PagesController {
 
-    /**
-     * @return 进入管理页面登录页面
-     * */
-    //管理页面登录页面
-    @GetMapping("/login")
-    public String toLoginAdminPage(){
-        return "/pages/demo/admin/DemoAdminLogin.html";
-    }
+//    /**
+//     * @return 进入管理页面登录页面
+//     * */
+//    //管理页面登录页面
+//    @GetMapping("/login")
+//    public String toLoginAdminPage(){
+//        return "/pages/demo/admin/DemoAdminLogin.html";
+//    }
 
     /**
      * @return 进入管理页面首页
