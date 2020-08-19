@@ -186,6 +186,11 @@ var vm =new Vue({
 
     },
     methods:{
+        setDataPopover:function(){
+            $(document).ready(function(){
+                $('[data-toggle="popover"]').popover();
+            });
+        },
         currentTag: function (event) {
             sessionStorage.setItem('currentTag',event.target.id);
         },
