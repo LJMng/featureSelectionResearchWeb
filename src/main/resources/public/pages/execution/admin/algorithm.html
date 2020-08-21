@@ -145,6 +145,8 @@
                     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true" @click="currentTag">算法管理</a>
                     <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" @click="currentTag">新增参数</a>
                     <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false" @click="currentTag">新增步骤</a>
+                    <a class="nav-item nav-link" id="nav-scheme-tab" data-toggle="tab" href="#nav-scheme" role="tab" aria-controls="nav-contact" aria-selected="false" @click="currentTag">算法方案</a>
+
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
@@ -160,10 +162,10 @@
                     <hr/>
                     <div class="row">
                         <div class="col-md-2">
-                            <button type="button"  class="btn btn-success" data-toggle="modal" data-target="#insertModal" @click="clearData()">添加算法</button>
+                            <button type="button"  class="btn btn-success" data-toggle="modal" data-target="#EinsertModal" @click="clearData()">添加算法</button>
                         </div>
                         <div class="col-md-2 offset-md-8">
-                            <input v-model="searchString" style="width: 200px;margin:5px;padding: 6px 12px;float: right" type="search" class="form-control" id="search-input" placeholder="Search...">
+                            <input v-model="searchString" style="width: 200px;margin:5px;padding: 6px 12px;float: right" type="search" class="form-control" id="Esearch-input" placeholder="Search...">
                         </div>
 
                     </div>
@@ -188,8 +190,8 @@
                             <td>{{msg.algorithmPaperLink}}</td>
                             <td>{{msg.algorithmCallInterface}}</td>
                             <td>
-                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="getDataById(msg.algorithmId)">修改</button>
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" @click="getDataById(msg.algorithmId)">删除</button>
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#EupdateModal" @click="getDataById(msg.algorithmId)">修改</button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#EdeleteModal" @click="getDataById(msg.algorithmId)">删除</button>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#a"+msg.algorithmId' @click="putAlgorithmId(msg.algorithmId)">详情</button>
                             </td>
                         </tr>
@@ -409,9 +411,956 @@
 
                     </form>
                 </div>
+                <div class="tab-pane fade" id="nav-scheme" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <div id="div_id">
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                            <a class="navbar-brand" href="/pages/demo/admin/index.html">AlgGroupDemoAdmin</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                                    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarText">
+                                <ul class="navbar-nav ml-auto">
+                                    <!--首页-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/pages/demo/admin/index.html">
+                                            <i class="fa fa-home"></i>
+                                            Home
+                                        </a>
+                                    </li>
+                                    <!--方案管理-->
+                                    <li class="nav-item active">
+                                        <a class="nav-link" href="/DemoAdmin/SchemeAdmin">
+                                            <i class="fa fa-server"></i>
+                                            Scheme
+                                        </a>
+                                    </li>
+                                    <!--关于我们页面管理-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/DemoAdmin/AboutusAdmin">
+                                            <i class="fa fa-address-card"></i>
+                                            Aboutus
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form action="/DemoAdmin/logout">
+                                            <button type="submit" class="btn btn-light">
+                                                <i class="fa fa-times-circle"></i>
+                                                Logout
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#insertModal"
+                                    @click="clearData()">添加方案
+                            </button>
+                        </nav>
+                        <div class="col-md-12">
+                            <h1>算法方案管理</h1>
+                        </div>
+                        <div class="col-md-10">
+                            <p class="text-lg-left">这里能修改方案的细节</p>
+                        </div>
+                        <hr>
+                        <div role="alert" aria-live="assertive" aria-atomic="true" class="toast col-md-12" data-autohide="false">
+                            <div class="toast-header">
+                                <strong class="mr-auto">tips</strong>
+                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" @Click="hide()">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="toast-body">
+                                <p>1.点击下面的
+                                    <button type="button" class="btn btn-secondary">按钮</button>
+                                    就能筛选出该算法拥有哪些方案咯
+                                </p>
+                                <p>2.点击下面的方案名称即可查看该方案的详情，包括算法的基本参数跟参数步骤，同时还可以修改该方案的信息以及该方案对应的参数信息</p>
+                                <label class="pr-4 mb-3">3.进入参数设置后点击
+                                    <svg class="bi bi-info-circle-fill text-success position-absolute"
+                                         width="1.4em" height="1.4em" viewBox="0 0 16 16"
+                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                              d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                </label><span>就能够查看这个参数或步骤的描述</span>
+                                <p>4.如果步骤前面有<i class="fa fa-check-square-o"></i>证明该步骤将会执行，后面是执行该步骤调用的方法</p>
+                            </div>
+                        </div>
+                        <hr class="toast">
+                        <div class="btn-toolbar col-md-10 m-auto">
+                            <div class="btn-group mr-2 mt-1">
+                                <button type="button" class="btn btn-secondary" @Click="find()">全部</button>
+                            </div>
+                            <div class="btn-group mr-2 mt-1" v-for="algo in algorithmNames">
+                                <button type="button" class="btn btn-secondary" @Click="find(algo.algorithmName)">{{algo.algorithmName}}
+                                </button>
+                            </div>
+                        </div>
+                        <input v-model="searchString" id="search-input" style="display: none">
+                        <div class="accordion m-5" id="accordionExample">
+                            <div class="card" v-for="(scheme,index) in filterInfo">
+                                <div class="card-header" id="headingOne">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block" type="button" data-toggle="collapse"
+                                                :data-target="'#scheme'+scheme.schemeName+index" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                            方案名称:{{scheme.schemeName}}
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div :id="'scheme'+scheme.schemeName+index" class="collapse" aria-labelledby="headingOne"
+                                     data-parent="#accordionExample">
+                                    <div class="card-body" style="text-align:center">
+                                        <h6 class="card-subtitle mb-2 text-muted ">运行的算法:{{scheme.algorithmName}}</h6>
+                                        <hr>
+                                        <p class="card-text">方案简介:{{scheme.schemeDescription}}</p>
+                                        <hr>
+                                        <h5><b>基本参数详情</b></h5>
+                                        <span class="card-text" v-for="parameter in scheme.algorithmParameterDemoAdmin">
+                        <p v-if="parameter.parameterInputValue != 'null' && parameter.parameterOptionValue != 'null'">{{parameter.parameterName}}:输入值<span
+                                style="display: none">input</span>为<span style="color: red">{{parameter.parameterInputValue}}</span>，执行方法<span
+                                style="display: none">option</span>为<span
+                                style="color: red">{{removeSymbol(parameter.parameterOptionValue)}}</span></p>
+                        <p v-if="parameter.parameterInputValue == 'null' && parameter.parameterOptionValue != 'null'">{{parameter.parameterName}}:执行方法<span
+                                style="display: none">option</span>为<span
+                                style="color: red">{{removeSymbol(parameter.parameterOptionValue)}}</span></p>
+                        <p v-if="parameter.parameterInputValue != 'null' && parameter.parameterOptionValue == 'null'">{{parameter.parameterName}}:输入值<span
+                                style="display: none">input</span>为<span style="color: red">{{parameter.parameterInputValue}}</span></p>
+                        <p v-if="parameter.parameterInputValue == 'null' && parameter.parameterOptionValue == 'null'">{{parameter.parameterName}}:该参数还没进行设置呢！</p>
+                        </span>
+                                        <hr>
+                                        <h5><b>参数步骤详情</b></h5>
+                                        <div v-for="procedure in temp">
+                                            <p v-if="scheme.schemeId===procedure.schemeId&&procedure.selected==='true'">
+                                                <i class="fa fa-check-square-o"></i>{{procedure.procedureName}}:{{conversion(procedure.data)}}
+                                            </p>
+                                            <p v-else-if="scheme.schemeId===procedure.schemeId&&procedure.selected==='false'">
+                                                {{procedure.procedureName}}:{{conversion(procedure.data)}}</p>
+                                        </div>
+                                        <hr>
+                                        <p class="card-text" v-if="scheme.schemeRemark"><small
+                                                class="text-muted">备注:{{scheme.schemeRemark}}</small></p>
+                                        <div style="text-align:center">
+                                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal"
+                                                    @click="getDataById(scheme.schemeId)">编辑
+                                            </button>
+                                            <button type="button" class="btn btn-success" data-toggle="modal"
+                                                    data-target="#settingParameterModal" @click="getDataById(scheme.schemeId)">参数设置
+                                            </button>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
+                                                    @click="getDataById(scheme.schemeId)">删除
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert alert-danger m-1" role="alert" v-if="filterInfo == ''">
+                                目前还该算法还没有方案噢，请点击左上角按钮添加吧！
+                            </div>
+                        </div>
+                        <!--新增模态框-->
+                        <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">新增方案</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="ControlSelect1">选择该方案将要运行的算法:</label>
+                                                <select class="form-control" id="ControlSelect1" v-model="scheme.algorithmId">
+                                                    <option v-for="algorithm in algorithms" :value="algorithm.algorithmId">
+                                                        {{algorithm.algorithmName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>给用户提供可选数据集:
+                                                    <button style="padding: 0px" type="button" class="btn btn-link" data-toggle="modal"
+                                                            data-target="#showDatasetsModal">数据集介绍
+                                                    </button>
+                                                </label>
+                                                <div class="input-group mb-3">
+                                                    <div class="custom-control-inline custom-control custom-checkbox"
+                                                         v-for="dataset in datasets">
+                                                        <input class="custom-control-input" type="checkbox"
+                                                               :id="'datasets'+dataset.datasetId" :value="dataset.datasetId"
+                                                               name="insert_datasets">
+                                                        <label class="custom-control-label" :for="'datasets'+dataset.datasetId">{{dataset.datasetName}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-form-label">方案名称:</label>
+                                                <input type="text" class="form-control" v-model="scheme.schemeName">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-form-label">方案简介:</label>
+                                                <textarea class="form-control" v-model="scheme.schemeDescription"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-form-label">方案备注:</label>
+                                                <input type="text" class="form-control" v-model="scheme.schemeRemark">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-primary"
+                                                @click="getParameterByAlgorithmId(scheme.algorithmId)">确定
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--编辑模态框-->
+                        <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">编辑方案</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label>给用户提供可选数据集:
+                                                    <button style="padding: 0px" type="button" class="btn btn-link" data-toggle="modal"
+                                                            data-target="#showDatasetsModal">数据集介绍
+                                                    </button>
+                                                </label>
+                                                <div class="input-group mb-3">
+                                                    <div class="custom-control-inline custom-control custom-checkbox"
+                                                         v-for="dataset in datasets">
+                                                        <input class="custom-control-input" type="checkbox" :id="dataset.datasetId"
+                                                               :value="dataset.datasetId" name="datasets">
+                                                        <label class="custom-control-label"
+                                                               :for="dataset.datasetId">{{dataset.datasetName}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-form-label">方案名称:</label>
+                                                <input type="text" class="form-control" v-model="scheme.schemeName">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-form-label">方案简介:</label>
+                                                <textarea class="form-control" v-model="scheme.schemeDescription"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-form-label">方案备注:</label>
+                                                <input type="text" class="form-control" v-model="scheme.schemeRemark">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-primary" @click="updateData()">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--数据集描述模态框-->
+                        <div class="modal fade" id="showDatasetsModal" tabindex="-1" role="dialog" aria-hidden="true"
+                             data-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">数据集信息</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p v-for="dataset in datasets"
+                                           style="font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif;font-size: 16px;color: #333;line-height: 1.75;">
+                                            {{dataset.datasetName}}:{{dataset.datasetDescription}}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--删除模态框-->
+                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">删除方案</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label class="col-form-label">确定删除{{scheme.schemeName}}吗?</label>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-primary" @click="deleteData(scheme.schemeId)">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--参数设置模态框-->
+                        <div class="modal fade" id="settingParameterModal" tabindex="-1" role="dialog" aria-hidden="true"
+                             data-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">参数设置</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="col-sm-12 mt-3">
+                                                <div class="alert alert-warning text-center" role="alert">
+                                                    基本参数设置
+                                                </div>
+                                                <div class="row m-0" v-for="(param,index2) in parameterList[scheme.algorithmId]"
+                                                     v-if="param.parameterSettingInfo!=null">
+                                                    <label :for="scheme.algorithmName+param.parameterName+'Basic'" class="col-2 p-2"
+                                                           v-if="param.parameterSettingInfo.type=='text'">{{param.parameterName}}
+                                                        <span data-container="body" data-toggle="popover" data-placement="bottom"
+                                                              :data-content="param.parameterDescription" @Click="show()">
+                                                        <svg class="bi bi-info-circle-fill text-success position-absolute"
+                                                             width="1.4em" height="1.4em" viewBox="0 0 16 16"
+                                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd"
+                                                                  d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                                                                  clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </span>
+                                                    </label>
+                                                    <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='text'">
+                                                        <input type="text" class="form-control"
+                                                               :id="scheme.algorithmName+param.parameterName+'Basic'"
+                                                               :name="scheme.algorithmName+param.parameterName">
+                                                    </div>
+                                                    <div class="col-4" v-if="param.parameterSettingInfo.type=='text'"></div>
+
+                                                    <label :for="scheme.algorithmName+param.parameterName+'Basic'" class="col-2 p-2"
+                                                           v-if="param.parameterSettingInfo.type=='selection'">{{param.parameterName}}
+                                                        <span data-container="body" data-toggle="popover" data-placement="bottom"
+                                                              :data-content="param.parameterDescription" @Click="show()">
+                                                    <svg class="bi bi-info-circle-fill text-success position-absolute"
+                                                         width="1.4em" height="1.4em" viewBox="0 0 16 16"
+                                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd"
+                                                              d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                                                              clip-rule="evenodd"/>
+                                                    </svg>
+                                                </span>
+                                                    </label>
+                                                    <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='selection'">
+                                                        <select class="custom-select" :name="scheme.algorithmName+param.parameterName"
+                                                                :id="scheme.algorithmName+param.parameterName+'Basic'"
+                                                                @change="appendInfo($event,scheme.algorithmName,param.parameterName)">
+                                                            <option selected>Choose...</option>
+                                                            <option v-for="(option,index3) in param.parameterSettingInfo.options"
+                                                                    :value="option">{{option}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4" v-if="param.parameterSettingInfo.type=='selection'">
+                                                        <append :scheme="scheme" :param="param"></append>
+                                                    </div>
+
+                                                    <label :for="scheme.algorithmName+param.parameterName+'Basic'" class="col-2 p-2"
+                                                           v-if="param.parameterSettingInfo.type=='radio'">{{param.parameterName}}
+                                                        <span data-container="body" data-toggle="popover" data-placement="bottom"
+                                                              :data-content="param.parameterDescription" @Click="show()">
+                                                    <svg class="bi bi-info-circle-fill text-success position-absolute"
+                                                         width="1.4em" height="1.4em" viewBox="0 0 16 16"
+                                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd"
+                                                              d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                                                              clip-rule="evenodd"/>
+                                                    </svg>
+                                                </span>
+                                                    </label>
+                                                    <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='radio'">
+                                                        <div class="custom-control-inline custom-control custom-radio"
+                                                             v-for="(option,index4) in param.parameterSettingInfo.options">
+                                                            <input class="custom-control-input" type="radio"
+                                                                   :id="scheme.algorithmName+param.parameterName+index4" :value="option"
+                                                                   :name="scheme.algorithmName+param.parameterName">
+                                                            <label class="custom-control-label"
+                                                                   :for="scheme.algorithmName+param.parameterName+index4">{{option}}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4" v-if="param.parameterSettingInfo.type=='radio'"></div>
+
+                                                    <label :for="scheme.algorithmName+param.parameterName+'Basic'" class="col-2 p-2"
+                                                           v-if="param.parameterSettingInfo.type=='checkbox'">{{param.parameterName}}
+                                                        <span data-container="body" data-toggle="popover" data-placement="bottom"
+                                                              :data-content="param.parameterDescription" @Click="show()">
+                                                    <svg class="bi bi-info-circle-fill text-success position-absolute"
+                                                         width="1.4em" height="1.4em" viewBox="0 0 16 16"
+                                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd"
+                                                              d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                                                              clip-rule="evenodd"/>
+                                                    </svg>
+                                                </span>
+                                                    </label>
+                                                    <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='checkbox'">
+                                                        <div class="custom-control-inline custom-control custom-checkbox"
+                                                             v-for="(option,index5) in param.parameterSettingInfo.options">
+                                                            <input class="custom-control-input" type="checkbox"
+                                                                   :id="scheme.algorithmName+param.parameterName+index5" :value="option"
+                                                                   :name="scheme.algorithmName+param.parameterName">
+                                                            <label class="custom-control-label"
+                                                                   :for="scheme.algorithmName+param.parameterName+index5">{{option}}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4" v-if="param.parameterSettingInfo.type=='checkbox'"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 mt-3">
+                                                <div class="alert alert-warning text-center" role="alert">
+                                                    参数步骤设置
+                                                </div>
+                                                <div class="row m-0" v-for="(ps,index2) in ProcedureSettingsList[scheme.algorithmId]">
+                                                    <div class="col-3 p-2">
+                                                        <div class="custom-control custom-control-inline custom-radio">
+                                                            <input @click="check(index2)" type="checkbox" class="custom-control-input"
+                                                                   :id="scheme.algorithmName+ps.name+'Procedure'"
+                                                                   :name="scheme.algorithmName+ps.name+'Check'+(index2+1)"
+                                                                   :checked="ps.state=='optional'?null:'checked'"
+                                                                   :disabled="ps.state=='required'?'disabled':null"
+                                                                   @change="changeDisabled($event,scheme.algorithmName+ps.name)">
+                                                            <label class="custom-control-label"
+                                                                   :for="scheme.algorithmName+ps.name+'Procedure'">{{ps.name}}
+                                                                <span data-container="body" data-toggle="popover" data-placement="bottom"
+                                                                      :data-content="ps.description" @Click="show()">
+                                                        <svg class="bi bi-info-circle-fill text-success position-absolute"
+                                                             width="1.4em" height="1.4em" viewBox="0 0 16 16"
+                                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd"
+                                                                  d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                                                                  clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-group mb-3 col-9">
+                                                        <select class="custom-select" :id="scheme.algorithmName+ps.name+'select'"
+                                                                :name="scheme.algorithmName+ps.name"
+                                                                :disabled="ps.state=='optional'?'disabled':null"
+                                                                @change="changeProduct($event,index2)">
+                                                            <option v-for="(option,index3) in ps.options"
+                                                                    :selected="option==ps.defaultOption?'selected':null"
+                                                                    :value="option">{{option}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-primary" @click="updateData()">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        Vue.component('append', {
+                            props: ['scheme', 'param'],
+                            data: function () {
+                                return {
+                                    optionName: ''
+                                }
+                            },
+                            template: `
+                <div class="input-group form-row" v-if="optionName!=''&&param.parameterSettingInfo.optionExtra[optionName]!=null?param.parameterSettingInfo.optionExtra[optionName].type=='selection':false">
+                    <label :for="scheme.algorithmName+param.parameterName+'Basic'+optionName" class="col-3 align-content-center">{{optionName}}</label>
+                    <select class="custom-select col-9" :name="scheme.algorithmName+param.parameterName+optionName" :id="scheme.algorithmName+param.parameterName+'Basic'+optionName">
+                        <option selected value="Choose...">Choose...</option>
+                        <option v-for="option in param.parameterSettingInfo.optionExtra[optionName].options" :value="option">{{option}}</option>
+                    </select>
+                </div>
+                <div class="input-groupv form-row"v-else-if="optionName!=''&&param.parameterSettingInfo.optionExtra[optionName]!=null?param.parameterSettingInfo.optionExtra[optionName].type=='text':false">
+                    <label :for="scheme.algorithmName+param.parameterName+'Basic'+optionName" class="col-3 align-content-center">{{optionName}}</label>
+                    <input type="text" class="form-control col-9" :id="scheme.algorithmName+param.parameterName+'Basic'+optionName" :name="scheme.algorithmName+param.parameterName+optionName">
+                </div>
+                <div v-else></div>
+        `,
+                            mounted: function () {
+                                hub.$on('optionName', (val) => {
+                                    if (val == (this.scheme.algorithmName + this.param.parameterName)) {
+                                        this.optionName = '';
+                                    } else {
+                                        if (this.param.parameterSettingInfo.optionExtra != null) {
+                                            for (key in this.param.parameterSettingInfo.optionExtra) {
+                                                if (key == val && this.param.parameterSettingInfo.optionExtra[key] != null) {
+                                                    this.optionName = val;
+                                                }
+                                                if (key == val && this.param.parameterSettingInfo.optionExtra[key] == null) {
+                                                    this.optionName = '';
+                                                }
+                                            }
+                                        }
+                                    }
+                                })
+                            }
+                        });
+                        var hub = new Vue();
+                        var app = new Vue({
+                            el: '#div_id',
+                            data() {
+                                return {
+                                    schemes: [],
+                                    procedures: [],
+                                    p: [],
+                                    ap: [],
+                                    temp: [],
+                                    scheme: {
+                                        schemeId: '',
+                                        schemeName: '',
+                                        schemeDescription: '',
+                                        schemeRemark: '',
+                                        algorithmId: '',
+                                        algorithmName: '',
+                                        algorithmParameterDemoAdmin: [],
+                                        availableDatasets: '',
+                                    },
+                                    procedure: {
+                                        schemeProcedureId: '',
+                                        schemeId: '',
+                                        procedureName: '',
+                                        procedureSettingData: '',
+                                        procedureSettingsId: '',
+                                    },
+                                    tempSetting: '',
+                                    algorithms: [],
+                                    datasets: [],
+                                    params: '',
+                                    searchString: '',
+                                    ProcedureSettingsList: {},
+                                    parameterList: {},
+                                    algorithmNames: '',
+                                }
+                            },
+                            methods: {
+                                //获得所有方案信息
+                                getData() {
+                                    window.onload = function () {
+                                        var arrStr = document.cookie;
+                                        if (arrStr.indexOf("isClose") > -1) {
+                                            $('.toast').remove();
+                                        }
+                                    }
+                                    axios.get('/SchemeDemoAdmin/findAll')
+                                        .then(resp => {
+                                            this.schemes = resp.data;
+                                            axios.get('/schemeProcedureDemoAdmin/findAll')
+                                                .then(resp => {
+                                                    this.procedures = resp.data;
+                                                    this.temp = this.procedures;
+                                                    for (let i = 0; i < this.temp.length; i++) {
+                                                        this.$set(this.temp[i], 'data', JSON.parse(this.temp[i].procedureSettingData).data);
+                                                        this.$set(this.temp[i], 'selected', JSON.parse(this.temp[i].procedureSettingData).selected);
+                                                    }
+                                                })
+                                                .catch(err => {
+                                                    console.log(err);
+                                                });
+                                            axios.get('/execution/getProcedureSettingsList').then((response) => {
+                                                this.ProcedureSettingsList = response.data;
+                                            });
+                                            axios.get('/execution/getParameterList').then((response) => {
+                                                let params = response.data;
+                                                for (let key in params) {
+                                                    for (let i = 0; i < params[key].length; i++) {
+                                                        params[key][i].parameterSettingInfo = JSON.parse(params[key][i].parameterSettingInfo);
+                                                    }
+                                                }
+                                                this.parameterList = params;
+                                            });
+                                            axios.get('/AlgorithmInfoDemoAdmin/findAll')
+                                                .then(resp => {
+                                                    this.algorithmNames = resp.data;
+                                                })
+                                                .catch(err => {
+                                                    console.log(err);
+                                                });
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                        });
+                                },
+                                //获得指定ID方案信息(编辑)
+                                getDataById(id) {
+                                    this.clearData();
+                                    const _id = id;
+                                    axios.get('/SchemeDemoAdmin/find/' + id)
+                                        .then(resp => {
+                                            this.scheme.schemeId = _id;
+                                            this.scheme.schemeName = resp.data.schemeName;
+                                            this.scheme.schemeDescription = resp.data.schemeDescription;
+                                            this.scheme.schemeRemark = resp.data.schemeRemark;
+                                            this.scheme.algorithmId = resp.data.algorithmId;
+                                            this.scheme.algorithmName = resp.data.algorithmName;
+                                            this.scheme.algorithmParameterDemoAdmin = resp.data.algorithmParameterDemoAdmin;
+                                            this.scheme.availableDatasets = resp.data.availableDatasets;
+                                            let strRoles = this.scheme.availableDatasets;
+                                            if (strRoles.length > 0) {
+                                                //当strRoles有值时，清楚所有页面上的原选项
+                                                $('input[name="datasets"]').each(function () {
+                                                    $(this).attr("checked", false);
+                                                });
+                                                let roleArr = strRoles.replace(/[^0-9,]*/g, "").split(',');
+                                                $.each(roleArr, function (index, roleName) {
+                                                    //获取页面所有checkbox，然后迭代
+                                                    $('input[name="datasets"]').each(function () {
+                                                        if ($(this).val() == roleName) {
+                                                            $(this).attr("checked", true);
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                            axios.get('/schemeProcedureDemoAdmin/find/' + _id)
+                                                .then(resp => {
+                                                    if (resp.data.length !== 0) {
+                                                        $.extend(true, this.p, resp.data);//深拷贝
+                                                        this.procedures = resp.data;
+                                                        this.tempSetting = resp.data;
+                                                        let temp1 = resp.data;
+                                                        for (let i = 0; i < this.procedures.length; i++) {
+                                                            temp1[i] = this.tempSetting[i].procedureSettingData;
+                                                            this.tempSetting[i] = JSON.parse(temp1[i]);
+                                                        }
+                                                        let temp = this.ProcedureSettingsList[this.scheme.algorithmId];
+                                                        for (let i = 0; i < temp.length; i++) {
+                                                            this.tempSetting[i].data = temp[i].defaultOption;
+                                                            this.p[i].procedureSettingsId = temp[i].id;
+                                                            if (temp[i].state === 'optional') {
+                                                                this.tempSetting[i].selected = 'false';
+                                                            } else {
+                                                                this.tempSetting[i].selected = 'true';
+                                                            }
+                                                        }
+                                                    }
+                                                })
+                                                .catch(err => {
+                                                    console.log(err);
+                                                });
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                        });
+                                },
+                                //通过算法ID获取算法参数
+                                getParameterByAlgorithmId(id) {
+                                    //表单验证
+                                    if (!this.scheme.algorithmId) {
+                                        alert('请选择算法');
+                                        return;
+                                    }
+                                    if (!this.scheme.schemeName) {
+                                        alert('请输入方案名称');
+                                        return;
+                                    }
+                                    if (!this.scheme.schemeDescription) {
+                                        alert('请输入简介');
+                                        return;
+                                    }
+                                    axios.get('/AlgorithmInfoDemoAdmin/findParameter/' + id)
+                                        .then(resp => {
+                                            this.scheme.algorithmParameterDemoAdmin = resp.data.algorithmParameterDemoAdmin;
+                                            this.insertData();
+                                        })
+                                        .catch(err => {
+                                            console.log(err)
+                                        })
+                                },
+                                //新增方案信息
+                                insertData() {
+                                    if (this.scheme.algorithmParameterDemoAdmin === undefined) {
+                                        alert("请确认该算法是否设定参数，可以到execution管理系统添加噢！");
+                                        return;
+                                    }
+                                    let tmp_datasets = [];
+                                    $('input[name="insert_datasets"]:checked').each(function () {//遍历每一个名字为datasets的复选框
+                                        tmp_datasets.push($(this).val());//将选中的值添加到数组中
+                                    });
+                                    this.scheme.availableDatasets = JSON.stringify(tmp_datasets);
+                                    let TypeID = $("input[name='insert_datasets']");
+                                    let objYN = false;
+                                    for (let i = 0; i < TypeID.length; i++) {
+                                        if (TypeID[i].checked) {
+                                            objYN = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!objYN) {
+                                        alert('请至少选择一个数据集');
+                                        return false;
+                                    }
+                                    axios.post('/SchemeDemoAdmin/insert', this.scheme)
+                                        .then(() => {
+                                            axios.post('/schemeProcedureDemoAdmin/insert');
+                                            window.location.reload();
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                        })
+                                },
+                                //更新方案信息
+                                updateData() {
+                                    //表单验证
+                                    if (!this.scheme.schemeName) {
+                                        alert('请输入方案名称');
+                                        return;
+                                    }
+                                    if (!this.scheme.schemeDescription) {
+                                        alert('请输入简介');
+                                        return;
+                                    }
+                                    let tmp_datasets = [];
+                                    $('input[name="datasets"]:checked').each(function () {//遍历每一个名字为datasets的复选框
+                                        tmp_datasets.push($(this).val());//将选中的值添加到数组中
+                                    });
+                                    this.scheme.availableDatasets = JSON.stringify(tmp_datasets);
+                                    let TypeID = $("input[name='datasets']");
+                                    let objYN = false;
+                                    for (let i = 0; i < TypeID.length; i++) {
+                                        if (TypeID[i].checked) {
+                                            objYN = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!objYN) {
+                                        alert('请至少选择一个数据集');
+                                        return false;
+                                    }
+                                    this.saveAlgorithmSettings();
+                                    axios.post('/SchemeDemoAdmin/update', this.scheme)
+                                        .then(() => {
+                                            if (this.tempSetting.length) {
+                                                for (let i = 0; i < this.tempSetting.length; i++) {
+                                                    this.p[i].procedureSettingData = '{"data":"' + this.tempSetting[i].data + '","selected":"' + this.tempSetting[i].selected + '"}';
+                                                }
+                                                axios.post('/schemeProcedureDemoAdmin/update', this.p)
+                                                    .then(() => {
+
+                                                    })
+                                                    .catch(err => {
+                                                        console.log(err);
+                                                    });
+                                            }
+                                            window.location.reload();
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                        })
+                                },
+                                //删除方案信息
+                                deleteData(id) {
+                                    axios.post('/SchemeDemoAdmin/delete/' + id)
+                                        .then(() => {
+                                            axios.post('/schemeProcedureDemoAdmin/delete/' + id);
+                                            window.location.reload();
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                        })
+                                },
+                                //清空数据
+                                clearData() {
+                                    $('input[name="insert_datasets"]').each(function () {
+                                        $(this).attr("checked", false);
+                                    });
+                                    this.scheme.schemeId = '';
+                                    this.scheme.schemeName = '';
+                                    this.scheme.schemeDescription = '';
+                                    this.scheme.schemeRemark = '';
+                                    this.scheme.algorithmId = '';
+                                    this.scheme.algorithmName = '';
+                                    this.scheme.algorithmParameterDemoAdmin = [];
+                                    this.scheme.availableDatasets = '';
+                                    this.procedure.schemeId = '';
+                                    this.procedure.procedureName = '';
+                                    this.procedure.schemeProcedureId = '';
+                                    this.procedure.procedureSettingData = '';
+                                    this.procedures = '';
+                                },
+                                //获得所有算法和方案提供方案选择
+                                getIdAndName() {
+                                    axios.get('/AlgorithmInfoDemoAdmin/findAllIdAndName')
+                                        .then(resp => {
+                                            this.algorithms = resp.data
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                        });
+                                    axios.get('/SchemeDemoAdmin/findAllIdAndName')
+                                        .then(resp => {
+                                            this.datasets = resp.data
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                        });
+                                },
+                                check(i) {
+                                    if (event.target.checked) {
+                                        this.tempSetting[i].selected = 'true';
+                                    } else {
+                                        this.tempSetting[i].selected = 'false';
+                                    }
+                                },
+                                changeProduct(event, index) {
+                                    this.tempSetting[index].data = event.target.value; //获取option对应的value值
+                                },
+                                changeDisabled: function (event, name) {
+                                    if ($(event.srcElement).prop("checked")) {
+                                        $("select[name=" + name + "]").removeAttr("disabled");
+                                    } else {
+                                        $("select[name=" + name + "]").attr("disabled", "disabled");
+                                    }
+                                },
+                                appendInfo: function (event, algorithmName, parameterName) {
+                                    if (event.target.value == 'Choose...') {
+                                        hub.$emit('optionName', algorithmName + parameterName);
+                                    } else {
+                                        hub.$emit('optionName', event.target.value);
+                                    }
+                                },
+                                saveAlgorithmSettings() {
+                                    let parameters = this.parameterList[this.scheme.algorithmId];
+                                    if (parameters != null) {
+                                        for (let i = 0; i < parameters.length; i++) {
+                                            let nameTemp = this.scheme.algorithmName + parameters[i].parameterName;
+                                            let value = null;
+                                            switch (parameters[i].parameterSettingInfo.type) {
+                                                case 'text':
+                                                    let temp = $("input[name=" + nameTemp + "]").val();
+                                                    if (temp == '') {
+                                                        this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = 'null';
+                                                    } else {
+                                                        this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = $("input[name=" + nameTemp + "]").val();
+                                                    }
+                                                    this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = 'null';
+                                                    break;
+                                                case 'selection':
+                                                    let paramInput = $("select[name=" + nameTemp + "]").val();
+                                                    value = paramInput;
+                                                    if (parameters[i].parameterSettingInfo.optionExtra[paramInput] != null) {
+                                                        let value2 = null;
+                                                        switch (parameters[i].parameterSettingInfo.optionExtra[paramInput].type) {
+                                                            case 'text':
+                                                                this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = $("input[name=" + nameTemp + paramInput + "]").val();
+                                                                this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = value;
+                                                                break;
+                                                            case 'selection':
+                                                                value2 = $("select[name=" + nameTemp + paramInput + "]").val();
+                                                                this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = value2;
+                                                                this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = value;
+                                                                break;
+                                                        }
+                                                    } else {
+                                                        this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = 'null';
+                                                        if (value == 'Choose...') {
+                                                            this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = 'null';
+                                                        } else {
+                                                            this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = value;
+                                                        }
+                                                    }
+                                                    break;
+                                                case 'radio':
+                                                    value = $("input[name=" + nameTemp + "]:checked").val();
+                                                    this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = 'null';
+                                                    if (value === undefined) {
+                                                        this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = 'null';
+                                                    } else {
+                                                        this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = value;
+                                                    }
+                                                    break;
+                                                case 'checkbox':
+                                                    let listTemp = [];
+                                                    $("input[name=" + nameTemp + "]:checked").each(function () {
+                                                        value = $(this).val();
+                                                        listTemp.push(value);
+                                                    });
+                                                    this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = 'null';
+                                                    if (listTemp.length == 0) {
+                                                        this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = 'null';
+                                                    } else {
+                                                        this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = JSON.stringify(listTemp);
+                                                    }
+                                            }
+                                        }
+                                    }
+                                },
+                                find(algo) {
+                                    $('#search-input').val(algo);
+                                    //触发一下该input的input事件
+                                    $('#search-input')[0].dispatchEvent(new Event('input'));
+                                },
+                                show() {
+                                    $('[data-toggle="popover"]').popover();
+                                },
+                                hide() {
+                                    $('.toast').remove()
+                                    document.cookie = 'isClose';
+                                },
+                                removeSymbol(x) {
+                                    if (x != null)
+                                        return x.replace(/\"/g, "");
+                                    return x;
+                                },
+                                conversion(x) {
+                                    return x == 'data' ? '该步骤还没设置呢！' : x;
+                                }
+                            },
+                            //页面生成前获取所有信息
+                            created() {
+                                this.getData();
+                                this.getIdAndName();
+                            },
+                            computed: {
+                                //搜索功能
+                                filterInfo: function () {
+                                    var dataset_array = this.schemes,
+                                        searchString = this.searchString;
+
+                                    if (!searchString) {
+                                        return dataset_array;
+                                    }
+
+                                    searchString = searchString.trim().toLowerCase();
+
+                                    dataset_array = dataset_array.filter(function (item) {
+                                        if (item.algorithmName.toLowerCase().indexOf(searchString) !== -1) {
+                                            return item;
+                                        }
+                                    });
+
+                                    return dataset_array;
+                                },
+                            }
+                        });
+                    </script>
+                </div>
             </div>
             <!--新增模态框-->
-            <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+            <div class="modal fade" id="EinsertModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -514,7 +1463,7 @@
                 </div>
             </div>
             <!--修改模态框-->
-            <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+            <div class="modal fade" id="EupdateModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -595,7 +1544,7 @@
                 </div>
             </div>
             <!--删除模态框-->
-            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+            <div class="modal fade" id="EdeleteModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
