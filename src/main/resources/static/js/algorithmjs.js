@@ -148,14 +148,48 @@ var vm =new Vue({
         },
         deleteProcedureSettingInfo:{
             id:1,
-        }
+        },
+        // 算法方案数据
+        schemes: [],
+        procedures: [],
+        p: [],
+        ap: [],
+        temp: [],
+        scheme: {
+            schemeId: '',
+            schemeName: '',
+            schemeDescription: '',
+            schemeRemark: '',
+            algorithmId: '',
+            algorithmName: '',
+            algorithmParameterDemoAdmin: [],
+            availableDatasets: '',
+        },
+        procedure: {
+            schemeProcedureId: '',
+            schemeId: '',
+            procedureName: '',
+            procedureSettingData: '',
+            procedureSettingsId: '',
+        },
+        tempSetting: '',
+        algorithms: [],
+        datasets: [],
+        params: '',
+        searchString: '',
+        ProcedureSettingsList: {},
+        parameterList: {},
+        algorithmNames: '',
     },
     created:function () {
+        //算法方案初始化方法
+        this.getData();
+        this.getIdAndName();
         //初始化数值
         var that=this;
         axios.get('/elements?htmlName=algorithm&isCh=ch').then(function (response){
             that.values=response.data;
-            console.log(response.data);
+            // console.log(response.data);
         } ,function (err) {
 
         })
@@ -182,10 +216,384 @@ var vm =new Vue({
             .catch(function (err){
                 console.log(err);
             })
-        this.getData()
+        this.getEData()
 
     },
     methods:{
+        //算法方案管理Method
+        //获得所有方案信息
+        getData() {
+            window.onload = function () {
+                var arrStr = document.cookie;
+                if (arrStr.indexOf("isClose") > -1) {
+                    $('.toast').remove();
+                }
+            }
+            axios.get('/SchemeDemoAdmin/findAll')
+                .then(resp => {
+                    this.schemes = resp.data;
+                    console.log(this.schemes);
+                    axios.get('/schemeProcedureDemoAdmin/findAll')
+                        .then(resp => {
+                            this.procedures = resp.data;
+                            this.temp = this.procedures;
+                            for (let i = 0; i < this.temp.length; i++) {
+                                this.$set(this.temp[i], 'data', JSON.parse(this.temp[i].procedureSettingData).data);
+                                this.$set(this.temp[i], 'selected', JSON.parse(this.temp[i].procedureSettingData).selected);
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                    axios.get('/execution/getProcedureSettingsList').then((response) => {
+                        this.ProcedureSettingsList = response.data;
+                    });
+                    axios.get('/execution/getParameterList').then((response) => {
+                        let params = response.data;
+                        for (let key in params) {
+                            for (let i = 0; i < params[key].length; i++) {
+                                params[key][i].parameterSettingInfo = JSON.parse(params[key][i].parameterSettingInfo);
+                            }
+                        }
+                        this.parameterList = params;
+                    });
+                    axios.get('/AlgorithmInfoDemoAdmin/findAll')
+                        .then(resp => {
+                            this.algorithmNames = resp.data;
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        //获得指定ID方案信息(编辑)
+        getDataById(id) {
+            this.clearData();
+            const _id = id;
+            console.log(id)
+            axios.get('/SchemeDemoAdmin/find/' + id)
+                .then(resp => {
+                    this.scheme.schemeId = _id;
+                    this.scheme.schemeName = resp.data.schemeName;
+                    this.scheme.schemeDescription = resp.data.schemeDescription;
+                    this.scheme.schemeRemark = resp.data.schemeRemark;
+                    this.scheme.algorithmId = resp.data.algorithmId;
+                    this.scheme.algorithmName = resp.data.algorithmName;
+                    this.scheme.algorithmParameterDemoAdmin = resp.data.algorithmParameterDemoAdmin;
+                    this.scheme.availableDatasets = resp.data.availableDatasets;
+                    let strRoles = this.scheme.availableDatasets;
+                    if (strRoles.length > 0) {
+                        //当strRoles有值时，清楚所有页面上的原选项
+                        $('input[name="datasets"]').each(function () {
+                            $(this).attr("checked", false);
+                        });
+                        let roleArr = strRoles.replace(/[^0-9,]*/g, "").split(',');
+                        $.each(roleArr, function (index, roleName) {
+                            //获取页面所有checkbox，然后迭代
+                            $('input[name="datasets"]').each(function () {
+                                if ($(this).val() == roleName) {
+                                    $(this).attr("checked", true);
+                                }
+                            });
+                        });
+                    }
+                    axios.get('/schemeProcedureDemoAdmin/find/' + _id)
+                        .then(resp => {
+                            if (resp.data.length !== 0) {
+                                $.extend(true, this.p, resp.data);//深拷贝
+                                this.procedures = resp.data;
+                                this.tempSetting = resp.data;
+                                let temp1 = resp.data;
+                                for (let i = 0; i < this.procedures.length; i++) {
+                                    temp1[i] = this.tempSetting[i].procedureSettingData;
+                                    this.tempSetting[i] = JSON.parse(temp1[i]);
+                                }
+                                let temp = this.ProcedureSettingsList[this.scheme.algorithmId];
+                                for (let i = 0; i < temp.length; i++) {
+                                    this.tempSetting[i].data = temp[i].defaultOption;
+                                    this.p[i].procedureSettingsId = temp[i].id;
+                                    if (temp[i].state === 'optional') {
+                                        this.tempSetting[i].selected = 'false';
+                                    } else {
+                                        this.tempSetting[i].selected = 'true';
+                                    }
+                                }
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        //通过算法ID获取算法参数
+        getParameterByAlgorithmId(id) {
+            //表单验证
+            if (!this.scheme.algorithmId) {
+                alert('请选择算法');
+                return;
+            }
+            if (!this.scheme.schemeName) {
+                alert('请输入方案名称');
+                return;
+            }
+            if (!this.scheme.schemeDescription) {
+                alert('请输入简介');
+                return;
+            }
+            axios.get('/AlgorithmInfoDemoAdmin/findParameter/' + id)
+                .then(resp => {
+                    this.scheme.algorithmParameterDemoAdmin = resp.data.algorithmParameterDemoAdmin;
+                    this.insertData();
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        //新增方案信息
+        insertData() {
+            if (this.scheme.algorithmParameterDemoAdmin === undefined) {
+                alert("请确认该算法是否设定参数，可以到execution管理系统添加噢！");
+                return;
+            }
+            let tmp_datasets = [];
+            $('input[name="insert_datasets"]:checked').each(function () {//遍历每一个名字为datasets的复选框
+                tmp_datasets.push($(this).val());//将选中的值添加到数组中
+            });
+            this.scheme.availableDatasets = JSON.stringify(tmp_datasets);
+            let TypeID = $("input[name='insert_datasets']");
+            let objYN = false;
+            for (let i = 0; i < TypeID.length; i++) {
+                if (TypeID[i].checked) {
+                    objYN = true;
+                    break;
+                }
+            }
+            if (!objYN) {
+                alert('请至少选择一个数据集');
+                return false;
+            }
+            axios.post('/SchemeDemoAdmin/insert', this.scheme)
+                .then(() => {
+                    axios.post('/schemeProcedureDemoAdmin/insert');
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+        //更新方案信息
+        updateData() {
+            //表单验证
+            if (!this.scheme.schemeName) {
+                alert('请输入方案名称');
+                return;
+            }
+            if (!this.scheme.schemeDescription) {
+                alert('请输入简介');
+                return;
+            }
+            let tmp_datasets = [];
+            $('input[name="datasets"]:checked').each(function () {//遍历每一个名字为datasets的复选框
+                tmp_datasets.push($(this).val());//将选中的值添加到数组中
+            });
+            this.scheme.availableDatasets = JSON.stringify(tmp_datasets);
+            let TypeID = $("input[name='datasets']");
+            let objYN = false;
+            for (let i = 0; i < TypeID.length; i++) {
+                if (TypeID[i].checked) {
+                    objYN = true;
+                    break;
+                }
+            }
+            if (!objYN) {
+                alert('请至少选择一个数据集');
+                return false;
+            }
+            this.saveAlgorithmSettings();
+            axios.post('/SchemeDemoAdmin/update', this.scheme)
+                .then(() => {
+                    if (this.tempSetting.length) {
+                        for (let i = 0; i < this.tempSetting.length; i++) {
+                            this.p[i].procedureSettingData = '{"data":"' + this.tempSetting[i].data + '","selected":"' + this.tempSetting[i].selected + '"}';
+                        }
+                        axios.post('/schemeProcedureDemoAdmin/update', this.p)
+                            .then(() => {
+
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            });
+                    }
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+        //删除方案信息
+        deleteData(id) {
+            axios.post('/SchemeDemoAdmin/delete/' + id)
+                .then(() => {
+                    axios.post('/schemeProcedureDemoAdmin/delete/' + id);
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+        //清空数据
+        clearData() {
+            $('input[name="insert_datasets"]').each(function () {
+                $(this).attr("checked", false);
+            });
+            this.scheme.schemeId = '';
+            this.scheme.schemeName = '';
+            this.scheme.schemeDescription = '';
+            this.scheme.schemeRemark = '';
+            this.scheme.algorithmId = '';
+            this.scheme.algorithmName = '';
+            this.scheme.algorithmParameterDemoAdmin = [];
+            this.scheme.availableDatasets = '';
+            this.procedure.schemeId = '';
+            this.procedure.procedureName = '';
+            this.procedure.schemeProcedureId = '';
+            this.procedure.procedureSettingData = '';
+            this.procedures = '';
+        },
+        //获得所有算法和方案提供方案选择
+        getIdAndName() {
+            axios.get('/AlgorithmInfoDemoAdmin/findAllIdAndName')
+                .then(resp => {
+                    this.algorithms = resp.data
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            axios.get('/SchemeDemoAdmin/findAllIdAndName')
+                .then(resp => {
+                    this.datasets = resp.data
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        check(i) {
+            if (event.target.checked) {
+                this.tempSetting[i].selected = 'true';
+            } else {
+                this.tempSetting[i].selected = 'false';
+            }
+        },
+        changeProduct(event, index) {
+            this.tempSetting[index].data = event.target.value; //获取option对应的value值
+        },
+        changeDisabled: function (event, name) {
+            if ($(event.srcElement).prop("checked")) {
+                $("select[name=" + name + "]").removeAttr("disabled");
+            } else {
+                $("select[name=" + name + "]").attr("disabled", "disabled");
+            }
+        },
+        appendInfo: function (event, algorithmName, parameterName) {
+            if (event.target.value == 'Choose...') {
+                hub.$emit('optionName', algorithmName + parameterName);
+            } else {
+                hub.$emit('optionName', event.target.value);
+            }
+        },
+        saveAlgorithmSettings() {
+            let parameters = this.parameterList[this.scheme.algorithmId];
+            if (parameters != null) {
+                for (let i = 0; i < parameters.length; i++) {
+                    let nameTemp = this.scheme.algorithmName + parameters[i].parameterName;
+                    let value = null;
+                    switch (parameters[i].parameterSettingInfo.type) {
+                        case 'text':
+                            let temp = $("input[name=" + nameTemp + "]").val();
+                            if (temp == '') {
+                                this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = 'null';
+                            } else {
+                                this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = $("input[name=" + nameTemp + "]").val();
+                            }
+                            this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = 'null';
+                            break;
+                        case 'selection':
+                            let paramInput = $("select[name=" + nameTemp + "]").val();
+                            value = paramInput;
+                            if (parameters[i].parameterSettingInfo.optionExtra[paramInput] != null) {
+                                let value2 = null;
+                                switch (parameters[i].parameterSettingInfo.optionExtra[paramInput].type) {
+                                    case 'text':
+                                        this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = $("input[name=" + nameTemp + paramInput + "]").val();
+                                        this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = value;
+                                        break;
+                                    case 'selection':
+                                        value2 = $("select[name=" + nameTemp + paramInput + "]").val();
+                                        this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = value2;
+                                        this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = value;
+                                        break;
+                                }
+                            } else {
+                                this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = 'null';
+                                if (value == 'Choose...') {
+                                    this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = 'null';
+                                } else {
+                                    this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = value;
+                                }
+                            }
+                            break;
+                        case 'radio':
+                            value = $("input[name=" + nameTemp + "]:checked").val();
+                            this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = 'null';
+                            if (value === undefined) {
+                                this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = 'null';
+                            } else {
+                                this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = value;
+                            }
+                            break;
+                        case 'checkbox':
+                            let listTemp = [];
+                            $("input[name=" + nameTemp + "]:checked").each(function () {
+                                value = $(this).val();
+                                listTemp.push(value);
+                            });
+                            this.scheme.algorithmParameterDemoAdmin[i].parameterInputValue = 'null';
+                            if (listTemp.length == 0) {
+                                this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = 'null';
+                            } else {
+                                this.scheme.algorithmParameterDemoAdmin[i].parameterOptionValue = JSON.stringify(listTemp);
+                            }
+                    }
+                }
+            }
+        },
+        find(algo) {
+            $('#search-input').val(algo);
+            //触发一下该input的input事件
+            $('#search-input')[0].dispatchEvent(new Event('input'));
+        },
+        show() {
+            $('[data-toggle="popover"]').popover();
+        },
+        hide() {
+            $('.toast').remove()
+            document.cookie = 'isClose';
+        },
+        removeSymbol(x) {
+            if (x != null)
+                return x.replace(/\"/g, "");
+            return x;
+        },
+        conversion(x) {
+            return x == 'data' ? '该步骤还没设置呢！' : x;
+        },
+        //
         setDataPopover:function(){
             $(document).ready(function(){
                 $('[data-toggle="popover"]').popover();
@@ -195,7 +603,7 @@ var vm =new Vue({
             sessionStorage.setItem('currentTag',event.target.id);
         },
         //获得所有算法信息
-        getData() {
+        getEData() {
             axios.get('/AlgorithmInfoDemoAdmin/findAll')
                 .then(resp => {
                     this.msgs = resp.data;
@@ -204,7 +612,7 @@ var vm =new Vue({
                     console.log(err);
                 });
         }, //获得指定ID算法信息
-        getDataById(id) {
+        getEDataById(id) {
             const _id = id;
             axios.get('/AlgorithmInfoDemoAdmin/getAlgorithmInfo/'+id)
                 .then(resp => {
@@ -446,8 +854,27 @@ var vm =new Vue({
 
     },
     computed: {
+        //算法方案搜索功能
+        filterInfo: function () {
+            var dataset_array = this.schemes,
+                searchString = this.searchString;
+
+            if (!searchString) {
+                return dataset_array;
+            }
+
+            searchString = searchString.trim().toLowerCase();
+
+            dataset_array = dataset_array.filter(function (item) {
+                if (item.algorithmName.toLowerCase().indexOf(searchString) !== -1) {
+                    return item;
+                }
+            });
+
+            return dataset_array;
+        },
         //搜索功能
-        filterInfo: function() {
+        EfilterInfo: function() {
             var info_array = this.msgs,
                 searchString = this.searchString;
 
@@ -603,3 +1030,45 @@ $.fn.serializeObject = function() {
     // });
     return k;
 };
+
+Vue.component('append', {
+    props: ['scheme', 'param'],
+    data: function () {
+        return {
+            optionName: ''
+        }
+    },
+    template: `
+                <div class="input-group form-row" v-if="optionName!=''&&param.parameterSettingInfo.optionExtra[optionName]!=null?param.parameterSettingInfo.optionExtra[optionName].type=='selection':false">
+                    <label :for="scheme.algorithmName+param.parameterName+'Basic'+optionName" class="col-3 align-content-center">{{optionName}}</label>
+                    <select class="custom-select col-9" :name="scheme.algorithmName+param.parameterName+optionName" :id="scheme.algorithmName+param.parameterName+'Basic'+optionName">
+                        <option selected value="Choose...">Choose...</option>
+                        <option v-for="option in param.parameterSettingInfo.optionExtra[optionName].options" :value="option">{{option}}</option>
+                    </select>
+                </div>
+                <div class="input-groupv form-row"v-else-if="optionName!=''&&param.parameterSettingInfo.optionExtra[optionName]!=null?param.parameterSettingInfo.optionExtra[optionName].type=='text':false">
+                    <label :for="scheme.algorithmName+param.parameterName+'Basic'+optionName" class="col-3 align-content-center">{{optionName}}</label>
+                    <input type="text" class="form-control col-9" :id="scheme.algorithmName+param.parameterName+'Basic'+optionName" :name="scheme.algorithmName+param.parameterName+optionName">
+                </div>
+                <div v-else></div>
+        `,
+    mounted: function () {
+        hub.$on('optionName', (val) => {
+            if (val == (this.scheme.algorithmName + this.param.parameterName)) {
+                this.optionName = '';
+            } else {
+                if (this.param.parameterSettingInfo.optionExtra != null) {
+                    for (key in this.param.parameterSettingInfo.optionExtra) {
+                        if (key == val && this.param.parameterSettingInfo.optionExtra[key] != null) {
+                            this.optionName = val;
+                        }
+                        if (key == val && this.param.parameterSettingInfo.optionExtra[key] == null) {
+                            this.optionName = '';
+                        }
+                    }
+                }
+            }
+        })
+    }
+});
+var hub = new Vue();
