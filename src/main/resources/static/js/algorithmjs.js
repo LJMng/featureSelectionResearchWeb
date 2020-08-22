@@ -271,7 +271,7 @@ var vm =new Vue({
         },
         //获得指定ID方案信息(编辑)
         getDataById(id) {
-            this.clearData();
+            this.clearEData();
             const _id = id;
             console.log(id)
             axios.get('/SchemeDemoAdmin/find/' + id)
@@ -349,14 +349,14 @@ var vm =new Vue({
             axios.get('/AlgorithmInfoDemoAdmin/findParameter/' + id)
                 .then(resp => {
                     this.scheme.algorithmParameterDemoAdmin = resp.data.algorithmParameterDemoAdmin;
-                    this.insertData();
+                    this.insertEData();
                 })
                 .catch(err => {
                     console.log(err)
                 })
         },
         //新增方案信息
-        insertData() {
+        insertEData() {
             if (this.scheme.algorithmParameterDemoAdmin === undefined) {
                 alert("请确认该算法是否设定参数，可以到execution管理系统添加噢！");
                 return;
@@ -388,7 +388,7 @@ var vm =new Vue({
                 })
         },
         //更新方案信息
-        updateData() {
+        updateEData() {
             //表单验证
             if (!this.scheme.schemeName) {
                 alert('请输入方案名称');
@@ -437,7 +437,7 @@ var vm =new Vue({
                 })
         },
         //删除方案信息
-        deleteData(id) {
+        deleteEData(id) {
             axios.post('/SchemeDemoAdmin/delete/' + id)
                 .then(() => {
                     axios.post('/schemeProcedureDemoAdmin/delete/' + id);
@@ -448,7 +448,7 @@ var vm =new Vue({
                 })
         },
         //清空数据
-        clearData() {
+        clearEData() {
             $('input[name="insert_datasets"]').each(function () {
                 $(this).attr("checked", false);
             });
