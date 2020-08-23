@@ -5,6 +5,7 @@ import featureSelection.research.web.mybatisMapper.execution.admin.Administrator
 import featureSelection.research.web.service.execution.admin.AdministratorBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class AdministratorBusinessImpl implements AdministratorBusiness {
 
     @Override
     public void updateAdministrator(Administrator administrator) {
+        String md5DigestAsHex = DigestUtils.md5DigestAsHex(administrator.getAdministratorPassword().getBytes());
+        administrator.setAdministratorPassword(md5DigestAsHex);
         administratorMapper.updateAdministrator(administrator);
     }
 
@@ -31,6 +34,8 @@ public class AdministratorBusinessImpl implements AdministratorBusiness {
     @Override
     public boolean addAdministrator(Administrator administrator) {
         if(administrator.getAdministratorPassword().equals(administrator.getConfirmAdministratorPassword())){
+            String md5DigestAsHex = DigestUtils.md5DigestAsHex(administrator.getAdministratorPassword().getBytes());
+            administrator.setAdministratorPassword(md5DigestAsHex);
             administratorMapper.addAdministrator(administrator);
             return true;
         }else {

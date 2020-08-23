@@ -23,6 +23,7 @@ public class IAccountServiceImpl implements IAccountService {
     @Autowired private ApplyAccountMapper applyAccountMapper;
 
     @Autowired private AccountMapper accountMapper;
+
     /**
      * 会员账号申请
      * @param applyAccount 账号信息
@@ -65,4 +66,11 @@ public class IAccountServiceImpl implements IAccountService {
     public int getAccountIdByEmail(String email) {
         return accountMapper.getAccountIdByEmail(email);
     }
+
+    @Override
+    public Account getAccountByEmail(String email) {
+        return accountMapper.getAccountByEmail(email);
+    }
+
+
 }
