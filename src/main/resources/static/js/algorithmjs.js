@@ -173,13 +173,13 @@ var vm =new Vue({
             procedureSettingsId: '',
         },
         tempSetting: '',
-        algorithms: [],
+        Ealgorithms: [],
         datasets: [],
         params: '',
-        searchString: '',
+        EsearchString: '',
         ProcedureSettingsList: {},
         parameterList: {},
-        algorithmNames: '',
+        EalgorithmNames: '',
     },
     created:function () {
         //算法方案初始化方法
@@ -259,7 +259,7 @@ var vm =new Vue({
                     });
                     axios.get('/AlgorithmInfoDemoAdmin/findAll')
                         .then(resp => {
-                            this.algorithmNames = resp.data;
+                            this.EalgorithmNames = resp.data;
                         })
                         .catch(err => {
                             console.log(err);
@@ -270,7 +270,7 @@ var vm =new Vue({
                 });
         },
         //获得指定ID方案信息(编辑)
-        getDataById(id) {
+        getEDataById(id) {
             this.clearEData();
             const _id = id;
             console.log(id)
@@ -470,7 +470,7 @@ var vm =new Vue({
         getIdAndName() {
             axios.get('/AlgorithmInfoDemoAdmin/findAllIdAndName')
                 .then(resp => {
-                    this.algorithms = resp.data
+                    this.Ealgorithms = resp.data
                 })
                 .catch(err => {
                     console.log(err);
@@ -612,7 +612,7 @@ var vm =new Vue({
                     console.log(err);
                 });
         }, //获得指定ID算法信息
-        getEDataById(id) {
+        getDataById(id) {
             const _id = id;
             axios.get('/AlgorithmInfoDemoAdmin/getAlgorithmInfo/'+id)
                 .then(resp => {
@@ -855,9 +855,9 @@ var vm =new Vue({
     },
     computed: {
         //算法方案搜索功能
-        filterInfo: function () {
+        EfilterInfo: function () {
             var dataset_array = this.schemes,
-                searchString = this.searchString;
+                searchString = this.EsearchString;
 
             if (!searchString) {
                 return dataset_array;
@@ -874,7 +874,7 @@ var vm =new Vue({
             return dataset_array;
         },
         //搜索功能
-        EfilterInfo: function() {
+        filterInfo: function() {
             var info_array = this.msgs,
                 searchString = this.searchString;
 
