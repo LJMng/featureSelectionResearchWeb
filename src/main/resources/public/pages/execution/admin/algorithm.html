@@ -168,7 +168,6 @@
                            role="tab" aria-controls="nav-contact" aria-selected="false" @click="currentTag">新增步骤</a>
                         <a class="nav-item nav-link" id="nav-scheme-tab" data-toggle="tab" href="#nav-scheme" role="tab"
                            aria-controls="nav-contact" aria-selected="false" @click="currentTag">算法方案</a>
-
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
@@ -225,6 +224,10 @@
                                     <button type="button" class="btn btn-primary" data-toggle="modal"
                                             v-bind:data-target='"#a"+msg.algorithmId'
                                             @click="putAlgorithmId(msg.algorithmId)">详情
+                                    </button>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#setDataset4Algorithm"
+                                            @click="setDataset4AlgorithmOfAlgorithmId(msg.algorithmId)">数据集
                                     </button>
                                 </td>
                             </tr>
@@ -657,25 +660,25 @@
                                                         </option>
                                                     </select>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label>给用户提供可选数据集:
-                                                        <button style="padding: 0px" type="button" class="btn btn-link"
-                                                                data-toggle="modal"
-                                                                data-target="#showDatasetsModal">数据集介绍
-                                                        </button>
-                                                    </label>
-                                                    <div class="input-group mb-3">
-                                                        <div class="custom-control-inline custom-control custom-checkbox"
-                                                             v-for="dataset in datasets">
-                                                            <input class="custom-control-input" type="checkbox"
-                                                                   :id="'datasets'+dataset.datasetId"
-                                                                   :value="dataset.datasetId"
-                                                                   name="insert_datasets">
-                                                            <label class="custom-control-label"
-                                                                   :for="'datasets'+dataset.datasetId">{{dataset.datasetName}}</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
+<!--                                                <div class="form-group">-->
+<!--                                                    <label>给用户提供可选数据集:-->
+<!--                                                        <button style="padding: 0px" type="button" class="btn btn-link"-->
+<!--                                                                data-toggle="modal"-->
+<!--                                                                data-target="#showDatasetsModal">数据集介绍-->
+<!--                                                        </button>-->
+<!--                                                    </label>-->
+<!--                                                    <div class="input-group mb-3">-->
+<!--                                                        <div class="custom-control-inline custom-control custom-checkbox"-->
+<!--                                                             v-for="dataset in datasets">-->
+<!--                                                            <input class="custom-control-input" type="checkbox"-->
+<!--                                                                   :id="'datasets'+dataset.datasetId"-->
+<!--                                                                   :value="dataset.datasetId"-->
+<!--                                                                   name="insert_datasets">-->
+<!--                                                            <label class="custom-control-label"-->
+<!--                                                                   :for="'datasets'+dataset.datasetId">{{dataset.datasetName}}</label>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
                                                 <div class="form-group">
                                                     <label class="col-form-label">方案名称:</label>
                                                     <input type="text" class="form-control" v-model="scheme.schemeName">
@@ -1557,6 +1560,50 @@
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                                 <button type="button" class="btn btn-danger"
                                         @click="deleteProcedureSetting(procedureSetting.id)">确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--设置算法可用数据集模态框-->
+                <div class="modal fade" id="setDataset4Algorithm" tabindex="-1" role="dialog" aria-hidden="true"
+                     data-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">设置算法可运行的数据集</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label>给用户提供可选数据集:
+                                            <button style="padding: 0px" type="button" class="btn btn-link"
+                                                    data-toggle="modal"
+                                                    data-target="#showDatasetsModal">数据集介绍
+                                            </button>
+                                        </label>
+                                        <div class="input-group mb-3">
+                                            <div class="custom-control-inline custom-control custom-checkbox"
+                                                 v-for="dataset in executionDatasetInfo">
+                                                <input class="custom-control-input" type="checkbox"
+                                                       :id="'executiondatasets'+dataset.datasetId"
+                                                       :value="dataset.datasetId"
+                                                       name="availableDataset">
+                                                <label class="custom-control-label"
+                                                       :for="'executiondatasets'+dataset.datasetId">{{dataset.datasetName}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                        @click="setDataset4AlgorithmOfAvailableDataset()">确定
                                 </button>
                             </div>
                         </div>

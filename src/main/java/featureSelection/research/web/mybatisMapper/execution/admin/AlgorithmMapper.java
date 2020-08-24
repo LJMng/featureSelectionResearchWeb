@@ -1,10 +1,12 @@
 package featureSelection.research.web.mybatisMapper.execution.admin;
 
 import featureSelection.research.web.entity.execution.admin.Algorithm;
+import featureSelection.research.web.entity.execution.admin.AvailableDataset4Algorithm;
 import featureSelection.research.web.entity.execution.admin.Parameter;
 import featureSelection.research.web.entity.execution.admin.WebAlgorithmMapperEntity;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -16,4 +18,6 @@ public interface AlgorithmMapper {
             " values (#{algorithmId},#{parameterName},#{parameterNameMapper},#{parameterDescription},#{parameterType},#{parameterDefaultValue},#{parameterSettingInfo})")
     public void createParameter(Parameter parameter);
 
+    @Update("update algorithm set available_datasets = #{availableDatasets} where algorithm_id=#{algorithmId}")
+    public void setAvailableDataset4Algorithm(AvailableDataset4Algorithm availableDataset4Algorithm);
 }

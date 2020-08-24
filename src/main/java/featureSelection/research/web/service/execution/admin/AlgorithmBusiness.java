@@ -1,9 +1,6 @@
 package featureSelection.research.web.service.execution.admin;
 
-import featureSelection.research.web.entity.execution.admin.Algorithm;
-import featureSelection.research.web.entity.execution.admin.Parameter;
-import featureSelection.research.web.entity.execution.admin.ParameterInfo;
-import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
+import featureSelection.research.web.entity.execution.admin.*;
 
 import java.util.List;
 import java.util.Map;
@@ -75,4 +72,6 @@ public interface AlgorithmBusiness {
      * @param id int 算法步骤Id
      */
     public void deleteProcedureSetting(int id);
+
+    public void setAvailableDataset4Algorithm(AvailableDataset4Algorithm availableDataset4Algorithm);
 }

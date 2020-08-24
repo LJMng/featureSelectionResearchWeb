@@ -296,4 +296,9 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     public void deleteProcedureSetting(int id) {
         procedureSettingsMapper.deleteProcedureSetting(id);
     }
+
+    @Override
+    public void setAvailableDataset4Algorithm(AvailableDataset4Algorithm availableDataset4Algorithm) {
+        algorithmMapper.setAvailableDataset4Algorithm(availableDataset4Algorithm);
+    }
 }

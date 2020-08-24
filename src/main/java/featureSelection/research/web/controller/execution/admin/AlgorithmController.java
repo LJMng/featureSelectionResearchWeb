@@ -1,9 +1,6 @@
 package featureSelection.research.web.controller.execution.admin;
 
-import featureSelection.research.web.entity.execution.admin.Algorithm;
-import featureSelection.research.web.entity.execution.admin.Parameter;
-import featureSelection.research.web.entity.execution.admin.ParameterInfo;
-import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
+import featureSelection.research.web.entity.execution.admin.*;
 import featureSelection.research.web.service.demo.admin.impl.ProcedureServiceImpl;
 import featureSelection.research.web.service.execution.admin.AlgorithmBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,6 +169,11 @@ public class AlgorithmController {
     public String deleteProcedureSetting(@RequestBody ProcedureSettings procedureSettings){
         algorithmBusiness.deleteProcedureSetting(procedureSettings.getId());
         return "redirect:/pages/execution/admin/algorithm.html";
+    }
+    @PostMapping(value = "/setAvailableDataset4Algorithm")
+    public void setAvailableDataset4Algorithm(@RequestBody AvailableDataset4Algorithm availableDataset4Algorithm){
+        System.out.println(availableDataset4Algorithm);
+        algorithmBusiness.setAvailableDataset4Algorithm(availableDataset4Algorithm);
     }
 
 }

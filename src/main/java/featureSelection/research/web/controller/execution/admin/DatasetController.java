@@ -71,4 +71,9 @@ public class DatasetController {
         return "redirect:/pages/execution/admin/datasetManage.html";
     }
 
+    @GetMapping("/getDatasetInfo")
+    public @ResponseBody List<Dataset> getDatasetInfo(){
+        return datasetBusiness.getDatasetList();
+    }
+
 }
