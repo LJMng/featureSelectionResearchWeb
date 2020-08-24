@@ -17,7 +17,9 @@
     <script src="/webjars/jquery-cookie/jquery.cookie.js"></script>
     <!-- 		Vue.js -->
     <script src="/webjars/vue/vue.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
     <!-- 		Bootstrap -->
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <!-- 		Bootstrap core JavaScript-->
@@ -34,120 +36,239 @@
 </head>
 <body>
 <div id="div_id">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/pages/demo/admin/index.html">AlgGroupDemoAdmin</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav ml-auto">
-                <!--首页-->
-                <li class="nav-item">
-                    <a class="nav-link" href="/pages/demo/admin/index.html">
-                        <i class="fa fa-home"></i>
-                        Home
-                    </a>
-                </li>
-                <!--方案管理-->
-                <li class="nav-item">
-                    <a class="nav-link" href="/DemoAdmin/SchemeAdmin">
-                        <i class="fa fa-server"></i>
-                        Scheme
-                    </a>
-                </li>
-                <!--关于我们页面管理-->
-                <li class="nav-item active">
-                    <a class="nav-link" href="/DemoAdmin/AboutusAdmin">
-                        <i class="fa fa-address-card"></i>
-                        Aboutus
-                    </a>
-                </li>
-                <li>
-                    <form action="/DemoAdmin/logout">
-                        <button type="submit" class="btn btn-light">
-                            <i class="fa fa-times-circle"></i>
-                            Logout
-                        </button>
-                    </form>
-                </li>
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/pages/execution.html">AlgGroup</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/pages/execution/admin/htmlElementList.html">htmlElement<span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/datasetManage.html">Dataset</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/administrator.html">account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About us</a>
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-outline-secondary btn-sm">登录</button> &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" name="my-checkbox" value="true" onclick="function f(value) {
+        }">
         </div>
     </nav>
-    <div class="col-md-12">
-        <h1>关于我们页面管理</h1>
-    </div>
-    <div class="col-md-10">
-        <p class="text-lg-left">这里能增删关于我们的页面展示的内容</p>
-    </div>
-    <hr>
-    <div class="alert alert-warning m-1" role="alert">
-        请使用下面的文本框来录入关于我们页面需要展示的内容，完成后请点击保存按钮！
-    </div>
-    <button id="save" class="btn btn-primary m-1" @click="save()">保存</button>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text">标题</span>
-        </div>
-        <input id="title" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-    </div>
-    <div id="summernote"></div>
-    <script>
-        $(document).ready(function() {
-            $('#summernote').summernote();
-        });
-    </script>
-
-    <div class="alert alert-primary m-1" role="alert" v-if="images != ''">
-        下面的是每一个信息的内容，点击标题即可查看详情信息！
-    </div>
-    <div class="alert alert-danger m-1" role="alert" v-else>
-        目前还没有信息噢，请添加标题和内容吧！
-    </div>
-    <div class="accordion m-5" id="accordionExample">
-        <div class="card" v-for="image in images">
-            <div class="card-header" id="headingOne">
-                <h2 class="mb-0">
-                    <button class="btn btn-link btn-block" type="button" data-toggle="collapse"
-                            :data-target="'#card'+image.moduleKey" aria-expanded="true" aria-controls="collapseOne">
-                        {{image.chValue}}
-                    </button>
-                </h2>
-            </div>
-            <div :id="'card'+image.moduleKey" class="collapse" aria-labelledby="headingOne"
-                 data-parent="#accordionExample">
-                <div class="card-body">
-                    <div v-html="image.enValue">
-                        {{image.enValue}}
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar" id="sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/execution.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-home">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                Home <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/administrator.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-users">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                管理员账户管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/account.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-users">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                Vip用户管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/datasetManage.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-layers">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                    <polyline points="2 17 12 22 22 17"></polyline>
+                                    <polyline points="2 12 12 17 22 12"></polyline>
+                                </svg>
+                                数据集管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/htmlElementList.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-file-text">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                页面元素管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/taskInfo.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-file">
+                                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                    <polyline points="13 2 13 9 20 9"></polyline>
+                                </svg>
+                                任务单管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/algorithm.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-file">
+                                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                    <polyline points="13 2 13 9 20 9"></polyline>
+                                </svg>
+                                算法管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/demo/admin/index.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-file-text">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                更新信息管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/demo/admin/AboutusDemoAdmin.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-file-text">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                关于我们页面管理
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                <div class="col-md-12">
+                    <h1>关于我们页面管理</h1>
+                </div>
+                <div class="col-md-10">
+                    <p class="text-lg-left">这里能增删关于我们的页面展示的内容</p>
+                </div>
+                <hr>
+                <div class="alert alert-warning m-1" role="alert">
+                    请使用下面的文本框来录入关于我们页面需要展示的内容，完成后请点击保存按钮！
+                </div>
+                <button id="save" class="btn btn-primary m-1" @click="save()">保存</button>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">标题</span>
                     </div>
-                    <div style="text-align:center">
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
-                                @click="getDataByKey(image.moduleKey)">删除
-                        </button>
+                    <input id="title" type="text" class="form-control" aria-label="Sizing example input"
+                           aria-describedby="inputGroup-sizing-default">
+                </div>
+                <div id="summernote"></div>
+                <script>
+                    $(document).ready(function () {
+                        $('#summernote').summernote();
+                    });
+                </script>
+
+                <div class="alert alert-primary m-1" role="alert" v-if="images != ''">
+                    下面的是每一个信息的内容，点击标题即可查看详情信息！
+                </div>
+                <div class="alert alert-danger m-1" role="alert" v-else>
+                    目前还没有信息噢，请添加标题和内容吧！
+                </div>
+                <div class="accordion m-5" id="accordionExample">
+                    <div class="card" v-for="image in images">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block" type="button" data-toggle="collapse"
+                                        :data-target="'#card'+image.moduleKey" aria-expanded="true"
+                                        aria-controls="collapseOne">
+                                    {{image.chValue}}
+                                </button>
+                            </h2>
+                        </div>
+                        <div :id="'card'+image.moduleKey" class="collapse" aria-labelledby="headingOne"
+                             data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div v-html="image.enValue">
+                                    {{image.enValue}}
+                                </div>
+                                <div style="text-align:center">
+                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                            data-target="#deleteModal"
+                                            @click="getDataByKey(image.moduleKey)">删除
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <!--    删除模态框-->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">删除信息</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <!--    删除模态框-->
+                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true"
+                     data-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">删除信息</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <label class="col-form-label">确定删除吗?</label>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary" @click="deleteImage(image.moduleKey)">确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <label class="col-form-label">确定删除吗?</label>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" @click="deleteImage(image.moduleKey)">确定</button>
-                </div>
-            </div>
+            </main>
         </div>
     </div>
 </div>
@@ -176,7 +297,7 @@
             //获得指定信息(删除)
             getDataByKey(key) {
                 this.clearData();
-                axios.get('/HtmlElementDemoAdmin/findByKey/'+key)
+                axios.get('/HtmlElementDemoAdmin/findByKey/' + key)
                     .then(resp => {
                         this.image.moduleKey = resp.data.moduleKey
                     })
@@ -186,7 +307,7 @@
             },
             //删除信息
             deleteImage(key) {
-                axios.post('/HtmlElementDemoAdmin/delete/'+key)
+                axios.post('/HtmlElementDemoAdmin/delete/' + key)
                     .then(() => {
                         window.location.reload();
                     })
@@ -198,9 +319,9 @@
             clearData() {
                 this.images.moduleKey = '';
             },
-            save(){
+            save() {
                 let title = $('#title').val();
-                if(title == ''){
+                if (title == '') {
                     alert('请输入标题');
                     return;
                 }
@@ -215,14 +336,14 @@
                     cache: false,
                     contentType: false,
                     processData: false,
-                    success: function(data) {
+                    success: function (data) {
                         window.location.reload();
                         alert('保存成功！');
                     }
                 });
             }
         },
-        created () {
+        created() {
             this.getData();
         },
     })
@@ -230,14 +351,15 @@
 <script>
     $('#summernote').summernote({
         placeholder: 'Please input the details...',
-        height: 400,
+        height: 600,
         focus: true,
-        callbacks:{  //回调函数，覆盖上传方法onImageUpload
-            onImageUpload: function(files) {
+        callbacks: {  //回调函数，覆盖上传方法onImageUpload
+            onImageUpload: function (files) {
                 sendFile(files[0]);
             }
         }
     });
+
     function sendFile(files) {
         data = new FormData();
         data.append("files", files);
@@ -249,10 +371,10 @@
             cache: false,
             contentType: false,
             processData: false,
-            success: function(data) {
+            success: function (data) {
                 $('#summernote').summernote('insertImage', data.filename);
             },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert(XMLHttpRequest.status);
                 alert(XMLHttpRequest.readyState);
                 alert(textStatus);
@@ -261,4 +383,9 @@
     }
 </script>
 </body>
+<footer class="container">
+    <hr>
+    <p class="float-right"><a href="/pages/execution/admin/account.html">Back to top</a></p>
+    <p>&copy; 2017-2020 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+</footer>
 </html>

@@ -149,6 +149,12 @@ var vm =new Vue({
         deleteProcedureSettingInfo:{
             id:1,
         },
+        //封装公共数据集信息，用于算法可用数据集的设置
+        executionDatasetInfo:'',
+        availableDataset4Algorithm:{
+            algorithmId:'',
+            availableDatasets:''
+        },
         // 算法方案数据
         schemes: [],
         procedures: [],
@@ -181,6 +187,8 @@ var vm =new Vue({
         EalgorithmNames: '',
     },
     created:function () {
+
+
         //算法方案初始化方法
         this.getData();
         this.getIdAndName();
@@ -191,13 +199,19 @@ var vm =new Vue({
             // console.log(response.data);
         } ,function (err) {
 
-        })
+        });
+        //获取公共数据集信息，executionDatasetInfo
+        axios.get('/getDatasetInfo').then(function (response) {
+            that.executionDatasetInfo=response.data;
+        },function (err) {
+
+        });
 
         axios.get('/getAlgorithms').then(function (response) {
             that.algorithms=response.data;
         },function (err) {
 
-        })
+        });
 
         axios.get('/findAllProcedureSetting')
             .then(function (response){
@@ -231,7 +245,6 @@ var vm =new Vue({
             axios.get('/SchemeDemoAdmin/findAll')
                 .then(resp => {
                     this.schemes = resp.data;
-                    console.log(this.schemes);
                     axios.get('/schemeProcedureDemoAdmin/findAll')
                         .then(resp => {
                             this.procedures = resp.data;
@@ -267,6 +280,27 @@ var vm =new Vue({
                 .catch(err => {
                     console.log(err);
                 });
+        },
+        //设置可用算法数据集的id
+        setDataset4AlgorithmOfAlgorithmId:function(AlgorithmId){
+            this.availableDataset4Algorithm.algorithmId=AlgorithmId;
+        },
+        //设置可用数据集的数据集
+        setDataset4AlgorithmOfAvailableDataset:function(){
+            let availableDatasets = [];
+            $('input[name="availableDataset"]:checked').each(function () {//遍历每一个名字为availableDataset的复选框
+                availableDatasets.push($(this).val());//将选中的值添加到数组中
+            });
+            this.availableDataset4Algorithm.availableDatasets = JSON.stringify(availableDatasets);
+            console.log(availableDatasets);
+            //将AvailableDataset4Algorithm对象通过axios发送至后台进行存储
+            axios.post("/setAvailableDataset4Algorithm",this.availableDataset4Algorithm)
+                .then(() =>{
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         },
         //获得指定ID方案信息(编辑)
         getEDataById(id) {
@@ -623,7 +657,6 @@ var vm =new Vue({
             }
             axios.post('/AlgorithmInfoDemoAdmin/insert',this.info)
                 .then(() => {
-                    console.log(this.info)
                     window.location.reload();
                 })
                 .catch(err => {
@@ -721,12 +754,12 @@ var vm =new Vue({
         //确认第二个参数web层的值跟类型
         confirmSecondParameterValue:function (n,m) {
             if(m >= this.paramValuesNumber[n-1]){
-            // this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
-            // this.firstParameterValue=[];
-            this.secondParameterValue=this.secondParameterValues[n-1]
-            this.parameterInfo.secondParameterValues[n-1]=this.secondParameterValue;
-            this.secondParameterValue=[];
-            console.log(this.parameterInfo.secondParameterTypes[n-1])
+                // this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
+                // this.firstParameterValue=[];
+                this.secondParameterValue=this.secondParameterValues[n-1]
+                this.parameterInfo.secondParameterValues[n-1]=this.secondParameterValue;
+                this.secondParameterValue=[];
+                console.log(this.parameterInfo.secondParameterTypes[n-1])
                 console.log("改方法调用了")
             }
         },
@@ -853,7 +886,7 @@ var vm =new Vue({
                 }
             }
 
-                return fParameters;
+            return fParameters;
         },
         filterProcedureSettingsByAlgorithmId(){
             //取出数据

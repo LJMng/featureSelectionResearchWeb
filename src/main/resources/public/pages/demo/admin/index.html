@@ -29,170 +29,297 @@
 </head>
 <body>
 <div id="div_id">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/pages/demo/admin/index.html">AlgGroupDemoAdmin</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav ml-auto">
-                <!--首页-->
-                <li class="nav-item active">
-                    <a class="nav-link" href="/pages/demo/admin/index.html">
-                        <i class="fa fa-home"></i>
-                        Home
-                    </a>
-                </li>
-                <!--方案管理-->
-                <li class="nav-item">
-                    <a class="nav-link" href="/DemoAdmin/SchemeAdmin">
-                        <i class="fa fa-server"></i>
-                        Scheme
-                    </a>
-                </li>
-                <!--关于我们页面管理-->
-                <li class="nav-item">
-                    <a class="nav-link" href="/DemoAdmin/AboutusAdmin">
-                        <i class="fa fa-address-card"></i>
-                        Aboutus
-                    </a>
-                </li>
-                <li>
-                    <form action="/DemoAdmin/logout">
-                        <button type="submit" class="btn btn-light">
-                            <i class="fa fa-times-circle"></i>
-                            Logout
-                        </button>
-                    </form>
-                </li>
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/pages/execution.html">AlgGroup</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/pages/execution/admin/htmlElementList.html">htmlElement<span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/datasetManage.html">Dataset</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/admin/administrator.html">account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About us</a>
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-outline-secondary btn-sm">登录</button> &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" name="my-checkbox" value="true" onclick="function f(value) {
+        }">
         </div>
     </nav>
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">欢迎使用演示系统的后台管理系统</h1>
-            <p class="lead">本系统能够对首页展示出的方案以及更新信息和关于我们的页面进行管理</p>
-        </div>
-    </div>
-    <div class="col-md-12">
-        <h1>更新信息管理</h1>
-    </div>
-    <div class="col-md-10">
-        <p class="text-lg-left">这里能修改更新的信息的中文和英文，你可以通过提供的按钮进行相应的操作</p>
-    </div>
-    <hr>
-    <div role="alert" aria-live="assertive" aria-atomic="true" class="toast col-md-10" data-autohide="false">
-        <div class="toast-header">
-            <strong class="mr-auto">tips</strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" @Click="hide()">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body">
-            <p>1.更新信息填写更新的中文信息，update info填写更新的英文信息</p>
-            <p>2.建议更新条数不要超过5条噢，所以需要定期删除</p>
-        </div>
-    </div>
-    <table class="table">
-        <thead class="thead-light">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">更新信息</th>
-            <th scope="col">update info</th>
-            <th scope="col">更新时间</th>
-            <th scope="col">操作<button style="padding: 0px" type="button"  class="btn btn-link" data-toggle="modal" data-target="#insertModal" @click="clearData()">添加更新信息</button></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="updateInfo in updateInfos">
-            <th scope="row">{{updateInfo.updateId}}</th>
-            <td>{{updateInfo.updateContent}}</td>
-            <td>{{updateInfo.updateEnContent}}</td>
-            <td>{{updateInfo.ut}}</td>
-            <td>
-                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal" @click="getDataById(updateInfo)">修改</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" @click="getDataById(updateInfo)">删除</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <!--新增模态框-->
-    <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">新增算法信息</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar" id="sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/execution.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-home">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                Home <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/administrator.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-users">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                管理员账户管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/account.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-users">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                Vip用户管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/datasetManage.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-layers">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                    <polyline points="2 17 12 22 22 17"></polyline>
+                                    <polyline points="2 12 12 17 22 12"></polyline>
+                                </svg>
+                                数据集管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/htmlElementList.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-file-text">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                页面元素管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/taskInfo.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-file">
+                                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                    <polyline points="13 2 13 9 20 9"></polyline>
+                                </svg>
+                                任务单管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/execution/admin/algorithm.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-file">
+                                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                    <polyline points="13 2 13 9 20 9"></polyline>
+                                </svg>
+                                算法管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/demo/admin/index.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-file-text">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                更新信息管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/demo/admin/AboutusDemoAdmin.html">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-file-text">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                关于我们页面管理
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label class="col-form-label">更新信息:</label>
-                            <textarea type="text" class="form-control" v-model="updateInfo.updateContent"></textarea>
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                <div class="col-md-12">
+                    <h1>更新信息管理</h1>
+                </div>
+                <div class="col-md-10">
+                    <p class="text-lg-left">这里能修改更新的信息的中文和英文，你可以通过提供的按钮进行相应的操作</p>
+                </div>
+                <hr>
+                <div role="alert" aria-live="assertive" aria-atomic="true" class="toast col-md-10"
+                     data-autohide="false">
+                    <div class="toast-header">
+                        <strong class="mr-auto">tips</strong>
+                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close"
+                                @Click="hide()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="toast-body">
+                        <p>1.更新信息填写更新的中文信息，update info填写更新的英文信息</p>
+                        <p>2.建议更新条数不要超过5条噢，所以需要定期删除</p>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">更新信息</th>
+                        <th scope="col">update info</th>
+                        <th scope="col">更新时间</th>
+                        <th scope="col">操作
+                            <button style="padding: 0px" type="button" class="btn btn-link" data-toggle="modal"
+                                    data-target="#insertModal" @click="clearData()">添加更新信息
+                            </button>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="updateInfo in updateInfos">
+                        <th scope="row">{{updateInfo.updateId}}</th>
+                        <td>{{updateInfo.updateContent}}</td>
+                        <td>{{updateInfo.updateEnContent}}</td>
+                        <td>{{updateInfo.ut}}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal"
+                                    @click="getDataById(updateInfo)">修改
+                            </button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
+                                    @click="getDataById(updateInfo)">删除
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!--新增模态框-->
+                <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-hidden="true"
+                     data-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">新增算法信息</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label class="col-form-label">更新信息:</label>
+                                        <textarea type="text" class="form-control"
+                                                  v-model="updateInfo.updateContent"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label">update info:</label>
+                                        <textarea type="text" class="form-control"
+                                                  v-model="updateInfo.updateEnContent"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary submitBtn" @click="insertData()">确定
+                                </button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-form-label">update info:</label>
-                            <textarea type="text" class="form-control" v-model="updateInfo.updateEnContent"></textarea>
+                    </div>
+                </div>
+                <!--修改模态框-->
+                <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true"
+                     data-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">修改更新信息</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label class="col-form-label">更新信息:</label>
+                                        <textarea type="text" class="form-control"
+                                                  v-model="updateInfo.updateContent"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label">update info:</label>
+                                        <textarea type="text" class="form-control"
+                                                  v-model="updateInfo.updateEnContent"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary" @click="updateData()">确定</button>
+                            </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary submitBtn" @click="insertData()">确定</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--修改模态框-->
-    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">修改更新信息</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label class="col-form-label">更新信息:</label>
-                            <textarea type="text" class="form-control" v-model="updateInfo.updateContent"></textarea>
+                <!--删除模态框-->
+                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true"
+                     data-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">删除更新信息</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <label class="col-form-label">确定删除序号<b><i>{{updateInfo.updateId}}</i></b>的信息吗?</label>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary" @click="deleteData(updateInfo)">确定
+                                </button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-form-label">update info:</label>
-                            <textarea type="text" class="form-control" v-model="updateInfo.updateEnContent"></textarea>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" @click="updateData()">确定</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--删除模态框-->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">删除更新信息</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <label class="col-form-label">确定删除序号<b><i>{{updateInfo.updateId}}</i></b>的信息吗?</label>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" @click="deleteData(updateInfo)">确定</button>
-                </div>
-            </div>
+            </main>
         </div>
     </div>
 </div>
@@ -213,9 +340,9 @@
         methods: {
             //获得所有更新信息
             getData() {
-                window.onload = function(){
+                window.onload = function () {
                     var arrStr = document.cookie;
-                    if(arrStr.indexOf("isClose") > -1){
+                    if (arrStr.indexOf("isClose") > -1) {
                         $('.toast').remove();
                     }
                 }
@@ -296,7 +423,7 @@
                 this.updateInfo.updateEnContent = '';
                 this.updateInfo.ut = '';
             },
-            hide(){
+            hide() {
                 $('.toast').remove();
                 document.cookie = 'isClose';
             }
@@ -308,4 +435,9 @@
     })
 </script>
 </body>
+<footer class="container">
+    <hr>
+    <p class="float-right"><a href="/pages/execution/admin/account.html">Back to top</a></p>
+    <p>&copy; 2017-2020 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+</footer>
 </html>
