@@ -8,7 +8,6 @@
         <result column="scheme_remark" property="schemeRemark" />
         <result column="algorithm_id" property="algorithmId" />
         <result column="algorithm_name" property="algorithmName" />
-        <result column="available_datasets" property="availableDatasets" />
         <!--一对多-->
         <collection property="algorithmParameterDemoAdmin" ofType="featureSelection.research.web.entity.demo.admin.AlgorithmParameterDemoAdmin">
             <id property="parameterId" column="parameter_id" />
@@ -39,7 +38,7 @@
             algorithm.algorithm_id,parameter_scheme.scheme_id,
             parameter.parameter_id,scheme_name,scheme_description,
             scheme_remark,algorithm_name,parameter_name,parameter_input_value,
-            parameter_option_value,parameter_type,available_datasets
+            parameter_option_value,parameter_type
         from
             parameter_scheme
 		left join parameter on parameter.algorithm_id=parameter_scheme.algorithm_id
@@ -58,14 +57,6 @@
             #{schemeRemark}
         )
     </insert>
-    <update id="updateAlgorithmAvailableDatasets">
-        update
-            algorithm
-        set
-            available_datasets = #{availableDatasets}
-        where
-            algorithm_id = #{algorithmId}
-    </update>
 
     <!--更新被绑定ID的方案信息-->
     <update id="updateSchemeDemoAdmin">

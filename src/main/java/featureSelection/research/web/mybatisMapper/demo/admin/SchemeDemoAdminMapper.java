@@ -15,8 +15,6 @@ public interface SchemeDemoAdminMapper {
     public SchemeDemoAdmin getSchemeDemoAdminById(Integer id);
     //增加方案
     public int insertSchemeDemoAdmin(SchemeDemoAdmin schemeDemoAdmin);
-    //更改算法可选数据集
-    public int updateAlgorithmAvailableDatasets(SchemeDemoAdmin schemeDemoAdmin);
     //更新被绑定ID的方案信息
     public int updateSchemeDemoAdmin(SchemeDemoAdmin schemeDemoAdmin);
     //删除被绑定ID的方案(方案表)

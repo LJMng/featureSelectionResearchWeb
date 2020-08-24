@@ -149,12 +149,6 @@ var vm =new Vue({
         deleteProcedureSettingInfo:{
             id:1,
         },
-        //封装公共数据集信息，用于算法可用数据集的设置
-        executionDatasetInfo:'',
-        availableDataset4Algorithm:{
-            algorithmId:'',
-            availableDatasets:''
-        },
         // 算法方案数据
         schemes: [],
         procedures: [],
@@ -169,7 +163,6 @@ var vm =new Vue({
             algorithmId: '',
             algorithmName: '',
             algorithmParameterDemoAdmin: [],
-            availableDatasets: '',
         },
         procedure: {
             schemeProcedureId: '',
@@ -188,8 +181,6 @@ var vm =new Vue({
         EalgorithmNames: '',
     },
     created:function () {
-
-
         //算法方案初始化方法
         this.getData();
         this.getIdAndName();
@@ -200,19 +191,13 @@ var vm =new Vue({
             // console.log(response.data);
         } ,function (err) {
 
-        });
-        //获取公共数据集信息，executionDatasetInfo
-        axios.get('/getDatasetInfo').then(function (response) {
-            that.executionDatasetInfo=response.data;
-        },function (err) {
-
-        });
+        })
 
         axios.get('/getAlgorithms').then(function (response) {
             that.algorithms=response.data;
         },function (err) {
 
-        });
+        })
 
         axios.get('/findAllProcedureSetting')
             .then(function (response){
@@ -283,27 +268,6 @@ var vm =new Vue({
                     console.log(err);
                 });
         },
-        //设置可用算法数据集的id
-        setDataset4AlgorithmOfAlgorithmId:function(AlgorithmId){
-            this.availableDataset4Algorithm.algorithmId=AlgorithmId;
-        },
-        //设置可用数据集的数据集
-        setDataset4AlgorithmOfAvailableDataset:function(){
-            let availableDatasets = [];
-            $('input[name="availableDataset"]:checked').each(function () {//遍历每一个名字为availableDataset的复选框
-                availableDatasets.push($(this).val());//将选中的值添加到数组中
-            });
-            this.availableDataset4Algorithm.availableDatasets = JSON.stringify(availableDatasets);
-            console.log(availableDatasets);
-            //将AvailableDataset4Algorithm对象通过axios发送至后台进行存储
-            axios.post("/setAvailableDataset4Algorithm",this.availableDataset4Algorithm)
-                .then(() =>{
-                    window.location.reload();
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        },
         //获得指定ID方案信息(编辑)
         getEDataById(id) {
             this.clearEData();
@@ -318,23 +282,6 @@ var vm =new Vue({
                     this.scheme.algorithmId = resp.data.algorithmId;
                     this.scheme.algorithmName = resp.data.algorithmName;
                     this.scheme.algorithmParameterDemoAdmin = resp.data.algorithmParameterDemoAdmin;
-                    this.scheme.availableDatasets = resp.data.availableDatasets;
-                    let strRoles = this.scheme.availableDatasets;
-                    if (strRoles.length > 0) {
-                        //当strRoles有值时，清楚所有页面上的原选项
-                        $('input[name="datasets"]').each(function () {
-                            $(this).attr("checked", false);
-                        });
-                        let roleArr = strRoles.replace(/[^0-9,]*/g, "").split(',');
-                        $.each(roleArr, function (index, roleName) {
-                            //获取页面所有checkbox，然后迭代
-                            $('input[name="datasets"]').each(function () {
-                                if ($(this).val() == roleName) {
-                                    $(this).attr("checked", true);
-                                }
-                            });
-                        });
-                    }
                     axios.get('/schemeProcedureDemoAdmin/find/' + _id)
                         .then(resp => {
                             if (resp.data.length !== 0) {
@@ -396,23 +343,6 @@ var vm =new Vue({
                 alert("请确认该算法是否设定参数，可以到execution管理系统添加噢！");
                 return;
             }
-            let tmp_datasets = [];
-            $('input[name="insert_datasets"]:checked').each(function () {//遍历每一个名字为datasets的复选框
-                tmp_datasets.push($(this).val());//将选中的值添加到数组中
-            });
-            this.scheme.availableDatasets = JSON.stringify(tmp_datasets);
-            let TypeID = $("input[name='insert_datasets']");
-            let objYN = false;
-            for (let i = 0; i < TypeID.length; i++) {
-                if (TypeID[i].checked) {
-                    objYN = true;
-                    break;
-                }
-            }
-            if (!objYN) {
-                alert('请至少选择一个数据集');
-                return false;
-            }
             axios.post('/SchemeDemoAdmin/insert', this.scheme)
                 .then(() => {
                     axios.post('/schemeProcedureDemoAdmin/insert');
@@ -432,23 +362,6 @@ var vm =new Vue({
             if (!this.scheme.schemeDescription) {
                 alert('请输入简介');
                 return;
-            }
-            let tmp_datasets = [];
-            $('input[name="datasets"]:checked').each(function () {//遍历每一个名字为datasets的复选框
-                tmp_datasets.push($(this).val());//将选中的值添加到数组中
-            });
-            this.scheme.availableDatasets = JSON.stringify(tmp_datasets);
-            let TypeID = $("input[name='datasets']");
-            let objYN = false;
-            for (let i = 0; i < TypeID.length; i++) {
-                if (TypeID[i].checked) {
-                    objYN = true;
-                    break;
-                }
-            }
-            if (!objYN) {
-                alert('请至少选择一个数据集');
-                return false;
             }
             this.saveAlgorithmSettings();
             axios.post('/SchemeDemoAdmin/update', this.scheme)
@@ -484,9 +397,6 @@ var vm =new Vue({
         },
         //清空数据
         clearEData() {
-            $('input[name="insert_datasets"]').each(function () {
-                $(this).attr("checked", false);
-            });
             this.scheme.schemeId = '';
             this.scheme.schemeName = '';
             this.scheme.schemeDescription = '';
@@ -494,7 +404,6 @@ var vm =new Vue({
             this.scheme.algorithmId = '';
             this.scheme.algorithmName = '';
             this.scheme.algorithmParameterDemoAdmin = [];
-            this.scheme.availableDatasets = '';
             this.procedure.schemeId = '';
             this.procedure.procedureName = '';
             this.procedure.schemeProcedureId = '';
