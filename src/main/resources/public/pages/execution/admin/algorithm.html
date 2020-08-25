@@ -1566,7 +1566,7 @@
                                         <label>给用户提供可选数据集:
                                             <button style="padding: 0px" type="button" class="btn btn-link"
                                                     data-toggle="modal"
-                                                    data-target="#showDatasetsModal">数据集介绍
+                                                    data-target="#datasetDetail">数据集介绍
                                             </button>
                                         </label>
                                         <div class="input-group mb-3">
@@ -1593,6 +1593,56 @@
                         </div>
                     </div>
                 </div>
+                <!-- 定义修改数据集信息模态框 -->
+                <div class="modal fade" id="datasetDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <!--                                        {{values.modal_updateAdministrator_title}}-->
+                                <h5 class="modal-title" id="datasetDetailModal">数据集详细信息</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form >
+                                    <!--                                            {{values.modal_updateAdministrator_form_li1}}-->
+                                    <div class="form-group">
+                                        <label for="datasetId" class="col-form-label">数据集名称:</label>
+                                        <select class="custom-select" id="datasetId" v-model="executionDatasetInfoName" >
+                                            <option v-for="dataset in executionDatasetInfo">{{dataset.datasetName}}</option>
+                                        </select>
+                                    </div>
+                                    <div v-for="dataset in executionDatasetInfo">
+                                        <div v-if="dataset.datasetName === executionDatasetInfoName">
+                                            <div class="form-group">
+                                                <label for="datasetCount" class="col-form-label">数据集记录数:</label>
+                                                <input type="text"  class="form-control" id="datasetCount" v-bind:placeholder="dataset.datasetCount" disabled>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="datasetSource" class="col-form-label">数据集来源:</label>
+                                                <input type="url"  class="form-control" id="datasetSource" v-bind:placeholder="dataset.datasetSource" disabled>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="datasetDimension" class="col-form-label">数据集维度:</label>
+                                                <input type="text"  class="form-control" id="datasetDimension" v-bind:placeholder="dataset.datasetDimension" disabled>
+                                            </div>
+                                            <!--                                            {{values.modal_updateAdministrator_form_li3}}-->
+                                            <div class="form-group">
+                                                <label for="datasetDescription" class="col-form-label">数据集描述:</label>
+                                                <textarea type="text"  class="form-control" id="datasetDescription" v-bind:placeholder="dataset.datasetDescription" disabled></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>

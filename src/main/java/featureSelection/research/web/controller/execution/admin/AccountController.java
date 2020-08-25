@@ -6,6 +6,7 @@ import featureSelection.research.web.entity.execution.admin.Power;
 import featureSelection.research.web.service.execution.admin.AccountBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,6 @@ public class AccountController {
     @GetMapping("/getAccounts")
     public @ResponseBody List<Account> getAccounts(){
         int[] arr={0,10,15,10};
-        System.out.println(1);
         List<Account> accounts=accountBusiness.getAccounts();
         return accounts;
     }
@@ -34,6 +34,8 @@ public class AccountController {
 
     @PostMapping("/administratorAddAccount")
     public String addAccount(@RequestBody Account account){
+        String md5Password= DigestUtils.md5DigestAsHex(account.getAccountPassword().getBytes());
+        account.setAccountPassword(md5Password);
         accountBusiness.addAccount(account);
 
         return "redirect: /pages/execution/admin/account.html";

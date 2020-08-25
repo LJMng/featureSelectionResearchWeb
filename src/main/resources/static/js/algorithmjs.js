@@ -155,6 +155,8 @@ var vm =new Vue({
             algorithmId:'',
             availableDatasets:''
         },
+        //公共数据集名称
+        executionDatasetInfoName:'',
         // 算法方案数据
         schemes: [],
         procedures: [],
