@@ -15,7 +15,7 @@ public class DatasetForm implements Serializable {
     private int accountId;
     private String inputName;
     private String inputHref;
-    private int inputRecord;
+    private String inputRecord;
     private String inputDimension;
     private String inputTag;
     private String inputType;
@@ -61,11 +61,11 @@ public class DatasetForm implements Serializable {
         this.inputHref = inputHref;
     }
 
-    public int getInputRecord() {
+    public String getInputRecord() {
         return inputRecord;
     }
 
-    public void setInputRecord(int inputRecord) {
+    public void setInputRecord(String inputRecord) {
         this.inputRecord = inputRecord;
     }
 

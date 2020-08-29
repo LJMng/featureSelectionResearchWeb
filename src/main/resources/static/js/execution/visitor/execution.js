@@ -214,7 +214,10 @@ var app = new Vue({
             let params = response.data;
             for (let key in params){
                 for (let i = 0; i < params[key].length; i++) {
-                    params[key][i].parameterSettingInfo = JSON.parse(params[key][i].parameterSettingInfo);
+                    try {
+                        params[key][i].parameterSettingInfo = JSON.parse(params[key][i].parameterSettingInfo);
+                    } catch (e) {
+                    }
                 }
             }
             this.parameterList=params;
@@ -234,7 +237,8 @@ var app = new Vue({
     methods: {
         currentTag: function (event) {
             if ($.cookie('account') == null) {
-                alert('您还未登录');
+                // TODO
+                alert('Please login in first');
                 sessionStorage.setItem('currentTag','nav-home-tab');
                 window.location.href = '/accountLogin';
             } else {
@@ -622,7 +626,7 @@ var app = new Vue({
                             await axios.get('/execution/getParamValue' + '/' + algorithm.algorithmId + '/' + parameters[i].parameterId + '/' + paramInput).then(function (response) {
                                 value = response.data;
                             });
-                            if (parameters[i].parameterSettingInfo.optionExtra[paramInput] != null) {
+                            if (parameters[i].parameterSettingInfo.optionExtra !=null&&parameters[i].parameterSettingInfo.optionExtra[paramInput] != null) {
                                 let value2 = null;
                                 switch (parameters[i].parameterSettingInfo.optionExtra[paramInput].type) {
                                     case 'text':

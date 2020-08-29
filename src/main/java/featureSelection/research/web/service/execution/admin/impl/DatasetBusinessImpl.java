@@ -1,12 +1,12 @@
 package featureSelection.research.web.service.execution.admin.impl;
 
+import featureSelection.research.web.common.util.EmailUtil;
+import featureSelection.research.web.common.util.FileUtil;
 import featureSelection.research.web.entity.execution.admin.Dataset;
 import featureSelection.research.web.entity.execution.admin.DatasetForm;
 import featureSelection.research.web.entity.execution.admin.ToEmail;
 import featureSelection.research.web.mybatisMapper.execution.admin.DatasetMapping;
 import featureSelection.research.web.service.execution.admin.DatasetBusiness;
-import featureSelection.research.web.common.util.EmailUtil;
-import featureSelection.research.web.common.util.FileUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -92,13 +93,19 @@ public class DatasetBusinessImpl implements DatasetBusiness {
         //将数据集信息添加到数据集表
         Dataset dataset=new Dataset();
         dataset.setDatasetId(datasetForm.getInputId());
-        dataset.setDatasetFile(datasetForm.getInputFile());
+        dataset.setDatasetFile(target.getPath().substring(26));
         System.out.println(datasetForm.getInputFile());
-        dataset.setDatasetCount(datasetForm.getInputRecord());
         dataset.setCommon(true);
         dataset.setDatasetName(datasetForm.getInputName());
         dataset.setDatasetDescription(datasetForm.getInputDescription());
         dataset.setDatasetSource(datasetForm.getInputHref());
+        double size = (double)target.length()/1024;
+        DecimalFormat df = new DecimalFormat("#.####");
+        dataset.setDatasetSize(df.format(size)+"KB");
+        dataset.setDatasetDimension(datasetForm.getInputDimension());
+        dataset.setDatasetTags(datasetForm.getInputTag());
+        dataset.setDatasetRecords(String.valueOf(datasetForm.getInputRecord()));
+        dataset.setDatasetType(datasetForm.getInputType());
         //维度的类型?
 //        dataset.setDatasetDimension(datasetForm.getInputDimension());
         datasetMapping.createDataset(dataset);

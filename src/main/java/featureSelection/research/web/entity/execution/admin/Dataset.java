@@ -15,9 +15,14 @@ public class Dataset implements Serializable {
     private String datasetDescription;
     private long datasetCount;
     private String datasetSource;
-    private long datasetDimension;
+    private String datasetDimension;
     private boolean isCommon;
     private String datasetFile;
+    private String datasetSize;
+    private String datasetRecords;
+    private String datasetTags;
+    private String datasetType;
+
 
 
     public int getDatasetId() {
@@ -60,11 +65,11 @@ public class Dataset implements Serializable {
         this.datasetSource = datasetSource;
     }
 
-    public long getDatasetDimension() {
+    public String getDatasetDimension() {
         return datasetDimension;
     }
 
-    public void setDatasetDimension(long datasetDimension) {
+    public void setDatasetDimension(String datasetDimension) {
         this.datasetDimension = datasetDimension;
     }
 
@@ -82,6 +87,38 @@ public class Dataset implements Serializable {
 
     public void setDatasetFile(String datasetFile) {
         this.datasetFile = datasetFile;
+    }
+
+    public String getDatasetSize() {
+        return datasetSize;
+    }
+
+    public void setDatasetSize(String datasetSize) {
+        this.datasetSize = datasetSize;
+    }
+
+    public String getDatasetRecords() {
+        return datasetRecords;
+    }
+
+    public void setDatasetRecords(String datasetRecords) {
+        this.datasetRecords = datasetRecords;
+    }
+
+    public String getDatasetTags() {
+        return datasetTags;
+    }
+
+    public void setDatasetTags(String datasetTags) {
+        this.datasetTags = datasetTags;
+    }
+
+    public String getDatasetType() {
+        return datasetType;
+    }
+
+    public void setDatasetType(String datasetType) {
+        this.datasetType = datasetType;
     }
 
     @Override

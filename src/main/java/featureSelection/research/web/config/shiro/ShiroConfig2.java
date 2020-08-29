@@ -22,7 +22,7 @@ public class ShiroConfig2 {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         bean.setSecurityManager(securityManager);
         Map<String, String> filterMap = new LinkedHashMap<>();
-        filterMap.put("/pages/execution/admin/**.html", "authc");
+        filterMap.put("/pages/execution/admin/**", "authc");
         bean.setFilterChainDefinitionMap(filterMap);
         bean.setLoginUrl("/pages/execution/admin/executionAdminLogin.html");
         return bean;
@@ -33,7 +33,7 @@ public class ShiroConfig2 {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         bean.setSecurityManager(securityManager);
         Map<String, String> filterMap = new LinkedHashMap<>();
-        filterMap.put("/execution/**", "authc");
+        filterMap.put("/execution/*/**", "authc");
         filterMap.put("/execution", "anon");
         bean.setFilterChainDefinitionMap(filterMap);
         bean.setLoginUrl("/accountLogin");

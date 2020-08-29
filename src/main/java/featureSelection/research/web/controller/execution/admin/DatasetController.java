@@ -21,7 +21,7 @@ public class DatasetController {
                                 @RequestParam("datasetDescription")String datasetDescription,
                                 @RequestParam("datasetCount") long datasetCount,
                                 @RequestParam("datasetSource") String datasetSource,
-                                @RequestParam("datasetDimension") long datasetDimension,
+                                @RequestParam("datasetDimension") String datasetDimension,
                                 @RequestParam("isCommon") boolean isCommon,
                                 @RequestParam("File") MultipartFile File) throws Exception {
         Dataset dataset=new Dataset();
