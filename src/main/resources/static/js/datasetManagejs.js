@@ -53,6 +53,11 @@ var vm =new Vue({
         checkDatasetCount:1,
         checkDatasetSource:"",
         checkDatasetDimension:"",
+        checkDatasetRecords:'',
+        checkDatasetTag:'',
+        checkDatasetType:'',
+        checkDatasetPreprocessing:'',
+
         checked:{checkedDatasetName:"",checkedDatasetDescription:"",checkedDatasetCount:"",checkedDatasetDimension:""},
         datasetInfo:{
             datasetId:1,
@@ -93,6 +98,27 @@ var vm =new Vue({
     }
     ,
     methods:{
+        showFileName: function (event) {
+            let originFileName = event.target.files[0].name;
+            let suffix = originFileName.substr(originFileName.lastIndexOf("."));
+            let showName = null;
+            if ((originFileName.length-suffix.length)>=6){
+                showName = originFileName.substr(0,6)+"*"+suffix;
+            }else {
+                showName = originFileName;
+            }
+            if (this.file_suffix.indexOf(suffix)>-1){
+                $(event.srcElement).next().removeClass("border-danger");
+                $(event.srcElement).next().next().css('display','none');
+                $(event.srcElement).next().html(showName);
+
+            }else {
+                $(event.srcElement).next().addClass("border-danger");
+                $(event.srcElement).next().next().css('display','block');
+                $(event.srcElement).next().html(showName);
+
+            }
+        },
         setOrderType:function(orderType){
             this.orderType=orderType;
         },

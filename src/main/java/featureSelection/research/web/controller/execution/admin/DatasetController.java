@@ -22,7 +22,8 @@ public class DatasetController {
                                 @RequestParam("datasetCount") long datasetCount,
                                 @RequestParam("datasetSource") String datasetSource,
                                 @RequestParam("datasetDimension") String datasetDimension,
-                                @RequestParam("isCommon") boolean isCommon,
+                                @RequestParam("datasetTags") String datasetTags,
+                                @RequestParam("datasetType") String datasetType,
                                 @RequestParam("File") MultipartFile File) throws Exception {
         Dataset dataset=new Dataset();
         dataset.setDatasetName(datasetName);
@@ -30,7 +31,8 @@ public class DatasetController {
         dataset.setDatasetCount(datasetCount);
         dataset.setDatasetSource(datasetSource);
         dataset.setDatasetDimension(datasetDimension);
-        dataset.setCommon(isCommon);
+        dataset.setDatasetTags(datasetTags);
+        dataset.setDatasetType(datasetType);
         dataset.setDatasetFile(File.getOriginalFilename());
         datasetBusiness.createDataset(dataset,File);
         return "redirect:/pages/execution/admin/datasetManage.html";

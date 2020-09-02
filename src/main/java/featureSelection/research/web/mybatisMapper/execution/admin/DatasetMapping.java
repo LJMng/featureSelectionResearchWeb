@@ -10,8 +10,8 @@ import org.apache.ibatis.annotations.Update;
 import java.util.List;
 
 public interface DatasetMapping {
-    @Insert("insert into dataset (dataset_name, dataset_description, dataset_records, dataset_source, dataset_dimension, is_common, dataset_file, dataset_size, dataset_tags, dataset_type) " +
-            "values (#{datasetName},#{datasetDescription},#{datasetRecords},#{datasetSource},#{datasetDimension},#{isCommon},#{datasetFile},#{datasetSize},#{datasetTags},#{datasetType})")
+    @Insert("insert into dataset (dataset_name, dataset_description, dataset_records, dataset_source, dataset_dimension,dataset_file, dataset_size, dataset_tags, dataset_type) " +
+            "values (#{datasetName},#{datasetDescription},#{datasetRecords},#{datasetSource},#{datasetDimension},#{datasetFile},#{datasetSize},#{datasetTags},#{datasetType})")
     public void createDataset(Dataset dataset);
 
     @Select("select * from dataset")
