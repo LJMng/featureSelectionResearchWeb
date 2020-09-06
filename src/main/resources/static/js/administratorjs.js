@@ -27,7 +27,8 @@ var vm =new Vue({
             administratorName:'',
             administratorPassword:'',
             confirmAdministrator:''
-        }
+        },
+        administratorName:''
 
     },
     computed:{
@@ -89,6 +90,14 @@ var vm =new Vue({
         axios.get('/getAdministrators').then(function (response) {
             that.administrators=response.data;
             console.log(response.data);
+            let administrator = $.cookie("admin")
+            if (administrator != null && administrator != ''){
+                $('#loginButton').text(administrator);
+                $('#signOutButton').removeClass('d-none');
+            } else {
+                $('#loginButton').text(this.administratorName);
+                $('#signOutButton').addClass('d-none');
+            }
         },function (err) {
 
         })

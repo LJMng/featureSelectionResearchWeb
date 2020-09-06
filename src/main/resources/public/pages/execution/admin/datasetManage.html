@@ -293,7 +293,7 @@
                                             <form >
                                                 <!--                                            {{values.modal_updateAdministrator_form_li1}}-->
                                                 <div class="form-group">
-                                                    <label for="datasetId" class="col-form-label">管理员id:</label>
+                                                    <label for="datasetId" class="col-form-label">数据集ID:</label>
                                                     <input type="text"  class="form-control" id="datasetId" v-bind:placeholder="dataset.datasetId"  disabled>
                                                 </div>
                                                 <!--                                            {{values.modal_updateAdministrator_form_li2}}-->
@@ -383,38 +383,36 @@
                         </div>
                         <div class="col-8">
                             <div class="tab-content" id="nav-tabContent">
-                                <div class="tab-pane fade show active" id="list-home" role="tabpanel" >Velit aute mollit ipsum ad dolor consectetur nulla officia culpa adipisicing exercitation fugiat tempor. Voluptate deserunt sit sunt nisi aliqua fugiat proident ea ut. Mollit voluptate reprehenderit occaecat nisi ad non minim tempor sunt voluptate consectetur exercitation id ut nulla. Ea et fugiat aliquip nostrud sunt incididunt consectetur culpa aliquip eiusmod dolor. Anim ad Lorem aliqua in cupidatat nisi enim eu nostrud do aliquip veniam minim.</div>
+                                <div class="tab-pane fade show active" id="list-home" role="tabpanel" >这里可以查看用户上传数据集的信息，管理员可以查看数据集的基本信息（数据集标签数、维度、记录数....）,管理员浏览基本的数据集信息后可选择通过或者不通过数据集的申请,并且可添加不通过的理由。审核结果会以邮件形式发送至用户邮箱。</div>
                                 <div v-for="datasetForm in datasetForms" class="tab-pane fade" v-bind:id='"aa"+datasetForm.inputId' role="tabpanel" v-bind:aria-labelledby="datasetForm.inputId">
                                     <div class="card-body">
                                         <div class="row">
-                                            <dt class="col-md-5">applyAccount:</dt>
+                                            <dt class="col-md-5">上传数据集用户ID:</dt>
                                             <dd class="col-md-7">{{datasetForm.accountId}}</dd>
-                                            <dt class="col-md-5">datasetName:</dt>
+                                            <dt class="col-md-5">数据集名称:</dt>
                                             <dd class="col-md-7">{{datasetForm.inputName}}</dd>
-                                            <dt class="col-md-5">source:</dt>
+                                            <dt class="col-md-5">数据源:</dt>
                                             <dd class="col-md-7">{{datasetForm.inputHref}}</dd>
-                                            <dt class="col-md-5">Record:</dt>
+                                            <dt class="col-md-5">数据集记录数:</dt>
                                             <dd class="col-md-7">{{datasetForm.inputRecord}}</dd>
-                                            <dt class="col-md-5">dimension:</dt>
+                                            <dt class="col-md-5">数据集维度:</dt>
                                             <dd class="col-md-7">{{datasetForm.inputDimension}}</dd>
-                                            <dt class="col-md-5">tag:</dt>
+                                            <dt class="col-md-5">数据集标签数:</dt>
                                             <dd class="col-md-7">{{datasetForm.inputTag}}</dd>
-                                            <dt class="col-md-5">datasetType:</dt>
+                                            <dt class="col-md-5">数据集类型:</dt>
                                             <dd class="col-md-7">{{datasetForm.inputType}}</dd>
-                                            <dt class="col-md-5">tag:</dt>
-                                            <dd class="col-md-7">{{datasetForm.inputTag}}</dd>
-                                            <dt class="col-md-5">fileLocation:</dt>
+                                            <dt class="col-md-5">数据集文件位置:</dt>
                                             <dd class="col-md-7">{{datasetForm.inputFile}}</dd>
-                                            <dt class="col-md-5">description:</dt>
+                                            <dt class="col-md-5">数据集描述:</dt>
                                             <dd class="col-md-7">{{datasetForm.inputDescription}}</dd>
-                                            <dt class="col-md-5">preprocess:</dt>
+                                            <dt class="col-md-5">预处理过程描述:</dt>
                                             <dd class="col-md-7">{{datasetForm.inputPreprocess}}</dd>
-                                            <dt class="col-md-5">algorithm:</dt>
+                                            <dt class="col-md-5">算法:</dt>
                                             <dd class="col-md-7">{{datasetForm.inputAlgorithm}}</dd>
                                         </div>
                                         <div class="col-md-12">
                                             <label>
-                                                <p>{{advice}}</p>
+                                                <p>建议：</p>
                                                 <textarea class="form-text" id="exampleFormControlTextarea1" cols="50" rows="5" v-model="advice"></textarea>
                                             </label>
                                         </div>
@@ -426,10 +424,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <button class="btn btn-primary" @click="passDatasetForm(datasetForm.inputId,administratorName)">pass</button>
+                                                <button class="btn btn-primary" @click="passDatasetForm(datasetForm.inputId,administratorName)">通过</button>
                                             </div>
                                             <div class="col-md-4 offset-md-1">
-                                                <button class="btn btn-danger" @click="unPassDatasetForm(datasetForm.inputId,advice,administratorName)">unPass</button>
+                                                <button class="btn btn-danger" @click="unPassDatasetForm(datasetForm.inputId,advice,administratorName)">不通过</button>
                                             </div>
                                         </div>
                                     </div>
