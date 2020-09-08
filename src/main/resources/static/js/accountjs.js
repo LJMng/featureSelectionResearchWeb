@@ -31,7 +31,8 @@ var vm =new Vue({
             accountId:'',
             accountName:'',
             accountPassword:''
-        }
+        },
+        administratorName:''
 
     },
     computed:{
@@ -97,6 +98,7 @@ var vm =new Vue({
     created:function () {
         //初始化数值
         var that=this;
+        that.administratorName=$.cookie("administratorName")
 
         axios.get('/getAccounts').then(function (response) {
             that.accounts=response.data;

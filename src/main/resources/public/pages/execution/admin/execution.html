@@ -47,7 +47,7 @@
                 </li>
             </ul>
         </div>
-        <button type="button" class="btn btn-outline-secondary btn-sm">登陆</button>        &nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-outline-secondary btn-sm">{{administratorName}}</button>        &nbsp;&nbsp;&nbsp;
         <input type="checkbox" name="my-checkbox" checked>
     </div>
 </nav>
@@ -178,8 +178,10 @@
     var vue_head_navbar_nav = new Vue({
         el: '#navbar',	// 通过id(="div_id")与上面的div绑定
         data: {
+            administratorName:''
         },
         created: function () {
+            this.administratorName=$.cookie("administratorName")
             // Vue初始方法，可以自行百度一下相关介绍与用法
             // 1. 调用js方法获取页面涉及的URL, 赋值到js变量中.
             //	queryXXXURI();

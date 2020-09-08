@@ -187,15 +187,15 @@ var vm =new Vue({
         ProcedureSettingsList: {},
         parameterList: {},
         EalgorithmNames: '',
+        administratorName:''
     },
     created:function () {
-
-
         //算法方案初始化方法
         this.getData();
         this.getIdAndName();
         //初始化数值
         var that=this;
+        that.administratorName=$.cookie("administratorName")
         axios.get('/elements?htmlName=algorithm&isCh=ch').then(function (response){
             that.values=response.data;
             // console.log(response.data);

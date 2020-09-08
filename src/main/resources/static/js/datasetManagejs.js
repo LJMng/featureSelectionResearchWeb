@@ -67,7 +67,9 @@ var vm =new Vue({
             datasetDimension:'',
             datasetIsCommon:true,
             datasetCount:''
-        }
+        },
+        //回显登陆用户名
+        administratorLoginName:''
 
     },
     computed:{
@@ -185,6 +187,7 @@ var vm =new Vue({
     created:function () {
         //初始化数值
         var that=this;
+        that.administratorLoginName=$.cookie("administratorName")
         axios.get('/getDatasetMap').then(function (response) {
             that.datasetMap=response.data;
             console.log(response.data);

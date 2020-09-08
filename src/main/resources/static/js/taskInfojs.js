@@ -25,9 +25,8 @@ var vm =new Vue({
             taskId:1,
             accountId:1,
             taskName:'',
-
-
-        }
+        },
+        administratorName:''
 
      },
     methods:{
@@ -66,7 +65,7 @@ var vm =new Vue({
     created:function () {
         //初始化数值
         var that=this;
-
+        that.administratorName=$.cookie("administratorName")
         axios.get('/getTaskInfos').then(function (response) {
             that.taskInfos=response.data;
             console.log(response.data);

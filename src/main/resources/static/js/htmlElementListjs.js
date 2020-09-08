@@ -34,6 +34,7 @@ var vm=new Vue({
 
         vueListCurrPage:1,
         vueListPageSize:10,
+        administratorName:''
 
 
 
@@ -148,6 +149,7 @@ var vm=new Vue({
         // 1. 调用js方法获取页面涉及的URL, 赋值到js变量中.
         // 	queryXXXURI();
         var that =this;
+        that.administratorName=$.cookie("administratorName")
         axios.get('/htmlElements').then(function (response) {
             console.log(response.data);
             that.pageElements=response.data;

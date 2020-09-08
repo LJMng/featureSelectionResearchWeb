@@ -43,6 +43,10 @@ var vm =new Vue({
         }
     },
     methods:{
+        signOut:function(){
+            axios.post("/administratorSignOut");
+            window.location.reload();
+        },
         deleteAdministrator:function (administratorId) {
             axios.get('/deleteAdministrator?administratorId='+administratorId)
             window.location.reload();
@@ -87,10 +91,11 @@ var vm =new Vue({
     created:function () {
         //初始化数值
         var that=this;
+        that.administratorName=$.cookie("administratorName");
         axios.get('/getAdministrators').then(function (response) {
             that.administrators=response.data;
             console.log(response.data);
-            let administrator = $.cookie("admin")
+            let administrator = $.cookie("administrator")
             if (administrator != null && administrator != ''){
                 $('#loginButton').text(administrator);
                 $('#signOutButton').removeClass('d-none');
