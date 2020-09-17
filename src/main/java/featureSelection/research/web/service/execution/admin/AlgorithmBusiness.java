@@ -1,6 +1,7 @@
 package featureSelection.research.web.service.execution.admin;
 
 import featureSelection.research.web.entity.execution.admin.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -73,5 +74,15 @@ public interface AlgorithmBusiness {
      */
     public void deleteProcedureSetting(int id);
 
+    /**
+     * 设置每个算法可以运行的公共数据集
+     * @param availableDataset4Algorithm
+     */
     public void setAvailableDataset4Algorithm(AvailableDataset4Algorithm availableDataset4Algorithm);
+
+    /**
+     * 根据算法详细信息的excel文件，添加算法的信息，算法参数,算法步骤
+     * @param excel
+     */
+    public void addAlgorithmInfoByExcelFile(MultipartFile excel) throws Exception;
 }

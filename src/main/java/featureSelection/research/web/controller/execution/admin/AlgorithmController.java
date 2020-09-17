@@ -6,6 +6,7 @@ import featureSelection.research.web.service.execution.admin.AlgorithmBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -174,6 +175,13 @@ public class AlgorithmController {
     public void setAvailableDataset4Algorithm(@RequestBody AvailableDataset4Algorithm availableDataset4Algorithm){
         System.out.println(availableDataset4Algorithm);
         algorithmBusiness.setAvailableDataset4Algorithm(availableDataset4Algorithm);
+    }
+
+
+    @PostMapping(value = "/addAlgorithmInfoByExcelFile")
+    public String addAlgorithmInfoByExcelFile(@RequestParam("algorithmInfoExcel") MultipartFile excel) throws Exception {
+        algorithmBusiness.addAlgorithmInfoByExcelFile(excel);
+        return "redirect:/pages/execution/admin/algorithm.html";
     }
 
 }

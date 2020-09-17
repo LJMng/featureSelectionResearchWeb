@@ -283,6 +283,9 @@ var vm =new Vue({
                     console.log(err);
                 });
         },
+        reloadPage:function(){
+            window.location.reload();
+        },
         //设置可用算法数据集的id
         setDataset4AlgorithmOfAlgorithmId:function(AlgorithmId){
             this.availableDataset4Algorithm.algorithmId=AlgorithmId;

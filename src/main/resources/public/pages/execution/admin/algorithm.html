@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
+    <meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -207,6 +208,10 @@
                                 <button type="button" class="btn btn-success" data-toggle="modal"
                                         data-target="#EinsertModal" @click="clearData()">添加算法
                                 </button>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="custom-file" data-toggle="modal"
+                                        data-target="#createAlgorithmInfoByExcelFile" >算法添加</button>
                             </div>
                             <div class="col-md-2 offset-md-8">
                                 <input v-model="searchString"
@@ -996,6 +1001,33 @@
                         </div>
                     </div>
                 </div>
+                <!-- 通过Excel文件添加算法信息模态框 -->
+                <div class="modal fade" id="createAlgorithmInfoByExcelFile" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <form id="datasetForm" action="/addAlgorithmInfoByExcelFile" enctype="multipart/form-data" method="post">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">添加算法信息</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-row">
+                                        <div class="form-group col-6 custom-file">
+                                            <label>选择上传的数据集文件</label>
+                                            <input type="file" class="form-control" name="algorithmInfoExcel" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-info" @click="reloadPage">确定</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <!--新增模态框-->
                 <div class="modal fade" id="EinsertModal" tabindex="-1" role="dialog" aria-hidden="true"
                      data-backdrop="static">
@@ -1073,28 +1105,6 @@
                                         <label class="col-form-label">MQ 密码:</label>
                                         <input type="text" class="form-control" v-model="info.algorithmCallPassword">
                                     </div>
-                                    <!--                                <div class="form-group">-->
-                                    <!--                                    <label >参数个数(一旦确定无法修改):</label>-->
-                                    <!--                                    <input type="text" class="form-control" v-model.number="number">-->
-                                    <!--                                </div>-->
-                                    <!--                                <div class="form-group" v-for="(n, index) in number">-->
-                                    <!--                                    <label class="col-form-label">参数名称{{index+1}}:</label>-->
-                                    <!--                                    <input type="text" class="form-control" v-model="parameterName[n-1]">-->
-                                    <!--                                    <label class="col-form-label">参数{{index+1}}类型:</label>-->
-                                    <!--                                    <div class="custom-control custom-radio custom-control-inline">-->
-                                    <!--                                        <input value="input" type="radio" :id="n+'customRadio1'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">-->
-                                    <!--                                        <label class="custom-control-label m-1" :for="n+'customRadio1'">input</label>-->
-                                    <!--                                    </div>-->
-                                    <!--                                    <div class="custom-control custom-radio custom-control-inline">-->
-                                    <!--                                        <input value="boolean" type="radio" :id="n+'customRadio2'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">-->
-                                    <!--                                        <label class="custom-control-label m-1" :for="n+'customRadio2'">boolean</label>-->
-                                    <!--                                    </div>-->
-                                    <!--                                    <div class="custom-control custom-radio custom-control-inline">-->
-                                    <!--                                        <input value="selected" type="radio" :id="n+'customRadio3'" :name="n" class="custom-control-input" v-model="parameterType[n-1]">-->
-                                    <!--                                        <label class="custom-control-label m-1" :for="n+'customRadio3'">selected</label>-->
-                                    <!--                                    </div>-->
-                                    <!--                                    <hr>-->
-                                    <!--                                </div>-->
                                 </form>
                             </div>
                             <div class="modal-footer">

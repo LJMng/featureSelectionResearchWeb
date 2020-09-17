@@ -20,4 +20,7 @@ public interface AlgorithmMapper {
 
     @Update("update algorithm set available_datasets = #{availableDatasets} where algorithm_id=#{algorithmId}")
     public void setAvailableDataset4Algorithm(AvailableDataset4Algorithm availableDataset4Algorithm);
+
+    @Select("select algorithm_id from algorithm where algorithm_name=#{algorithmName}")
+    public int getAlgorithmIdByName(String algorithmName);
 }

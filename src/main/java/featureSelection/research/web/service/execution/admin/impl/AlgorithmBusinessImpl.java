@@ -1,15 +1,22 @@
 package featureSelection.research.web.service.execution.admin.impl;
 
 import featureSelection.research.web.common.util.AlgorithmMapperValueUtil;
+import featureSelection.research.web.common.util.FileUtil;
+import featureSelection.research.web.common.util.ReadExcelUtil;
 import featureSelection.research.web.entity.demo.admin.AlgorithmParameterDemoAdmin;
 import featureSelection.research.web.entity.execution.admin.*;
+import featureSelection.research.web.mybatisMapper.demo.admin.AlgorithmInfoDemoAdminMapper;
 import featureSelection.research.web.mybatisMapper.demo.admin.SchemeDemoAdminMapper;
 import featureSelection.research.web.mybatisMapper.execution.admin.*;
 import featureSelection.research.web.service.demo.admin.SchemeService;
 import featureSelection.research.web.service.execution.admin.AlgorithmBusiness;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +34,13 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     private WebAlgorithmMapper webAlgorithmMapper;
     @Autowired
     private SchemeDemoAdminMapper schemeDemoAdminMapper;
+    @Autowired
+    private FileUtil fileUtil;
+    @Autowired
+    private ReadExcelUtil readExcelUtil;
+    //注入添加算法的AlgorithmInfoDemoAdminMapper接口
+    @Autowired
+    private AlgorithmInfoDemoAdminMapper algorithmInfoDemoAdminMapper;
 
     @Override
     public void createParamSettingInfo(Map<Integer, String> algorithmMap) {
@@ -300,5 +314,30 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     @Override
     public void setAvailableDataset4Algorithm(AvailableDataset4Algorithm availableDataset4Algorithm) {
         algorithmMapper.setAvailableDataset4Algorithm(availableDataset4Algorithm);
+    }
+
+    /**
+     *
+     * @param excel
+     * @throws Exception
+     */
+    @Override
+    @Transactional
+    public void addAlgorithmInfoByExcelFile(MultipartFile excel) throws Exception {
+        //获取excel文件对象,MultipartFile转化为普通的io文件对象File
+        File algorithmInfoExcel=fileUtil.multipartFileToFile(excel);
+        //根据上传的excel对象获取sheet0中的算法信息列表
+        List<Algorithm> algorithms=readExcelUtil.readAlgorithmInfoByExcelFile(algorithmInfoExcel);
+        //遍历算法信息列表，添加算法信息
+        for (Algorithm algorithm:algorithms){
+            //添加算法的算法，调用到了demo管理系统中的AlgorithmInfoDemoAdminMapper接口
+            algorithmInfoDemoAdminMapper.insertAlgorithmInfoDemoAdmin(algorithm);
+        }
+        List<ProcedureSettings> procedureSettings=readExcelUtil.readProcedureSettingInfoByExcelFile(algorithmInfoExcel);
+        //遍历步骤列表，添加步骤信息
+        for(ProcedureSettings procedureSetting:procedureSettings){
+            procedureSettingsMapper.addProcedureSetting(procedureSetting);
+        }
+
     }
 }

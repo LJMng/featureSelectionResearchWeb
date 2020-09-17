@@ -40,7 +40,7 @@ public class LoginController {
             request.getSession().setAttribute("administrator", administrator);
             Cookie cookie=new Cookie("administratorName",administrator.getAdministratorName());
             response.addCookie(cookie);
-            return "redirect:http://localhost:8080/cargomanage/view/cargomanage.html";
+            return "redirect:/pages/execution/admin/execution.html";
         }catch (AuthenticationException e){
             return "redirect:/pages/execution/admin/executionAdminLogin.html";
         }
