@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -63,7 +62,7 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
     public String uploadDatasetForm(DatasetForm dataset, MultipartFile uploadFile, String path) {
         //存储数据集到本地
         String uploadResult = fileUpload.uploadFIle(uploadFile, path);
-        if (!"fail".equals(uploadFile)) {
+        if (!"fail".equals(uploadResult)) {
             dataset.setInputFile(uploadResult);
             datasetFormMapper.addDatasetForm(dataset);
             logger.info("向DatasetForm表添加一个id为："+dataset.getInputId() + "字段");
