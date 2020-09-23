@@ -283,9 +283,73 @@ var vm =new Vue({
                     console.log(err);
                 });
         },
+        //重载当前页面
         reloadPage:function(){
             window.location.reload();
         },
+        showAlgorithmInfoName:function(even){
+            let originFileName = event.target.files[0].name;
+            let suffix = originFileName.substr(originFileName.lastIndexOf("."));
+            let showName = null;
+            if ((originFileName.length-suffix.length)>=6){
+                showName = originFileName.substr(0,6)+"*"+suffix;
+            }else {
+                showName = originFileName;
+            }
+            if (this.file_suffix.indexOf(suffix)>-1){
+                $(event.srcElement).next().removeClass("border-danger");
+                $(event.srcElement).next().next().css('display','none');
+                $(event.srcElement).next().html(showName);
+
+            }else {
+                $(event.srcElement).next().addClass("border-danger");
+                $(event.srcElement).next().next().css('display','block');
+                $(event.srcElement).next().html(showName);
+
+            }
+        },
+        //上次算法信息excel文件，并且校验文件格式
+        submitAlgorithmExcelFile:function(){
+            //校验文件格式，定义ifFileTypeCorrect变量,默认正确
+            let ifFileTypeCorrect = true;
+            let checks = $("div[name='excelFileCheck']");
+            for (let j = 0; j < checks.length; j++) {
+                if ($(checks[j]).css('display')!='none'){
+                    ifFileTypeCorrect = false;
+                    break;
+                }
+            };
+            if(this.$refs.algorithmInfoExcelFile.files[0]==null){
+                ifFileTypeCorrect = false;
+            };
+            if (ifFileTypeCorrect){
+                let inputFile = new FormData();
+                inputFile.append("algorithmInfoExcel",this.$refs.algorithmInfoExcelFile.files[0]);
+                //通过axios发送请求至后台，将algorithmInfoExcel文件传送至算法平台
+                axios.post('/addAlgorithmInfoByExcelFile',inputFile,{
+                    'Content-Type':'multipart/form-data'
+                }).then((response) => {
+                    if(response.data == "success"){
+                        $('#addAlgorithmInfoByExcelFileResult').html('' +
+                            '<div class="alert alert-success alert-dismissible fade show" role="alert" id="datasetFormAlert">\n' +
+                            '  <strong>Submit Success!</strong>You can click \'Check My Uploads\' to Check your uploads\'status anytime.\n' +
+                            '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+                            '    <span aria-hidden="true">&times;</span>\n' +
+                            '  </button>\n' +
+                            '</div>');
+                    }else {
+                        $('#addAlgorithmInfoByExcelFileResult').html('' +
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert" id="datasetFormAlert">\n' +
+                            '  <strong>Error!</strong>Please Check Your Form!\n' +
+                            '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+                            '    <span aria-hidden="true">&times;</span>\n' +
+                            '  </button>\n' +
+                            '</div>');
+                    }
+                    window.location.reload();
+                })
+                }
+            },
         //设置可用算法数据集的id
         setDataset4AlgorithmOfAlgorithmId:function(AlgorithmId){
             this.availableDataset4Algorithm.algorithmId=AlgorithmId;

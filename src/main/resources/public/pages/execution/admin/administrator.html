@@ -222,7 +222,6 @@
                         <tr>
                             <th>ID</th>
                             <th>管理员账户</th>
-                            <th>密码</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -230,10 +229,9 @@
                         <tr v-for="administrator in filterAdministrator">
                             <td>{{administrator.administratorId}}</td>
                             <td>{{administrator.administratorName}}</td>
-                            <td>{{administrator.administratorPassword}}</td>
                             <td>
                                 <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#updateAdministrator"+administrator.administratorId'>修改</button>
-                                <button class="btn btn-sm btn-danger" data-toggle="modal" v-bind:data-target='"#deleteAdministrator"+administrator.administratorId'>删除</button>
+                                <button class="btn btn-danger" data-toggle="modal" v-bind:data-target='"#deleteAdministrator"+administrator.administratorId'>删除</button>
                             </td>
                             <!--模态框对应的id还没有根据administrator赋值 -->
                         </tr>

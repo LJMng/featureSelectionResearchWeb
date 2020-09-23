@@ -177,7 +177,7 @@
                     <label class="bootstrap-switch-label">SearchByEmail:</label>
                     <input v-model="accountEmail" PLACEHOLDER="accountEmail" >
                 </div>
-            </div>
+                </div>
                 <!-- 定义添加会员用户模态框 -->
                 <div class="modal fade" id="addAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -428,6 +428,18 @@
                         <hr>
                     </label>
                 </div>
+                <div class="row">
+                    <div class="col-md-5 offset-md-5">
+                        <label class="bootstrap-switch-label">SearchByEmail:</label>
+                        <input v-model="accountEmail" PLACEHOLDER="accountEmail" >
+                        &nbsp;&nbsp;
+                        <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-lines-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7 1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm2 9a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+<!--                        <p style="background-color: red ;text-align: center; border: 2px;border-radius: 2px" >5</p>-->
+
+                    </div>
+                </div>
                 <!-- 审核部分-->
                 <div class="container">
                     <div class="col-md-8 offset-md-2">
@@ -444,8 +456,6 @@
                                     <div v-for="applyAccount in applyAccounts" class="tab-pane fade" v-bind:id='"locat"+applyAccount.applyId' role="tabpanel" v-bind:aria-labelledby='"a"+applyAccount.applyId'>
                                         <div class="card-body">
                                             <div class="row">
-                                                <dt class="col-md-5">申请用户ID:</dt>
-                                                <dd class="col-md-7">{{applyAccount.applyId}}</dd>
                                                 <dt class="col-md-5">用户邮箱:</dt>
                                                 <dd class="col-md-7">{{applyAccount.applyEmail}}</dd>
                                                 <dt class="col-md-5">用户申请理由:</dt>

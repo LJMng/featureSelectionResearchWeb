@@ -1005,7 +1005,7 @@
                 <div class="modal fade" id="createAlgorithmInfoByExcelFile" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable" role="document">
                         <div class="modal-content">
-                            <form id="datasetForm" action="/addAlgorithmInfoByExcelFile" enctype="multipart/form-data" method="post">
+                            <form id="datasetForm">
                                 <div class="modal-header">
                                     <h5 class="modal-title">添加算法信息</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1013,15 +1013,21 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="form-row">
-                                        <div class="form-group col-6 custom-file">
-                                            <label>选择上传的数据集文件</label>
-                                            <input type="file" class="form-control" name="algorithmInfoExcel" >
+                                    <div class="row">
+                                        <div class="form-group col-10 col-lg-offset-1 custom-file">
+                                            <label for="inputFile">请选择上传算法信息文件</label><span class="float-right text-muted"> .xlsx .xls</span>
+                                            <input type="file" class="custom-file" id="inputFile" ref="algorithmInfoExcelFile">
+<!--                                            <label class="custom-file-label border-danger" for="inputFile" style="top: auto;overflow: hidden" id="datasetFileLabel">Choose file</label>-->
+                                            <div class="invalid-tooltip" style="top: auto" name="datasetFormCheck">Error file type.</div>
+<!--                                            <label>请选择上传算法信息文件</label>-->
+<!--                                            <input type="file" class="custom-file-input" name="algorithmInfoExcel" ref="algorithmInfoExcelFile">-->
+<!--                                            <div class="invalid-tooltip" style="top: auto" name="excelFileCheck">Error file type.</div>-->
                                         </div>
                                     </div>
+                                    <div id="addAlgorithmInfoByExcelFileResult"></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-info" @click="reloadPage">确定</button>
+                                    <button type="submit" class="btn btn-info" @click="submitAlgorithmExcelFile">确定</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 </div>
                             </form>
