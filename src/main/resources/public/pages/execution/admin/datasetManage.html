@@ -252,7 +252,6 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>数据集ID</th>
                         <th>数据集名称</th>
                         <th>数据源</th>
                         <th>数据集维度</th>
@@ -262,7 +261,6 @@
                     </thead>
                     <tbody>
                     <tr v-for="dataset in filterDatasetMap">
-                        <td style="width:150px;overflow:hidden;text-overflow:clip;">{{dataset.datasetId}}</td>
                         <td style="width:150px;overflow:hidden;text-overflow:ellipsis;">{{dataset.datasetName}}</td>
                         <td v-bind:title="dataset.datasetSource" style="width:150px;overflow:hidden;text-overflow:ellipsis;">{{dataset.datasetSource}}</td>
                         <td><div v-bind:title="dataset.datasetDimension" style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;display:block;">{{dataset.datasetDimension}}</div></td>

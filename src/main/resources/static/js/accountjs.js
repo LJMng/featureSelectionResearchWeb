@@ -28,11 +28,19 @@ var vm =new Vue({
         // 用于暂时存放修改、新增、删除用户信息
         accountInfo:{
             accountEmail:'',
-            accountId:'',
             accountName:'',
-            accountPassword:''
+            accountPassword:'',
         },
-        administratorName:''
+        administratorName:'',
+        applyReasons:[],
+        applyReason:'',
+        applyAccountInfo:{
+            applyId:'',
+            administratorId:'',
+            administratorReason:''
+        },
+        //待审核的用户个数
+        waitingAuditAccountNumber:0,
 
     },
     computed:{
@@ -91,9 +99,42 @@ var vm =new Vue({
                 .catch(err => {
                     console.log(err);
                 })
+        },
+        //同意申请VIP用户
+        passAccountAdult:function (applyId) {
+            let administratorName;
+            administratorName=$.cookie("administratorName")
+            this.applyAccountInfo.administratorId=administratorName;
+            this.applyAccountInfo.applyId=applyId;
+            this.applyAccountInfo.administratorReason=this.applyReasons[applyId];
+            axios.post('/passAccountAdult',this.applyAccountInfo).then(() =>{
+                this.clearApplyAccountInfo();
+                window.location.reload();
+            }).catch(err => {
+                console.log(err)
+            })
+        },
+        //拒绝申请VIP用户
+        unPassAccountAdult:function (applyId) {
+            let administratorName;
+            administratorName=$.cookie("administratorName")
+            this.applyAccountInfo.administratorId=administratorName;
+            this.applyAccountInfo.applyId=applyId;
+            this.applyAccountInfo.administratorReason=this.applyReasons[applyId];
+            axios.post('/unPassAccountAdult',this.applyAccountInfo).then(() => {
+                this.clearApplyAccountInfo();
+                window.location.reload();
+            }).catch(err =>{
+                console.log(err)
+            })
+        },
+        //清空申请单的数据
+        clearApplyAccountInfo:function () {
+            this.applyAccountInfo.administratorId='';
+            this.applyAccountInfo.applyId=-1;
+            this.applyAccountInfo.applyReason=''
+
         }
-
-
     },
     created:function () {
         //初始化数值
@@ -115,6 +156,7 @@ var vm =new Vue({
 
         axios.get('/getApplyAccounts').then(function (response){
             that.applyAccounts=response.data;
+            that.waitingAuditAccountNumber=that.applyAccounts.length;
             console.log(response.data);
         } ,function (err) {
 

@@ -24,8 +24,8 @@ public interface AccountMapper {
             " values (#{accountPower},#{accountId})")
     public void addPower(Power newPower);
 
-    @Insert("insert into account (account_id,account_name,account_password,account_email,account_power) values" +
-            " (#{accountId},#{accountName},#{accountPassword},#{accountEmail},#{accountPower})")
+    @Insert("insert into account (account_name,account_password,account_email,account_power) values" +
+            " (#{accountName},#{accountPassword},#{accountEmail},#{accountPower})")
     public void addAccount(Account account);
 
     @Delete("delete from account where account_id=#{accountId}")

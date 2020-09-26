@@ -63,4 +63,16 @@ public interface AccountBusiness {
      * @throws MessagingException
      */
     public void passApplyAccount(ApplyAccount applyAccount) throws MessagingException;
+
+    /**
+     * 根据用户申请的用户Id,通过用户申请，将用户信息添加至数据库。
+     * @param applyAccountId
+     */
+    public void passAccountAdult(int applyAccountId,String applyReason) throws MessagingException;
+
+    /**
+     * 拒绝用户申请，修改审核表中用户的审核状态，发送邮件通知用户审核结果
+     * @param applyAccount
+     */
+    public void unPassAccountAdult(ApplyAccount applyAccount) throws MessagingException;
 }

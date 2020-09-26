@@ -213,33 +213,30 @@
                                 <button type="button" class="custom-file" data-toggle="modal"
                                         data-target="#createAlgorithmInfoByExcelFile" >算法添加</button>
                             </div>
-                            <div class="col-md-2 offset-md-8">
-                                <input v-model="searchString"
-                                       style="width: 200px;margin:5px;padding: 6px 12px;float: right" type="search"
-                                       class="form-control" id="Esearch-input" placeholder="Search...">
+                            <div class="col-md-2 offset-md-6">
+                                    <input v-model="searchString"
+                                           style="width: 200px;margin:5px;padding: 6px 12px;float: right" type="search"
+                                           class="form-control" id="Esearch-input" placeholder="SearchByName">
                             </div>
-
                         </div>
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th scope="col">算法ID</th>
-                                <th scope="col">算法名称</th>
-                                <th scope="col">算法简介</th>
-                                <th scope="col">引用论文信息</th>
-                                <th scope="col">引用论文链接</th>
-                                <th scope="col">算法接口</th>
-                                <th scope="col">操作</th>
+                                <th>算法ID</th>
+                                <th>算法名称</th>
+                                <th>算法简介</th>
+                                <th>引用论文信息</th>
+                                <th>算法接口</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr v-for="msg in filterInfo">
-                                <th scope="row">{{msg.algorithmId}}</th>
+                                <th>{{msg.algorithmId}}</th>
                                 <td>{{msg.algorithmName}}</td>
-                                <td>{{msg.algorithmDescription}}</td>
-                                <td>{{msg.algorithmPaperReference}}</td>
-                                <td>{{msg.algorithmPaperLink}}</td>
-                                <td>{{msg.algorithmCallInterface}}</td>
+                                <td v-bind:title="msg.algorithmDescription">{{msg.algorithmDescription}}</td>
+                                <td v-bind:title="msg.algorithmPaperReference">{{msg.algorithmPaperReference}}</td>
+                                <td v-bind:title="msg.algorithmCallInterface">{{msg.algorithmCallInterface}}</td>
                                 <td>
                                     <button type="button" class="btn btn-warning" data-toggle="modal"
                                             data-target="#EupdateModal" @click="getDataById(msg.algorithmId)">修改

@@ -39,3 +39,18 @@ ul,li{
 #button-addon3 {
     width: 30%;
 }
+
+.footer{
+    clear: both;
+    margin: 20px;
+    padding: 10px 0px 10px 0px;
+    background: #ffff;
+    width: 1000px;
+    color: #000;
+    position: absolute;
+    z-index:6;
+    background-color:#AAA;
+    width:100%;
+    float:left;
+
+}

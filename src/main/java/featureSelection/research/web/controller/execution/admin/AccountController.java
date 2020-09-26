@@ -1,5 +1,6 @@
 package featureSelection.research.web.controller.execution.admin;
 
+import featureSelection.research.web.App;
 import featureSelection.research.web.entity.execution.admin.Account;
 import featureSelection.research.web.entity.execution.admin.ApplyAccount;
 import featureSelection.research.web.entity.execution.admin.Power;
@@ -7,10 +8,7 @@ import featureSelection.research.web.service.execution.admin.AccountBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.util.List;
@@ -59,13 +57,29 @@ public class AccountController {
         return applyAccounts;
     }
 
-    @PostMapping("/passApplyAccount")
-    public String passApplyAccount(ApplyAccount applyAccount) throws MessagingException {
+//    @PostMapping("/passApplyAccount")
+//    public String passApplyAccount(ApplyAccount applyAccount) throws MessagingException {
+//        accountBusiness.passApplyAccount(applyAccount);
+//        return "redirect: /pages/execution/admin/account.html";
+//    }
+
+    /**
+     * 通过用户申请,将申请用户信息添加至用户表，修改申请表信息
+     * @param applyAccount
+     * @return String 返回审核结果字符串  "success" or "fail"
+     * @throws MessagingException 邮件发送异常
+     * @Auther 马凯健
+     */
+    @PostMapping(value = "/passAccountAdult")
+    public String passAccountAdult(@RequestBody ApplyAccount applyAccount)
+            throws MessagingException {
         accountBusiness.passApplyAccount(applyAccount);
         return "redirect: /pages/execution/admin/account.html";
     }
-    @PostMapping("/unPassApplyAccount")
-    public String unPassApplyAccount(ApplyAccount applyAccount){
-        return "redirect: /pages/account.html";
+
+    @PostMapping(value = "/unPassAccountAdult")
+    public String unPassAccountAdult(@RequestBody ApplyAccount applyAccount) throws MessagingException {
+        accountBusiness.unPassAccountAdult(applyAccount);
+        return "redirect: /pages/execution/admin/account.html";
     }
 }
