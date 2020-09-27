@@ -64,6 +64,7 @@ var app = new Vue({
         dataset_page_num: 0,
         dataset_current_page: 1,
         dataset_list_page: [],
+        language: '',
         //------------------HeaderNav-----------------
         navHead_li1: '',
         navHead_li2: '',
@@ -164,6 +165,15 @@ var app = new Vue({
         new_task_navbar_a3: '',
         new_task_navbar_a2: '',
         new_task_navbar_a1: '',
+        algorithm_setting1: '',
+        algorithm_setting2: '',
+        algorithm_setting_btn1: '',
+        algorithm_setting_save: '',
+        new_task_step1_btn1: '',
+        new_task_step1_h1: '',
+        new_task_step1_h2: '',
+        new_task_step1_p1: '',
+        new_task_step1_a1: '',
         //------------------QueryTaskContext-----------------
         task_list: [],
         temp_task_info: {},
@@ -196,8 +206,10 @@ var app = new Vue({
                     if (response.data[i].moduleKey==item){
                         if($.cookie("language")=='ch'){
                             this.$set(this._data,item,response.data[i].chValue);
+                            this.language='ch';
                         }else {
                             this.$set(this._data,item,response.data[i].enValue);
+                            this.language='en';
                         }
                     }
                 }

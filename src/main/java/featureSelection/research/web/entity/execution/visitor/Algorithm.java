@@ -21,7 +21,15 @@ public class Algorithm {
   private String algorithmCallExecutionRoutingkey;
   private String algorithmNameMapper;
   private String algorithmUsage;
+  private String algorithmEnDescription;
 
+  public String getAlgorithmEnDescription() {
+    return algorithmEnDescription;
+  }
+
+  public void setAlgorithmEnDescription(String algorithmEnDescription) {
+    this.algorithmEnDescription = algorithmEnDescription;
+  }
 
   public int getAlgorithmId() {
     return algorithmId;
