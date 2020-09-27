@@ -143,40 +143,25 @@
                                     <div class="row bg-light" style="height:100%">
                                         <!--运行结果展示-->
                                         <div :id="'resultInfotable'+algorithmIndex" class="m-auto"
-                                             style="width:60%;height:80%;position:absolute;
-                                             align-items: center;text-align: right;right:0px;display:none;">
+                                             style="width:30%;height:80%;position:absolute;
+                                             align-items: center;text-align: left;right:0px;display:none;">
                                             <div class="mr-2 mt-5">
                                                 <div>
-                                                <table class="table">
-                                                    <thead class="thead-dark">
-                                                    <tr>
-                                                        <th scope="col">#</th>
-                                                        <th scope="col">reducts</th>
-                                                        <th scope="col">time</th>
-
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <th scope="row">1</th>
-                                                        <td style="text-align: center">
-                                                            <div :id="'reductsvalue'+algorithmIndex" style="display:
+                                                    <ul class="sk-landing-call-list list-unstyled" >
+                                                        <li><strong>execution time:</strong></li>
+                                                        <li>1.212s</li>
+                                                        <li><strong>reductResult:</strong></li>
+                                                        <li><div :id="'reductsvalue'+algorithmIndex" style="display:
                                                             inline-block;width:100px;overflow:hidden;
                                                             text-overflow:ellipsis;white-space: nowrap;word-break:
                                                             keep-all;" hover="overflow: visible;" title="" >
-                                                            </div>
-                                                            <div style="display: inline-block">
-                                                            </div>
-                                                        </td>
-                                                        <td>1.221s</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+                                                        </div></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
                                         <div :id="'resultInfo'+algorithmIndex" class="m-auto"
-                                             style="width:40%;height:80%;position:absolute;
+                                             style="width:70%;height:100%;position:absolute;
                                              align-items: center;float: right;">
                                         </div>
                                         <div :id="'resultnavicat'+algorithmIndex" class="m-auto"
@@ -301,6 +286,10 @@
                             console.log(response)
                             if (response.code == 200) {
                                 myChart.setOption({
+                                    tooltip: {
+                                        trigger: 'item',
+                                        formatter: "{a} <br/>{b}: {c} ({d}%)"//模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
+                                    },
                                     series: [{
                                         radius: '50%',
                                         name: '结果',
@@ -309,7 +298,7 @@
                                             [{
                                                 value: response.data.reductSize,
                                                 name: "reductResultSize"
-                                            }, {value: response.data.notReduct, name: "notreductResultSize"},]
+                                            }, {value: response.data.notreductSize, name: "notreductResultSize"},]
                                     }]
                                 });
                                 //     title: [{

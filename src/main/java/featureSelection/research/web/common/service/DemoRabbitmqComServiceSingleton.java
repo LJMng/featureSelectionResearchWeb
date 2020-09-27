@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -107,8 +108,15 @@ public class DemoRabbitmqComServiceSingleton {
                 int DatasetDimension=Integer.parseInt(demoRabbimqComInfo.getDataset().getDatasetDimension());
                 JSONArray reductJSONArray=JSONArray.parseArray(info.get("reducts").toString());
                 int reductSize=reductJSONArray.size();
-                info.put("notReduct",DatasetDimension-reductSize);
+                String reductPrecentage = "";// 接受百分比的值
+                double DatasetDimension_d = DatasetDimension * 1.0;
+                double reductSize_d = reductSize * 1.0;
+                double fen = reductSize_d / DatasetDimension_d;
+                DecimalFormat df1 = new DecimalFormat("##.00%");
+                reductPrecentage = df1.format(fen);
                 info.put("reductSize",reductSize);
+                info.put("reductPrecentage",reductPrecentage);
+                info.put("notreductSize",DatasetDimension-reductSize);
                 demoRabbimqComInfo.setResultInfo(info);
                 demoRabbimqComInfo.setStatues("FINISH");
                 log.info(new Date().toString()+"--"+"demoService:"+demoRabbimqComInfo.getDemoRabbimqComTaskId()+"FINISH");

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+<div class="modal fade" id="datasetInfo" tabindex="-1" role="dialog" aria-labelledby="parameterInfoTitle"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="parameterInfoTitle">
+                    <p v-if="isEn">DatasetInfo</p>
+                    <p v-else>数据集</p>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <ul class="list-group-flush">
+                    <li class="list-group-item">
+                        <span class="leftkey"  v-if="isEn">DatasetName:</span><span class="leftkey"  v-else=>
+                        数据集名称:</span>&nbsp&nbsp{{dataset.datasetName}}
+                    </li>
+                    <li class="list-group-item">
+                        <span class="leftkey" v-if="isEn"> DatasetSource:</span><span class="leftkey" v-else>
+                        数据集来源:</span>&nbsp&nbsp{{dataset.datasetSource}}
+                    </li>
+                    <li class="list-group-item">
+                        <span class="leftkey" v-if="isEn"> DatasetDimension:</span><span class="leftkey" v-else>
+                        数据集维度:</span>&nbsp&nbsp{{dataset.datasetDimension}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var vue_datasetInfo = new Vue({
+        el: '#datasetInfo',
+        data: {
+            isEn:true,
+            dataset: {}
+        },
+        created: function () {
+            if($.cookie("language") == 'ch'){
+                this.$set(this._data,'isEn',false)
+            }else {
+                this.$set(this._data,'isEn',true)
+            }
+        }
+
+    });
+
+    $(function () {
+
+    });
+
+
+</script>
+</body>
+
+</html>
