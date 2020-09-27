@@ -38,15 +38,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="htu'ptp://localhost:8000/">{{navHead_li1}}<span class="sr-only">
-                                (current)</span></a>
-                        </li>
                         <li class="nav-item active">
                             <a class="nav-link" href="/execution">{{navHead_li2}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">{{navHead_li3}}</a>
+                            <a class="nav-link" href="/pages/demo/visitor/aboutus.html">{{navHead_li3}}</a>
                         </li>
                     </ul>
                 </div>
@@ -1018,7 +1014,7 @@
                             </svg>{{algorithms_info_intro}}</h4>
                             <div class="jumbotron jumbotron-fluid mb-4 pt-2 pb-2 rounded">
                                 <div class="container">
-                                    <p class="lead mb-0" v-html="language=='en'?algorithm.algorithmEnDescription:algorithm.algorithmDescription"></p>
+                                    <p class="lead mb-0" v-html="language=='en'?algorithm_info_temp.algorithmEnDescription:algorithm_info_temp.algorithmDescription">{{algorithm_info_temp.algorithmDescription}}</p>
                                 </div>
                             </div>
                             <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
