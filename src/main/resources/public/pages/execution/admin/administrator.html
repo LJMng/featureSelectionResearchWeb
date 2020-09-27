@@ -174,8 +174,8 @@
                         <h2><button class="btn btn-large btn-primary" data-toggle="modal" data-target="#addAdministrator">添加管理员</button></h2>
                     </div>
                     <div class="col-md-5 offset-md-5">
-                        <label class="bootstrap-switch-label">SearchByAdministratorId:</label>
-                        <input v-model="administratorId" PLACEHOLDER="AdministratorId" >
+                        <label class="bootstrap-switch-label">Search:</label>
+                        <input v-model="searchByAdministratorName" PLACEHOLDER="searchByName" >
                     </div>
                 </div>
                 <!-- 添加管理员模态框 -->
@@ -220,18 +220,16 @@
                     <table class="table table-striped table-sm">
                         <thead>
                         <tr>
-                            <th>ID</th>
                             <th>管理员账户</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="administrator in filterAdministrator">
-                            <td>{{administrator.administratorId}}</td>
                             <td>{{administrator.administratorName}}</td>
                             <td>
-                                <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#updateAdministrator"+administrator.administratorId'>修改</button>
-                                <button class="btn btn-danger" data-toggle="modal" v-bind:data-target='"#deleteAdministrator"+administrator.administratorId'>删除</button>
+                                <button class="btn btn-primary" data-toggle="modal" @click="hideUpdateResultInfo(administrator.administratorId)" v-bind:data-target='"#updateAdministrator"+administrator.administratorId'>修改</button>
+                                <button class="btn btn-danger" @click="hideDeleteResultInfo(administrator.administratorName)" data-toggle="modal" v-bind:data-target='"#deleteAdministrator"+administrator.administratorId'>删除</button>
                             </td>
                             <!--模态框对应的id还没有根据administrator赋值 -->
                         </tr>
@@ -251,12 +249,6 @@
                                     </div>
                                     <div class="modal-body">
                                         <form >
-<!--                                            {{values.modal_updateAdministrator_form_li1}}-->
-                                            <div class="form-group">
-                                                <label for="administratorId" class="col-form-label">管理员id:</label>
-                                                <input type="text"  class="form-control" id="administratorId" v-bind:placeholder="administrator.administratorId"  disabled>
-                                            </div>
-<!--                                            {{values.modal_updateAdministrator_form_li2}}-->
                                             <div class="form-group">
                                                 <label for="elementType" class="col-form-label">管理员账号:</label>
                                                 <input type="text"  class="form-control" id="elementType" v-bind:placeholder="administrator.administratorName" v-model="administratorInfo.administratorName">
@@ -266,10 +258,11 @@
                                                 <label for="elementChValue" class="col-form-label">管理员密码:</label>
                                                 <input type="password"  class="form-control" id="elementChValue" v-model="administratorInfo.administratorPassword">
                                             </div>
+                                            <div v-bind:class="updateModalClass" v-bind:id='"updateResult"+administrator.administratorId' style="text-align: center">{{updateResult}}</div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-secondary" @click="reloadCurrentPage" data-dismiss="modal">取消</button>
                                         <button type="button" class="btn btn-primary" @click="updateAdministrator(administrator.administratorId)">修改</button>
                                     </div>
                                 </div>
@@ -289,9 +282,10 @@
                                     <div class="modal-body">
                                         确定删除管理员信息吗？删除后信息不可恢复！
                                     </div>
+                                    <div class="text-danger" style="text-align: center" v-bind:id='"deleteResult"+administrator.administratorName'>{{deleteResultText}}</div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                        <button type="button" class="btn btn-danger" @click="deleteAdministrator(administrator.administratorId)">确定</button>
+                                        <button type="button" class="btn btn-secondary" @click="reloadCurrentPage" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-danger" @click="deleteAdministrator(administrator.administratorName)">确定</button>
                                     </div>
                                 </div>
                             </div>
@@ -306,9 +300,4 @@
     <script type="text/javascript" src="/js/administratorjs.js"></script>
 </div>
 </body>
-<footer class="container">
-    <hr>
-    <p class="float-right"><a href="/pages/execution/admin/account.html">Back to top</a></p>
-    <p>&copy; 2017-2020 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-</footer>
 </html>

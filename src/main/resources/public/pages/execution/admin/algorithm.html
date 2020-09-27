@@ -219,24 +219,24 @@
                                            class="form-control" id="Esearch-input" placeholder="SearchByName">
                             </div>
                         </div>
-                        <table class="table table-hover">
+                        <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>算法ID</th>
+<!--                                <th>算法ID</th>-->
                                 <th>算法名称</th>
+                                <th>算法接口</th>
                                 <th>算法简介</th>
                                 <th>引用论文信息</th>
-                                <th>算法接口</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr v-for="msg in filterInfo">
-                                <th>{{msg.algorithmId}}</th>
-                                <td>{{msg.algorithmName}}</td>
-                                <td v-bind:title="msg.algorithmDescription">{{msg.algorithmDescription}}</td>
-                                <td v-bind:title="msg.algorithmPaperReference">{{msg.algorithmPaperReference}}</td>
-                                <td v-bind:title="msg.algorithmCallInterface">{{msg.algorithmCallInterface}}</td>
+<!--                                <td style="width:150px;overflow:hidden;text-overflow:clip;">{{msg.algorithmId}}</td>-->
+                                <td style="width:150px;overflow:hidden;text-overflow:ellipsis;">{{msg.algorithmName}}</td>
+                                <td><div style="width:150px;overflow:hidden;text-overflow:ellipsis;"></div>{{msg.algorithmCallInterface}}</td>
+                                <td><div v-bind:title="msg.algorithmDescription" style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;display:block;">{{msg.algorithmDescription}}</div></td>
+                                <td><div v-bind:title="msg.algorithmPaperReference" style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;display:block;">{{msg.algorithmPaperReference}}</div></td>
                                 <td>
                                     <button type="button" class="btn btn-warning" data-toggle="modal"
                                             data-target="#EupdateModal" @click="getDataById(msg.algorithmId)">修改
@@ -252,11 +252,18 @@
                                             data-target="#setDataset4Algorithm"
                                             @click="setDataset4AlgorithmOfAlgorithmId(msg.algorithmId)">数据集
                                     </button>
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                                 data-target="#InsertParam">参数添加
+                                    </button>
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                            data-target="">步骤添加
+                                    </button>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
+                    <div id="submitModal" class="multi-step"> </div>
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                         <div class="col-md-12">
                             <h1>Add Algorithm Params</h1>
@@ -1016,9 +1023,6 @@
                                             <input type="file" class="custom-file" id="inputFile" ref="algorithmInfoExcelFile">
 <!--                                            <label class="custom-file-label border-danger" for="inputFile" style="top: auto;overflow: hidden" id="datasetFileLabel">Choose file</label>-->
                                             <div class="invalid-tooltip" style="top: auto" name="datasetFormCheck">Error file type.</div>
-<!--                                            <label>请选择上传算法信息文件</label>-->
-<!--                                            <input type="file" class="custom-file-input" name="algorithmInfoExcel" ref="algorithmInfoExcelFile">-->
-<!--                                            <div class="invalid-tooltip" style="top: auto" name="excelFileCheck">Error file type.</div>-->
                                         </div>
                                     </div>
                                     <div id="addAlgorithmInfoByExcelFileResult"></div>

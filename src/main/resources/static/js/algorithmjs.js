@@ -1117,4 +1117,5 @@ Vue.component('append', {
         })
     }
 });
+
 var hub = new Vue();

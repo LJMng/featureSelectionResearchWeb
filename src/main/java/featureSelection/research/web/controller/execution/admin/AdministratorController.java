@@ -4,10 +4,7 @@ import featureSelection.research.web.entity.execution.admin.Administrator;
 import featureSelection.research.web.service.execution.admin.AdministratorBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,15 +20,24 @@ public class AdministratorController {
     }
 
     @PostMapping("/updateAdministrator")
+    @ResponseBody
     public String updateAdministrator(@RequestBody Administrator administrator){
-        administratorBusiness.updateAdministrator(administrator);
-        return "redirect: /pages/execution/admin/administrator.html";
+        if(administratorBusiness.updateAdministrator(administrator)){
+            return "修改用户信息成功！";
+        }else{
+            return "root管理员用户账号只能进行密码修改，账号不能修改！";
+        }
+
     }
 
-    @GetMapping("/deleteAdministrator")
-    public String deleteAdministratorById(String administratorId){
-        administratorBusiness.deleteAdministratorById(administratorId);
-        return "redirect: /pages/execution/admin/administrator.html";
+    @PostMapping("/deleteAdministrator")
+    @ResponseBody
+    public String deleteAdministratorById(@RequestParam("administratorName") String  administratorName){
+        if (administratorBusiness.deleteAdministratorByAdministratorName(administratorName)){
+            return "success";
+        }else {
+            return "删除失败,root用户无法删除！";
+        }
     }
 
     @PostMapping("/addAdministrator")

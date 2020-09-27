@@ -28,17 +28,28 @@ var vm =new Vue({
             administratorPassword:'',
             confirmAdministrator:''
         },
-        administratorName:''
+        administratorName:'',
+        searchByAdministratorName:'',
+        deleteAdministratorInfo:{
+            administratorName:'',
+            administratorId:'',
+            administratorPassword:''
+        },
+        deleteResultText:'删除成功！',
+        //修改管理员信息模态框结果回显
+        updateResult:'',
+        //修改管理员模态框class样式绑定
+        updateModalClass:''
 
     },
     computed:{
         filterAdministrator(){
             //取出数据
-            const{administrators,administratorId}=this
+            const{administrators,searchByAdministratorName}=this
             //过滤获得的属性
             let fAdministrator;
             //对datasetMap进行过滤
-            fAdministrator=administrators.filter(p => p.administratorId.indexOf(administratorId)!==-1)
+            fAdministrator=administrators.filter(p => p.administratorName.indexOf(searchByAdministratorName)!==-1)
             return fAdministrator;
         }
     },
@@ -47,9 +58,18 @@ var vm =new Vue({
             axios.post("/administratorSignOut");
             window.location.reload();
         },
-        deleteAdministrator:function (administratorId) {
-            axios.get('/deleteAdministrator?administratorId='+administratorId)
-            window.location.reload();
+        deleteAdministrator:function (administratorName) {
+            $.post("/deleteAdministrator", { "administratorName": administratorName }, function
+                (response) {
+                console.log(response);
+                if (response == 'success') {
+                    $('#deleteResult'+administratorName).show();
+                }else {
+                    $('#deleteResult'+administratorName).text(response);
+                    $('#deleteResult'+administratorName).show();
+                }
+            });
+            // window.location.reload();
         },
         fCheckedAdministratorId:function () {
             if (this.checkAdministratorId.length>20){
@@ -69,12 +89,30 @@ var vm =new Vue({
         updateAdministrator:function (administratorId) {
             this.administratorInfo.administratorId=administratorId;
             axios.post('/updateAdministrator',this.administratorInfo)
-                .then(() => {
-                    window.location.reload();
+                .then((response) => {
+                    console.log(response.data)
+                    if (response.data === '修改用户信息成功！') {
+                        this.updateModalClass='text-success';
+                        this.updateResult=response.data;
+                        $('#updateResult'+administratorId).show();
+                    }else {
+                        this.updateModalClass='text-warning';
+                        this.updateResult=response.data;
+                        $('#updateResult'+administratorId).show();
+                    }
                 })
                 .catch(err => {
                     console.log(err);
                 })
+        },
+        hideDeleteResultInfo:function(administratorName){
+                $('#deleteResult'+administratorName).hide();
+        },
+        hideUpdateResultInfo:function(administratorName){
+            $('#updateResult'+administratorName).hide()
+        },
+        reloadCurrentPage:function(){
+            window.location.reload();
         },
         addAdministrator:function () {
             axios.post('/addAdministrator',this.administratorInfo)
@@ -113,3 +151,10 @@ var vm =new Vue({
 
     }
 })
+
+ function hideDeleteResultInfo(){
+    console.log("弹出来了")
+    $('#deleteResult').hide();
+}
+
+

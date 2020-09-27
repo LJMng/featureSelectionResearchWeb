@@ -69,7 +69,8 @@ var vm =new Vue({
             datasetCount:''
         },
         //回显登陆用户名
-        administratorLoginName:''
+        administratorLoginName:'',
+        waitingAuditDatasetNumber:''
 
     },
     computed:{
@@ -204,6 +205,7 @@ var vm =new Vue({
 
         axios.get('/getDatasetForms').then(function (response){
             that.datasetForms=response.data;
+            that.waitingAuditDatasetNumber=that.datasetForms.length;
             console.log(response.data);
         } ,function (err) {
 

@@ -9,17 +9,17 @@ import java.io.Serializable;
  * @Date: 2020-07-18
  */
 public class Administrator implements Serializable {
-    private String administratorId;
+    private int administratorId;
     //管理员账号
     private String administratorName;
     private String administratorPassword;
     private String confirmAdministratorPassword;
 
-    public String getAdministratorId() {
+    public int getAdministratorId() {
         return administratorId;
     }
 
-    public void setAdministratorId(String administratorId) {
+    public void setAdministratorId(int administratorId) {
         this.administratorId = administratorId;
     }
 

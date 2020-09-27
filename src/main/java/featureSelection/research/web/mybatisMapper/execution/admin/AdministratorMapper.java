@@ -16,12 +16,16 @@ public interface AdministratorMapper {
             " where administrator_id=#{administratorId}")
     public void updateAdministrator(Administrator administrator);
 
-    @Delete("delete from administrator where administrator_id=#{administratorId}")
-    public void deleteAdministratorById(String administratorId);
-
     @Insert("insert into administrator (administrator_name,administrator_password)" +
             " values (#{administratorName},#{administratorPassword})")
     public void addAdministrator(Administrator administrator);
 
+    @Select("select * from administrator where administrator_name = #{administratorName}")
+    public Administrator findByAdministratorName(String administratorName);
 
+    @Delete("delete from administrator where administrator_name = #{administratorName} ")
+    public void deleteAdministratorByAdministratorName(String administratorName);
+
+    @Select("select * from administrator where administrator_id = #{administratorId}")
+    public Administrator findByAdministratorId(int administratorId);
 }

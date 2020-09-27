@@ -20,17 +20,16 @@ public interface AdministratorBusiness {
      * 根据输入的管理员信息Id,在数据库中找到相应的管理员信息并进行修改
      * @param administrator 封装管理员信息的实体类
      */
-    public void updateAdministrator(Administrator administrator);
-
-    /**
-     * 根据管理员的Id,在数据库中删除管理员的信息
-     * @param administratorId 管理员的Id
-     */
-    public void deleteAdministratorById(String administratorId);
+    public boolean updateAdministrator(Administrator administrator);
 
     /**
      * 添加管理员信息，根据管理员实体类，在数据库中添加管理员信息
      * @param administrator 封装管理员信息的实体类
      */
     public boolean addAdministrator(Administrator administrator);
+
+    /**
+     *
+     */
+    public boolean deleteAdministratorByAdministratorName(String administratorName);
 }
