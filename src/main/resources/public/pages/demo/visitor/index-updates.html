@@ -3,25 +3,68 @@
 <head>
 </head>
 <body>
-    <div id="updates" class="text-center">
-        <div style="display: inline-block;width: 400px;">
-            <span class="h3">{{updatetitle}}</span>
-            <hr>
-        </div>
-        <div v-for="item of updates" class="alert alert-secondary pb-0" role="alert">
-            <p class="text-left">{{item.ut}}</p>
-            <p class="text-left">{{item.updateContent}}</p>
+
+<div class="container-fluid sk-landing-bg-more-info py-3" id="updates">
+    <div class="container sk-landing-container">
+        <div class="row">
+            <div class="col-md-4">
+                <h4 class="sk-landing-call-header" id="updatetitle">{{updatetitle}}</h4>
+                <ul class="sk-landing-call-list list-unstyled" >
+                    <li v-for="item of updates"><strong>{{item.ut}}</strong>{{item.updateContent}}</li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h4 class="sk-landing-call-header" v-if="isEn">Community</h4>
+                <h4 class="sk-landing-call-header" v-else>社区</h4>
+                <ul class="sk-landing-call-list list-unstyled" id="demo_CommunityInfo" v-html="demo_CommunityInfo">
+<!--                    <li><strong>About us:</strong> See <a href="#" onclick="toaboutus()">this page</a></li>-->
+<!--                    <li><strong>Mailing list:</strong> <a href="#" id="connectEmail">XXXXXXX@qq.com</a></li>-->
+<!--                    <li><strong>关于我们:</strong> 前往 <a href="#" onclick="toaboutus()">关于我们页面</a></li>-->
+<!--                    <li><strong>联系邮箱:</strong> <a href="#" id="connectEmail">XXXXXXX@qq.com</a></li>-->
+                </ul>
+
+            </div>
+            <div class="col-md-4">
+                <h4 class="sk-landing-call-header">Who uses sFeature Selection ?</h4>
+                <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="d-block mx-auto sk-who-uses-carousel-img img-thumbnail" src="_images/inria.png" alt="inria">
+                            <em>"We use scikit-learn to support leading-edge basic research [...]"</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
+
+<!--    <div id="updates" class="text-center">-->
+<!--        <div style="display: inline-block;width: 400px;">-->
+<!--            <span class="h3">{{updatetitle}}</span>-->
+<!--            <hr>-->
+<!--        </div>-->
+<!--        <div v-for="item of updates" class="alert alert-secondary pb-0" role="alert">-->
+<!--            <p class="text-left">{{item.ut}}</p>-->
+<!--            <p class="text-left">{{item.updateContent}}</p>-->
+<!--        </div>-->
+<!--    </div>-->
     <script type="text/javascript">
         var vue_demo_update = new Vue({
             el: '#updates',
             data: {
+                demo_CommunityInfo:'',
+                isEn:true,
                 updatetitle: '',
                 updates: []
             },
             created: function () {
-                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=updates").then((response) => {
+                if($.cookie("language") == 'ch'){
+                    this.$set(this._data,'isEn',false)
+                }else {
+                    this.$set(this._data,'isEn',true)
+                }
+                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=demo_updates").then((response) => {
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {
                             if (response.data[i].moduleKey == item) {

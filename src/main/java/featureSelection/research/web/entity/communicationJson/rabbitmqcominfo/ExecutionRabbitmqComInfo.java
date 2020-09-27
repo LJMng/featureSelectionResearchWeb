@@ -85,7 +85,10 @@ public class ExecutionRabbitmqComInfo {
         this.executionRabbimqComTaskId = taskParamaterInfo.getString("id");
         this.exchange=exchange;
         this.taskInfo=taskInfoMapper.getTaskInfoByTaskId(taskId);
-        this.dataset=datasetMapper.getDatasetInfo(taskInfo.getDatasetId());
+        if (this.taskInfo.getDatasetUpload()!=null){}
+        else {
+            this.dataset = datasetMapper.getDatasetInfo(taskInfo.getDatasetId());
+        }
         this.connectRoutingkey=connectRoutingkey;
         this.sendRoutingkey=sendRoutingkey;
         this.rabbitmqTemplate = RabbitmqUtil.getRabbitTemplate(connectionFactory);
@@ -128,7 +131,13 @@ public class ExecutionRabbitmqComInfo {
 
     //发送数据集信息
     public void sendDataset() throws IOException {
-        int[][] data = new DemoCsvUtil(dataset.getdatasetFile()).csvToIntArray();
+        int[][] data;
+        if (dataset!=null){
+            data = new DemoCsvUtil(dataset.getdatasetFile()).csvToIntArray();
+        }else{
+            data=new DemoCsvUtil(taskInfo.getDatasetUpload()).csvToIntArray();
+        }
+
         //请求数据实体
         AlgorithmCallTaskInfo RequestJsonDataCommonInfo = new AlgorithmCallTaskInfo();
         //时间戳与任务建立时保持一致

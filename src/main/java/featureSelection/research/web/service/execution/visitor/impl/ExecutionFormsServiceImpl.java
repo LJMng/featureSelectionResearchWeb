@@ -104,9 +104,10 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
         parameterFormat.setAttributes(parameterMapper.getParamsIdByAlgorithmId(task.getAlgorithmId()));
         task.setAlgorithmParameters(objectMapper.writeValueAsString(parameterFormat));
         //加入到任务队列中
+        taskInfoMapper.addTaskInfo(task);
         ExecutionRabbitmqComInfo executionRabbitmqComInfo=new ExecutionRabbitmqComInfo(task.getTaskId());
         ExecutionRabbitmqComServiceSingleton.addExecutionRabbitmqComInfo(executionRabbitmqComInfo);
-        taskInfoMapper.addTaskInfo(task);
+
         return String.valueOf(task.getTaskId());
     }
 

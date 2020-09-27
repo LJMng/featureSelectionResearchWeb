@@ -7,15 +7,15 @@
         <div class="row" style="height:200px;margin:20px 0px">
             <div class="col-md-6  ">
                 <div class="center mt-2" style="display: inline-block">
-                    <p class="h4 text-center" id="guidetext">{{guidetext}}</p>
+                    <p class="h4 text-center" id="demo_guide_guidetext">{{demo_guide_guidetext}}</p>
                     <hr class="simple" color="#6f5499" />
                     <a href="#algorithms">
-                        <button type="button" class="btn badge-primary btn-sm ">
-                            <p class="mr-5 ml-5 mt-0 mb-0 text-center" style="font-size:20px">{{button_text1}}</p>
+                        <button type="button" class="btn badge-primary btn-sm " id="demo_guide_button_text1">
+                            <p class="mr-5 ml-5 mt-0 mb-0 text-center" style="font-size:20px" >{{demo_guide_button_text1}}</p>
                         </button>
                     </a>
-                    <button type="button" class="btn badge-primary btn-sm ">
-                        <p class="mr-2 ml-2 mt-0 mb-0 text-center" style="font-size:20px">{{button_text2}}</p>
+                    <button type="button" class="btn badge-primary btn-sm " onclick="toexecution()" id="demo_guide_button_text2">
+                        <p class="mr-2 ml-2 mt-0 mb-0 text-center" style="font-size:20px " >{{demo_guide_button_text2}}</p>
                     </button>
                 </div>
             </div>
@@ -32,12 +32,12 @@
         var vue_demo_guide = new Vue({
             el: '#guide',
             data: {
-                guidetext: "",
-                button_text1: "",
-                button_text2: ""
+                demo_guide_guidetext: "",
+                demo_guide_button_text1: "",
+                demo_guide_button_text2: ""
             },
             created: function () {
-                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=guide").then((response) => {
+                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=demo_guide").then((response) => {
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {
                             if (response.data[i].moduleKey == item) {

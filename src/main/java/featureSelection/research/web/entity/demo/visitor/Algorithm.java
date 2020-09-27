@@ -17,6 +17,8 @@ public  class Algorithm {
     private String algorithmPaperReference;
     private String algorithmPaperLink;
     private String algorithmDescription;
+    private String algorithmEnDescription;
+    private String algorithmDescriptionTemp;
     private String algorithmCallInterface;
     private String algorithmCallHost;
     private String algorithmCallExchange;
@@ -28,18 +30,28 @@ public  class Algorithm {
     private String algorithmCallPassword;
     private String algorithmNameMapper;
     private Timestamp ut;
+    private String availableDatasetsString;
     private List<ParameterScheme>parameterSchemes;
     private List<Parameter>parameters;
     private List<Dataset>datasets;
-    //前端需要使用到的一个数据段
-    private String parameterSchemeIndex="-1";
-
+    //前端需要使用到的一个数据段:当前选中的方案索引（此处因为方便就不另外设VO对象）
+    private String parameterSchemeIndex="0";
+    //前端需要使用到的一个数据段:当前选中的数据集索引
+    private String datasetIndex="0";
     public int getAlgorithmId() {
         return algorithmId;
     }
 
     public void setAlgorithmId(int algorithmId) {
         this.algorithmId = algorithmId;
+    }
+
+    public String getAlgorithmDescriptionTemp() {
+        return algorithmDescriptionTemp;
+    }
+
+    public void setAlgorithmDescriptionTemp(String algorithmDescriptionTemp) {
+        this.algorithmDescriptionTemp = algorithmDescriptionTemp;
     }
 
     public String getAlgorithmName() {
@@ -82,6 +94,14 @@ public  class Algorithm {
         this.algorithmDescription = algorithmDescription;
     }
 
+    public String getAlgorithmEnDescription() {
+        return algorithmEnDescription;
+    }
+
+    public void setAlgorithmEnDescription(String algorithmEnDescription) {
+        this.algorithmEnDescription = algorithmEnDescription;
+    }
+
     public Timestamp getUt() {
         return ut;
     }
@@ -113,6 +133,14 @@ public  class Algorithm {
 
     public void setParameterSchemes(List<ParameterScheme> parameterSchemes) {
         this.parameterSchemes = parameterSchemes;
+    }
+
+    public String getAvailableDatasetsString() {
+        return availableDatasetsString;
+    }
+
+    public void setAvailableDatasetsString(String availableDatasetsString) {
+        this.availableDatasetsString = availableDatasetsString;
     }
 
     public String getParameterSchemeIndex() {
@@ -193,6 +221,14 @@ public  class Algorithm {
 
     public void setAlgorithmNameMapper(String algorithmNameMapper) {
         this.algorithmNameMapper = algorithmNameMapper;
+    }
+
+    public String getDatasetIndex() {
+        return datasetIndex;
+    }
+
+    public void setDatasetIndex(String datasetIndex) {
+        this.datasetIndex = datasetIndex;
     }
 
     @Override

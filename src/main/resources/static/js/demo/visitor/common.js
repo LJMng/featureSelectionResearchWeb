@@ -2,7 +2,11 @@ var demoVisitorBaseURL= "http://localhost:8000/demo/visitor/";
 var baseURL = "http://localhost:8000/";
 
 function toLoginPage(){
-  window.location.href='/accountLogin';
+  let account = $.cookie("account")
+  if(account != null && account != ''){}
+  else {
+    window.location.href='/accountLogin';
+}
 }
 function toexecution() {
   if ($.cookie("account") != null) {
@@ -21,3 +25,4 @@ function backIndex() {
 function toaboutus() {
   window.location.href = "/pages/demo/visitor/aboutus.html";
 };
+

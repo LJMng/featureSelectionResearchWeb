@@ -11,6 +11,7 @@
 
 	<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="/webjars/bootstrap-switch/3.3.4/dist/css/bootstrap3/bootstrap-switch.css">
+	<link rel="stylesheet" href="/webjars/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/demovisitor.css">
 	<!-- jquery -->
 	<!-- 	Web jars -->
@@ -30,7 +31,10 @@
 	<!--echrat.js-->
 	<script src="https://cdn.bootcss.com/echarts/4.7.0/echarts-en.common.js"></script>
 	<script type="text/javascript" src="/js/demo/visitor/common.js"></script>
+	<script type="text/javascript" src="/js/demo/visitor/MiniDialog-es5.min.js"></script>
+	<script type="text/javascript" src="/js/demo/visitor/enjoyhint.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+
 	<style type="text/css">
 	</style>
 </head>
@@ -44,16 +48,16 @@
 		<div id="demo-guide"></div>
 		<!--demo首页算法-- public/page/demo/visitor/algorithm.html-->
 		<div id="demo-algorithms" name="algorithms"></div>
-		<!--demo首页更新板 public/page/demo/visitor/update.html-->
-		<div id="demo-updates"></div>
 		<!--算法方案细节弹窗-->
 		<div id="algorithmdetailspop"></div>
 	</div>
+	<!--demo首页更新板 public/page/demo/visitor/update.html-->
+	<div id="demo-updates"></div>
 	<!--回到顶部-->
 	<div style="overflow: hidden;position: fixed;right: 10px;bottom: 20px;z-index: 10;">
 		<div style="overflow: hidden;">
 			<div style="padding-top:20px;padding-right:50px;padding-bottom:50px">
-				<a href="#" style="float: right;" class="btns">回到顶部</a>
+				<a href="#" style="float: right;" class="btns"><i class="fa fa-arrow-circle-up fa-3x" aria-hidden="true"></i></a>
 			</div>
 		</div>
 	</div>

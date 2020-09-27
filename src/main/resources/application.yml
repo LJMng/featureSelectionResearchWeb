@@ -16,7 +16,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: 1009710828@qq.com
-    password:
+    password: hkrhfdxondjabfbf
     properties:
       mail:
         smtp:
@@ -30,15 +30,15 @@ spring:
 
 # MyBatis
 mybatis:
-  mapper-locations: classpath:featureselection/research/web/mybatisMapper/*.xml
+  mapper-locations: classpath:featureselection/research/web/mybatisMapper/**.xml
   configuration:
     map-underscore-to-camel-case: true
 # Logback
-logging:
-  path: '/logs'
-  level:
-    featureSelection.research.web.mybatisMapper: debug
+#logging:
+#  path: '/logs'
+#  level:
+#    featureSelection.research.web.mybatisMapper: debug
 
 appconfigs:
   MaxExceptionNumberPerMinute4Exit: 100
-  ReciverExceptionNoticeEmail:
+  ReciverExceptionNoticeEmail: 1821203795@qq.com

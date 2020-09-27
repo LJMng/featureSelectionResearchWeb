@@ -12,4 +12,18 @@
 
 .leftkey{
     font-weight: bold;
-}   
+}
+
+.card-header{
+    padding:.15rem 1.25rem;
+}
+
+.modal-header{
+    padding: 0.5rem 1rem;
+}
+
+/*=========updateInfo===========*/
+.sk-landing-bg-more-info{
+    background-color:#f8f8f8;
+    font-size: 0.96rem;
+}

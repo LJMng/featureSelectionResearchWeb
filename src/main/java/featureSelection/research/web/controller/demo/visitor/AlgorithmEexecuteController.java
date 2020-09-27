@@ -35,10 +35,12 @@ public class  AlgorithmEexecuteController {
 
     @PostMapping(value = "/transmitExcuteInfo")
     public Result reciveExecuteInfo(@RequestParam("algorithmId") String algorithmId,
-                                    @RequestParam("parameterSchemeId") String parameterSchemeId) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+                                    @RequestParam("parameterSchemeId") String parameterSchemeId,
+                                    @RequestParam("datasetId") String datasetId) throws ClassNotFoundException,
+            IllegalAccessException, InstantiationException {
 
         DemoRabbimqComInfo demoRabbimqComInfo=new DemoRabbimqComInfo(Integer.parseInt(parameterSchemeId),
-                Integer.parseInt(algorithmId));
+                Integer.parseInt(algorithmId),Integer.parseInt(datasetId));
         DemoRabbitmqComServiceSingleton.addDemoRabbitmqComInfo(demoRabbimqComInfo);
         while(true){
         if (demoRabbimqComInfo.getStatues().equals("FINISH")){

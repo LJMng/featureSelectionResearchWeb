@@ -6,27 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
 </head>
 
 <body>
     <div id="algorithms" class="text-center container">
         <div class="ml-auto mr-auto" style="display: inline-block">
-            <span class="h4 text-center ml-auto mr-auto">{{title}}</span>
+            <span class="h4 text-center ml-auto mr-auto" id="demo_algorithms_title">{{demo_algorithms_title}}</span>
             <hr>
-            <span>{{secondtitle}}</span>
+            <span>{{demo_algorithms_secondtitle}}</span>
 
         </div>
         <div id="guideinfo" class="border border-darken-1">
             <div class="mt-2">
-                <h4 class="text-center" >{{guideinfotitile}}</h5>
+                <h4 class="text-center" id="demo_algorithms_guideinfotitile">{{demo_algorithms_guideinfotitile}}</h5>
             </div>
-            <div class="text-left ml-2 mr-2" style="font-size: 16px;" v-html="guideinfocontent">
+            <div class="text-left ml-2 mr-2" style="font-size: 16px;" v-html="demo_algorithms_guideinfocontent" id="demo_algrithm_guideinfocontent">
 
             </div>
         </div>
         <br />
         <br />
+
         <!--下拉条-->
         <div class="accordion" id="accordionExample">
             <div v-for="(algorithm,algorithmIndex) in algorithms" v-bind:key="algorithmIndex">
@@ -34,19 +35,18 @@
                 <div class="card">
                     <div class="card-header" :id="'algorithmcard'+algorithmIndex">
                         <div class="row">
-                            <div class="col-2 m-auto">
+                            <div class="col-2 text-left">
                                 <!--算法信息modal按钮-->
                                 <span class="text-dark">
                                     <button type="button" class="btn btn-link m-0"
-                                        v-on:click="getalgorithmdetails(algorithmIndex)">{{algorithm.algorithmName}}
+                                        v-on:click="getalgorithmdetails(algorithmIndex)"><h5>{{algorithm.algorithmName}}</h5>
                                     </button>
                                 </span>
                             </div>
                             <!--下拉图标-->
                             <div class="col-10 ">
                                 <button class="btn btn-link float-right" type="button" data-toggle="collapse"
-                                    :data-target="'#algorithmcollapseOne'+algorithmIndex" aria-expanded="true"
-                                    aria-controls="collapseOne" style="display:inline">
+                                    :data-target="'#algorithmcollapseOne'+algorithmIndex"  style="display:inline">
                                     <svg class="bi bi-chevron-bar-down float-right" width="2em" height="2em"
                                         viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd"
@@ -58,22 +58,53 @@
                         </div>
                     </div>
                     <!--下拉内容-->
-                    <div :id="'algorithmcollapseOne'+algorithmIndex" class="collapse show" aria-labelledby="headingOne"
-                        data-parent="#accordionExample">
+                    <div :id="'algorithmcollapseOne'+algorithmIndex" class="collapse">
                         <div class="card-body">
                             <span class="h4 text-center ml-auto mr-auto">{{givittry}}</span>
                             <br>
-                            <p>{{algorithm.algorithmDescription}}</p>
+                            <div class="alert alert-primary  mt-3" role="alert">
+                                <p class="text-left">{{algorithm.algorithmDescriptionTemp}}</p>
+                            </div>
                             <hr width="30%" />
                             <div class="row border border-darken-1 m-2">
                                 <!--左边框-->
+                                <!--数据集选择-->
                                 <div class="col-6  border border-darken-1 bg-light">
                                     <div class="input-group mb-3 mt-3 ml-2">
-                                        <form class="was-validated" style="width: 80%">
+                                        <form class="was-validated" style="width: 70%">
+                                            <div class="form-group">
+                                                <select class="custom-select is-invalid" required
+                                                        v-model="algorithm.datasetIndex">
+<!--                                                    <option select="selected" disabled value="-1">choose</option>-->
+                                                    <option
+                                                            v-for="(dataset,datasetIndex) in algorithm.datasets"
+                                                            v-bind:value="datasetIndex"
+                                                            :class="'datasetOption'+datasetIndex">
+                                                        {{dataset.datasetName}}</i>
+
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                        <span class="input  -group-btn ml-3">
+
+                                            <button class="btn btn-primary mr-1" type="button"
+                                                    v-on:click="getDatasetInfo(algorithmIndex,algorithm.datasetIndex)">
+                                            <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                            </button>
+
+                                            <button class="btn btn-primary" type="button"
+                                                    v-on:click="downloadByDatasetIndex(algorithmIndex,algorithm.datasetIndex)">
+                                            <i class="fa fa-download" aria-hidden="true"></i></button>
+                                        </span>
+                                    </div>
+                                    <!--方案选择框-->
+                                    <div class="input-group mb-3 mt-3 ml-2">
+                                        <form class="was-validated" style="width: 70%">
                                             <div class="form-group">
                                                 <select class="custom-select is-invalid" required
                                                                  v-model="algorithm.parameterSchemeIndex">
-                                                <option select="selected" disabled value="-1">choose</option>
+<!--                                                <option select="selected" disabled value="-1">choose</option>-->
                                                 <option
                                                         v-for="(parameterScheme,parameterSchemeIndex) in algorithm.parameterSchemes"
                                                         v-bind:value="parameterSchemeIndex">
@@ -81,26 +112,32 @@
                                             </select>
                                             </div>
                                         </form>
+
                                         <span class="input-group-btn ml-3">
-                                            <button class="btn btn-primary" type="button"
-                                                v-on:click="submitParameterToExecute(algorithmIndex,algorithm.parameterSchemeIndex)">{{run}}</button>
+                                            <button class="btn btn-primary mr-1" type="button" data-toggle="modal" data-target="#parameterInfo"
+                                                    v-on:click="getParameterInfo(algorithmIndex)">
+                                            <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                            </button>
+                                            <button class="btn btn-primary" type="button" :id="'run'+algorithmIndex"
+                                                    v-on:click="submitParameterToExecute(algorithmIndex,algorithm.parameterSchemeIndex,algorithm.datasetIndex)" data-toggle="tooltip" data-placement="right" title="Tooltip on right"><i class="fa fa-play-circle" aria-hidden="true"></i>
+                                            </button>
                                         </span>
                                     </div>
-                                    <div class="alert alert-info" role="alert">
-                                        {{schemehead}}
-                                    </div>
-                                    <!--参数介绍-->
-                                    <div class="row pre-scrollable m-2">
-                                        <ul class="list-group" style="width:100%">
-                                            <li class="list-group-item" style="width:100%"
-                                                v-for="(parameterScheme,parameterSchemeIndex) in algorithm.parameterSchemes"
-                                                v-bind:key="parameterSchemeIndex">
-                                                <button type="button" data-toggle="modal" data-target="#parameterInfo"
-                                                    class="btn btn-link m-0"
-                                                    v-on:click="getParameterInfo(algorithmIndex,parameterSchemeIndex)">{{parameterScheme.schemeName}}</button>
-                                            </li>
-                                        </ul>
-                                    </div>
+<!--                                    <div class="alert alert-info" role="alert">-->
+<!--                                        {{schemehead}}-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash;参数介绍&ndash;&gt;-->
+<!--                                    <div class="row pre-scrollable m-2">-->
+<!--                                        <ul class="list-group" style="width:100%">-->
+<!--                                            <li class="list-group-item" style="width:100%"-->
+<!--                                                v-for="(parameterScheme,parameterSchemeIndex) in algorithm.parameterSchemes"-->
+<!--                                                v-bind:key="parameterSchemeIndex">-->
+<!--                                                <button type="button" data-toggle="modal" data-target="#parameterInfo"-->
+<!--                                                    class="btn btn-link m-0"-->
+<!--                                                    v-on:click="getParameterInfo(algorithmIndex,parameterSchemeIndex)">{{parameterScheme.schemeName}}</button>-->
+<!--                                            </li>-->
+<!--                                        </ul>-->
+<!--                                    </div>-->
                                 </div>
                                 <div class="col-6  border border-darken-1">
                                     <div class="row bg-light" style="height:100%">
@@ -124,9 +161,11 @@
                                                         <th scope="row">1</th>
                                                         <td style="text-align: center">
                                                             <div :id="'reductsvalue'+algorithmIndex" style="display:
-                                                            inline-block"></div>
+                                                            inline-block;width:100px;overflow:hidden;
+                                                            text-overflow:ellipsis;white-space: nowrap;word-break:
+                                                            keep-all;" hover="overflow: visible;" title="" >
+                                                            </div>
                                                             <div style="display: inline-block">
-
                                                             </div>
                                                         </td>
                                                         <td>1.221s</td>
@@ -142,23 +181,17 @@
                                         </div>
                                         <div :id="'resultnavicat'+algorithmIndex" class="m-auto"
                                              style="width:90%;height:80%;display:flex;
-                                            justify-content: center;
+                                            justify-content: center;s
                                             align-items: center;">
                                             <div class="m-auto text-center">
-                                                <svg class="bi bi-graph-up" width="7em"
-                                                     height="7em" viewBox="0 0 16 16" fill="currentColor"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M0 0h1v16H0V0zm1 15h15v1H1v-1z" />
-                                                <path fill-rule="evenodd"
-                                                      d="M14.39 4.312L10.041 9.75 7 6.707l-3.646 3.647-.708-.708L7 5.293 9.959 8.25l3.65-4.563.781.624z"
-                                                      clip-rule="evenodd" />
-                                                <path fill-rule="evenodd"
-                                                      d="M10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4h-3.5a.5.5 0 0 1-.5-.5z"
-                                                      clip-rule="evenodd" />
-                                            </svg>
+                                                <i class="fa fa-area-chart fa-5x" aria-hidden="true"></i>
                                                 <p class="resulttext mt-3">{{resulttext}}</p>
                                             </div>
                                         </div>
+<!--                                        <div id="" style="position: absolute;left: 10px;bottom:10px">-->
+<!--                                            <p>red:reductsFeatureSize</p>-->
+<!--                                            <p>black:notReductsFeatureSize</p>-->
+<!--                                        </div>-->
 <!--                                        <div id="copy" style="position: absolute;right: 10px;bottom: 10px">-->
 <!--                                            <button type="button" class="btn btn-primary"-->
 <!--                                                    v-on:click="copyreducts(algorithmIndex)">copy-->
@@ -173,18 +206,42 @@
             </div>
         </div>
     </div>
+
+
     <hr>
+
     <div id="schemesdetailspop"></div>
+    <div id="datasetdetailspop"></div>
+
+        <div class="modal fade" id="datasetSelectpop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">warn</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group text-center">
+                                <label for="message-text" class="control-label">please choose dataset</label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">return</button>
+                    </div>
+                </div>
+            </div>
     <textarea id="copyinput" style="display:none">copy内容</textarea>
     <script type="text/javascript">
         var vue_demo_algorithms = new Vue({
             el: '#algorithms',
             data: {
                 //-----------pageElement------------
-                title: '',
-                secondtitle: '',
-                guideinfotitile:'',
-                guideinfocontent:'',
+                demo_algorithms_title: '',
+                demo_algorithms_secondtitle: '',
+                demo_algorithms_guideinfotitile:'',
+                demo_algorithms_guideinfocontent:'',
                 givittry: '',
                 run: '',
                 schemehead: '',
@@ -195,75 +252,135 @@
                 algorithms: []
             },
             methods: {
-                submitParameterToExecute(algorithmIndex, parameterSchemeIndex) {
-                    $('#resulterror').hide();
-                    var toPostAlgorithmid = this.algorithms[algorithmIndex].algorithmId;
-                    var toPostParameterId = this.algorithms[algorithmIndex].parameterSchemes[parameterSchemeIndex].schemeId;
-                    console.log(toPostParameterId);
-                    var resultcontainerIndex = "resultInfo" + algorithmIndex;
-                    var resultnavicat="resultnavicat"+algorithmIndex;
-                    var resultInfotable="resultInfotable"+algorithmIndex
-                    var reductsvalues="reductsvalue"+algorithmIndex
-                    $('#'+resultnavicat).hide()
-                    $('#'+resultInfotable).hide()
-                    echarts.init(document.getElementById(resultcontainerIndex)).dispose();
+                submitParameterToExecute(algorithmIndex, parameterSchemeIndex,datasetIndex) {
+                    if (datasetIndex==-1){
+                        $('#datasetSelectpop').modal('show')
+                    }
+                    else {
+                        $('#resulterror').hide();
+                        var toPostAlgorithmid = this.algorithms[algorithmIndex].algorithmId;
+                        var toPostParameterId = this.algorithms[algorithmIndex].parameterSchemes[parameterSchemeIndex].schemeId;
+                        var toPostDatasetId = this.algorithms[algorithmIndex].datasets[datasetIndex].datasetId;
+                        console.log(toPostParameterId);
+                        var resultcontainerIndex = "resultInfo" + algorithmIndex;
+                        var resultnavicat = "resultnavicat" + algorithmIndex;
+                        var resultInfotable = "resultInfotable" + algorithmIndex
+                        var reductsvalues = "reductsvalue" + algorithmIndex
+                        $('#' + resultnavicat).hide()
+                        $('#' + resultInfotable).hide()
+                        echarts.init(document.getElementById(resultcontainerIndex)).dispose();
                         var myChart = echarts.init(document.getElementById(resultcontainerIndex));
-                    myChart.setOption({
-                        // title: [{
-                        //     text: 'Reduct',
-                        //     left: 'center'
-                        // },
-                        // {
-                        //     text: 'rudcts is',
-                        //     left: '30%',
-                        //     bottom: '10%'
-                        // }],
-                        series: [{
-                            radius: '50%',
-                            name: '结果',
-                            type: 'pie',
-                            data: [1,7]
-                        }]
-                    });
-                    myChart.showLoading()
-                    $.post(demoVisitorBaseURL+"/transmitExcuteInfo", { "algorithmId": toPostAlgorithmid,
-                        "parameterSchemeId": toPostParameterId }, function (response) {
-                        console.log(response)
-                        if (response.code==200){
                         myChart.setOption({
+                            // title: [{
+                            //     text: 'Reduct',
+                            //     left: 'center'
+                            // },
+                            // {
+                            //     text: 'rudcts is',
+                            //     left: '30%',
+                            //     bottom: '10%'
+                            // }],
+                            legend: {
+                                bottom: 0,
+                                left: 'center',
+                                data: ['reductResultSize', 'notreductResultSize']
+                            },
                             series: [{
-                                radius:'50%',
+                                radius: '50%',
                                 name: '结果',
                                 type: 'pie',
-                                data:
-                                    [{value:response.data.reductSize,name:"reductResultSize"},{value:response.data.notReduct,name:"notreductResultSize"}, ]
-                            }]
+                                data: [1, 7]
+                            }],
+
                         });
-                        //     title: [{
-                        //         text: 'Reduct',
-                        //         left: 'center'
-                        //     },
-                        //     {
-                        //         text: 'rudcts is {' + response.data.reducts + '}',
-                        //         left: 'center',
-                        //         bottom: '10%'
-                        //
-                        //     }],
+                        myChart.showLoading()
+                        $.post(demoVisitorBaseURL + "/transmitExcuteInfo", {
+                            "algorithmId": toPostAlgorithmid,
+                            "parameterSchemeId": toPostParameterId, "datasetId": toPostDatasetId
+                        }, function (response) {
+                            console.log(response)
+                            if (response.code == 200) {
+                                myChart.setOption({
+                                    series: [{
+                                        radius: '50%',
+                                        name: '结果',
+                                        type: 'pie',
+                                        data:
+                                            [{
+                                                value: response.data.reductSize,
+                                                name: "reductResultSize"
+                                            }, {value: response.data.notReduct, name: "notreductResultSize"},]
+                                    }]
+                                });
+                                //     title: [{
+                                //         text: 'Reduct',
+                                //         left: 'center'
+                                //     },
+                                //     {
+                                //         text: 'rudcts is {' + response.data.reducts + '}',
+                                //         left: 'center',
+                                //         bottom: '10%'
+                                //
+                                //     }],
 
-                            myChart.hideLoading();
-                            $('#'+reductsvalues).text(response.data.reducts)
-                            $('#'+resultInfotable).show()
-                        }else if(response.code==400){
-                            myChart.hideLoading();
-                            echarts.init(document.getElementById(resultcontainerIndex)).dispose();
-                            alert("please do it again")
-                        }
+                                myChart.hideLoading();
+                                $('#' + reductsvalues).text(response.data.reducts)
+                                $('#' + reductsvalues).attr("title", response.data.reducts)
+                                $('#' + resultInfotable).show()
+                            } else if (response.code == 400) {
+                                myChart.hideLoading();
+                                echarts.init(document.getElementById(resultcontainerIndex)).dispose();
+                                alert("please do it again")
+                            }
 
-                    });
+                        });
+                    }
                 },
-            },
+                downloadByDatasetIndex(algorithmIndex,datasetindex) {
+                    console.log(datasetindex)
+                    var toPostDatasetId = this.algorithms[algorithmIndex].datasets[datasetindex].datasetId;
+                    window.location.href = demoVisitorBaseURL+"/download?datasetid=" + toPostDatasetId;
+                },
+                newDraggable(algorithmIndex,parameterSchemeIndex) {
+                    var testdemo_algorithms_title=this.demo_algorithms_title
+                    console.log(testdemo_algorithms_title+"test")
+                    var content=
+                        "                        <ul class=\"list-group-flush\">\n" +
+                        "                            <li class=\"list-group-item\" v-for=\"parameterInfo in algorithms[algorithmIndex].parameterScheme.parameterSchemeValues\">\n" +
+                        "                                <span class=\"leftkey\">{{parameterInfo.parameter!=null? parameterInfo.parameter\n" +
+                        "                                    .parameterName:\"\"}}:</span>&nbsp&nbsp\n" +
+                        "                                 {{parameterInfo.parameterInputValue}}&nbsp&nbsp{{parameterInfo.parameterOptionValue}}\n" +
+                        "                            </li>" +
+                        "                           </ul> "
+                    Dialog({
+                        title:testdemo_algorithms_title,
+                        content:content,
+                        draggable: true,
+                        width:"300",
+                        height:"600",
+                        showButton: false
+            });
+        }
+
+        },
             created: function () {
-                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=algorithms").then((response) => {
+                $.get(demoVisitorBaseURL+"/getAllAlgorithmInfo", function (data) {
+                    vue_demo_algorithms.algorithms = data;
+                    console.log(vue_demo_algorithms.algorithms.length)
+                    console.log(vue_demo_algorithms.algorithms[1])
+                    for (let i=0; i<vue_demo_algorithms.algorithms.length;i++){
+                        console.log(i)
+                        console.log("设置数据")
+                        if ($.cookie("language") == 'ch'){
+                            vue_demo_algorithms.algorithms[i].algorithmDescriptionTemp=vue_demo_algorithms.algorithms[i].algorithmDescription
+                        }
+                        else {
+                            vue_demo_algorithms.algorithms[i].algorithmDescriptionTemp=vue_demo_algorithms.algorithms[i].algorithmEnDescription
+                        }
+                    }
+                });
+                axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=demo_algorithms").then((response) => {
+                    console.log("修改语言")
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {
                             if (response.data[i].moduleKey == item) {
@@ -278,23 +395,36 @@
                 });
             },
             watch: {
-                getName: {
-                    handler: function () {
-                        //do something
-                    },
-                }
             }
         });
 
         $(function () {
+
+
             $('#schemesdetailspop').load('popups/demo/visitor/schemesDetails.html')
-            $.get(demoVisitorBaseURL+"/getAllAlgorithmInfo", function (data) {
-                vue_demo_algorithms.algorithms = data;
-            });
+            $('#datasetdetailspop').load('popups/demo/visitor/datasetDetails.html')
             $('#algorithmdetailspop').load('popups/demo/visitor/algorithmDetails.html');
             $('#algorithmdetailspop').hide();
-
+            $('[data-toggle="tooltip"]').tooltip();
+            setTimeout(function(){initialization()}, 800);
         });
+        
+        function initialization() {
+            $('#algorithmcollapseOne0').collapse('toggle');
+            $('.datasetOption0').selected=true
+            // var enjoyhint_instance = new EnjoyHint({});
+            //
+            // var enjoyhint_script_steps = [
+            //     {
+            //         'click #run0' : '点击这个按钮'
+            //     }
+            // ]
+            // enjoyhint_instance.set(enjoyhint_script_steps);
+            // enjoyhint_instance.run();
+
+        }
+
+
 
         function copyreducts(index) {
             var reductsvalues="reductsvalue"+index;
@@ -312,10 +442,26 @@
             $("select").prepend(option)
         }
 
+
+
         //获取参数详情
-        function getParameterInfo(algorithmIndex, parameterSchemeIndex) {
-            vue_parameterInfo.parameterScheme = vue_demo_algorithms.algorithms[algorithmIndex].parameterSchemes[parameterSchemeIndex];
+        function getParameterInfo(algorithmIndex) {
+            var parameterIndex=vue_demo_algorithms.algorithms[algorithmIndex].parameterSchemeIndex
+            vue_parameterInfo.parameterScheme = vue_demo_algorithms.algorithms[algorithmIndex].parameterSchemes[parameterIndex];
         }
+
+        function getDatasetInfo(algorithmIndex, datasetIndex) {
+            if (datasetIndex==-1) {
+                $('#datasetSelectpop').modal('show')
+            }else{
+                vue_datasetInfo.dataset =
+                    vue_demo_algorithms.algorithms[algorithmIndex].datasets[datasetIndex];
+                $('#datasetInfo').modal('show');
+            }
+
+        }
+
+
 
         //获取算法详情
         function getalgorithmdetails(algorithmIndex) {

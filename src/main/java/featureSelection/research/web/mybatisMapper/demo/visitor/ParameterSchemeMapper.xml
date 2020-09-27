@@ -55,7 +55,7 @@
 
     <select id="getSchemeWithParameterValueById" resultMap="SchemeWithParameterValueAndParmeter"
             parameterType="Integer">
-       select ps.*,psv.parameter_value,p.* FROM parameter_scheme_value
+       select  ps.*,psv.*,p.* FROM parameter_scheme_value
         psv,parameter_scheme ps,parameter p
         WHERE ps.scheme_id=psv.scheme_id AND psv.parameter_id=p.parameter_id AND ps.scheme_id=#{schemeid};
     </select>

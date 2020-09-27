@@ -50,9 +50,6 @@
                     <small class="form-text text-muted" data-dismiss="modal">
                         <a onclick="toRegister()" href="#">{{register}}</a>
                     </small>
-                    <small id="forget" class="form-text text-muted">
-                        <a href="#">forgetPassWord</a>
-                    </small>
                 </div>
             </div>
         </div>
@@ -74,7 +71,7 @@
             /*
             * 根据存储语言选择信息的cookie获取页面元素内容
             */
-            axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=login").then((response) => {
+            axios.get(demoVisitorBaseURL + "/getPageelementByHtmlName?htmlname=demo_login").then((response) => {
                     console.log(response.data)
                     for (let i = 0; i < response.data.length; i++) {
                         for (item in this._data) {

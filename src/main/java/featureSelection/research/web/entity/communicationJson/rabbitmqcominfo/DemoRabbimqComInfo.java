@@ -63,7 +63,7 @@ public class DemoRabbimqComInfo {
      * @param schemeId：参数方案id
      * @param algorithmId：算法id
      */
-    public DemoRabbimqComInfo(int schemeId, int algorithmId) {
+    public DemoRabbimqComInfo(int schemeId, int algorithmId,int datasetId) {
         Algorithm algorithm = algorithmMapper.getAlgorithmInfoById(algorithmId);
 
         //根据算法id查询该算法对应的服务端rabbitmq的配置，并根据配置信息实例化connectionFactory类
@@ -75,15 +75,15 @@ public class DemoRabbimqComInfo {
         String password = algorithm.getAlgorithmCallPassword();
         CachingConnectionFactory connectionFactory = RabbitmqUtil.getConnectionFactory(host, port, username, password, exchange);
 
-        ParameterScheme parameterScheme = parameterSchemeMapper.getDataSetAndSchemeBySchemeId(schemeId);
+        ParameterScheme parameterScheme = parameterSchemeMapper.getSchemeWithParameterValueById(schemeId);
 
         this.routingkey = routingkey;
         this.algorithmId = algorithmId;
         this.exchange = exchange;
         //设置demoRabbimqComTaskId=算法名+当前时间戳
         this.demoRabbimqComTaskId = algorithm.getAlgorithmNameMapper() + System.currentTimeMillis();
-        this.dataset = datasetMapper.getDatasetInfo(parameterScheme.getDataset().getDatasetId());
-        this.parameterScheme = parameterSchemeMapper.getSchemeWithParameterValueAndDatasetById(schemeId);
+        this.dataset = datasetMapper.getDatasetInfo(datasetId);
+        this.parameterScheme = parameterScheme;
         //通过工具类由connectionFactory实例化rabbitmqTemplate
         this.rabbitmqTemplate = RabbitmqUtil.getRabbitTemplate(connectionFactory);
     }
@@ -111,7 +111,7 @@ public class DemoRabbimqComInfo {
      */
     private AlgorithmCallTaskInfo schemeInfoToRequestEnity() {
 
-        Dataset dataset = datasetMapper.getDatasetInfo(parameterScheme.getDataset().getDatasetId());
+        Dataset dataset = this.dataset;
         //定义算法调用任务信息实体类
         AlgorithmCallTaskInfo algorithmCallServiceInfo = new AlgorithmCallTaskInfo();
         //定义算法主体信息实体类
@@ -130,7 +130,12 @@ public class DemoRabbimqComInfo {
             //判断参数类型
             //text类型的情况，此时输入值为数值型类型
             if (parameterSchemeValue.getParameter().getParameterType().equals("text")) {
-                basicSettingValue.put("input",Integer.parseInt(parameterSchemeValue.getParameterInputValue()));
+                String inputValueString=parameterSchemeValue.getParameterInputValue();
+                if(inputValueString.contains(".")){
+                    basicSettingValue.put("input",Float.parseFloat(parameterSchemeValue.getParameterInputValue()));
+                }else{
+                    basicSettingValue.put("input",Integer.parseInt(parameterSchemeValue.getParameterInputValue()));
+                }
             }
             //selection类型的参数，此时除了input还带有option的参数
             else if (parameterSchemeValue.getParameter().getParameterType().equals("selection")) {
