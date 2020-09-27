@@ -10,83 +10,83 @@
 </head>
 
 <body>
-    <div id="algorithms" class="text-center container">
-        <div class="ml-auto mr-auto" style="display: inline-block">
-            <span class="h4 text-center ml-auto mr-auto" id="demo_algorithms_title">{{demo_algorithms_title}}</span>
-            <hr>
-            <span>{{demo_algorithms_secondtitle}}</span>
+<div id="algorithms" class="text-center container">
+    <div class="ml-auto mr-auto" style="display: inline-block">
+        <span class="h4 text-center ml-auto mr-auto" id="demo_algorithms_title">{{demo_algorithms_title}}</span>
+        <hr>
+        <span>{{demo_algorithms_secondtitle}}</span>
+
+    </div>
+    <div id="guideinfo" class="border border-darken-1">
+        <div class="mt-2">
+            <h4 class="text-center" id="demo_algorithms_guideinfotitile">{{demo_algorithms_guideinfotitile}}</h5>
+        </div>
+        <div class="text-left ml-2 mr-2" style="font-size: 16px;" v-html="demo_algorithms_guideinfocontent" id="demo_algrithm_guideinfocontent">
 
         </div>
-        <div id="guideinfo" class="border border-darken-1">
-            <div class="mt-2">
-                <h4 class="text-center" id="demo_algorithms_guideinfotitile">{{demo_algorithms_guideinfotitile}}</h5>
-            </div>
-            <div class="text-left ml-2 mr-2" style="font-size: 16px;" v-html="demo_algorithms_guideinfocontent" id="demo_algrithm_guideinfocontent">
+    </div>
+    <br />
+    <br />
 
-            </div>
-        </div>
-        <br />
-        <br />
-
-        <!--下拉条-->
-        <div class="accordion" id="accordionExample">
-            <div v-for="(algorithm,algorithmIndex) in algorithms" v-bind:key="algorithmIndex">
-                <!--下拉条1即算法1-->
-                <div class="card">
-                    <div class="card-header" :id="'algorithmcard'+algorithmIndex">
-                        <div class="row">
-                            <div class="col-2 text-left">
-                                <!--算法信息modal按钮-->
-                                <span class="text-dark">
+    <!--下拉条-->
+    <div class="accordion" id="accordionExample">
+        <div v-for="(algorithm,algorithmIndex) in algorithms" v-bind:key="algorithmIndex">
+            <!--下拉条1即算法1-->
+            <div class="card">
+                <div class="card-header" :id="'algorithmcard'+algorithmIndex">
+                    <div class="row">
+                        <div class="col-2 text-left">
+                            <!--算法信息modal按钮-->
+                            <span class="text-dark">
                                     <button type="button" class="btn btn-link m-0"
-                                        v-on:click="getalgorithmdetails(algorithmIndex)"><h5>{{algorithm.algorithmName}}</h5>
+                                            v-on:click="getalgorithmdetails(algorithmIndex)"><h5>{{algorithm.algorithmName}}</h5>
                                     </button>
                                 </span>
-                            </div>
-                            <!--下拉图标-->
-                            <div class="col-10 ">
-                                <button class="btn btn-link float-right" type="button" data-toggle="collapse"
+                        </div>
+                        <!--下拉图标-->
+                        <div class="col-10 ">
+                            <button class="btn btn-link float-right" type="button" data-toggle="collapse"
                                     :data-target="'#algorithmcollapseOne'+algorithmIndex"  style="display:inline">
-                                    <svg class="bi bi-chevron-bar-down float-right" width="2em" height="2em"
-                                        viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                            d="M3.646 4.146a.5.5 0 01.708 0L8 7.793l3.646-3.647a.5.5 0 01.708.708l-4 4a.5.5 0 01-.708 0l-4-4a.5.5 0 010-.708zM1 11.5a.5.5 0 01.5-.5h13a.5.5 0 010 1h-13a.5.5 0 01-.5-.5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </div>
+                                <svg class="bi bi-chevron-bar-down float-right" width="2em" height="2em"
+                                     viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                          d="M3.646 4.146a.5.5 0 01.708 0L8 7.793l3.646-3.647a.5.5 0 01.708.708l-4 4a.5.5 0 01-.708 0l-4-4a.5.5 0 010-.708zM1 11.5a.5.5 0 01.5-.5h13a.5.5 0 010 1h-13a.5.5 0 01-.5-.5z"
+                                          clip-rule="evenodd" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
-                    <!--下拉内容-->
-                    <div :id="'algorithmcollapseOne'+algorithmIndex" class="collapse">
-                        <div class="card-body">
-                            <span class="h4 text-center ml-auto mr-auto">{{givittry}}</span>
-                            <br>
-                            <div class="alert alert-primary  mt-3" role="alert">
-                                <p class="text-left">{{algorithm.algorithmDescriptionTemp}}</p>
-                            </div>
-                            <hr width="30%" />
-                            <div class="row border border-darken-1 m-2">
-                                <!--左边框-->
-                                <!--数据集选择-->
-                                <div class="col-6  border border-darken-1 bg-light">
-                                    <div class="input-group mb-3 mt-3 ml-2">
-                                        <form class="was-validated" style="width: 70%">
-                                            <div class="form-group">
-                                                <select class="custom-select is-invalid" required
-                                                        v-model="algorithm.datasetIndex">
-<!--                                                    <option select="selected" disabled value="-1">choose</option>-->
-                                                    <option
-                                                            v-for="(dataset,datasetIndex) in algorithm.datasets"
-                                                            v-bind:value="datasetIndex"
-                                                            :class="'datasetOption'+datasetIndex">
-                                                        {{dataset.datasetName}}</i>
+                </div>
+                <!--下拉内容-->
+                <div :id="'algorithmcollapseOne'+algorithmIndex" class="collapse">
+                    <div class="card-body">
+                        <span class="h4 text-center ml-auto mr-auto">{{givittry}}</span>
+                        <br>
+                        <div class="alert alert-primary  mt-3" role="alert">
+                            <p class="text-left">{{algorithm.algorithmDescriptionTemp}}</p>
+                        </div>
+                        <hr width="30%" />
+                        <div class="row border border-darken-1 m-2">
+                            <!--左边框-->
+                            <!--数据集选择-->
+                            <div class="col-6  border border-darken-1 bg-light">
+                                <div class="input-group mb-3 mt-3 ml-2">
+                                    <form class="was-validated" style="width: 70%">
+                                        <div class="form-group">
+                                            <select class="custom-select is-invalid" required
+                                                    v-model="algorithm.datasetIndex">
+                                                <!--                                                    <option select="selected" disabled value="-1">choose</option>-->
+                                                <option
+                                                        v-for="(dataset,datasetIndex) in algorithm.datasets"
+                                                        v-bind:value="datasetIndex"
+                                                        :class="'datasetOption'+datasetIndex">
+                                                    {{dataset.datasetName}}</i>
 
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                        <span class="input  -group-btn ml-3">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                    <span class="input  -group-btn ml-3">
 
                                             <button class="btn btn-primary mr-1" type="button"
                                                     v-on:click="getDatasetInfo(algorithmIndex,algorithm.datasetIndex)">
@@ -97,23 +97,23 @@
                                                     v-on:click="downloadByDatasetIndex(algorithmIndex,algorithm.datasetIndex)">
                                             <i class="fa fa-download" aria-hidden="true"></i></button>
                                         </span>
-                                    </div>
-                                    <!--方案选择框-->
-                                    <div class="input-group mb-3 mt-3 ml-2">
-                                        <form class="was-validated" style="width: 70%">
-                                            <div class="form-group">
-                                                <select class="custom-select is-invalid" required
-                                                                 v-model="algorithm.parameterSchemeIndex">
-<!--                                                <option select="selected" disabled value="-1">choose</option>-->
+                                </div>
+                                <!--方案选择框-->
+                                <div class="input-group mb-3 mt-3 ml-2">
+                                    <form class="was-validated" style="width: 70%">
+                                        <div class="form-group">
+                                            <select class="custom-select is-invalid" required
+                                                    v-model="algorithm.parameterSchemeIndex">
+                                                <!--                                                <option select="selected" disabled value="-1">choose</option>-->
                                                 <option
                                                         v-for="(parameterScheme,parameterSchemeIndex) in algorithm.parameterSchemes"
                                                         v-bind:value="parameterSchemeIndex">
                                                     {{parameterScheme.schemeName}}</option>
                                             </select>
-                                            </div>
-                                        </form>
+                                        </div>
+                                    </form>
 
-                                        <span class="input-group-btn ml-3">
+                                    <span class="input-group-btn ml-3">
                                             <button class="btn btn-primary mr-1" type="button" data-toggle="modal" data-target="#parameterInfo"
                                                     v-on:click="getParameterInfo(algorithmIndex)">
                                             <i class="fa fa-question-circle" aria-hidden="true"></i>
@@ -122,67 +122,66 @@
                                                     v-on:click="submitParameterToExecute(algorithmIndex,algorithm.parameterSchemeIndex,algorithm.datasetIndex)" data-toggle="tooltip" data-placement="right" title="Tooltip on right"><i class="fa fa-play-circle" aria-hidden="true"></i>
                                             </button>
                                         </span>
-                                    </div>
-<!--                                    <div class="alert alert-info" role="alert">-->
-<!--                                        {{schemehead}}-->
-<!--                                    </div>-->
-<!--                                    &lt;!&ndash;参数介绍&ndash;&gt;-->
-<!--                                    <div class="row pre-scrollable m-2">-->
-<!--                                        <ul class="list-group" style="width:100%">-->
-<!--                                            <li class="list-group-item" style="width:100%"-->
-<!--                                                v-for="(parameterScheme,parameterSchemeIndex) in algorithm.parameterSchemes"-->
-<!--                                                v-bind:key="parameterSchemeIndex">-->
-<!--                                                <button type="button" data-toggle="modal" data-target="#parameterInfo"-->
-<!--                                                    class="btn btn-link m-0"-->
-<!--                                                    v-on:click="getParameterInfo(algorithmIndex,parameterSchemeIndex)">{{parameterScheme.schemeName}}</button>-->
-<!--                                            </li>-->
-<!--                                        </ul>-->
-<!--                                    </div>-->
                                 </div>
-                                <div class="col-6  border border-darken-1">
-                                    <div class="row bg-light" style="height:100%">
-                                        <!--运行结果展示-->
-                                        <div :id="'resultInfotable'+algorithmIndex" class="m-auto"
-                                             style="width:30%;height:80%;position:absolute;
+                                <!--                                    <div class="alert alert-info" role="alert">-->
+                                <!--                                        {{schemehead}}-->
+                                <!--                                    </div>-->
+                                <!--                                    &lt;!&ndash;参数介绍&ndash;&gt;-->
+                                <!--                                    <div class="row pre-scrollable m-2">-->
+                                <!--                                        <ul class="list-group" style="width:100%">-->
+                                <!--                                            <li class="list-group-item" style="width:100%"-->
+                                <!--                                                v-for="(parameterScheme,parameterSchemeIndex) in algorithm.parameterSchemes"-->
+                                <!--                                                v-bind:key="parameterSchemeIndex">-->
+                                <!--                                                <button type="button" data-toggle="modal" data-target="#parameterInfo"-->
+                                <!--                                                    class="btn btn-link m-0"-->
+                                <!--                                                    v-on:click="getParameterInfo(algorithmIndex,parameterSchemeIndex)">{{parameterScheme.schemeName}}</button>-->
+                                <!--                                            </li>-->
+                                <!--                                        </ul>-->
+                                <!--                                    </div>-->
+                            </div>
+                            <div class="col-6  border border-darken-1">
+                                <div class="row bg-light" style="height:100%">
+                                    <!--运行结果展示-->
+                                    <div :id="'resultInfotable'+algorithmIndex" class="m-auto"
+                                         style="width:30%;height:80%;position:absolute;
                                              align-items: center;text-align: left;right:0px;display:none;">
-                                            <div class="mr-2 mt-5">
-                                                <div>
-                                                    <ul class="sk-landing-call-list list-unstyled" >
-                                                        <li><strong>execution time:</strong></li>
-                                                        <li>1.212s</li>
-                                                        <li><strong>reductResult:</strong></li>
-                                                        <li><div :id="'reductsvalue'+algorithmIndex" style="display:
+                                        <div class="mr-2 mt-5">
+                                            <div>
+                                                <ul class="sk-landing-call-list list-unstyled" >
+                                                    <li><strong>execution time:</strong></li>
+                                                    <li>1.212s</li>
+                                                    <li><strong>reductResult:</strong></li>
+                                                    <li><div :id="'reductsvalue'+algorithmIndex" style="display:
                                                             inline-block;width:100px;overflow:hidden;
                                                             text-overflow:ellipsis;white-space: nowrap;word-break:
                                                             keep-all;" hover="overflow: visible;" title="" >
-                                                        </div></li>
-                                                    </ul>
-                                                </div>
+                                                    </div></li>
+                                                </ul>
                                             </div>
                                         </div>
-                                        <div :id="'resultInfo'+algorithmIndex" class="m-auto"
-                                             style="width:70%;height:100%;position:absolute;
+                                    </div>
+                                    <div :id="'resultInfo'+algorithmIndex" class="m-auto"
+                                         style="width:70%;height:100%;position:absolute;
                                              align-items: center;float: right;">
-                                        </div>
-                                        <div :id="'resultnavicat'+algorithmIndex" class="m-auto"
-                                             style="width:90%;height:80%;display:flex;
+                                    </div>
+                                    <div :id="'resultnavicat'+algorithmIndex" class="m-auto"
+                                         style="width:90%;height:80%;display:flex;
                                             justify-content: center;s
                                             align-items: center;">
-                                            <div class="m-auto text-center">
-                                                <i class="fa fa-area-chart fa-5x" aria-hidden="true"></i>
-                                                <p class="resulttext mt-3">{{resulttext}}</p>
-                                            </div>
+                                        <div class="m-auto text-center">
+                                            <i class="fa fa-area-chart fa-5x" aria-hidden="true"></i>
+                                            <p class="resulttext mt-3">{{resulttext}}</p>
                                         </div>
-<!--                                        <div id="" style="position: absolute;left: 10px;bottom:10px">-->
-<!--                                            <p>red:reductsFeatureSize</p>-->
-<!--                                            <p>black:notReductsFeatureSize</p>-->
-<!--                                        </div>-->
-<!--                                        <div id="copy" style="position: absolute;right: 10px;bottom: 10px">-->
-<!--                                            <button type="button" class="btn btn-primary"-->
-<!--                                                    v-on:click="copyreducts(algorithmIndex)">copy-->
-<!--                                            </button>-->
-<!--                                        </div>-->
                                     </div>
+                                    <!--                                        <div id="" style="position: absolute;left: 10px;bottom:10px">-->
+                                    <!--                                            <p>red:reductsFeatureSize</p>-->
+                                    <!--                                            <p>black:notReductsFeatureSize</p>-->
+                                    <!--                                        </div>-->
+                                    <!--                                        <div id="copy" style="position: absolute;right: 10px;bottom: 10px">-->
+                                    <!--                                            <button type="button" class="btn btn-primary"-->
+                                    <!--                                                    v-on:click="copyreducts(algorithmIndex)">copy-->
+                                    <!--                                            </button>-->
+                                    <!--                                        </div>-->
                                 </div>
                             </div>
                         </div>
@@ -191,32 +190,33 @@
             </div>
         </div>
     </div>
+</div>
 
 
-    <hr>
+<hr>
 
-    <div id="schemesdetailspop"></div>
-    <div id="datasetdetailspop"></div>
+<div id="schemesdetailspop"></div>
+<div id="datasetdetailspop"></div>
 
-        <div class="modal fade" id="datasetSelectpop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">warn</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group text-center">
-                                <label for="message-text" class="control-label">please choose dataset</label>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">return</button>
-                    </div>
-                </div>
+<div class="modal fade" id="datasetSelectpop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">warn</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group text-center">
+                        <label for="message-text" class="control-label">please choose dataset</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">return</button>
+            </div>
+        </div>
+    </div>
     <textarea id="copyinput" style="display:none">copy内容</textarea>
     <script type="text/javascript">
         var vue_demo_algorithms = new Vue({
@@ -348,10 +348,10 @@
                         width:"300",
                         height:"600",
                         showButton: false
-            });
-        }
+                    });
+                }
 
-        },
+            },
             created: function () {
                 $.get(demoVisitorBaseURL+"/getAllAlgorithmInfo", function (data) {
                     vue_demo_algorithms.algorithms = data;
@@ -397,19 +397,19 @@
             $('[data-toggle="tooltip"]').tooltip();
             setTimeout(function(){initialization()}, 800);
         });
-        
+
         function initialization() {
             $('#algorithmcollapseOne0').collapse('toggle');
             $('.datasetOption0').selected=true
-            // var enjoyhint_instance = new EnjoyHint({});
-            //
-            // var enjoyhint_script_steps = [
-            //     {
-            //         'click #run0' : '点击这个按钮'
-            //     }
-            // ]
-            // enjoyhint_instance.set(enjoyhint_script_steps);
-            // enjoyhint_instance.run();
+// var enjoyhint_instance = new EnjoyHint({});
+//
+// var enjoyhint_script_steps = [
+//     {
+//         'click #run0' : '点击这个按钮'
+//     }
+// ]
+// enjoyhint_instance.set(enjoyhint_script_steps);
+// enjoyhint_instance.run();
 
         }
 
@@ -460,6 +460,8 @@
             vue_demo_algorithm_details.algorithm = vue_demo_algorithms.algorithms[algorithmIndex];
             $('#algorithmdetailspop').show();
         }
+
+
     </script>
 </body>
 

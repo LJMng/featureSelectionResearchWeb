@@ -9,8 +9,9 @@
                 <div class="center mt-2" style="display: inline-block">
                     <p class="h4 text-center" id="demo_guide_guidetext">{{demo_guide_guidetext}}</p>
                     <hr class="simple" color="#6f5499" />
-                    <a href="#algorithms">
-                        <button type="button" class="btn badge-primary btn-sm " id="demo_guide_button_text1">
+                    <a href="#run0">
+                        <button type="button" class="btn badge-primary btn-sm " id="demo_guide_button_text1"
+                                onclick="gudie()">
                             <p class="mr-5 ml-5 mt-0 mb-0 text-center" style="font-size:20px" >{{demo_guide_button_text1}}</p>
                         </button>
                     </a>
@@ -52,6 +53,28 @@
                 });
             }
         });
+
+        function gudie() {
+            const driver = new Driver();
+            if($.cookie("language") == 'ch'){
+                driver.highlight({
+                    element: '#run0',
+                    popover: {
+                        title: '点击',
+                        description: '点击查看结果',
+                    }
+                });
+            }else{
+                driver.highlight({
+                    element: '#run0',
+                    popover: {
+                        title: 'click it',
+                        description: 'click it to get result',
+                    }
+                });
+            }
+
+        }
     </script>
 </body>
 
