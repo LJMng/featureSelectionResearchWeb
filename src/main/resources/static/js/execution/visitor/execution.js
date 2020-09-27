@@ -60,6 +60,10 @@ var app = new Vue({
         modal_btn_confirm: '',
         modal_btn_cancel: '',
         modal_btn_submit: '',
+        dataset_pages: 0,
+        dataset_page_num: 0,
+        dataset_current_page: 1,
+        dataset_list_page: [],
         //------------------HeaderNav-----------------
         navHead_li1: '',
         navHead_li2: '',
@@ -224,6 +228,11 @@ var app = new Vue({
         });
         axios.get('/execution/getDatasetList').then((response) => {
             this.datasetList=response.data;
+            this.dataset_page_num = 3;
+            let keys = Object.keys(this.datasetList);
+            let totals = keys.length;
+            this.dataset_pages = Math.floor(totals/this.dataset_page_num)+1;
+            this.dataset_list_page = keys.slice(0, this.dataset_page_num);
         });
         axios.get('/execution/getProcedureSettingsList').then((response) => {
             this.ProcedureSettingsList = response.data;
@@ -235,6 +244,44 @@ var app = new Vue({
         });
     },
     methods: {
+        goPublicDataset: function () {
+            $('#nav-dataset-tab').addClass('show');
+            $('#nav-dataset-tab').addClass('active');
+            $('#nav-dataset-tab').attr('aria-selected', 'true');
+            $('#nav-dataset').addClass('show');
+            $('#nav-dataset').addClass('active');
+            $('#nav-new-tab').removeClass('show');
+            $('#nav-new-tab').removeClass('active');
+            $('#nav-new-tab').attr('aria-selected', 'false');
+            $('#nav-new').removeClass('show');
+            $('#nav-new').removeClass('active');
+
+        },
+        changeDatasetListPage: function(currentPage, action) {
+            if (action==1) {
+                this.dataset_list_page = Object.keys(this.datasetList).slice(currentPage*3, currentPage*3+3);
+            } else if (action==0){
+                this.dataset_list_page = Object.keys(this.datasetList).slice(currentPage*3-3, currentPage*3);
+            } else {
+                this.dataset_list_page = Object.keys(this.datasetList).slice(currentPage*3-6, currentPage*3-3);
+            }
+        },
+        nextDatasetPage: function (event) {
+            if (this.dataset_current_page < this.dataset_pages) {
+                this.changeDatasetListPage(this.dataset_current_page, 1);
+                this.dataset_current_page = this.dataset_current_page + 1;
+            }
+        },
+        previousPage: function (event) {
+            if (this.dataset_current_page > 1) {
+                this.changeDatasetListPage(this.dataset_current_page, -1);
+                this.dataset_current_page = this.dataset_current_page - 1;
+            }
+        },
+        goDatasetPage: function (index) {
+            this.changeDatasetListPage(index, 0);
+            this.dataset_current_page = index;
+        },
         currentTag: function (event) {
             if ($.cookie('account') == null) {
                 // TODO
@@ -358,6 +405,7 @@ var app = new Vue({
                 $('#datasetFile').attr("disabled","disabled");
                 $('#taskDatasetFeedback').addClass('invisible');
             }else{
+                this.dataset_temp={};
                 $('#datasetFile').removeAttr("disabled","disabled");
                 $('#taskDatasetInfo').removeClass("d-block");
                 $('#taskDatasetInfo').addClass("d-none");
@@ -551,19 +599,17 @@ var app = new Vue({
                     taskId: task.taskId
                 }
             }).then((response) => {
-                let results = response.data;
-                for (let i = 0;i<results.length;i++){
-                    $("#taskEchartsBody").append('<div style="height: 300px;width: 400px;margin: 0 auto" id="taskResult'+i+'"></div>');
-                    let myChart = echarts.init(document.getElementById('taskResult'+i));
-                    let result = JSON.parse(results[i].resultVal);
-                    let objKey = Object.keys(result);
-                    let values = [];
-                    for (let k in result) {
-                        values.push({value: result[k],name: k});
-                    }
+                let TaskFormat = response.data;
+                let datasetDimension = TaskFormat.datasetDimension;
+                let resultList = TaskFormat.resultList;
+                for (let i = 0;i<resultList.length;i++){
+                    $("#taskEchartsBody").append('<div style="height: 300px;width: 400px;margin: 0 auto" id="task' + task.taskId + 'Result' + i + '"></div>');
+                    let myChart = echarts.init(document.getElementById('task' + task.taskId + 'Result' + i));
+                    let objKey = ["Reduct", "NotReduct"];
+                    let values = [{value: (resultList[i].length)/datasetDimension, name: "Reduct"}, {value: 1-((resultList[i].length)/datasetDimension), name: "NotReduct"}];
                     let option = {
                         title: {
-                            text: 'Result'+(i+1),
+                            text: 'Result' + (i + 1),
                             left: 'center'
                         },
                         tooltip: {
@@ -581,8 +627,19 @@ var app = new Vue({
                                 radius: ['50%', '70%'],
                                 avoidLabelOverlap: false,
                                 label: {
-                                    show: false,
-                                    position: 'center'
+
+                                        show: true,
+                                        position: 'inside',
+                                        formatter: '{b}:{d}%',//模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。{d}数据会根据value值计算百分比
+
+                                        textStyle : {
+                                            align : 'center',
+                                            baseline : 'middle',
+                                            fontFamily : '微软雅黑',
+                                            fontSize : 15,
+                                            fontWeight : 'bolder'
+                                        }
+
                                 },
                                 emphasis: {
                                     label: {
@@ -600,6 +657,18 @@ var app = new Vue({
                     };
                     myChart.setOption(option);
                 }
+            });
+        },
+        downLoadResultFile: function (task){
+            axios.get('/execution/getTaskResult',{
+                params: {
+                    taskId: task.taskId
+                }
+            }).then((response) => {
+                let TaskFormat = response.data;
+                let datasetDimension = TaskFormat.datasetDimension;
+                let resultList = TaskFormat.resultList;
+
             });
         },
         myAlert: function (msg) {
@@ -729,6 +798,10 @@ var app = new Vue({
                 $.cookie("loginTo",'execution');
                 window.location.href = '/accountLogin';
             }
+        },
+        cancelSelectedAlgorithm: function () {
+            this.task_algorithm_id=-1;
+            this.params=null;
         }
     },
     watch: {
@@ -747,6 +820,34 @@ var app = new Vue({
             if (val!=null){
                 $('#algorithmSelectFeedback').addClass('invisible');
             }
+        },
+        task_algorithm_id: function (val, oldVal) {
+            let lang = $.cookie("language");
+            if (val!=-1){
+                if (lang=='en'){
+                    $("a[data-target='#Algorithm"+val+"Modal']").removeClass('btn-primary').addClass('btn-success').text("Selected Info");
+                }else {
+                    $("a[data-target='#Algorithm"+val+"Modal']").removeClass('btn-primary').addClass('btn-success').text("已选择算法详情");
+                }
+                $("a[data-target='#Algorithm"+val+"Modal']").next().removeClass("d-none");
+                for (const id in this.algorithmList) {
+                    if (id != val) {
+                        $("a[data-target='#Algorithm"+id+"Modal']").addClass("disabled");
+                    }
+                }
+            } else {
+                if (lang=='en'){
+                    $("a[data-target='#Algorithm"+oldVal+"Modal']").removeClass('btn-success').addClass('btn-primary').text("Select");
+                }else {
+                    $("a[data-target='#Algorithm"+oldVal+"Modal']").removeClass('btn-success').addClass('btn-primary').text("选择算法");
+                }
+                $("a[data-target='#Algorithm"+oldVal+"Modal']").next().addClass("d-none");
+                for (const id in this.algorithmList) {
+                    if (id != val) {
+                        $("a[data-target='#Algorithm"+id+"Modal']").removeClass("disabled");
+                    }
+                }
+            }
         }
     }
 });
@@ -757,36 +858,43 @@ $(function () {
         case "nav-home-tab":
             $('#nav-home-tab').addClass('show');
             $('#nav-home-tab').addClass('active');
+            $('#nav-home-tab').attr('aria-selected', 'true');
             $('#nav-home').addClass('show');
             $('#nav-home').addClass('active');
+
             break;
         case "nav-algorithms-tab":
             $('#nav-algorithms-tab').addClass('show');
             $('#nav-algorithms-tab').addClass('active');
+            $('#nav-algorithms-tab').attr('aria-selected', 'true');
             $('#nav-algorithms').addClass('show');
             $('#nav-algorithms').addClass('active');
             break;
         case "nav-new-tab":
             $('#nav-new-tab').addClass('show');
             $('#nav-new-tab').addClass('active');
+            $('#nav-new-tab').attr('aria-selected', 'true');
             $('#nav-new').addClass('show');
             $('#nav-new').addClass('active');
             break;
         case "nav-query-tab":
             $('#nav-query-tab').addClass('show');
             $('#nav-query-tab').addClass('active');
+            $('#nav-query-tab').attr('aria-selected', 'true');
             $('#nav-query').addClass('show');
             $('#nav-query').addClass('active');
             break;
         case "nav-dataset-tab":
             $('#nav-dataset-tab').addClass('show');
             $('#nav-dataset-tab').addClass('active');
+            $('#nav-dataset-tab').attr('aria-selected', 'true');
             $('#nav-dataset').addClass('show');
             $('#nav-dataset').addClass('active');
             break;
         default:
             $('#nav-home-tab').addClass('show');
             $('#nav-home-tab').addClass('active');
+            $('#nav-home-tab').attr('aria-selected', 'true');
             $('#nav-home').addClass('show');
             $('#nav-home').addClass('active');
     }

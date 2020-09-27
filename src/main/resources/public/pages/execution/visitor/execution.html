@@ -62,7 +62,7 @@
             <nav id="nav_body">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <!--Home-->
-                    <a class="nav-item nav-link" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true" @click="currentTag">{{navBody_a1}}</a>
+                    <a class="nav-item nav-link" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="false" @click="currentTag">{{navBody_a1}}</a>
                     <!--algorithms-->
                     <a class="nav-item nav-link ml-1" id="nav-algorithms-tab" data-toggle="tab" href="#nav-algorithms" role="tab" aria-controls="nav-algorithms" aria-selected="false" @click="currentTag">{{navBody_a2}}</a>
                     <!--New Task-->
@@ -232,22 +232,43 @@
                                     </svg>{{algorithms_info_parameter}}</h4>
                                     <ul class="list-group list-group-flush ml-3 pr-2 mb-4">
                                         <div class="row">
-                                            <div class="col-4 mb-3 pl-2 pr-2" v-for="(parameter,index) in parameterList[algorithm.algorithmId]">
-                                                <div class="card text-center border border-warning">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">{{parameter.parameterName}}</h5>
-                                                        <p class="card-text">{{parameter.parameterDescription}}</p>
-                                                    </div>
-                                                    <ul class="list-group list-group-flush text-left">
-                                                        <li class="list-group-item pl-2 pr-2 pt-2 pb-2">
-                                                            {{algorithms_info_parameter_li1}}{{parameter.parameterType}}</li>
-                                                        <li class="list-group-item pl-2 pr-2 pt-2 pb-2">{{algorithms_info_parameter_li2}}{{parameter.parameterDefaultValue}}</li>
-                                                    </ul>
-                                                    <div class="card-footer text-muted font-weight-light pt-1 pb-1">
-                                                        {{algorithms_info_parameter_footer}}{{index+1}}
-                                                    </div>
-                                                </div>
-                                            </div>
+<!--                                            <div class="col-4 mb-3 pl-2 pr-2" v-for="(parameter,index) in parameterList[algorithm.algorithmId]">-->
+<!--                                                <div class="card text-center border border-warning">-->
+<!--                                                    <div class="card-body">-->
+<!--                                                        <h5 class="card-title">{{parameter.parameterName}}</h5>-->
+<!--                                                        <p class="card-text">{{parameter.parameterDescription}}</p>-->
+<!--                                                    </div>-->
+<!--                                                    <ul class="list-group list-group-flush text-left">-->
+<!--                                                        <li class="list-group-item pl-2 pr-2 pt-2 pb-2">-->
+<!--                                                            {{algorithms_info_parameter_li1}}{{parameter.parameterType}}</li>-->
+<!--                                                        <li class="list-group-item pl-2 pr-2 pt-2 pb-2">{{algorithms_info_parameter_li2}}{{parameter.parameterDefaultValue}}</li>-->
+<!--                                                    </ul>-->
+<!--                                                    <div class="card-footer text-muted font-weight-light pt-1 pb-1">-->
+<!--                                                        {{algorithms_info_parameter_footer}}{{index+1}}-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+                                            <table class="table table-hover table-bordered text-center">
+                                                <thead class="table-warning">
+                                                    <tr>
+                                                        <th scope="col" style="width: ">#</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Description</th>
+                                                        <th scope="col">Type</th>
+                                                        <th scope="col" class="text-nowrap">Default Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="(parameter,index) in parameterList[algorithm.algorithmId]">
+                                                        <th scope="row">{{index+1}}</th>
+                                                        <td>{{parameter.parameterName}}</td>
+                                                        <td style="word-break: break-word; text-align: left">{{parameter.parameterDescription}}</td>
+                                                        <td>{{parameter.parameterType}}</td>
+                                                        <td>{{parameter.parameterDefaultValue}}</td>
+                                                    </tr>
+                                                </tbody>
+                                                </thead>
+                                            </table>
                                         </div>
                                     </ul>
                                 </div>
@@ -287,6 +308,7 @@
                                             <option value="0" selected>{{new_task_step1_select_default}}</option>
                                             <option v-for="(value,key,index) in datasetList" :value="key">{{value.datasetName}}</option>
                                         </select>
+
                                     </div>
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="datasetFile" ref="taskDataset" required @change="showFileName">
@@ -294,6 +316,67 @@
                                         <div class="invalid-tooltip" style="top: auto" name="taskFormCheck">{{new_task_step1_feedback1}}</div>
                                     </div>
                                 </fieldset>
+                                <div class="accordion mt-2" id="accordionDataset">
+                                    <div class="card">
+                                        <div class="card-header bg-white p-0" id="headingOneDataset">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link btn-block text-center collapsed" type="button" data-toggle="collapse" data-target="#collapseOneDataset" aria-expanded="false" aria-controls="collapseOneDataset">
+                                                    Have Problems?
+                                                </button>
+                                            </h2>
+                                        </div>
+                                        <div id="collapseOneDataset" class="collapse" aria-labelledby="headingOneDataset" data-parent="#accordionDataset">
+                                            <div class="card-body border-bottom">
+                                                <div class="alert alert-secondary mt-3" role="alert">
+                                                    <h5 class="alert-heading">Do not have dataset yet?</h5>
+                                                    <p>Go to public dataset supply website to get it!For example <a href="https://archive.ics.uci.edu/" class="badge badge-info" target="_blank">UCI</a>.</p>
+                                                    <hr>
+                                                    <h5 class="alert-heading">Do you want to try more algorithm for your dataset?</h5>
+                                                    <a href="#" class="alert-link font-weight-normal" @click="goPublicDataset">Click here to upload your dataset!</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table mt-4 mb-0">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Source</th>
+                                            <th scope="col">Size</th>
+                                            <th scope="col">Dimension</th>
+                                            <th scope="col">Records</th>
+                                            <th scope="col">Tags</th>
+                                            <th scope="col">Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(value,index) in dataset_list_page">
+                                            <th>{{datasetList[value].datasetName}}</th>
+                                            <th style="word-break: break-all"><a class="text-dark" :href="datasetList[value].datasetSource" target="_blank">{{datasetList[value].datasetSource}}</a></th>
+                                            <th>{{datasetList[value].datasetSize}}</th>
+                                            <th>{{datasetList[value].datasetDimension}}</th>
+                                            <th>{{datasetList[value].datasetRecords}}</th>
+                                            <th>{{datasetList[value].datasetTags}}</th>
+                                            <th>{{datasetList[value].datasetType}}</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item">
+                                            <a class="page-link" href="#" aria-label="Previous" @click.prevent="previousPage">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <li :class="i==dataset_current_page?'page-item active':'page-item'" v-for="i of dataset_pages"><a class="page-link" href="#" @click.prevent="goDatasetPage(i)">{{i}}</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#" aria-label="Next" @click.prevent="nextDatasetPage">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
                                 <div id="taskDatasetFeedback" class="invisible mt-2">
                                     <div class="alert alert-danger" role="alert" v-html="new_task_step1_feedback2"></div>
                                 </div>
@@ -361,7 +444,12 @@
                                                 </svg>{{algorithm.algorithmName}}</h5>
                                                 <p class="card-text">{{new_task_step2_card_p1}}:{{algorithm.ut}}</p>
                                                 <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#algorithmInfoModal" @click="getAlgorithmInfo(key)">{{new_task_step2_card_btn1}}</a>
-                                                <a href="#" class="btn btn-primary" data-toggle="modal" :data-target="'#'+algorithm.algorithmName+'Modal'" @click="getAlgorithmInfo(key)">{{new_task_step2_card_btn2}}</a>
+                                                <a href="#" class="btn btn-primary" data-toggle="modal" :data-target="'#'+'Algorithm'+algorithm.algorithmId+'Modal'" @click="getAlgorithmInfo(key)">{{new_task_step2_card_btn2}}</a>
+                                                <span class="d-none" @click="cancelSelectedAlgorithm">
+                                                    <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-x-circle-fill text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                                    </svg>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -408,7 +496,7 @@
                         </div>
                     </div>
                     <!--AlgorithmSettingModal-->
-                    <div v-for="(algorithm,key,index1) in algorithmList" class="modal fade" :id="algorithm.algorithmName+'Modal'" tabindex="-1" role="dialog" data-backdrop="static">
+                    <div v-for="(algorithm,key,index1) in algorithmList" class="modal fade" :id="'Algorithm'+algorithm.algorithmId+'Modal'" tabindex="-1" role="dialog" data-backdrop="static">
                         <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 61.8%;">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -611,7 +699,7 @@
                                     </svg>
                                 </a>
                                 &nbsp;
-                                <a class="" href="#">
+                                <a class="" href="#" @click.prevent="downLoadResultFile(task)">
                                     <svg class="bi bi-download text-primary" width="1.6em" height="1.6em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                       <path fill-rule="evenodd" d="M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z" clip-rule="evenodd"/>
                                       <path fill-rule="evenodd" d="M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z" clip-rule="evenodd"/>
@@ -873,7 +961,7 @@
                         </p>
                         <h5>{{dataset_info_p2}}</h5>
                         <p class="ml-2">
-                            {{dataset_temp.datasetSource}}
+                            <a :href="dataset_temp.datasetSource" target="_blank">{{dataset_temp.datasetSource}}</a>
                         </p>
                         <h5>{{dataset_info_p3}}</h5>
                         <p class="ml-2">

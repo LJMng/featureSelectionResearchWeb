@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import featureSelection.research.web.common.util.AlgorithmMapperValueUtil;
 import featureSelection.research.web.entity.execution.visitor.DatasetForm;
 import featureSelection.research.web.entity.execution.visitor.TaskInfo;
-import featureSelection.research.web.entity.execution.visitor.TaskResult;
+import featureSelection.research.web.entity.execution.visitor.TaskResultFormat;
 import featureSelection.research.web.service.execution.visitor.IExecutionFormsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 /**
@@ -87,7 +86,7 @@ public class ExecutionFormsController {
     }
 
     @GetMapping("/execution/getTaskResult")
-    public List<TaskResult> getTaskResults(@RequestParam("taskId")int taskId) {
+    public TaskResultFormat getTaskResults(@RequestParam("taskId")int taskId) throws JsonProcessingException {
         return formsService.getTaskResults(taskId);
     }
 

@@ -3,7 +3,7 @@ package featureSelection.research.web.service.execution.visitor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import featureSelection.research.web.entity.execution.visitor.DatasetForm;
 import featureSelection.research.web.entity.execution.visitor.TaskInfo;
-import featureSelection.research.web.entity.execution.visitor.TaskResult;
+import featureSelection.research.web.entity.execution.visitor.TaskResultFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -85,5 +85,5 @@ public interface IExecutionFormsService {
      * @param taskId 算法任务id
      * @return List<TaskResult>算法结果对象数组
      */
-    List<TaskResult> getTaskResults(int taskId);
+    TaskResultFormat getTaskResults(int taskId) throws JsonProcessingException;
 }

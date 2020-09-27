@@ -1,6 +1,8 @@
 package featureSelection.research.web.service.execution.visitor.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import featureSelection.research.web.common.service.ExecutionRabbitmqComServiceSingleton;
 import featureSelection.research.web.common.util.CSVUtill;
@@ -9,6 +11,7 @@ import featureSelection.research.web.entity.communicationJson.rabbitmqcominfo.Ex
 import featureSelection.research.web.entity.execution.visitor.DatasetForm;
 import featureSelection.research.web.entity.execution.visitor.TaskInfo;
 import featureSelection.research.web.entity.execution.visitor.TaskResult;
+import featureSelection.research.web.entity.execution.visitor.TaskResultFormat;
 import featureSelection.research.web.entity.execution.visitor.parameterFormat.AlgorithmInfo;
 import featureSelection.research.web.entity.execution.visitor.parameterFormat.ParameterFormat;
 import featureSelection.research.web.mybatisMapper.execution.visitor.*;
@@ -20,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -155,8 +160,29 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
     }
 
     @Override
-    public List<TaskResult> getTaskResults(int taskId) {
-        return taskResult.getTaskResults(taskId);
+    public TaskResultFormat getTaskResults(int taskId) throws JsonProcessingException {
+        List<int[]> resultList = new ArrayList<>();
+        TaskResultFormat resultFormat = new TaskResultFormat();
+
+        String taskSetting = taskInfoMapper.getTaskSettingById(taskId);
+        JsonNode taskSettingTree = objectMapper.readTree(taskSetting);
+        int column = taskSettingTree.get("column").asInt();
+        resultFormat.setDatasetDimension(column);
+
+        List<TaskResult> taskResults = taskResult.getTaskResults(taskId);
+        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, int[].class);
+        for (TaskResult taskResult : taskResults) {
+            JsonNode jsonNode = objectMapper.readTree(taskResult.getResultVal());
+            Iterator<JsonNode> reducts = jsonNode.withArray("reducts").elements();
+            while (reducts.hasNext()) {
+                JsonNode next = reducts.next();
+                int[] result = objectMapper.readValue(next.toString(), int[].class);
+                resultList.add(result);
+            }
+        }
+
+        resultFormat.setResultList(resultList);
+        return resultFormat;
     }
 
 }

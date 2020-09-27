@@ -75,4 +75,6 @@ public interface TaskInfoMapper {
     @Update("update task_info set task_status =#{status} where task_id=#{taskId} ")
     void updateTaskInfoStatus(@Param("status") String status,@Param("taskId") int taskId);
 
+    @Select("select algorithm_parameters from task_info where task_id = #{taskId}")
+    String getTaskSettingById(int taskId);
 }
