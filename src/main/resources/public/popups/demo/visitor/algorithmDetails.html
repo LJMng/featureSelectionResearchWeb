@@ -18,41 +18,54 @@
             <nav class="col-3" id="myScrollspy">
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#paper">Papers</a>
+                        <a class="nav-link active" href="#paper" v-if="isEn">Papers</a>
+                        <a class="nav-link active" href="#paper" v-else>论文</a>
+
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#description">Description</a>
+                        <a class="nav-link" href="#description" v-if="isEn">Description</a>
+                        <a class="nav-link" href="#description" v-else>简介</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#parameterintroduce">ParameterIntroduce</a>
+                        <a class="nav-link" href="#parameterintroduce" v-if="isEn">ParameterIntroduce</a>
+                        <a class="nav-link" href="#parameterintroduce" v-else>参数详情</a>
                     </li>
                 </ul>
             </nav>
             <div class="col-9">
                 <div id="algorithmtitle" class="text-center">
                     <h1>
-                        <i class="fa fa-star-o" aria-hidden="true"></i>{{algorithm.algorithmName}}
+                        <i class="fa fa-star-o" aria-hidden="true" ></i>{{algorithm.algorithmName}}
                     </h1>
                 </div>
                 <div id="paper" class="mt-3 mb-3">
-                    <h4>
+                    <h4 v-if="isEn">
                         <i class="fa fa-tags" aria-hidden="true"></i>
                         Papers
+                    </h4>
+                    <h4 v-else>
+                        <i class="fa fa-tags" aria-hidden="true"></i>
+                        论文
                     </h4>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item"><a href="">{{algorithm.algorithmPaperReference}}</a></li>
                     </ul>
                 </div>
                 <div id="description" class="mt-3 mb-3">
-                    <h4><i class="fa fa-tags" aria-hidden="true"></i>Description</h4>
+                    <h4 v-if="isEn"><i class="fa fa-tags" aria-hidden="true"></i>Description</h4>
+                    <h4 v-else><i class="fa fa-tags" aria-hidden="true"></i>简介</h4>
                     {{algorithm.algorithmDescription}}
                 </div>
                 <div id="parameterintroduce" class="mt-3 mb-3">
-                    <h4><i class="fa fa-tags" aria-hidden="true"></i>parameterInfo</h4>
+                    <h4 v-if="isEn"><i class="fa fa-tags" aria-hidden="true"></i>parameterInfo</h4>
+                    <h4 v-else><i class="fa fa-tags" aria-hidden="true"></i>参数详情</h4>
                     <ul class="parameterdescription list-group-flush" v-for="parameter in algorithm.parameters">
                         <li class="list-group-item">
-                            <p>parameterName：{{parameter.parameterName}}</p>
-                            <p>parameterDescription:{{parameter.parameterDescription}}</p>
+                            <p v-if="isEn">parameterName：{{parameter.parameterName}}</p><p
+                                v-else>参数名：{{parameter
+                            .parameterName}}</p>
+                            <p v-if="isEn">parameterDescription:{{parameter.parameterDescription}}</p><p v-else>参数介绍
+                            :{{parameter.parameterDescription}}</p>
                         </li>
                     </ul>
                 </div>
@@ -63,13 +76,18 @@
         var vue_demo_algorithm_details = new Vue({
             el: '#algorithmdetails',
             data: {
+                isEn:true,
                 algorithm: {
                     parameters: []
                 }
 
             },
             created: function () {
-
+                if($.cookie("language") == 'ch'){
+                    this.$set(this._data,'isEn',false)
+                }else {
+                    this.$set(this._data,'isEn',true)
+                }
             }
         });
     </script>
