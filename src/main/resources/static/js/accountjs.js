@@ -41,6 +41,10 @@ var vm =new Vue({
         },
         //待审核的用户个数
         waitingAuditAccountNumber:0,
+        deleteResultText:'',
+        deleteAccountInfo:{
+            accountId:1
+        }
 
     },
     computed:{
@@ -56,9 +60,20 @@ var vm =new Vue({
     }
     ,
     methods:{
-        deleteAccount:function (accountId) {
-            axios.get('/deleteAccount?accountId='+accountId)
+        reloadCurrentPage:function(){
             window.location.reload();
+        },
+        deleteAccount:function (accountId) {
+            this.deleteAccountInfo.accountId=accountId
+            axios.post('/deleteAccount',this.deleteAccountInfo).then((response) =>{
+                if(response.data === '删除用户信息成功！'){
+                    this.deleteResultText=response.data;
+                    $('#deleteResult'+accountId).show();
+                }
+            }).catch((err) =>{
+                console.log(err)
+            })
+
         },
         checkoutEmail:function (checkEmail) {
 
