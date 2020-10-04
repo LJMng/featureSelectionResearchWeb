@@ -2,13 +2,13 @@ package featureSelection.research.web.mybatisMapper.execution.admin;
 
 import featureSelection.research.web.entity.execution.admin.Dataset;
 import featureSelection.research.web.entity.execution.admin.DatasetForm;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Mapper
+@Repository
 public interface DatasetMapping {
     @Insert("insert into dataset (dataset_name, dataset_description, dataset_records, dataset_source, dataset_dimension,dataset_file, dataset_size, dataset_tags, dataset_type) " +
             "values (#{datasetName},#{datasetDescription},#{datasetRecords},#{datasetSource},#{datasetDimension},#{datasetFile},#{datasetSize},#{datasetTags},#{datasetType})")

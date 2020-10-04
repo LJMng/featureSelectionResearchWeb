@@ -1,13 +1,13 @@
 package featureSelection.research.web.mybatisMapper.execution.admin;
 
 import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Mapper
+@Repository
 public interface ProcedureSettingsMapper {
     @Insert("insert into procedure_settings (algorithm_id,name,name_mapper,state,options,default_option,description) values (#{algorithmId},#{name},#{nameMapper},#{state},#{options},#{defaultOption},#{description})")
     public void addProcedureSetting(ProcedureSettings procedureSettings);

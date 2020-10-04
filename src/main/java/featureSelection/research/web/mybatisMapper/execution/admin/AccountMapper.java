@@ -3,13 +3,13 @@ package featureSelection.research.web.mybatisMapper.execution.admin;
 import featureSelection.research.web.entity.execution.admin.Account;
 import featureSelection.research.web.entity.execution.admin.ApplyAccount;
 import featureSelection.research.web.entity.execution.admin.Power;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Mapper
+@Repository
 public interface AccountMapper {
     @Select("select * from account")
     public List<Account> getAccounts();

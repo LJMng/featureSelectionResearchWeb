@@ -39,7 +39,11 @@ var vm =new Vue({
         //修改管理员信息模态框结果回显
         updateResult:'',
         //修改管理员模态框class样式绑定
-        updateModalClass:''
+        updateModalClass:'',
+        //添加管理员模态框class样式绑定
+        addModalClass:'',
+        //添加管理员模态框结果信息回显
+        addResult:'',
 
     },
     computed:{
@@ -90,7 +94,6 @@ var vm =new Vue({
             this.administratorInfo.administratorId=administratorId;
             axios.post('/updateAdministrator',this.administratorInfo)
                 .then((response) => {
-                    console.log(response.data)
                     if (response.data === '修改用户信息成功！') {
                         this.updateModalClass='text-success';
                         this.updateResult=response.data;
@@ -116,8 +119,20 @@ var vm =new Vue({
         },
         addAdministrator:function () {
             axios.post('/addAdministrator',this.administratorInfo)
-                .then(() => {
-                    window.location.reload();
+                .then((response) => {
+                    if (response.data === '添加失败,不能添加用户名为“root”的管理员账户！') {
+                        this.addModalClass='text-danger';
+                        this.addResult=response.data;
+                        $("#addAdministratorResult").show();
+                    }else if (response.data === '添加管理员账户成功！') {
+                        this.addModalClass='text-success';
+                        this.addResult=response.data;
+                        $("#addAdministratorResult").show();
+                    }else {
+                        this.addModalClass='text-warning';
+                        this.addResult=response.data;
+                        $("#addAdministratorResult").show();
+                    }
                 })
                 .catch(err => {
                     console.log(err);

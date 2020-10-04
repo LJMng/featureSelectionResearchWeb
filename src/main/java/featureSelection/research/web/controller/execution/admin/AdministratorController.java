@@ -22,11 +22,7 @@ public class AdministratorController {
     @PostMapping("/updateAdministrator")
     @ResponseBody
     public String updateAdministrator(@RequestBody Administrator administrator){
-        if(administratorBusiness.updateAdministrator(administrator)){
-            return "修改用户信息成功！";
-        }else{
-            return "root管理员用户账号只能进行密码修改，账号不能修改！";
-        }
+        return administratorBusiness.updateAdministrator(administrator);
 
     }
 
@@ -41,9 +37,9 @@ public class AdministratorController {
     }
 
     @PostMapping("/addAdministrator")
+    @ResponseBody
     public String addAdministrator(@RequestBody Administrator administrator){
-        administratorBusiness.addAdministrator(administrator);
-        return "redirect: /pages/execution/admin/administrator.html";
+        return administratorBusiness.addAdministrator(administrator);
     }
 
 

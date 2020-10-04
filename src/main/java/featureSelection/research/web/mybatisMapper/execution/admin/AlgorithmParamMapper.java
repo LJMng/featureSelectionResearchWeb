@@ -2,11 +2,15 @@ package featureSelection.research.web.mybatisMapper.execution.admin;
 
 import featureSelection.research.web.entity.execution.admin.Parameter;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Mapper
+@Repository
 public interface AlgorithmParamMapper {
     @Select("select * from parameter")
     public List<Parameter> getParameters() ;

@@ -21,24 +21,26 @@ public class AdministratorBusinessImpl implements AdministratorBusiness {
     }
 
     @Override
-    public boolean updateAdministrator(Administrator administrator) {
-        System.out.println(administratorMapper.findByAdministratorId(administrator.getAdministratorId()).getAdministratorName());
-        System.out.println(administrator.getAdministratorName());
+    public String updateAdministrator(Administrator administrator) {
         if (administratorMapper.findByAdministratorId(administrator.getAdministratorId()).getAdministratorName().equals("root")){
             if (administrator.getAdministratorName().equals("root")){
                 String md5DigestAsHex = DigestUtils.md5DigestAsHex(administrator.getAdministratorPassword().getBytes());
                 administrator.setAdministratorPassword(md5DigestAsHex);
                 administratorMapper.updateAdministrator(administrator);
-                return true;
+                return "修改管理员信息成功！";
             }else {
-                System.out.println("修改出错");
-                return false;
+                return "修改管理员信息失败，root用户只能修改密码！";
             }
         }else {
-            String md5DigestAsHex = DigestUtils.md5DigestAsHex(administrator.getAdministratorPassword().getBytes());
-            administrator.setAdministratorPassword(md5DigestAsHex);
-            administratorMapper.updateAdministrator(administrator);
-            return true;
+            if (administrator.getAdministratorName().equals("root")){
+                return "普通账户不能修改用户名为“root”,请选择别的用户名进行修改！";
+            }else{
+                String md5DigestAsHex = DigestUtils.md5DigestAsHex(administrator.getAdministratorPassword().getBytes());
+                administrator.setAdministratorPassword(md5DigestAsHex);
+                administratorMapper.updateAdministrator(administrator);
+                return "修改管理员信息成功！";
+            }
+
         }
 
     }
@@ -55,15 +57,21 @@ public class AdministratorBusinessImpl implements AdministratorBusiness {
     }
 
     @Override
-    public boolean addAdministrator(Administrator administrator) {
-        if(administrator.getAdministratorPassword().equals(administrator.getConfirmAdministratorPassword())){
-            String md5DigestAsHex = DigestUtils.md5DigestAsHex(administrator.getAdministratorPassword().getBytes());
-            administrator.setAdministratorPassword(md5DigestAsHex);
-            administratorMapper.addAdministrator(administrator);
-            return true;
+    public String addAdministrator(Administrator administrator) {
+        //判断添加的账户是否为“root”用户
+        if (administrator.getAdministratorName().equals("root")){
+            return "添加失败,不能添加用户名为“root”的管理员账户！";
         }else {
-            return false;
+            if(administrator.getAdministratorPassword().equals(administrator.getConfirmAdministratorPassword())){
+                String md5DigestAsHex = DigestUtils.md5DigestAsHex(administrator.getAdministratorPassword().getBytes());
+                administrator.setAdministratorPassword(md5DigestAsHex);
+                administratorMapper.addAdministrator(administrator);
+                return "添加管理员账户成功！";
+            }else {
+                return "输入密码不一致,请重新添加！";
+            }
         }
+
 
     }
 }
