@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/webjars/bootstrap-switch/3.3.4/dist/css/bootstrap3/bootstrap-switch.css">
     <link rel="stylesheet" href="css/demovisitor.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/css/font-awesome.min.css">
     <!-- jquery -->
     <!-- 	Web jars -->
     <!-- 		jquery -->
@@ -54,7 +55,19 @@
             </div>
         </div>
     </div>
+    <!--回到首页-->
+    <div style="overflow: hidden;position: fixed;left: 10px;bottom: 20px;z-index: 10;">
+        <div style="overflow: hidden;">
+            <div style="padding-top:20px;padding-right:50px;padding-bottom:50px" >
+                <a href="#" onclick="backIndex()" style="float: right;" class="btns"><i
+                        class="fa fa-arrow-circle-o-left fa-3x"
+                        aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </div>
 </div>
+</div>
+
 <script type="text/javascript">
 
     var vue_demo_loginmodal = new Vue({
@@ -115,7 +128,7 @@
     }
 
     function toRegister(){
-        window.location.href="/pages/demo/visitor/register.html"
+        window.location.href="/accountRegister"
     }
 </script>
 </body>

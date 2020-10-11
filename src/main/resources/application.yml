@@ -6,7 +6,7 @@ spring:
     name: biz-publisher
   # 服务器邮箱
   rabbitmq:
-    host: localhost
+    host: 10.31.51.109
     port: 5672
     username: featureselectionreciver
     password: reciver

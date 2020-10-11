@@ -157,9 +157,11 @@ public class ExecutionRabbitmqComInfo {
      */
     public void sendEmailAndWriteResult(){
         JSONObject reductResultJson = (JSONObject)resultInfo;
+        String reductResultJsonString=reductResultJson.toJSONString();
         JSONArray reductarray = (JSONArray) reductResultJson.get("reducts");
         String reduct=reductarray.toJSONString();
-        taskResultMapper.insertTaskResults(taskInfo.getTaskId(),1, reduct);
+        String temp="{\"databaseUniqueID\":\"[With Unknown Field]IPNEC-EXP-S1-null-Wine-param-\",\"reducts\":[[12,32,5,16,15,19]],\"partIndex\":0,\"componentTagSumTimeMap\":{\"Sig\":2866400,\"ProcedureUtils.SUM\":3792200,\"Compact\":925800},\"extraInfo\":{}}";
+        taskResultMapper.insertTaskResults(taskInfo.getTaskId(),1, temp);
         taskInfoMapper.updateTaskInfoStatus("已完成",taskInfo.getTaskId());
         //邮件设置
         ToEmail email = new ToEmail();

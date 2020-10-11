@@ -107,7 +107,8 @@ public class DemoRabbitmqComServiceSingleton {
             if (info.get("exitInfos")!=null){
                 int DatasetDimension=Integer.parseInt(demoRabbimqComInfo.getDataset().getDatasetDimension());
                 JSONArray reductJSONArray=JSONArray.parseArray(info.get("reducts").toString());
-                int reductSize=reductJSONArray.size();
+                JSONArray reduct0JSONArray=(JSONArray) reductJSONArray.get(0);
+                int reductSize=reduct0JSONArray.size();
                 String reductPrecentage = "";// 接受百分比的值
                 double DatasetDimension_d = DatasetDimension * 1.0;
                 double reductSize_d = reductSize * 1.0;

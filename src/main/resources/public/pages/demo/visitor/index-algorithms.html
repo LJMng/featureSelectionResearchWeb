@@ -27,7 +27,6 @@
     </div>
     <br />
     <br />
-
     <!--下拉条-->
     <div class="accordion" id="accordionExample">
         <div v-for="(algorithm,algorithmIndex) in algorithms" v-bind:key="algorithmIndex">
@@ -118,8 +117,8 @@
                                                     v-on:click="getParameterInfo(algorithmIndex)">
                                             <i class="fa fa-question-circle" aria-hidden="true"></i>
                                             </button>
-                                            <button class="btn btn-primary" type="button" :id="'run'+algorithmIndex"
-                                                    v-on:click="submitParameterToExecute(algorithmIndex,algorithm.parameterSchemeIndex,algorithm.datasetIndex)" data-toggle="tooltip" data-placement="right" title="Tooltip on right"><i class="fa fa-play-circle" aria-hidden="true"></i>
+                                            <button class="btn btn-primary" type="button"  data-toggle="tooltip" title="我是提示内容!" :id="'run'+algorithmIndex"
+                                                    v-on:click="submitParameterToExecute(algorithmIndex,algorithm.parameterSchemeIndex,algorithm.datasetIndex)"><i class="fa fa-play-circle" aria-hidden="true"></i>
                                             </button>
                                         </span>
                                 </div>
@@ -326,9 +325,11 @@
                     }
                 },
                 downloadByDatasetIndex(algorithmIndex,datasetindex) {
-                    console.log(datasetindex)
-                    var toPostDatasetId = this.algorithms[algorithmIndex].datasets[datasetindex].datasetId;
-                    window.location.href = demoVisitorBaseURL+"/download?datasetid=" + toPostDatasetId;
+                    // console.log(datasetindex)
+                    // var toPostDatasetId = this.algorithms[algorithmIndex].datasets[datasetindex].datasetId;
+                    // window.location.href = demoVisitorBaseURL+"/download?datasetid=" + toPostDatasetId;
+                    var filePath=this.algorithms[algorithmIndex].datasets[datasetindex].datasetFile
+                    window.location.href =filePath
                 },
                 newDraggable(algorithmIndex,parameterSchemeIndex) {
                     var testdemo_algorithms_title=this.demo_algorithms_title
@@ -461,7 +462,14 @@
             $('#algorithmdetailspop').show();
         }
 
-
+        function GetPercent(num, total) {
+            num = parseFloat(num);
+            total = parseFloat(total);
+            if (isNaN(num) || isNaN(total)) {
+                return "-";
+            }
+            return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00)+"%";
+        }
     </script>
 </body>
 

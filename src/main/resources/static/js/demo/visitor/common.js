@@ -17,6 +17,12 @@ function toexecution() {
     $("#loginbutton").click()
   }
 };
+
+function backPrePage(){
+  window.history.go(-1);
+};
+
+
 //回到首页
 function backIndex() {
   window.location.href = baseURL;

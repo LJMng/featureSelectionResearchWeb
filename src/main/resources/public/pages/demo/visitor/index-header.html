@@ -102,10 +102,10 @@
                 onSwitchChange: function (event, state) {
                     if (state == false) {
                         $.cookie("language", "ch")
-                        window.location.href = baseURL;
+                        window.location.reload();;
                     } else {
                         $.cookie("language", "en")
-                        window.location.href = baseURL;
+                        window.location.reload();;
                     }
                 }
             });
