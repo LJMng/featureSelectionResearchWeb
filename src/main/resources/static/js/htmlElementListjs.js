@@ -30,14 +30,9 @@ var vm=new Vue({
             enValue:'',
             type:''
         },
-
-
         vueListCurrPage:1,
         vueListPageSize:10,
         administratorName:''
-
-
-
     },
     computed:{
         filterPageElement(){
@@ -55,17 +50,14 @@ var vm=new Vue({
             //过滤获得的属性
             let fPageElement;
             //对datasetMap进行过滤
-            fPageElement=this.pageElements.filter(p => p.moduleKey.indexOf(this.moduleKey)!==-1)
-
-
+            fPageElement=pageElements.filter(p => p.moduleKey.indexOf(moduleKey)!==-1 | p.htmlName.indexOf(moduleKey) !== -1)
             //获取列表大小
             const totalSize=fPageElement.length;
             var pageElementList= new Array();
             var j=0;
-
-            console.log(ListCurrPage);
-            console.log(ListPageSize);
-            console.log(totalSize)
+            // console.log(ListCurrPage);
+            // console.log(ListPageSize);
+            // console.log(totalSize)
             for (var i=0;i<totalSize;i++){
                 if(i>(this.vueListCurrPage-1)*this.vueListPageSize  &&  i<=this.vueListCurrPage*this.vueListPageSize){
                     pageElementList[j]=fPageElement[i];

@@ -207,9 +207,10 @@
                                         <input type="password"  class="form-control" id="addConfirmAdministratorPassword" v-model="administratorInfo.confirmAdministratorPassword">
                                     </div>
                                 </form>
+                                <div v-bind:class="addModalClass" id="addAdministratorResult" style="text-align: center">{{addResult}}</div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-secondary" @click="reloadCurrentPage" data-dismiss="modal">取消</button>
                                 <button type="button" class="btn btn-primary" @click="addAdministrator">添加</button>
                             </div>
                         </div>

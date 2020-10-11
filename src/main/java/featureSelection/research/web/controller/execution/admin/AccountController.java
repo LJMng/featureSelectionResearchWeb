@@ -39,10 +39,11 @@ public class AccountController {
         return "redirect: /pages/execution/admin/account.html";
     }
 
-    @GetMapping("/deleteAccount")
-    public String deleteAccount(int accountId){
-        accountBusiness.deleteAccount(accountId);
-        return "redirect: /pages/execution/admin/account.html";
+    @PostMapping("/deleteAccount")
+    @ResponseBody
+    public String deleteAccount(@RequestBody Account account){
+        accountBusiness.deleteAccount(account.getAccountId());
+        return "删除用户信息成功！";
     }
 
     @PostMapping("/updateAccountPower")

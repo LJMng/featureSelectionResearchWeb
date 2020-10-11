@@ -5,11 +5,15 @@ import featureSelection.research.web.entity.execution.admin.AvailableDataset4Alg
 import featureSelection.research.web.entity.execution.admin.Parameter;
 import featureSelection.research.web.entity.execution.admin.WebAlgorithmMapperEntity;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Mapper
+@Repository
 public interface AlgorithmMapper {
     @Select("select * from algorithm")
     public List<Algorithm> getAlgorithms();

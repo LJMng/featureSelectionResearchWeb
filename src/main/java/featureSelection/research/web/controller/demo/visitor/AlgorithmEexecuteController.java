@@ -1,12 +1,13 @@
 package featureSelection.research.web.controller.demo.visitor;
+
 import featureSelection.research.web.common.service.DemoRabbitmqComServiceSingleton;
 import featureSelection.research.web.common.util.ResultUtil;
 import featureSelection.research.web.entity.Result;
 import featureSelection.research.web.entity.communicationJson.rabbitmqcominfo.DemoRabbimqComInfo;
 import featureSelection.research.web.entity.demo.visitor.Algorithm;
 import featureSelection.research.web.entity.demo.visitor.Dataset;
-import featureSelection.research.web.service.demo.visitor.impl.IAlgorithmServiceImpl;
 import featureSelection.research.web.service.demo.visitor.impl.DatasetServiceImpl;
+import featureSelection.research.web.service.demo.visitor.impl.IAlgorithmServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,7 +63,7 @@ public class  AlgorithmEexecuteController {
     }
 
     @GetMapping("getAllAlgorithmInfo")
-    public List<Algorithm>getAllAlgorithmInfo(){
+    public List<Algorithm> getAllAlgorithmInfo(){
         return algorithmserviceImpl.getAllAlgorithmInfo();
     }
 

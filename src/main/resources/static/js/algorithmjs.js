@@ -1,6 +1,6 @@
-$(document).ready(function(){
-    $('[data-toggle="popover"]').popover();
-});
+// $(document).ready(function(){
+//     $('[data-toggle="popover"]').popover();
+// });
 
 $(function () {
     // 网页一打开，就执行这个js初始方法，可以自行百度一下相关介绍与用法
@@ -15,6 +15,63 @@ $(function () {
         labelWidth: "15px"
     });
 
+});
+
+$(document).ready(function() {
+    $('.multi-step').MultiStep({
+        title:'步骤框',
+        data:[{
+            content:'Hi!!',
+            label:'参数一',
+            skip:false
+        },{
+            content:'这是一个多步骤模式',
+            label:'参数二',
+            skip:true
+        },{
+            content:`你可以选择跳过`,
+            label:'参数三',
+            skip:true
+        }, {
+            content:`你可以选择跳过`,
+            label:'参数三',
+            skip:true
+        }, {
+            content:`你可以选择跳过`,
+            label:'参数三',
+            skip:true
+        }, {
+            content:'这是一个多步骤模式',
+            label:'参数二',
+            skip:true
+        },{
+            content:`你可以选择跳过`,
+            label:'参数三',
+            skip:true
+        }, {
+            content:`你可以选择跳过`,
+            label:'参数三',
+            skip:true
+        }, {
+            content:`你可以选择跳过`,
+            label:'参数三',
+            skip:true
+        },{
+            content:`<small>您也可以包含HTML内容！</small><br><br>
+			<div class="form-group">
+				<label for="exampleInputEmail1">电邮地址</label>
+				<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+				<small id="emailHelp" class="form-text text-muted">我们绝不会把你的邮件告诉别人。
+
+</small>
+			  </div>
+			`,
+            label:'参数四',
+            skip:true
+        }],
+        final:'参数信息',
+        modalSize:'lg'
+    });
 });
 
 var vm =new Vue({
@@ -1117,5 +1174,3 @@ Vue.component('append', {
         })
     }
 });
-
-var hub = new Vue();

@@ -38,15 +38,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="htu'ptp://localhost:8000/">{{navHead_li1}}<span class="sr-only">
-                                (current)</span></a>
-                        </li>
                         <li class="nav-item active">
                             <a class="nav-link" href="/execution">{{navHead_li2}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">{{navHead_li3}}</a>
+                            <a class="nav-link" href="/pages/demo/visitor/aboutus.html">{{navHead_li3}}</a>
                         </li>
                     </ul>
                 </div>
@@ -214,7 +210,7 @@
                                     </svg>{{algorithms_info_intro}}</h4>
                                     <div class="jumbotron jumbotron-fluid mb-4 pt-2 pb-2 rounded">
                                         <div class="container">
-                                            <p class="lead mb-0" v-html="algorithm.algorithmDescription"></p>
+                                            <p class="lead mb-0" v-html="language=='en'?algorithm.algorithmEnDescription:algorithm.algorithmDescription"></p>
                                         </div>
                                     </div>
                                     <!--introduction2-->
@@ -321,18 +317,18 @@
                                         <div class="card-header bg-white p-0" id="headingOneDataset">
                                             <h2 class="mb-0">
                                                 <button class="btn btn-link btn-block text-center collapsed" type="button" data-toggle="collapse" data-target="#collapseOneDataset" aria-expanded="false" aria-controls="collapseOneDataset">
-                                                    Have Problems?
+                                                    {{new_task_step1_btn1}}
                                                 </button>
                                             </h2>
                                         </div>
                                         <div id="collapseOneDataset" class="collapse" aria-labelledby="headingOneDataset" data-parent="#accordionDataset">
                                             <div class="card-body border-bottom">
                                                 <div class="alert alert-secondary mt-3" role="alert">
-                                                    <h5 class="alert-heading">Do not have dataset yet?</h5>
-                                                    <p>Go to public dataset supply website to get it!For example <a href="https://archive.ics.uci.edu/" class="badge badge-info" target="_blank">UCI</a>.</p>
+                                                    <h5 class="alert-heading" v-html="new_task_step1_h1"></h5>
+                                                    <p v-html="new_task_step1_p1"></p>
                                                     <hr>
-                                                    <h5 class="alert-heading">Do you want to try more algorithm for your dataset?</h5>
-                                                    <a href="#" class="alert-link font-weight-normal" @click="goPublicDataset">Click here to upload your dataset!</a>
+                                                    <h5 class="alert-heading" v-html="new_task_step1_h2"></h5>
+                                                    <a href="#" class="alert-link font-weight-normal" @click="goPublicDataset" v-text="new_task_step1_a1"></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -341,13 +337,13 @@
                                 <table class="table mt-4 mb-0">
                                     <thead class="table-primary">
                                         <tr>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Source</th>
-                                            <th scope="col">Size</th>
-                                            <th scope="col">Dimension</th>
-                                            <th scope="col">Records</th>
-                                            <th scope="col">Tags</th>
-                                            <th scope="col">Type</th>
+                                            <th scope="col">{{query_task_table_th2}}</th>
+                                            <th scope="col">{{dataset_info_p2}}</th>
+                                            <th scope="col">{{dataset_info_p3}}</th>
+                                            <th scope="col">{{dataset_info_p4}}</th>
+                                            <th scope="col">{{dataset_info_p5}}</th>
+                                            <th scope="col">{{dataset_info_p6}}</th>
+                                            <th scope="col">{{dataset_info_p7}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -510,7 +506,7 @@
                                     </div>
                                     <div class="card mb-4 shadow-sm">
                                         <div class="alert alert-warning text-center" role="alert">
-                                            Basic Parameters
+                                            {{algorithm_setting1}}
                                         </div>
                                         <div class="row m-0" v-for="(param,index2) in parameterList[algorithm.algorithmId]" v-if="param.parameterSettingInfo!=null">
                                             <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='text'">{{param.parameterName}}
@@ -523,7 +519,7 @@
                                             <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='text'">
                                                 <input type="text" class="form-control" :id="algorithm.algorithmName+param.parameterName+'Basic'" :name="algorithm.algorithmName+param.parameterName">
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button" @click="setParamDefault(algorithm,param)">Default</button>
+                                                    <button class="btn btn-outline-secondary" type="button" @click="setParamDefault(algorithm,param)">{{algorithm_setting_btn1}}</button>
                                                 </div>
                                             </div>
                                             <div class="col-4" v-if="param.parameterSettingInfo.type=='text'"></div>
@@ -541,7 +537,7 @@
                                                     <option v-for="(option,index3) in param.parameterSettingInfo.options" :value="option">{{option}}</option>
                                                 </select>
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button" @click="setParamDefault(algorithm,param)">Default</button>
+                                                    <button class="btn btn-outline-secondary" type="button" @click="setParamDefault(algorithm,param)">{{algorithm_setting_btn1}}</button>
                                                 </div>
                                             </div>
                                             <div class="col-4" v-if="param.parameterSettingInfo.type=='selection'">
@@ -581,7 +577,7 @@
                                     </div>
                                     <div class="card mb-4 shadow-sm">
                                         <div class="alert alert-warning text-center" role="alert">
-                                            Procedure Settings
+                                            {{algorithm_setting2}}
                                         </div>
                                         <div class="row m-0" v-for="(ps,index2) in ProcedureSettingsList[algorithm.algorithmId]">
                                             <div class="col-3 p-2">
@@ -600,7 +596,7 @@
                                                     <option v-for="(option,index3) in ps.options" :selected="option==ps.defaultOption?'selected':null" :value="option">{{option}}</option>
                                                 </select>
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button" @click="setProcedureDefault(algorithm,ps)">Default</button>
+                                                    <button class="btn btn-outline-secondary" type="button" @click="setProcedureDefault(algorithm,ps)">{{algorithm_setting_btn1}}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -608,8 +604,8 @@
                                 </div>
                                 <div class="modal-footer">
                                     <span class="text-success"></span>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" @click="saveAlgorithmSettings($event,algorithm)">Save changes</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modal_btn_cancel}}</button>
+                                    <button type="button" class="btn btn-primary" @click="saveAlgorithmSettings($event,algorithm)">{{algorithm_setting_save}}</button>
                                 </div>
                             </div>
                         </div>
@@ -1018,7 +1014,7 @@
                             </svg>{{algorithms_info_intro}}</h4>
                             <div class="jumbotron jumbotron-fluid mb-4 pt-2 pb-2 rounded">
                                 <div class="container">
-                                    <p class="lead mb-0">{{algorithm_info_temp.algorithmDescription}}</p>
+                                    <p class="lead mb-0" v-html="language=='en'?algorithm_info_temp.algorithmEnDescription:algorithm_info_temp.algorithmDescription">{{algorithm_info_temp.algorithmDescription}}</p>
                                 </div>
                             </div>
                             <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

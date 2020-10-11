@@ -12,10 +12,13 @@
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
     <!---->
     <link rel="stylesheet" href="/webjars/bootstrap-switch/3.3.4/dist/css/bootstrap3/bootstrap-switch.css">
+    <link rel="stylesheet" type="text/css" href="/css/execution/admin/MultiStep.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/execution/admin/MultiStep-theme.min.css">
     <!-- jquery -->
     <!-- 	Web jars -->
     <!-- 		jquery -->
-    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<!--    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>-->
     <script src="/webjars/jquery-cookie/jquery.cookie.js"></script>
     <!-- 		Vue.js -->
     <script src="/webjars/vue/vue.min.js"></script>
@@ -252,17 +255,18 @@
                                             data-target="#setDataset4Algorithm"
                                             @click="setDataset4AlgorithmOfAlgorithmId(msg.algorithmId)">数据集
                                     </button>
-                                    <button type="button" class="btn btn-success" data-toggle="modal"
-                                                 data-target="#InsertParam">参数添加
+                                    <button type="button"  class="btn btn-success" data-toggle="modal"
+                                                 data-target="#submitModal">参数添加
                                     </button>
                                     <button type="button" class="btn btn-success" data-toggle="modal"
-                                            data-target="">步骤添加
+                                            data-target="#submitModal">步骤添加
                                     </button>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
+                    <!-- 算法参数添加模态框 -->
                     <div id="submitModal" class="multi-step"> </div>
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                         <div class="col-md-12">
@@ -1005,6 +1009,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- 通过Excel文件添加算法信息模态框 -->
                 <div class="modal fade" id="createAlgorithmInfoByExcelFile" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -1663,6 +1668,11 @@
             </main>
         </div>
     </div>
+<!--    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>-->
+<!--    &lt;!&ndash; 		Bootstrap &ndash;&gt;-->
+<!--    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>-->
+    <script type="text/javascript" src="/js/execution/admin/MultiStep.min.js"></script>
+<!--    <script type="text/javascript" src="/js/execution/admin/index.js"></script>-->
     <script type="text/javascript" src="/js/algorithmjs.js"></script>
 </div>
 </body>
