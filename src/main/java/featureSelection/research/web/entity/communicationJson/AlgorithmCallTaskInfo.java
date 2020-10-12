@@ -48,23 +48,21 @@ public class AlgorithmCallTaskInfo {
     @JSONField(name = "dataset-name")
     private String datasetName;
     private int part;
-    private String column;
+    private int column;
     @JSONField(name = "part-data-size")
-    private String partDataSize;
+    private int partDataSize;
     @JSONField(name = "algorithm-info")
     private AlgorithmInfo algorithmInfo;
     @JSONField(name = "previous-reducts")
     private String previousReducts;
     @JSONField(name = "run-times")
     private String runTimes;
-    private int line;
-    @JSONField(name = "part-total-line")
-    private int partTotalLine;
-    private int[]data;
-    private String attributes;
+
+    private int[] attributes;
     @JSONField(name = "rabbitmqInfo")
 
     private LocalRabbitmqInfo localRabbitmqInfo;
+
     public String getId() {
         return id;
     }
@@ -89,19 +87,19 @@ public class AlgorithmCallTaskInfo {
         this.part = part;
     }
 
-    public String getColumn() {
+    public int getColumn() {
         return column;
     }
 
-    public void setColumn(String column) {
+    public void setColumn(int column) {
         this.column = column;
     }
 
-    public String getPartDataSize() {
+    public int getPartDataSize() {
         return partDataSize;
     }
 
-    public void setPartDataSize(String partDataSize) {
+    public void setPartDataSize(int partDataSize) {
         this.partDataSize = partDataSize;
     }
 
@@ -129,37 +127,14 @@ public class AlgorithmCallTaskInfo {
         this.runTimes = runTimes;
     }
 
-    public String getAttributes() {
+    public int[] getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(String attributes) {
+    public void setAttributes(int[] attributes) {
         this.attributes = attributes;
     }
 
-    public int getLine() {
-        return line;
-    }
-
-    public void setLine(int line) {
-        this.line = line;
-    }
-
-    public int getPartTotalLine() {
-        return partTotalLine;
-    }
-
-    public void setPartTotalLine(int partTotalLine) {
-        this.partTotalLine = partTotalLine;
-    }
-
-    public int[] getData() {
-        return data;
-    }
-
-    public void setData(int[] data) {
-        this.data = data;
-    }
 
     public LocalRabbitmqInfo getLocalRabbitmqInfo() {
         return localRabbitmqInfo;
@@ -167,24 +142,5 @@ public class AlgorithmCallTaskInfo {
 
     public void setLocalRabbitmqInfo(LocalRabbitmqInfo localRabbitmqInfo) {
         this.localRabbitmqInfo = localRabbitmqInfo;
-    }
-
-    @Override
-    public String toString() {
-        return "AlgorithmCallTaskInfo{" +
-                "id='" + id + '\'' +
-                ", datasetName='" + datasetName + '\'' +
-                ", part=" + part +
-                ", column='" + column + '\'' +
-                ", partDataSize='" + partDataSize + '\'' +
-                ", algorithmInfo=" + algorithmInfo +
-                ", previousReducts='" + previousReducts + '\'' +
-                ", runTimes='" + runTimes + '\'' +
-                ", line=" + line +
-                ", partTotalLine=" + partTotalLine +
-                ", data=" + Arrays.toString(data) +
-                ", attributes='" + attributes + '\'' +
-                ", localRabbitmqInfo=" + localRabbitmqInfo +
-                '}';
     }
 }

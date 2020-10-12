@@ -39,9 +39,8 @@ public class DemoRabbitmqComServiceSingleton {
     public static void addDemoRabbitmqComInfo(DemoRabbimqComInfo demoRabbimqComInfo) {
         demoRabbimqComInfos.put(demoRabbimqComInfo.getDemoRabbimqComTaskId(), demoRabbimqComInfo);
         //Rabbitmq服务处理类开始发送rabbitmq连接信息
-        demoRabbimqComInfo.sendRabbitmqConnectRequestInfo();
         log.info(new Date().toString()+"--"+"demoService:"+demoRabbimqComInfo.getDemoRabbimqComTaskId()+
-                "send connectInfo");
+                "send connectInfo"+demoRabbimqComInfo.sendRabbitmqConnectRequestInfo());
     }
 
     /**

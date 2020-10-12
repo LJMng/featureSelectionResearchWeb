@@ -10,6 +10,7 @@ import featureSelection.research.web.common.util.SpringUtil;
 import featureSelection.research.web.entity.communicationJson.AlgorithmCallTaskInfo;
 import featureSelection.research.web.entity.communicationJson.AlgorithmInfo;
 import featureSelection.research.web.entity.communicationJson.AlgorithmSetting;
+import featureSelection.research.web.entity.communicationJson.SendDataSetInfo;
 import featureSelection.research.web.entity.communicationJson.localrabbitmqinfo.LocalDemoRabbitmqInfo;
 import featureSelection.research.web.entity.demo.visitor.*;
 import featureSelection.research.web.mybatisMapper.demo.visitor.AlgorithmMapper;
@@ -28,7 +29,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
  * @ClassName : DemoRabbimqComInfo
  * @Description :Demo系统rabbitmq通讯信息类，当需要调用算法服务端时，新建该类
  * @Author : WDD
@@ -60,10 +60,11 @@ public class DemoRabbimqComInfo {
     /**
      * 根据schemeId和algorithmId初始化通讯信息类信息
      * 设置demoRabbimqComTaskId、routingkey、algorithmId、exchange、dataset、parameterScheme、rabbitmqTemplate
+     *
      * @param schemeId：参数方案id
      * @param algorithmId：算法id
      */
-    public DemoRabbimqComInfo(int schemeId, int algorithmId,int datasetId) {
+    public DemoRabbimqComInfo(int schemeId, int algorithmId, int datasetId) {
         Algorithm algorithm = algorithmMapper.getAlgorithmInfoById(algorithmId);
 
         //根据算法id查询该算法对应的服务端rabbitmq的配置，并根据配置信息实例化connectionFactory类
@@ -91,7 +92,7 @@ public class DemoRabbimqComInfo {
     /**
      * 向算法服务端建立连接
      */
-    public void sendRabbitmqConnectRequestInfo() {
+    public String sendRabbitmqConnectRequestInfo() {
         AlgorithmCallTaskInfo connectenity = schemeInfoToRequestEnity();
         connectenity.setLocalRabbitmqInfo(this.localDemoRabbitmqInfo);
         connectenity.setId(this.demoRabbimqComTaskId);
@@ -102,11 +103,13 @@ public class DemoRabbimqComInfo {
         //发送信息请求与rabbitmq建立通讯
         this.rabbitmqTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
         this.rabbitmqTemplate.convertAndSend(exchange, routingkey, connectJsondata);
+        return connectJsondata.toJSONString();
 
     }
 
     /**
      * 封装发送至rabbitmq建立通讯的请求信息实体
+     *
      * @return AlgorithmCallTaskInfo：发送至rabbitmq建立通讯的请求信息实体
      */
     private AlgorithmCallTaskInfo schemeInfoToRequestEnity() {
@@ -130,27 +133,29 @@ public class DemoRabbimqComInfo {
             //判断参数类型
             //text类型的情况，此时输入值为数值型类型
             if (parameterSchemeValue.getParameter().getParameterType().equals("text")) {
-                String inputValueString=parameterSchemeValue.getParameterInputValue();
-                if(inputValueString.contains(".")){
-                    basicSettingValue.put("input",Float.parseFloat(parameterSchemeValue.getParameterInputValue()));
-                }else{
-                    basicSettingValue.put("input",Integer.parseInt(parameterSchemeValue.getParameterInputValue()));
+                String inputValueString = parameterSchemeValue.getParameterInputValue();
+                if (inputValueString.contains(".")) {
+                    basicSettingValue.put("input", Float.parseFloat(parameterSchemeValue.getParameterInputValue()));
+                } else {
+                    basicSettingValue.put("input", Integer.parseInt(parameterSchemeValue.getParameterInputValue()));
                 }
             }
             //selection类型的参数，此时除了input还带有option的参数
             else if (parameterSchemeValue.getParameter().getParameterType().equals("selection")) {
                 String parameterInputWebKey = parameterSchemeValue.getParameterInputValue();
                 String parameterOptionWebKey = parameterSchemeValue.getParameterOptionValue();
-                String parameterOptionValue = algorithmMapperValueUtil.getParameterValue(algorithmId,paramterid,
-                        parameterOptionWebKey,null);
+                String parameterOptionValue = algorithmMapperValueUtil.getParameterValue(algorithmId, paramterid,
+                        parameterOptionWebKey, null);
                 //先插入select的方法
-                basicSettingValue.put("option",parameterOptionValue);
-                //正则表达式，检验input是否为数字，一般为数字
-                Pattern pattern = Pattern.compile("-?[0-9]+\\.?[0-9]*");
-                Matcher isNum = pattern.matcher(parameterInputWebKey);
-                //匹配成功,input为数字
-                if (isNum.matches()) {
-                    basicSettingValue.put("input", Integer.parseInt(parameterInputWebKey));
+                basicSettingValue.put("option", parameterOptionValue);
+                if (parameterInputWebKey != null) {
+                    //正则表达式，检验input是否为数字，一般为数字
+                    Pattern pattern = Pattern.compile("-?[0-9]+\\.?[0-9]*");
+                    Matcher isNum = pattern.matcher(parameterInputWebKey);
+                    //匹配成功,input为数字
+                    if (isNum.matches()) {
+                        basicSettingValue.put("input", Integer.parseInt(parameterInputWebKey));
+                    }
                 }
             }
             //radio类型的参数：即单选框
@@ -158,20 +163,20 @@ public class DemoRabbimqComInfo {
                 String parameterWebKey = parameterSchemeValue.getParameterOptionValue();
                 String parameterMapperName = algorithmMapperValueUtil.getParameterValue(algorithmId,
                         paramterid, parameterWebKey, null);
-                basicSettingValue.put("option",parameterMapperName);
+                basicSettingValue.put("option", parameterMapperName);
             }
             //checkbox类型的参数：即多选框
             else if (parameterSchemeValue.getParameter().getParameterType().equals("checkbox")) {
                 String[] parameterWebKeys = parameterSchemeValue.getParameterOptionValue().split(",");
-                List<String>parameterMapperNames=new ArrayList<>();
+                List<String> parameterMapperNames = new ArrayList<>();
 
-                for (int i = 0; i <parameterWebKeys.length; i++) {
+                for (int i = 0; i < parameterWebKeys.length; i++) {
                     parameterMapperNames.add(algorithmMapperValueUtil.getParameterValue(algorithmId,
                             paramterid, parameterWebKeys[i], null));
                 }
-                basicSettingValue.put("option",parameterMapperNames);
+                basicSettingValue.put("option", parameterMapperNames);
             }
-            basicSettings.put(parameterSchemeValue.getParameter().getParameterNameMapper(),basicSettingValue);
+            basicSettings.put(parameterSchemeValue.getParameter().getParameterNameMapper(), basicSettingValue);
         }
         //步骤信息
         Map<String, Map<String, Object>> procedureSetting = new HashMap<>();
@@ -179,12 +184,12 @@ public class DemoRabbimqComInfo {
                 schemeProcedureMapper.getSchemeProceduresBySchemeId(parameterScheme.getSchemeId());
         for (SchemeProcedure schemeprocedure : schemeProcedures) {
             Map proceduredatamap = (Map) JSON.parse(schemeprocedure.getProcedureSettingData());
-            String procedureNameMapper=schemeprocedure.getProcedureSettings().getNameMapper();
-            int procedureSettingId=schemeprocedure.getProcedureSettings().getId();
-            String procedureDataWebkey= (String) proceduredatamap.get("data");
-            String procedureDataValue=algorithmMapperValueUtil.getProcedureValue(algorithmId,procedureSettingId,
+            String procedureNameMapper = schemeprocedure.getProcedureSettings().getNameMapper();
+            int procedureSettingId = schemeprocedure.getProcedureSettings().getId();
+            String procedureDataWebkey = (String) proceduredatamap.get("data");
+            String procedureDataValue = algorithmMapperValueUtil.getProcedureValue(algorithmId, procedureSettingId,
                     procedureDataWebkey);
-            proceduredatamap.replace("data",procedureDataValue);
+            proceduredatamap.replace("data", procedureDataValue);
             procedureSetting.put(procedureNameMapper, proceduredatamap);
         }
 
@@ -199,22 +204,34 @@ public class DemoRabbimqComInfo {
         //设置数据集名称
         algorithmCallServiceInfo.setDatasetName(dataset.getDatasetName());
         //设置数据集维度
-        algorithmCallServiceInfo.setColumn(dataset.getDatasetDimension());
+        algorithmCallServiceInfo.setColumn(Integer.parseInt(dataset.getDatasetDimension()));
         //设置数据集part
         algorithmCallServiceInfo.setPart(0);
+        algorithmCallServiceInfo.setPartDataSize(0);
+        int featureNums=Integer.parseInt(dataset.getDatasetDimension());
+        int[]attributes=new int[featureNums-1];
+        for (int i=0;i<featureNums-1;i++){
+            attributes[i]=i+1;
+        }
+        algorithmCallServiceInfo.setAttributes(attributes);
         return algorithmCallServiceInfo;
     }
 
     /**
      * 向算法服务端发送数据集信息
+     *
      * @throws IOException
      */
     public void sendDataset() throws IOException {
-        int[][] data = new DemoCsvUtil(dataset.getdatasetFile()).csvToIntArray();
+        String fileinfo=dataset.getdatasetFile().replace("\\","/");
+        StringBuilder stringBuilder=new StringBuilder(fileinfo);
+        stringBuilder.insert(0,"static/");
+        int[][] data = new DemoCsvUtil(stringBuilder.toString()).csvToIntArray();
         //请求数据实体
-        AlgorithmCallTaskInfo RequestJsonDataCommonInfo = new AlgorithmCallTaskInfo();
+        SendDataSetInfo RequestJsonDataCommonInfo = new SendDataSetInfo();
         //时间戳与任务建立时保持一致
         RequestJsonDataCommonInfo.setId(this.demoRabbimqComTaskId);
+        RequestJsonDataCommonInfo.setPartTotalLine(dataset.getDatasetRecords());
         RequestJsonDataCommonInfo.setDatasetName(dataset.getDatasetName());
         Object reductResult = new Object();
         log.info("begin send dataset");
@@ -229,15 +246,15 @@ public class DemoRabbimqComInfo {
 
     /**
      * 封装数据集信息
-     * @param row  数据为数据集第几行
-     * @param data 数据
+     *
+     * @param row                     数据为数据集第几行
+     * @param data                    数据
      * @param requestCommonData(数据实体)
      * @return
      * @throws IOException
      */
-    private JSONObject RequestJsonData(int row, int[] data, AlgorithmCallTaskInfo requestCommonData) throws IOException {
+    private JSONObject RequestJsonData(int row, int[] data, SendDataSetInfo requestCommonData) throws IOException {
         requestCommonData.setLine(row);
-        requestCommonData.setPartTotalLine(data.length);
         requestCommonData.setData(data);
         String jsonString = JSONObject.toJSONString(requestCommonData);
         //将json字符串转换为json对象
@@ -269,7 +286,7 @@ public class DemoRabbimqComInfo {
         this.statues = statues;
     }
 
-    public String getDatasetName(){
+    public String getDatasetName() {
         return dataset.getDatasetName();
     }
 }

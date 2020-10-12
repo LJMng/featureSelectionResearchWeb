@@ -11,6 +11,7 @@
         <result column="dataset_description" property="datasetDescription"></result>
         <result column="dataset_size" property="datasetSize"></result>
         <result column="dataset_source" property="datasetSource"></result>
+        <result column="dataset_records" property="datasetRecords"></result>
         <result column="dataset_dimension" property="datasetDimension"></result>
     </resultMap>
     <select id="getDatasetInfo" resultMap="datasetinfo" parameterType="Integer">

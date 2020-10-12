@@ -8,6 +8,7 @@ import featureSelection.research.web.common.util.EmailUtil;
 import featureSelection.research.web.common.util.RabbitmqUtil;
 import featureSelection.research.web.common.util.SpringUtil;
 import featureSelection.research.web.entity.communicationJson.AlgorithmCallTaskInfo;
+import featureSelection.research.web.entity.communicationJson.SendDataSetInfo;
 import featureSelection.research.web.entity.communicationJson.localrabbitmqinfo.LocalExecutionRabbitmqInfo;
 import featureSelection.research.web.entity.demo.visitor.Algorithm;
 import featureSelection.research.web.entity.demo.visitor.Dataset;
@@ -119,7 +120,7 @@ public class ExecutionRabbitmqComInfo {
      * @return
      * @throws IOException
      */
-    public JSONObject RequestJsonData(int row, int[] data, AlgorithmCallTaskInfo requestCommonData) throws IOException {
+    public JSONObject RequestJsonData(int row, int[] data, SendDataSetInfo requestCommonData) throws IOException {
         requestCommonData.setLine(row);
         requestCommonData.setPartTotalLine(data.length);
         requestCommonData.setData(data);
@@ -133,13 +134,19 @@ public class ExecutionRabbitmqComInfo {
     public void sendDataset() throws IOException {
         int[][] data;
         if (dataset!=null){
-            data = new DemoCsvUtil(dataset.getdatasetFile()).csvToIntArray();
+            String fileinfo=dataset.getdatasetFile().replace("\\","/");
+            StringBuilder stringBuilder=new StringBuilder(fileinfo);
+            stringBuilder.insert(0,"static/");
+            data = new DemoCsvUtil(stringBuilder.toString()).csvToIntArray();
         }else{
-            data=new DemoCsvUtil(taskInfo.getDatasetUpload()).csvToIntArray();
+            String fileinfo=taskInfo.getDatasetUpload().replace("\\","/");
+            StringBuilder stringBuilder=new StringBuilder(fileinfo);
+            stringBuilder.insert(0,"static/");
+            data=new DemoCsvUtil(stringBuilder.toString()).csvToIntArray();
         }
 
         //请求数据实体
-        AlgorithmCallTaskInfo RequestJsonDataCommonInfo = new AlgorithmCallTaskInfo();
+        SendDataSetInfo RequestJsonDataCommonInfo = new SendDataSetInfo();
         //时间戳与任务建立时保持一致
         RequestJsonDataCommonInfo.setId(this.executionRabbimqComTaskId);
         RequestJsonDataCommonInfo.setDatasetName(dataset.getDatasetName());

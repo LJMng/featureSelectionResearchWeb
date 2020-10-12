@@ -54,17 +54,18 @@ public class ExecutionRabbitmqComServiceSingleton {
      * @param info：返回的信息
      */
     @RabbitListener(queues = "executionResultReciverQueue")
-    public void listen(JSONObject info) {
+    public void listen(String info) {
         log.info("reciver connect response" + info);
+        JSONObject infoJSon =JSONObject.parseObject(info);
         //判断连接任务是否存在
-        if (executionRabbimqComInfos.get(info.get("id")) != null) {
+        if (executionRabbimqComInfos.get(infoJSon.get("id")) != null) {
             //获取请求连接信息类
-            ExecutionRabbitmqComInfo executionRabbitmqComInfo = executionRabbimqComInfos.get(info.get("id"));
+            ExecutionRabbitmqComInfo executionRabbitmqComInfo = executionRabbimqComInfos.get(infoJSon.get("id"));
 
             //判断是否为连接请求结果
-            if (info.get("connect-status") != null) {
+            if (infoJSon.get("connect-status") != null) {
                 //判断连接请求是否成功
-                if (info.get("connect-status").equals(200)) {
+                if (infoJSon.get("connect-status").equals(200)) {
 
                     //判断状态是否为准备状态（即服务等待连接状态）
                     if (executionRabbitmqComInfo.getStatues().equals("READY")) {
@@ -78,7 +79,7 @@ public class ExecutionRabbitmqComServiceSingleton {
                             e.printStackTrace();
                             log.error(new Date().toString()+"excutionService:"+executionRabbitmqComInfo.getTaskAccoutEmail()+"-"
                                     +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":datasetIoProblem:"+executionRabbitmqComInfo.getDataSetName());
-                            executionRabbimqComInfos.get(info.get("id")).setStatues("datasetIoError");
+                            executionRabbimqComInfos.get(infoJSon.get("id")).setStatues("datasetIoError");
                         }
                         //设置状态为连接状态
                         executionRabbitmqComInfo.setStatues("CONNECTED");
@@ -88,7 +89,7 @@ public class ExecutionRabbitmqComServiceSingleton {
                     }
                 }
                 //连接失败
-                else if (info.get("connect-status").equals(404)) {
+                else if (infoJSon.get("connect-status").equals(404)) {
                     log.warn("excutionService:"+executionRabbitmqComInfo.getTaskAccoutEmail()+"-"
                     +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":"+"connect " +
                         "falied");
@@ -97,19 +98,19 @@ public class ExecutionRabbitmqComServiceSingleton {
                 }
             }
             //判断是否存在数据传输错误信息
-            if (info.get("data-error-info") != null) {
-                executionRabbimqComInfos.get(info.get("id")).setStatues("dataerror");
-                log.error(info.get("data-error-info").toString());
-                executionRabbitmqComInfo.setResultInfo(info.get("data-error-info").toString());
-                executionRabbitmqComInfo.getTaskInfo().setAlgorithmStatus("data-error:"+info.get("data-error-info").toString());
+            if (infoJSon.get("data-error-info") != null) {
+                executionRabbimqComInfos.get(infoJSon.get("id")).setStatues("dataerror");
+                log.error(infoJSon.get("data-error-info").toString());
+                executionRabbitmqComInfo.setResultInfo(infoJSon.get("data-error-info").toString());
+                executionRabbitmqComInfo.getTaskInfo().setAlgorithmStatus("data-error:"+infoJSon.get("data-error-info").toString());
             }
             //如果信息中包含退出信息，则任务完成，接收任务结果并设置任务完成
-            if (info.get("exitInfos") != null) {
-                executionRabbitmqComInfo.setResultInfo(info);
+            if (infoJSon.get("exitInfos") != null) {
+                executionRabbitmqComInfo.setResultInfo(infoJSon);
                 executionRabbitmqComInfo.setStatues("FINISH");
                 executionRabbitmqComInfo.sendEmailAndWriteResult();
                 log.info("excutionService:"+executionRabbitmqComInfo.getTaskAccoutEmail()+"-"
-                        +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":"+"FINISH");
+                        +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":"+"FINISH"+"  resultInfo:"+info);
             }
         }
     }

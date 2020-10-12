@@ -19,7 +19,17 @@ public class Dataset{
     private String datasetDimension;
     private String datasetFile;
     private boolean isCommmon;
+    private int datasetRecords;
     private Timestamp ut;
+
+    public int getDatasetRecords() {
+        return datasetRecords;
+    }
+
+    public void setDatasetRecords(int datasetRecords) {
+        this.datasetRecords = datasetRecords;
+    }
+
     public int getDatasetId() {
         return datasetId;
     }
