@@ -173,11 +173,26 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
         JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, int[].class);
         for (TaskResult taskResult : taskResults) {
             JsonNode jsonNode = objectMapper.readTree(taskResult.getResultVal());
-            Iterator<JsonNode> reducts = jsonNode.withArray("reducts").elements();
-            while (reducts.hasNext()) {
-                JsonNode next = reducts.next();
-                int[] result = objectMapper.readValue(next.toString(), int[].class);
-                resultList.add(result);
+            JsonNode reductsNode = jsonNode.findValue("reducts");
+            if (reductsNode.isObject()) {
+                Iterator<JsonNode> reductsNodeIterator = reductsNode.iterator();
+                if (reductsNodeIterator.hasNext()) {
+                    JsonNode reductsNodeNext = reductsNodeIterator.next();
+                    Iterator<JsonNode> reductsIterator = reductsNodeNext.elements();
+                    while (reductsIterator.hasNext()) {
+                        JsonNode reductsNext = reductsIterator.next();
+                        int[] result = objectMapper.readValue(reductsNext.toString(), int[].class);
+                        resultList.add(result);
+                    }
+                }
+
+            } else {
+                Iterator<JsonNode> reductsIterator = jsonNode.withArray("reducts").elements();
+                while (reductsIterator.hasNext()) {
+                    JsonNode reductsNext = reductsIterator.next();
+                    int[] result = objectMapper.readValue(reductsNext.toString(), int[].class);
+                    resultList.add(result);
+                }
             }
         }
 

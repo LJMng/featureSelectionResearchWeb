@@ -618,7 +618,7 @@ var app = new Vue({
                     $("#taskEchartsBody").append('<div style="height: 300px;width: 400px;margin: 0 auto" id="task' + task.taskId + 'Result' + i + '"></div>');
                     let myChart = echarts.init(document.getElementById('task' + task.taskId + 'Result' + i));
                     let objKey = ["Reduct", "NotReduct"];
-                    let values = [{value: (resultList[i].length)/datasetDimension, name: "Reduct"}, {value: 1-((resultList[i].length)/datasetDimension), name: "NotReduct"}];
+                    let values = [{value: resultList[i].length, name: "Reduct"}, {value: datasetDimension- resultList[i].length, name: "NotReduct"}];
                     let option = {
                         title: {
                             text: 'Result' + (i + 1),
@@ -626,7 +626,7 @@ var app = new Vue({
                         },
                         tooltip: {
                             trigger: 'item',
-                            formatter: '{b}: {c} ({d}%)'
+                            formatter: '{b}: {c}({d}%)'
                         },
                         legend: {
                             orient: 'vertical',
@@ -642,7 +642,7 @@ var app = new Vue({
 
                                         show: true,
                                         position: 'inside',
-                                        formatter: '{b}:{d}%',//模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。{d}数据会根据value值计算百分比
+                                        formatter: '{b}: {c}({d}%)',//模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。{d}数据会根据value值计算百分比
 
                                         textStyle : {
                                             align : 'center',
@@ -672,16 +672,34 @@ var app = new Vue({
             });
         },
         downLoadResultFile: function (task){
-            axios.get('/execution/getTaskResult',{
-                params: {
-                    taskId: task.taskId
+            if (task.taskStatus!='排队中') {
+                axios.get('/execution/getTaskResult',{
+                    params: {
+                        taskId: task.taskId
+                    }
+                }).then((response) => {
+                    let TaskFormat = response.data;
+                    let datasetDimension = TaskFormat.datasetDimension;
+                    let resultList = TaskFormat.resultList;
+                    let resultString = "";
+                    for (let i = 0; i < resultList.length; i++) {
+                        resultString = resultString + "Result" + (i+1) + ": [" +resultList[i].toString() + ']\n';
+                    }
+                    var aTag = document.createElement('a');
+                    var blob = new Blob([resultString],{endings: "native"});
+                    aTag.download = "result.txt";
+                    aTag.href = URL.createObjectURL(blob);
+                    aTag.click();
+                    URL.revokeObjectURL(blob);
+                });
+            } else {
+                if (this.language=='en') {
+                    alert(task.taskName+" is not completed");
+                } else {
+                    alert(task.taskName+"结果下载失败，任务未完成");
                 }
-            }).then((response) => {
-                let TaskFormat = response.data;
-                let datasetDimension = TaskFormat.datasetDimension;
-                let resultList = TaskFormat.resultList;
+            }
 
-            });
         },
         myAlert: function (msg) {
             if ($.cookie("language")=='ch'){
