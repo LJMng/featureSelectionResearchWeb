@@ -90,22 +90,23 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
             //存储数据集到本地
             filePath = fileUpload.uploadFIle(uploadFile, path);
             //根据数据集的维度生成Attribute的值
-            int dimensionByFilePath = csvUtill.getDimensionByFilePath("src\\main\\resources\\" + filePath);
-            int[] attributes = new int[dimensionByFilePath];
-            for (int i=0; i<dimensionByFilePath-1; i++){
+            int columnNum = csvUtill.getDimensionByFilePath("src\\main\\resources\\" + filePath);
+            int[] attributes = new int[columnNum-1];
+            for (int i=0; i<attributes.length; i++){
                 attributes[i] = i+1;
             }
             task.setDatasetUpload(filePath);
             task.setDatasetId(null);
-            parameterFormat.setColumn(dimensionByFilePath);
+            parameterFormat.setColumn(columnNum);
             parameterFormat.setDatasetName(filePath.substring(filePath.lastIndexOf(File.separator)+1));
             parameterFormat.setAttributes(attributes);
         }else {
-            int[] attributes = new int[datasetMapper.getDatasetDimensionById(task.getDatasetId())];
-            for (int i = 0; i<attributes.length-1; i++) {
+            int columnNum = datasetMapper.getDatasetDimensionById(task.getDatasetId());
+            int[] attributes = new int[columnNum-1];
+            for (int i = 0; i<attributes.length; i++) {
                 attributes[i] = i+1;
             }
-            parameterFormat.setColumn(attributes.length);
+            parameterFormat.setColumn(columnNum);
             parameterFormat.setDatasetName(datasetMapper.getDatasetNameById(task.getDatasetId()));
             parameterFormat.setAttributes(attributes);
         }
