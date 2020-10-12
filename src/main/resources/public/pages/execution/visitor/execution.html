@@ -823,45 +823,45 @@
                                     <div class="modal-body">
                                         <div class="form-row">
                                             <div class="form-group col-6 mb-4">
-                                                <label for="inputName">{{query_task_table_th2}}</label>
-                                                <input v-model.trim="dataset_form_name" type="text" :class="this.dataset_form_name==''?'form-control border-danger':'form-control'" id="inputName" @blur="datasetNameCheck">
-                                                <div class="invalid-tooltip" name="datasetFormCheck">Existed!</div>
+                                                <label for="inputName"><span class="text-danger">*</span>{{query_task_table_th2}}</label>
+                                                <input v-model.trim="dataset_form_name" type="text" class="form-control" id="inputName" @blur="datasetNameCheck">
+                                                <div class="invalid-tooltip" name="datasetFormCheck">{{new_task_step3_feedback2}}</div>
                                             </div>
                                             <div class="form-group col-6 custom-file">
-                                                <label for="inputFile">{{public_dataset_upload_label3}}</label><span class="float-right text-muted">.csv .xlsx .xls</span>
+                                                <label for="inputFile"><span class="text-danger">*</span>{{public_dataset_upload_label3}}</label><span class="float-right text-muted">.csv .xlsx .xls</span>
                                                 <input @change="showFileName" type="file" class="custom-file-input" id="inputFile" ref="inputDataset">
-                                                <label class="custom-file-label border-danger" for="inputFile" style="top: auto;overflow: hidden" id="datasetFileLabel">Choose file</label>
-                                                <div class="invalid-tooltip" style="top: auto" name="datasetFormCheck">Error file type.</div>
+                                                <label class="custom-file-label" for="inputFile" style="top: auto;overflow: hidden" id="datasetFileLabel">Choose file</label>
+                                                <div class="invalid-tooltip" style="top: auto" name="datasetFormCheck">{{new_task_step1_feedback1}}</div>
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-6 mb-4">
-                                                <label for="inputRecords">Record</label>
+                                                <label for="inputRecords"><span class="text-danger">*</span>{{dataset_info_p5}}</label>
                                                 <input type="text" class="form-control" id="inputRecords" v-model.trim="dataset_form_record">
                                             </div>
                                             <div class="form-group col-6 mb-4">
-                                                <label for="inputDimension">Dimension</label>
+                                                <label for="inputDimension"><span class="text-danger">*</span>{{dataset_info_p4}}</label>
                                                 <input type="text" class="form-control" id="inputDimension" v-model.trim="dataset_form_dimension">
                                             </div>
                                             <div class="form-group col-6 mb-4">
-                                                <label for="inputTag">Tag</label>
+                                                <label for="inputTag"><span class="text-danger">*</span>{{dataset_info_p6}}</label>
                                                 <input type="text" class="form-control" id="inputTag" v-model.trim="dataset_form_tag">
                                             </div>
                                             <div class="form-group col-6 mb-4">
-                                                <label for="inputType">Type</label>
+                                                <label for="inputType"><span class="text-danger">*</span>{{dataset_info_p7}}</label>
                                                 <input type="text" class="form-control" id="inputType" v-model.trim="dataset_form_type">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputSource">{{dataset_info_p2}}</label>
+                                            <label for="inputSource"><span class="text-danger">*</span>{{dataset_info_p2}}</label>
                                             <input v-model.trim="dataset_form_source" type="text" class="form-control" id="inputSource" value="Mark" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="inputIntroduction">{{dataset_info_p1}}</label>
+                                            <label for="inputIntroduction"><span class="text-danger">*</span>{{dataset_info_p1}}</label>
                                             <textarea v-model.trim="dataset_form_description" class="form-control" id="inputIntroduction" required></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="inputPreprocessing">{{public_dataset_upload_label1}}</label>
+                                            <label for="inputPreprocessing"><span class="text-danger">*</span>{{public_dataset_upload_label1}}</label>
                                             <textarea v-model="dataset_form_preprocessing" class="form-control" id="inputPreprocessing" required></textarea>
                                         </div>
                                         <div id="formResult">

@@ -320,18 +320,24 @@ var app = new Vue({
             this.dataset_temp=this.datasetList[key];
         },
         submitDatasetForm: function () {
-            let iFcorrect = true;
+            let ifCorrect = true;
             let checks = $("div[name='datasetFormCheck']");
             for (let j = 0; j < checks.length; j++) {
                 if ($(checks[j]).css('display')!='none'){
-                    iFcorrect = false;
+                    ifCorrect = false;
                     break;
                 }
             };
             if(this.dataset_form_name=='' || this.$refs.inputDataset.files[0]==null){
-                iFcorrect = false;
+                ifCorrect = false;
             };
-            if (iFcorrect){
+            if(this.dataset_form_description=='' || this.dataset_form_dimension=='' ||
+                this.dataset_form_preprocessing=='' || this.dataset_form_record=='' ||
+                this.dataset_form_source=='' || this.dataset_form_tag=='' ||
+                this.dataset_form_type=='') {
+                ifCorrect = false;
+            }
+            if (ifCorrect){
                 let datasetForm = new FormData();
                 datasetForm.append("accountId",$.cookie('accountId'));
                 datasetForm.append("inputName",this.dataset_form_name);
@@ -391,12 +397,10 @@ var app = new Vue({
                 showName = originFileName;
             }
             if (this.file_suffix.indexOf(suffix)>-1){
-                $(event.srcElement).next().removeClass("border-danger");
                 $(event.srcElement).next().next().css('display','none');
                 $(event.srcElement).next().html(showName);
 
             }else {
-                $(event.srcElement).next().addClass("border-danger");
                 $(event.srcElement).next().next().css('display','block');
                 $(event.srcElement).next().html(showName);
 
