@@ -89,13 +89,25 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
         if (task.getDatasetId() == 0) {
             //存储数据集到本地
             filePath = fileUpload.uploadFIle(uploadFile, path);
+            //根据数据集的维度生成Attribute的值
+            int dimensionByFilePath = csvUtill.getDimensionByFilePath("src\\main\\resources\\" + filePath);
+            int[] attributes = new int[dimensionByFilePath];
+            for (int i=0; i<dimensionByFilePath-1; i++){
+                attributes[i] = i+1;
+            }
             task.setDatasetUpload(filePath);
             task.setDatasetId(null);
-            parameterFormat.setColumn(csvUtill.getDimensionByFilePath("src\\main\\resources\\"+filePath));
+            parameterFormat.setColumn(dimensionByFilePath);
             parameterFormat.setDatasetName(filePath.substring(filePath.lastIndexOf(File.separator)+1));
+            parameterFormat.setAttributes(attributes);
         }else {
-            parameterFormat.setColumn(datasetMapper.getDatasetDimensionById(task.getDatasetId()));
+            int[] attributes = new int[datasetMapper.getDatasetDimensionById(task.getDatasetId())];
+            for (int i = 0; i<attributes.length-1; i++) {
+                attributes[i] = i+1;
+            }
+            parameterFormat.setColumn(attributes.length);
             parameterFormat.setDatasetName(datasetMapper.getDatasetNameById(task.getDatasetId()));
+            parameterFormat.setAttributes(attributes);
         }
         //获取算法名称映射的值
         String algorithmName = algorithmMapper.getAlgorithmNameMapperById(task.getAlgorithmId());
@@ -106,7 +118,6 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
         parameterFormat.setAlgorithmInfo(algorithmInfo);
         parameterFormat.setPreviousReducts(null);
         parameterFormat.setRunTimes(1);
-        parameterFormat.setAttributes(parameterMapper.getParamsIdByAlgorithmId(task.getAlgorithmId()));
         task.setAlgorithmParameters(objectMapper.writeValueAsString(parameterFormat));
         //加入到任务队列中
         taskInfoMapper.addTaskInfo(task);
