@@ -1,8 +1,10 @@
 package featureSelection.research.web.service.demo.admin.impl;
 
+import featureSelection.research.web.entity.demo.admin.ProcedureSettingsDemoAdmin;
 import featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin;
 import featureSelection.research.web.entity.demo.admin.SchemeProcedureDemoAdmin;
 import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
+import featureSelection.research.web.mybatisMapper.demo.admin.SchemeDemoAdminMapper;
 import featureSelection.research.web.mybatisMapper.demo.admin.SchemeProcedureDemoAdminMapper;
 import featureSelection.research.web.service.demo.admin.ProcedureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +16,18 @@ import java.util.List;
 public class ProcedureServiceImpl implements ProcedureService {
 
     @Autowired
+    SchemeDemoAdminMapper schemeDemoAdminMapper;
+
+    @Autowired
     SchemeProcedureDemoAdminMapper schemeProcedureDemoAdminMapper;
 
     @Override
     public String insertSchemeProcedureAfterDeleteDemoAdmin(ProcedureSettings procedureSettings) {
-        List<SchemeProcedureDemoAdmin> list = schemeProcedureDemoAdminMapper.findSchemeProcedureAfterDeleteSchemeId();
+        ProcedureSettingsDemoAdmin p = schemeProcedureDemoAdminMapper.findNewProcedureAlgorithmId();
+        List<SchemeDemoAdmin> list1 = schemeDemoAdminMapper.getSchemeDemoAdminByAlgorithmId(p.getAlgorithmId());
         SchemeProcedureDemoAdmin s = new SchemeProcedureDemoAdmin();
-        for(int i=0;i<list.size();i++){
-            s.setSchemeId(list.get(i).getSchemeId());
+        for(int i=0;i<list1.size();i++){
+            s.setSchemeId(list1.get(i).getSchemeId());
             s.setProcedureName(procedureSettings.getName());
             schemeProcedureDemoAdminMapper.insertSchemeProcedureAfterDeleteDemoAdmin(s);
         }

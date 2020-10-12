@@ -13,6 +13,8 @@ public interface SchemeDemoAdminMapper {
     public List<SchemeDemoAdmin> findAll();
     //通过ID查询方案
     public SchemeDemoAdmin getSchemeDemoAdminById(Integer id);
+    //通过ID查询方案
+    public List<SchemeDemoAdmin> getSchemeDemoAdminByAlgorithmId(Integer id);
     //增加方案
     public int insertSchemeDemoAdmin(SchemeDemoAdmin schemeDemoAdmin);
     //更新被绑定ID的方案信息

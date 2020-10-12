@@ -46,6 +46,14 @@
         left join algorithm on parameter_scheme.algorithm_id=algorithm.algorithm_id
         where parameter_scheme.scheme_id=#{schemeId}
     </select>
+    <!--通过算法ID查询方案-->
+    <select id="getSchemeDemoAdminByAlgorithmId" resultMap="result" parameterType="int">
+        select
+            scheme_id
+        from
+            parameter_scheme
+        where algorithm_id=#{algorithmId}
+    </select>
 
     <!--增加方案-->
     <insert id="insertSchemeDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin" useGeneratedKeys="true" keyProperty="schemeId">

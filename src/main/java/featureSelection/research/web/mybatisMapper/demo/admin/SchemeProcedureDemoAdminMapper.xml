@@ -31,6 +31,13 @@
     <insert id="insertSchemeProcedureAfterDeleteDemoAdmin" parameterType="featureSelection.research.web.entity.demo.admin.SchemeProcedureDemoAdmin" useGeneratedKeys="true" keyProperty="schemeProcedureId">
         insert into scheme_procedure (scheme_id, procedure_name, procedure_setting_data, procedure_settings_id) values (#{schemeId}, #{procedureName}, "{\"data\":\"data\",\"selected\":\"true\"}", (select max(id) from procedure_settings));
     </insert>
+    <resultMap id="result1" type = "featureSelection.research.web.entity.demo.admin.ProcedureSettingsDemoAdmin">
+        <id column="id" property="id" />
+        <result column="algorithm_id" property="algorithmId" />
+    </resultMap>
+    <select id="findNewProcedureAlgorithmId" resultMap="result1">
+        select * from procedure_settings order by id desc limit 1;
+    </select>
     <!--    更新被绑定ID的步骤-->
     <update id="updateSchemeProcedureDemoAdmin">
         <foreach collection="list" item="item">
