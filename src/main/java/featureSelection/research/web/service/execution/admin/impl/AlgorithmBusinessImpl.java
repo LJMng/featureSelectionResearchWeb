@@ -358,6 +358,12 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         for(ProcedureSettings procedureSetting:procedureSettings){
             procedureSettingsMapper.addProcedureSetting(procedureSetting);
         }
+        //遍历算法参数列表，添加参数信息
+        List<Parameter> parameters = readExcelUtil.readParameterInfoByExcelFile(algorithmInfoExcel);
+
+        for (Parameter parameter:parameters){
+            algorithmMapper.createParameter(parameter);
+        }
 
     }
 }
