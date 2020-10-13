@@ -45,7 +45,6 @@ var vm =new Vue({
         deleteAccountInfo:{
             accountId:1
         }
-
     },
     computed:{
         filterAccount(){
@@ -84,7 +83,6 @@ var vm =new Vue({
             }else {
                 this.checked.checkedAccountId="正确！"
             }
-
         },
         setUpdateAccountInfo:function(account){
             this.accountInfo=account;

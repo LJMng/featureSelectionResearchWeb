@@ -104,6 +104,7 @@ var vm =new Vue({
             algorithmCallUsername:'',
             algorithmCallPassword:'',
             algorithmUsage:'',
+            algorithmEnDescription:''
         },
         number: 0,
         // parameterName: [],
@@ -262,6 +263,7 @@ var vm =new Vue({
         //获取公共数据集信息，executionDatasetInfo
         axios.get('/getDatasetInfo').then(function (response) {
             that.executionDatasetInfo=response.data;
+            console.log(that.executionDatasetInfo)
         },function (err) {
 
         });
@@ -410,6 +412,8 @@ var vm =new Vue({
         //设置可用算法数据集的id
         setDataset4AlgorithmOfAlgorithmId:function(AlgorithmId){
             this.availableDataset4Algorithm.algorithmId=AlgorithmId;
+            //判断算法有多少个可运行的数据集
+
         },
         //设置可用数据集的数据集
         setDataset4AlgorithmOfAvailableDataset:function(){
@@ -736,6 +740,7 @@ var vm =new Vue({
                     this.info.algorithmCallPort = resp.data.algorithmCallPort;
                     this.info.algorithmCallUsername = resp.data.algorithmCallUsername;
                     this.info.algorithmCallPassword = resp.data.algorithmCallPassword;
+                    this.info.algorithmEnDescription = resp.data.algorithmEnDescription;
                 })
                 .catch(err => {
                     console.log(err);

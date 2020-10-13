@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+    <title>
+        操作文档
+    </title>
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/webjars/bootstrap-switch/3.3.4/dist/css/bootstrap3/bootstrap-switch.css">
+    <link rel="stylesheet" href="/css/execution/admin/cg.css">
+    <!-- jquery -->
+    <!-- 	Web jars -->
+    <!-- 		jquery -->
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/jquery-cookie/jquery.cookie.js"></script>
+    <!-- 		Vue.js -->
+    <script src="/webjars/vue/vue.min.js"></script>
+    <!-- 		Bootstrap -->
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <!-- 		Bootstrap core JavaScript-->
+    <script src="/webjars/bootstrap/js/bootstrap.bundle.js"></script>
+    <!--bootstrap-switch-->
+    <script src="/webjars/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+    <!--axios-->
+    <script src="/webjars/axios/0.19.2/dist/axios.js"></script>
+
+</head>
+<body>
+<div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/pages/execution/admin/execution.html">AlgGroup</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/index.html">demo<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/execution/visitor/execution.html">execution</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/demo/visitor/aboutus.html">About us</a>
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-outline-secondary btn-sm">{{administratorName}}</button>        &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" name="my-checkbox" checked>
+        </div>
+    </nav>
+    <header class="cg-masthead">
+        <div class="container">
+            <h1 class="cg-masthead-title">
+                <div class="cg-icon"></div>
+                操作文档<br>
+            </h1>
+            <p class="cg-masthead-subtitle">
+                算法管理平台操作使用说明文档，让每个操作都有迹可循！
+            </p>
+
+            <p class="masthead-links">
+                <a href="https://github.com/mdo/code-guide" title="View on GitHub">
+                    <svg class="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path fill-rule="evenodd" d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"/></svg>
+                </a>
+            </p>
+
+
+        </div>
+    </header>
+    <main class="container">
+        <h2 id="toc">目录</h2>
+        <div class="section toc">
+            <div class="col">
+                <h4><a href="#html">算法管理</a></h4>
+                <ul>
+                    <li><a href="#addAlgorithmInfo">添加算法信息</a></li>
+                    <li><a href="#addAlgorithmInfoByExcel">excel文件添加算法信息</a></li>
+                    <li><a href="#updateAlgorithmInfo">修改算法信息</a></li>
+                    <li><a href="#deleteAlgorithmInfo">删除算法信息</a></li>
+                    <li><a href="#addDataset4Algorithm">添加算法可运行数据集</a></li>
+                    <li><a href="#addAlgorithmParam">添加算法参数</a></li>
+                    <li><a href="#addAlgorithmProcedure">添加算法步骤</a></li>
+                    <li><a href="#deleteTaskInfo">删除任务单</a></li>
+                    <li><a href="#updateTaskInfo">修改任务单</a></li>
+                    <li><a href="#addDataset">添加数据集</a></li>
+                    <li><a href="#updateDataset">修改数据集</a></li>
+                    <li><a href="#deleteDataset">删除数据集</a></li>
+                    <li><a href="#auditDataset">审核数据集</a></li>
+                </ul>
+            </div>
+            <div class="col">
+                <h4><a href="#css">业务管理</a></h4>
+                <ul>
+                    <li><a href="#addAccountInfo">添加用户信息</a></li>
+                    <li><a href="#updateAccountInfo">修改用户信息</a></li>
+                    <li><a href="#deleteAccountInfo">删除用户信息</a></li>
+                    <li><a href="#addAdministratorInfo">添加管理员信息</a></li>
+                    <li><a href="#updateAdministratorInfo">修改管理员信息</a></li>
+                    <li><a href="#deleteAdministratorInfo">删除管理员信息</a></li>
+                    <li><a href="#addHtmlElementInfo">添加页面元素信息</a></li>
+                    <li><a href="#updateHtmlElementInfo">修改页面元素信息</a></li>
+                    <li><a href="#deleteHtmlElementInfo">删除页面元素信息</a></li>
+                    <li><a href="#recoverHtmlElementInfo">恢复页面元素默认值</a></li>
+                    <li><a href="#addUpdateInfo">添加更新信息</a></li>
+                    <li><a href="#deleteUpdateInfo">删除更新信息</a></li>
+                    <li><a href="#updateUpdateInfo">修改更新信息</a></li>
+                    <li><a href="#addAboutusInfo">添加关于我们信息</a></li>
+                    <li><a href="#deleteAboutUsInfo">删除关于我们信息</a></li>
+                </ul>
+            </div>
+        </div>
+        <h2 id="algorithmManage">算法管理</h2>
+        <div class="section" id="addAlgorithmInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                    <li></li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="addAlgorithmInfoByExcel">
+            <div class="col">
+                <h3>通过excel文件添加算法信息</h3>
+                <ul>
+                    <li>1.点击添加算法信息按钮。</li>
+                    <li>2.选择要上次的算法信息文件（仅支持.xsls、.xls文件）。</li>
+                    <li>3.点击确定。</li>
+                    <li>4.算法信息添加完成。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/addAlgorithmByExcel.png" alt="" width="650" height="550">
+            </div>
+        </div>
+
+        <div class="section" id="updateAlgorithmInfo">
+            <div class="col">
+                <h3>修改算法信息</h3>
+                <ul>
+                    <li>1.选择要修改算法信息的算法。</li>
+                    <li>2.填写修改信息。</li>
+                    <li>3.点击确认改修。</li>
+                    <li>4.完成算法信息修改。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="deleteAlgorithmInfo">
+            <div class="col">
+                <h3>删除算法信息</h3>
+                <ul>
+                    <li>1.选择要删除的算法。</li>
+                    <li>2.确认删除算法信息。</li>
+                    <li>3.点击确认。</li>
+                    <li>4.完成算法删除。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="addDataset4Algorithm">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="addAlgorithmParam">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="addAlgorithmProcedure">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="deleteTaskInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="updateTaskInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="addDataset">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="updateDataset">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="deleteDataset">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="auditDataset">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+
+        <h2 id="businessManage">业务管理</h2>
+
+        <div class="section" id="addAccountInfo">
+            <div class="col">
+                <h3>添加用户信息</h3>
+                <ul>
+                    <li>1.点击添加用户按钮。</li>
+                    <li>2.填写添加用户的信息。</li>
+                    <li>3.点击确认添加用户。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/addAccountStep1.png" alt="" width="650" width="550">
+                <img class="mb-4" src="/img/addAccountStep2.png" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="updateAccountInfo">
+            <div class="col">
+                <h3>修改用户信息</h3>
+                <ul>
+                    <li>1.选择点击要修改信息的用户。</li>
+                    <li>2.填写要修改的用户信息。（管理员不可修改用户密码）</li>
+                    <li>3.点击确认用户信息修改。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/updateAccountStep1.png" alt="" width="650" width="550">
+                <img class="mb-4" src="/img/updateAccountStep2.png" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="deleteAccountInfo">
+            <div class="col">
+                <h3>删除用户信息</h3>
+                <ul>
+                    <li>1.点击选择要删除的用户。</li>
+                    <li>2.点击确认要删除的用户信息。</li>
+                    <li>3.删除结果信息回显。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/deleteAccountStep1.png" alt="" width="650" width="550">
+                <img class="mb-4" src="/img/deleteAccountStep2.png" alt="" width="650" width="550">
+                <img class="mb-4" src="/img/deleteAccountStep3.png" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="addAdministratorInfo">
+            <div class="col">
+                <h3>添加管理员账户信息</h3>
+                <ul>
+                    <li>1.点击点击管理员账户。</li>
+                    <li>2.添加管理员账户基本信息。</li>
+                    <li>3.点击添加管理员账户。</li>
+                    <li>4.添加管理员账户信息回显。</li>
+                    <li>tips:不能添加和删除用户名为"root"的管理员账户，该管理员账户只允许密码的修改，账户名不可修改。添加管理员账户时，每个管理员账户名不可重复！</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/addAdministratorStep1.png" alt="" width="650" width="550">
+                <img class="mb-4" src="/img/addAdministratorStep2.png" alt="" width="650" width="550">
+                <img class="mb-4" src="/img/addAdministratorStep3.png" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="updateAdministratorInfo">
+            <div class="col">
+                <h3>修改管理员信息</h3>
+                <ul>
+                    <li>1.点击要修改的管理员账户。</li>
+                    <li>2.填写修改管理员账户信息。</li>
+                    <li>3.点击确实修改管理员账户信息。</li>
+                    <li>4.修改信息结果回显。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/updateAdministratorStep1.png" alt="" width="650" width="550">
+                <img class="mb-4" src="/img/updateAdministratorStep2.png" alt="" width="650" width="550">
+                <img class="mb-4" src="/img/updateAdministratorStep3.png" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="deleteAdministratorInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="addHtmlElementInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="updateHtmlElementInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="deleteHtmlElementInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="recoverHtmlElementInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="addUpdateInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="deleteUpdateInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="updateUpdateInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="addAboutusInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+        <div class="section" id="deleteAboutUsInfo">
+            <div class="col">
+                <h3>添加算法信息</h3>
+                <ul>
+                    <li>标签不要大写，即便是 doctype 标签。</li>
+                </ul>
+            </div>
+            <div class="col">
+                <img class="mb-4" src="/img/gdutLogo.jpg" alt="" width="650" width="550">
+            </div>
+        </div>
+
+    </main>
+</div>
+
+
+
+
+<script type="text/javascript">
+    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fa25e97c8b6d0ae5501b3b46d61ed807f' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<!-- 全局统计代码 -->
+<script type="text/javascript">
+    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F079fac161efc4b2a6f31e80064f14e82' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+
+
+</body>
+</html>

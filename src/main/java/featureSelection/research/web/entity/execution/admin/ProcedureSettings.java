@@ -18,6 +18,8 @@ public class ProcedureSettings implements Serializable {
     private String defaultOption;
     private String description;
     private String nameMapper;
+    private String option;
+    private String optionMapper;
 
     public int getId() {
         return id;
@@ -91,6 +93,22 @@ public class ProcedureSettings implements Serializable {
         this.optionsMapper = optionsMapper;
     }
 
+    public String getOption() {
+        return option;
+    }
+
+    public void setOption(String option) {
+        this.option = option;
+    }
+
+    public String getOptionMapper() {
+        return optionMapper;
+    }
+
+    public void setOptionMapper(String optionMapper) {
+        this.optionMapper = optionMapper;
+    }
+
     @Override
     public String toString() {
         return "ProcedureSettings{" +
@@ -103,6 +121,8 @@ public class ProcedureSettings implements Serializable {
                 ", defaultOption='" + defaultOption + '\'' +
                 ", description='" + description + '\'' +
                 ", nameMapper='" + nameMapper + '\'' +
+                ", option='" + option + '\'' +
+                ", optionMapper='" + optionMapper + '\'' +
                 '}';
     }
 }
