@@ -1401,6 +1401,13 @@
                                                   v-bind:placeholder="parameter.parameterSettingInfo" cols="50" rows="5"
                                                   disabled></textarea>
                                     </div>
+                                    <div class="form-group" v-if="parameter.parameterType!=='text'">
+                                        <label for="updateParameterAlgorithmValue"
+                                               class="col-form-label">参数算法层值:</label>
+                                        <textarea class="form-control" id="updateParameterAlgorithmValue"
+                                                  v-bind:placeholder="parameter.parameterAlgorithmValue" cols="50" rows="5"
+                                                  disabled></textarea>
+                                    </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
