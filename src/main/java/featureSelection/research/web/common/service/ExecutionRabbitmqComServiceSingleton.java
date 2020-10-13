@@ -1,11 +1,13 @@
 package featureSelection.research.web.common.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.rabbitmq.client.Channel;
 import featureSelection.research.web.entity.communicationJson.rabbitmqcominfo.DemoRabbimqComInfo;
 import featureSelection.research.web.entity.communicationJson.rabbitmqcominfo.ExecutionRabbitmqComInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -54,10 +56,15 @@ public class ExecutionRabbitmqComServiceSingleton {
      * @param message：返回的信息
      */
     @RabbitListener(queues = "executionResultReciverQueue")
-    public void listen(JSONObject message) {
-
-        JSONObject infoJSon=message;
-        log.info("jsonInfo"+infoJSon.toJSONString());
+    @RabbitHandler
+    public void listen(Message message, Channel channel) {
+        String conteneType=message.getMessageProperties().getContentType();
+        if (conteneType!=null&&!conteneType.contains("json")){
+            log.error("Illegal content type"+message.toString());
+        }
+        String str=new String(message.getBody());
+        JSONObject infoJSon=JSONObject.parseObject(str);
+        log.info("reciverMessage："+message.toString());
         //判断连接任务是否存在
         if (executionRabbimqComInfos.get(infoJSon.get("id")) != null) {
             //获取请求连接信息类
@@ -113,5 +120,9 @@ public class ExecutionRabbitmqComServiceSingleton {
                         +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":"+"FINISH"+"  resultInfo:"+infoJSon.toJSONString());
             }
         }
+        else {
+            log.warn(new Date().toString()+"--"+"not find this TaskId:"+infoJSon.get("id"));
+        }
+
     }
 }

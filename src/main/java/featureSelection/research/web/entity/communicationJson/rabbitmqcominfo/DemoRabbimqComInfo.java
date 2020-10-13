@@ -238,6 +238,7 @@ public class DemoRabbimqComInfo {
         //根据数据量确定消息数
         for (int i = 0; i < data.length ; i++) {
             JSONObject RequestJsonData = RequestJsonData(i, data[i], RequestJsonDataCommonInfo);
+            this.rabbitmqTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
             this.rabbitmqTemplate.convertAndSend(exchange, routingkey, RequestJsonData);
             log.info("article" + i + "data：" + RequestJsonData.toJSONString());
         }

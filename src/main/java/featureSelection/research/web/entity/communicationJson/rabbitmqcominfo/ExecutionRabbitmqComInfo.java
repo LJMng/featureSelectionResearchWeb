@@ -132,6 +132,7 @@ public class ExecutionRabbitmqComInfo {
 
     //发送数据集信息
     public void sendDataset() throws IOException {
+        log.info(this.sendRoutingkey);
         int[][] data;
         if (dataset!=null){
             String fileinfo=dataset.getdatasetFile().replace("\\","/");
@@ -156,7 +157,7 @@ public class ExecutionRabbitmqComInfo {
             JSONObject RequestJsonData = RequestJsonData(i, data[i], RequestJsonDataCommonInfo);
             this.rabbitmqTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
             this.rabbitmqTemplate.convertAndSend(exchange, sendRoutingkey, RequestJsonData);
-            log.info("send the" + i + "data：" + RequestJsonData.toJSONString());
+            log.info("send the" + i + "条数据：" + RequestJsonData.toJSONString());
         }
     }
 
