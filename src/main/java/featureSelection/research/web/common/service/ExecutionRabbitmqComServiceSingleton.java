@@ -112,7 +112,7 @@ public class ExecutionRabbitmqComServiceSingleton {
                 executionRabbitmqComInfo.getTaskInfo().setAlgorithmStatus("data-error:"+infoJSon.get("data-error-info").toString());
             }
             //如果信息中包含退出信息，则任务完成，接收任务结果并设置任务完成
-            if (infoJSon.get("exitInfos") != null) {
+            if (infoJSon.get("reducts") != null) {
                 executionRabbitmqComInfo.setResultInfo(infoJSon);
                 executionRabbitmqComInfo.setStatues("FINISH");
                 executionRabbitmqComInfo.sendEmailAndWriteResult();

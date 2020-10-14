@@ -326,10 +326,10 @@
                 },
                 downloadByDatasetIndex(algorithmIndex,datasetindex) {
                     // console.log(datasetindex)
-                    // var toPostDatasetId = this.algorithms[algorithmIndex].datasets[datasetindex].datasetId;
-                    // window.location.href = demoVisitorBaseURL+"/download?datasetid=" + toPostDatasetId;
-                    var filePath=this.algorithms[algorithmIndex].datasets[datasetindex].datasetFile
-                    window.location.href =filePath
+                    var toPostDatasetId = this.algorithms[algorithmIndex].datasets[datasetindex].datasetId;
+                    window.location.href = demoVisitorBaseURL+"/download?datasetid=" + toPostDatasetId;
+                    // var filePath=this.algorithms[algorithmIndex].datasets[datasetindex].datasetFile
+                    // window.location.href =filePath
                 },
                 newDraggable(algorithmIndex,parameterSchemeIndex) {
                     var testdemo_algorithms_title=this.demo_algorithms_title

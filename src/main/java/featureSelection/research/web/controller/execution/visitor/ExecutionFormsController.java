@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -52,6 +53,8 @@ public class ExecutionFormsController {
             s = formsService.submitTaskForm(task, uploadFile, taskPath);
         } catch (JsonProcessingException e) {
             logger.error("用户" + task.getAccountId() + "提交任务失败。" + "错误信息为：" + e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return s;
     }

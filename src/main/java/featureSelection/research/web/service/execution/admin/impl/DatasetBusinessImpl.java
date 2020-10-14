@@ -25,8 +25,8 @@ import java.util.List;
 @Service
 @Transactional
 public class DatasetBusinessImpl implements DatasetBusiness {
-    private  static final String UPLOAD_BASE="src/main/resources/static/dataset/datasetHome/";
-    private static final String TEMP_BASE="src/main/resources/";
+    private  static final String UPLOAD_BASE="dataset/datasetHome/";
+
     @Autowired
     private EmailUtil emailUtil;
     @Autowired
@@ -72,7 +72,7 @@ public class DatasetBusinessImpl implements DatasetBusiness {
         DatasetForm datasetForm=datasetMapping.getDatasetFormById(inputId);
         //获取文件地址，将数据集文件复制到公共数据集文件夹
         String inputFile=datasetForm.getInputFile();
-        File source=new File(TEMP_BASE+datasetForm.getInputFile());
+        File source=new File(datasetForm.getInputFile());
         String fileName= FilenameUtils.getName(datasetForm.getInputFile());
         File target=new File (UPLOAD_BASE+fileName);
         try {
@@ -93,8 +93,7 @@ public class DatasetBusinessImpl implements DatasetBusiness {
         //将数据集信息添加到数据集表
         Dataset dataset=new Dataset();
         dataset.setDatasetId(datasetForm.getInputId());
-        dataset.setDatasetFile(target.getPath().substring(26));
-        System.out.println(datasetForm.getInputFile());
+        dataset.setDatasetFile(target.getPath());
         dataset.setCommon(true);
         dataset.setDatasetName(datasetForm.getInputName());
         dataset.setDatasetDescription(datasetForm.getInputDescription());

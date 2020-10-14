@@ -16,6 +16,9 @@ import java.util.Map;
 @Repository
 public interface DatasetMapper {
 
+    @Select("select dataset_records from dataset where dataset_id = #{id}")
+    int getDatasetRecordById(int id);
+
     /**
      * 通过数据集id获取数据集的维度数
      * @param id 数据集id

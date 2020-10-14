@@ -6,6 +6,7 @@ import featureSelection.research.web.entity.execution.visitor.TaskInfo;
 import featureSelection.research.web.entity.execution.visitor.TaskResultFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public interface IExecutionFormsService {
      * @return String "success"或"failed"
      * @throws JsonProcessingException
      */
-    String submitTaskForm(TaskInfo task, MultipartFile uploadFile, String path) throws JsonProcessingException;
+    String submitTaskForm(TaskInfo task, MultipartFile uploadFile, String path) throws IOException;
 
     /**
      * 通过用户id获取所有算法任务

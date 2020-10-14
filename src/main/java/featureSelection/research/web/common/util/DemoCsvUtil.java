@@ -21,19 +21,19 @@ public class DemoCsvUtil {
     CsvReader csvReader;
 
     public DemoCsvUtil(String csvPath) throws IOException {
-        this.csvPath = relativePathtoAboslute(csvPath);
+        this.csvPath = csvPath;
     }
-
-    /**
-     * 相对路径转绝对路径
-     *
-     * @return
-     */
-    public String relativePathtoAboslute(String path) {
-        String apppath = ClassUtils.getDefaultClassLoader().getResource("").getPath();
-        String aboslutePath = apppath + path;
-        return aboslutePath;
-    }
+//
+//    /**
+//     * 相对路径转绝对路径
+//     *
+//     * @return
+//     */
+//    public String relativePathtoAboslute(String path) {
+//        String apppath = ClassUtils.getDefaultClassLoader().getResource("").getPath();
+//        String aboslutePath = apppath + path;
+//        return aboslutePath;
+//    }
 
     /**
      * 将csv文件转化为int二位数组

@@ -9,6 +9,7 @@ import featureSelection.research.web.entity.demo.visitor.Dataset;
 import featureSelection.research.web.service.demo.visitor.impl.DatasetServiceImpl;
 import featureSelection.research.web.service.demo.visitor.impl.IAlgorithmServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -78,17 +79,28 @@ public class  AlgorithmEexecuteController {
     public void download(@RequestParam(value="datasetid")String datasetid,
                          HttpServletResponse response) throws IOException {
         Dataset datasetinfo= datasetServiceImpl.getDatesetInfo(Integer.parseInt(datasetid));
-        System.out.println(datasetinfo.toString());
-        String fileinfo=datasetinfo.getdatasetFile().replace("\\","/");
-        String path = this.getClass().getClassLoader().getResource(fileinfo).getPath();
-        System.out.println(fileinfo);
+        String fileRelativeInfo=datasetinfo.getdatasetFile();
+        ApplicationHome h = new ApplicationHome(getClass());
+        File jarF = h.getSource();
+        StringBuilder jarPathSb=new StringBuilder(datasetinfo.getdatasetFile());
+        jarPathSb.insert(0,jarF.getParentFile().toString()+"\\");
+        String jarPath=jarPathSb.toString();
+        File jarfile=new File(jarPath.toString());
+        File aimsFile;
+        if (jarfile.exists()){
+            aimsFile=jarfile;
+        }else {
+            String noJarPath=jarPath.toString();
+            noJarPath=noJarPath.replace("\\target","");
+            aimsFile=new File(noJarPath);
+        }
         //获取输入流
-        InputStream bis = new BufferedInputStream(new FileInputStream(new File(path)));
+        InputStream bis = new BufferedInputStream(new FileInputStream(aimsFile));
         //转码，免得文件名中文乱码
         String datasetname=datasetinfo.getDatasetName();
         datasetname = URLEncoder.encode(datasetname,"UTF-8");
         //获取文件后缀
-        String  fileSuffix = path.substring(path.lastIndexOf(".")+1);
+        String fileSuffix = jarPath.substring(jarPath.lastIndexOf(".")+1);
         //设置文件下载头
         response.addHeader("Content-Disposition", "attachment;filename=" + datasetname+"."+fileSuffix);
         //1.设置文件ContentType类型，这样设置，会自动判断下载文件类型
@@ -100,5 +112,6 @@ public class  AlgorithmEexecuteController {
             out.flush();
         }
         out.close();
+
     }
     }

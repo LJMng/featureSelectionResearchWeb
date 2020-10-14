@@ -25,7 +25,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.boot.system.ApplicationHome;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -103,6 +105,7 @@ public class ExecutionRabbitmqComInfo {
      JSONObject localRabbitmqInfo=JSONObject.parseObject(localRabbitmqInfoString);
      JSONObject taskParamaterInfo=JSONObject.parseObject(taskInfo.getAlgorithmParameters());
      taskParamaterInfo.put("rabbitmqInfo",localRabbitmqInfo);
+
      //发送信息请求与rabbitmq建立通讯
      log.info("进行连接请求,请求数据：" + taskParamaterInfo.toJSONString());
      this.rabbitmqTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
@@ -135,15 +138,31 @@ public class ExecutionRabbitmqComInfo {
         log.info(this.sendRoutingkey);
         int[][] data;
         if (dataset!=null){
-            String fileinfo=dataset.getdatasetFile().replace("\\","/");
-            StringBuilder stringBuilder=new StringBuilder(fileinfo);
-            stringBuilder.insert(0,"static/");
-            data = new DemoCsvUtil(stringBuilder.toString()).csvToIntArray();
+            ApplicationHome h = new ApplicationHome(getClass());
+            File jarF = h.getSource();
+            StringBuilder jarPath=new StringBuilder(dataset.getdatasetFile());
+            jarPath.insert(0,jarF.getParentFile().toString()+"\\");
+            File file = new File(jarPath.toString());
+            if (file.exists()){
+                data=new DemoCsvUtil(jarPath.toString()).csvToIntArray();
+            }else{
+                String noJarPath=jarPath.toString();
+                noJarPath=noJarPath.replace("\\target","");
+                data=new DemoCsvUtil(noJarPath.toString()).csvToIntArray();
+            }
         }else{
-            String fileinfo=taskInfo.getDatasetUpload().replace("\\","/");
-            StringBuilder stringBuilder=new StringBuilder(fileinfo);
-            stringBuilder.insert(0,"static/");
-            data=new DemoCsvUtil(stringBuilder.toString()).csvToIntArray();
+            ApplicationHome h = new ApplicationHome(getClass());
+            File jarF = h.getSource();
+            StringBuilder jarPath=new StringBuilder(taskInfo.getDatasetUpload());
+            jarPath.insert(0,jarF.getParentFile().toString()+"\\");
+            File file = new File(jarPath.toString());
+            if (file.exists()){
+                data=new DemoCsvUtil(jarPath.toString()).csvToIntArray();
+            }else{
+                String noJarPath=jarPath.toString();
+                noJarPath=noJarPath.replace("\\target","");
+                data=new DemoCsvUtil(noJarPath.toString()).csvToIntArray();
+            }
         }
 
         //请求数据实体
