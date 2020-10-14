@@ -17,6 +17,15 @@ public class PageElementController {
     private PageElementBusiness pageElementBusiness;
 
 
+    /**
+     *
+     * 跳转到管理员用户首页
+     * @return
+     */
+    @GetMapping("/manage")
+    public String getExecutionManageIndex(){
+        return "/pages/execution/admin/execution.html";
+    }
     @PostMapping("/htmlElements")
     public String createPageElement(@RequestBody PageElement pageElement){
         pageElementBusiness.createPageElement(pageElement);

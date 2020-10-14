@@ -1,5 +1,6 @@
 package featureSelection.research.web.service.execution.admin.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import featureSelection.research.web.common.util.AlgorithmMapperValueUtil;
 import featureSelection.research.web.common.util.FileUtil;
 import featureSelection.research.web.common.util.ReadExcelUtil;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -175,13 +177,13 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                         }
 
                     } else if (secondParameterType[j].equals("null")){
-                    //如果为最后一个
-                    if (j==secondParameterType.length-1){
-                        parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":null";
+                        //如果为最后一个
+                        if (j==secondParameterType.length-1){
+                            parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":null";
+                        }else{
+                            parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":null,";
+                        }
                     }else{
-                        parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":null,";
-                    }
-                }else{
                         parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":{\"type\":\""+secondParameterType[j]+"\",\"options\":[";
                         String secondParameterValueString=secondParameterValue[j];
                         String[] secondParameterValueArr=secondParameterValueString.split(",");
@@ -293,7 +295,25 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
 
     @Override
     public List<Parameter> getParameters() {
-        return algorithmParamMapper.getParameters();
+        List<Parameter> list = algorithmParamMapper.getParameters();//存放每个参数
+        for (Parameter p : list){
+            String tmpStr = p.getParameterSettingInfo();//获取第i个参数的settingInfo
+            JSONObject obj = (JSONObject) JSONObject.parse(tmpStr);
+            //若settingInfo无值，即为text类型，直接跳过
+            if(obj.get("options").toString().equals("[]")){
+                continue;
+            }
+            //去除options对应的值的[]以及所有"方便存取
+            String str[] = obj.get("options").toString().replace("[","").replace("]","").replaceAll("\"","").split(",");
+            List<String> pav = new LinkedList<>();//存放第i个参数的options对应的算法层的值
+            for(int i = 0; i < str.length; i++){
+                tmpStr = webAlgorithmMapper.getParameterValue(p.getAlgorithmId(),p.getParameterId(),str[i]);
+                pav.add("\""+tmpStr+"\"");//将数据规范为["a","b",...]类型
+            }
+            obj.put("parameterAlgorithmValue",pav);
+            p.setParameterAlgorithmValue(obj.get("parameterAlgorithmValue").toString());
+        }
+        return list;
     }
 
     @Override
@@ -337,6 +357,12 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         //遍历步骤列表，添加步骤信息
         for(ProcedureSettings procedureSetting:procedureSettings){
             procedureSettingsMapper.addProcedureSetting(procedureSetting);
+        }
+        //遍历算法参数列表，添加参数信息
+        List<Parameter> parameters = readExcelUtil.readParameterInfoByExcelFile(algorithmInfoExcel);
+
+        for (Parameter parameter:parameters){
+            algorithmMapper.createParameter(parameter);
         }
 
     }
