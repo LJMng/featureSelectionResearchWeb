@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class ReadExcelUtil {
@@ -140,7 +142,6 @@ public class ReadExcelUtil {
 //                                System.out.println(cell.toString());
                             }
                         }
-//                        System.out.println(procedureSettingsInfo);
                         //根据封装成的数组，给procedureSetting对象对应的属性赋值
                         int algorithmId=algorithmMapper.getAlgorithmIdByName(procedureSettingsInfo[1]);
                         procedureSetting.setAlgorithmId(algorithmId);
@@ -209,7 +210,8 @@ public class ReadExcelUtil {
     }
 
 
-    public List<Parameter> readParameterInfoByExcelFile(File excel){
+    public Map<String,Object> readParameterInfoByExcelFile(File excel){
+        Map<String,Object> algorithmInfoMapper = new HashMap<>();
         List<Parameter> parameters = new ArrayList<>();
         List<ParameterExcelRowObject> parameterExcelRowObjectList = new ArrayList<>();
         try {
@@ -247,7 +249,6 @@ public class ReadExcelUtil {
                             Cell cell = row.getCell(cIndex);
                             if (cell != null) {
                                 parameterExcelRowObjectArray[cIndex-1]=cell.toString();
-//                                System.out.println(cell.toString());
                             }
                         }
                         parameterExcelRowObject.setAlgorithmName(parameterExcelRowObjectArray[0]);
@@ -263,8 +264,6 @@ public class ReadExcelUtil {
                         parameterExcelRowObject.setParameterExtraValueMapper(parameterExcelRowObjectArray[10]);
                         parameterExcelRowObjectList.add(parameterExcelRowObject);
                     }
-//                    System.out.println(parameterExcelRowObjectList.size());
-//                    System.out.println(parameterExcelRowObjectList.toString());
                 }
                 //遍历parameterExcelRowObjectList,将算法名称，步骤名称一样的excelRow对象封装在一个数组中
                 List<List<ParameterExcelRowObject>> allParameterInfo = new ArrayList<>();
@@ -292,7 +291,6 @@ public class ReadExcelUtil {
                         allParameterInfo.add(oneParameterInfo);
                     }
                 }
-//                System.out.println("长度"+allParameterInfo.size());
                 //遍历allParameterInfo列表，获取每个oneParameterInfo信息，根据oneParameterInfo列表信息生成一个Parameter对象。
                 for (List<ParameterExcelRowObject> oneParameterInfo:allParameterInfo){
                     //取出一个ParameterExcelRowObject,判断其参数类型，根据参数类型进行parameterSettingInfo的拼接
@@ -311,7 +309,6 @@ public class ReadExcelUtil {
                         parameter.setParameterSettingInfo(parameterSettingInfo);
                         //将parameter信息添加至要返回的parameters列表中
                         parameters.add(parameter);
-//                        System.out.println("类型为text");
                     }
                     //参数类型为selection时的情况
                     else if (parameterExcelRowObject.getParameterType().equals("selection")){
@@ -356,7 +353,6 @@ public class ReadExcelUtil {
                         for (List<ParameterExcelRowObject> oneOptionExtraInfoObject:allOptionExtraInfoObject){
                             String extraOption = "";
                             //遍历oneOptionExtraInfoObject列表信息,获取单个值对应的Extra信息
-                            System.out.println(oneOptionExtraInfoObject.isEmpty());
                             for (ParameterExcelRowObject produceExtra:oneOptionExtraInfoObject){
                                 //判断produceExtra中Extra的类型
                                 //第二个Extra类型为null的情况
@@ -367,11 +363,9 @@ public class ReadExcelUtil {
                                     }else{
                                         extraInfo =extraInfo+"\""+ produceExtra.getParameterValue() + "\":null";
                                     }
-                                    System.out.println("运行了null");
                                 }
                                 //第二个Extra类型为为text的情况
                                 else if (produceExtra.getParameterExtraType().equals("text")){
-                                    System.out.println("运行了text");
                                     //如果是最后一个
                                     if (allOptionExtraInfoObject.indexOf(oneOptionExtraInfoObject) == allOptionExtraInfoObject.size()-1){
                                         extraInfo = extraInfo + "\"" + produceExtra.getParameterValue() + "\":{\"type\":\"text\",\"options\":[]}";
@@ -381,12 +375,8 @@ public class ReadExcelUtil {
                                 }
                                 //第二个Extra类型为selection
                                 else{
-                                    System.out.println("运行了selection");
-                                    System.out.println(oneOptionExtraInfoObject.toString());
-
                                     //生成extraOption信息
                                     extraOption = extraOption + "\""+produceExtra.getParameterExtraValue()+"\"";
-                                    System.out.println(extraOption);
                                    //如果不是最后一个
                                    if (oneOptionExtraInfoObject.indexOf(produceExtra) !=oneOptionExtraInfoObject.size()-1){
                                        extraOption = extraOption + ",";
@@ -419,12 +409,10 @@ public class ReadExcelUtil {
                         parameter.setParameterSettingInfo(parameterSettingInfo);
                         //将parameter信息添加至要返回的parameters列表中
                         parameters.add(parameter);
-//                        System.out.println("类型为Selection");
 
                     }
                     //参数类型为radio、checkbox的情况
                     else{
-                        System.out.println("运行了一个类型为radio");
                         //生成parameterSettingInfo的头部信息
                         String parameterSettingInfo = "{\"type\":\"";
                         parameterSettingInfo = parameterSettingInfo + parameterExcelRowObject.getParameterType() + "\",\"options\":[";
@@ -443,19 +431,21 @@ public class ReadExcelUtil {
                         parameter.setParameterSettingInfo(parameterSettingInfo);
                         //将parameter信息添加至要返回的parameters列表中
                         parameters.add(parameter);
-//                        System.out.println("类型为radio");
                     }
 
                 }
                 //调用添加参数映射值关系的方法，添加映射关系
-                addParameterMapper(parameterExcelRowObjectList);
+//                addParameterMapper(parameterExcelRowObjectList);
             } else {
                 System.out.println("找不到指定的文件");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return parameters;
+        algorithmInfoMapper.put("parameters",parameters);
+        algorithmInfoMapper.put("parameterExcelRowObjectList",parameterExcelRowObjectList);
+        algorithmInfoMapper.get("parameters");
+        return algorithmInfoMapper;
     }
 
     //遍历oneParameterInfo信息生成options
@@ -486,7 +476,6 @@ public class ReadExcelUtil {
                 options = options+",";
             }
         }
-        System.out.println("第一个值"+options);
         return options;
     }
 
