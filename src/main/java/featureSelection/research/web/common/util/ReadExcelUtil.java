@@ -2,6 +2,7 @@ package featureSelection.research.web.common.util;
 
 import featureSelection.research.web.entity.execution.admin.*;
 import featureSelection.research.web.mybatisMapper.execution.admin.AlgorithmMapper;
+import featureSelection.research.web.mybatisMapper.execution.admin.WebAlgorithmMapper;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -20,6 +21,9 @@ import java.util.List;
 public class ReadExcelUtil {
     @Autowired
     private AlgorithmMapper algorithmMapper;
+
+    @Autowired
+    private WebAlgorithmMapper webAlgorithmMapper;
 
 
     //读取excel文件，获取算法信息列表对象
@@ -342,47 +346,68 @@ public class ReadExcelUtil {
                                             equals(currParameterExcelRowObject.getParameterValue())){
                                         oneOptionExtraInfoObject.add(oneParameterInfo.get(j));
                                     }
-                                    allOptionExtraInfoObject.add(oneOptionExtraInfoObject);
                                 }
+                                allOptionExtraInfoObject.add(oneOptionExtraInfoObject);
                             }
                         }
                         String extraInfo="";
+                        String selectionExtraOption="";
                         //遍历allOptionExtraInfoObject列表,生成Extra信息
                         for (List<ParameterExcelRowObject> oneOptionExtraInfoObject:allOptionExtraInfoObject){
-                            //遍历oneOptionExtraInfoObject列表信息,获取单个值对应的Extra信息
                             String extraOption = "";
+                            //遍历oneOptionExtraInfoObject列表信息,获取单个值对应的Extra信息
+                            System.out.println(oneOptionExtraInfoObject.isEmpty());
                             for (ParameterExcelRowObject produceExtra:oneOptionExtraInfoObject){
                                 //判断produceExtra中Extra的类型
                                 //第二个Extra类型为null的情况
                                 if (produceExtra.getParameterExtraType().equals("null")){
-                                    extraInfo =extraInfo+"\""+ produceExtra.getParameterValue() + "\":null";
+                                    //如果当前的Extra信息不是最后一个
+                                    if (allOptionExtraInfoObject.indexOf(oneOptionExtraInfoObject) != allOptionExtraInfoObject.size()-1){
+                                        extraInfo =extraInfo+"\""+ produceExtra.getParameterValue() + "\":null,";
+                                    }else{
+                                        extraInfo =extraInfo+"\""+ produceExtra.getParameterValue() + "\":null";
+                                    }
+                                    System.out.println("运行了null");
                                 }
                                 //第二个Extra类型为为text的情况
                                 else if (produceExtra.getParameterExtraType().equals("text")){
+                                    System.out.println("运行了text");
                                     //如果是最后一个
                                     if (allOptionExtraInfoObject.indexOf(oneOptionExtraInfoObject) == allOptionExtraInfoObject.size()-1){
-                                        extraInfo = extraInfo + "\"" + produceExtra.getParameterValue() + "\":{\"type\":\"text\",\"options\":[]}}";
+                                        extraInfo = extraInfo + "\"" + produceExtra.getParameterValue() + "\":{\"type\":\"text\",\"options\":[]}";
                                     }else {
                                         extraInfo = extraInfo + "\"" + produceExtra.getParameterValue() + "\":{\"type\":\"text\",\"options\":[]},";
                                     }
                                 }
                                 //第二个Extra类型为selection
                                 else{
+                                    System.out.println("运行了selection");
+                                    System.out.println(oneOptionExtraInfoObject.toString());
+
                                     //生成extraOption信息
-                                   extraOption = "\""+produceExtra.getParameterExtraValue()+"\"";
+                                    extraOption = extraOption + "\""+produceExtra.getParameterExtraValue()+"\"";
+                                    System.out.println(extraOption);
                                    //如果不是最后一个
                                    if (oneOptionExtraInfoObject.indexOf(produceExtra) !=oneOptionExtraInfoObject.size()-1){
                                        extraOption = extraOption + ",";
                                    }
                                    //如果为最后一个，根据extraOption拼接extraInfo信息
                                    else {
-                                       extraInfo = extraInfo + "\"" + produceExtra.getParameterValue() + "\":{\"type\":\"selection\",\"option\":["+extraOption+"]}";
+                                       //如果当前的Extra信息不是最后一个
+                                       if (allOptionExtraInfoObject.indexOf(oneOptionExtraInfoObject) != allOptionExtraInfoObject.size()-1){
+                                           extraInfo = extraInfo + "\"" + produceExtra.getParameterValue() + "\":{\"type\":\"selection\",\"option\":["+extraOption+"]},";
+                                       }
+                                       //如果最后一个，则直接拼接
+                                       else{
+                                           extraInfo = extraInfo + "\"" + produceExtra.getParameterValue() + "\":{\"type\":\"selection\",\"option\":["+extraOption+"]}";
+                                       }
+
                                    }
 
                                 }
                             }
                         }
-                        parameterSettingInfo = parameterSettingInfo + extraInfo + "}";
+                        parameterSettingInfo = parameterSettingInfo + extraInfo + "}}";
                         Parameter parameter = new Parameter();
                         int algorithmId = algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName());
                         parameter.setAlgorithmId(algorithmId);
@@ -399,6 +424,7 @@ public class ReadExcelUtil {
                     }
                     //参数类型为radio、checkbox的情况
                     else{
+                        System.out.println("运行了一个类型为radio");
                         //生成parameterSettingInfo的头部信息
                         String parameterSettingInfo = "{\"type\":\"";
                         parameterSettingInfo = parameterSettingInfo + parameterExcelRowObject.getParameterType() + "\",\"options\":[";
@@ -421,6 +447,8 @@ public class ReadExcelUtil {
                     }
 
                 }
+                //调用添加参数映射值关系的方法，添加映射关系
+                addParameterMapper(parameterExcelRowObjectList);
             } else {
                 System.out.println("找不到指定的文件");
             }
@@ -432,17 +460,63 @@ public class ReadExcelUtil {
 
     //遍历oneParameterInfo信息生成options
     public static String produceOptions(List<ParameterExcelRowObject> oneParameterInfo){
+        List<String> firstValueList= new ArrayList<>();
         String options="";
-        for (ParameterExcelRowObject produceOptionsInfo : oneParameterInfo){
-            options = options+ "\""+produceOptionsInfo.getParameterValue()+"\"";
+        firstValueList.add(oneParameterInfo.get(0).getParameterValue());
+        for (int i=0;i<oneParameterInfo.size();i++){
+            boolean isContent = false;
+            //取出当前ExcelObject对象
+            ParameterExcelRowObject currExcelRowObject=oneParameterInfo.get(i);
+            for (int j=0;j<firstValueList.size();j++) {
+                if (currExcelRowObject.getParameterValue().equals(firstValueList.get(j))) {
+                    isContent = true;
+                }
+            }
+                if ( !isContent){
+                    firstValueList.add(currExcelRowObject.getParameterValue());
+                }
+
+        }
+        for (String firstValue : firstValueList){
+            options = options+ "\""+firstValue+"\"";
             //获取当前ParameterExcelRowObject 对象的索引下标
-            int index=oneParameterInfo.indexOf(produceOptionsInfo);
+            int index=firstValueList.indexOf(firstValue);
             //如果当前下标不是最后一个,则需要添加”,“
-            if (index != oneParameterInfo.size()-1){
+            if (index != firstValueList.size()-1){
                 options = options+",";
             }
         }
+        System.out.println("第一个值"+options);
         return options;
+    }
+
+    //遍历所有的excelRow对象，生成
+    public void addParameterMapper(List<ParameterExcelRowObject> parameterExcelRowObjectList){
+        //遍历parameterExcelRowObject 生成算法参数映射值列表
+        List<WebAlgorithmMapperEntity> webAlgorithmMapperEntityList = new ArrayList<>();
+        for (ParameterExcelRowObject parameterExcelRowObject:parameterExcelRowObjectList){
+            WebAlgorithmMapperEntity webAlgorithmMapperEntity = new WebAlgorithmMapperEntity();
+            webAlgorithmMapperEntity.setAlgorithmId(algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName()));
+            webAlgorithmMapperEntity.setParameterId(algorithmMapper.getParameterIdByName(parameterExcelRowObject.getParameterName()));
+            webAlgorithmMapperEntity.setWebKey(parameterExcelRowObject.getParameterValue());
+            webAlgorithmMapperEntity.setAlgorithmValue(parameterExcelRowObject.getParameterValueMapper());
+            webAlgorithmMapperEntityList.add(webAlgorithmMapperEntity);
+            //判断第二个值是否为null,如果不为null则添加第二个值的信息
+            if (parameterExcelRowObject.getParameterExtraValue() != null){
+                WebAlgorithmMapperEntity webAlgorithmMapperEntityAddExtraValue = new WebAlgorithmMapperEntity();
+                webAlgorithmMapperEntityAddExtraValue.setAlgorithmId(algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName()));
+                webAlgorithmMapperEntityAddExtraValue.setParameterId(algorithmMapper.getParameterIdByName(parameterExcelRowObject.getParameterName()));
+                webAlgorithmMapperEntityAddExtraValue.setWebKey(parameterExcelRowObject.getParameterValue()+"_"+parameterExcelRowObject.getParameterExtraValue());
+                webAlgorithmMapperEntityAddExtraValue.setAlgorithmValue(parameterExcelRowObject.getParameterExtraValueMapper());
+                webAlgorithmMapperEntityList.add(webAlgorithmMapperEntityAddExtraValue);
+            }
+
+        }
+        //遍历webAlgorithmEntityList,添加参数值映射信息
+        for (WebAlgorithmMapperEntity webAlgorithmMapperEntity:webAlgorithmMapperEntityList){
+            webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
+        }
+
     }
 }
 

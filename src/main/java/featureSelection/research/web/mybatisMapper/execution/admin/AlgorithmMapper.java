@@ -27,4 +27,7 @@ public interface AlgorithmMapper {
 
     @Select("select algorithm_id from algorithm where algorithm_name=#{algorithmName}")
     public int getAlgorithmIdByName(String algorithmName);
+
+    @Select("select parameter_id from parameter where parameter_name = #{parameterName}")
+    public int getParameterIdByName(String parameterName);
 }
