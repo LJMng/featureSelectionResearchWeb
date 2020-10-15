@@ -5,6 +5,7 @@ import featureSelection.research.web.controller.demo.visitor.AlgorithmEexecuteCo
 import featureSelection.research.web.entity.communicationJson.rabbitmqcominfo.DemoRabbimqComInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
@@ -55,11 +56,17 @@ public class DemoRabbitmqComServiceSingleton {
 
     /**
      * 监听算法服务端返回队列中的返回的信息
-     * @param info：返回的信息
+     * @param message：返回的信息
      */
     @RabbitListener(queues = "demoResultReciverQueue")
-    public void listen(JSONObject info) {
-        log.info("reciver connect response" + info);
+    public void listen(Message message) {
+        String conteneType=message.getMessageProperties().getContentType();
+        if (conteneType!=null&&!conteneType.contains("json")){
+            log.error("Illegal content type"+message.toString());
+        }
+        String str=new String(message.getBody());
+        JSONObject info=JSONObject.parseObject(str);
+        log.info("reciver connect response" + message.toString());
         //1.判断连接任务是否存在
         if (demoRabbimqComInfos.get(info.get("id")) != null) {
             //2.1获取请求连接信息类
@@ -123,7 +130,7 @@ public class DemoRabbitmqComServiceSingleton {
             }
 
         }else {
-            log.warn(new Date().toString()+"--"+"demoService:task ");
+            log.warn(new Date().toString()+"--"+"not find this TaskId:"+info.get("id"));
         }
     }
 }

@@ -33,8 +33,7 @@ public class ShiroConfig2 {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         bean.setSecurityManager(securityManager);
         Map<String, String> filterMap = new LinkedHashMap<>();
-        filterMap.put("/execution/*/**", "authc");
-        filterMap.put("/execution", "anon");
+        filterMap.put("/execution/**", "authc");
         bean.setFilterChainDefinitionMap(filterMap);
         bean.setLoginUrl("/accountLogin");
 //        bean.setUnauthorizedUrl("/unauth");

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -82,7 +83,7 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
     }
 
     @Override
-    public String submitTaskForm(TaskInfo task, MultipartFile uploadFile, String path) throws JsonProcessingException {
+    public String submitTaskForm(TaskInfo task, MultipartFile uploadFile, String path) throws IOException {
         String filePath = null;
         ParameterFormat parameterFormat = new ParameterFormat();
         //判断算法任务是否是使用用户上传的数据集
@@ -90,7 +91,7 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
             //存储数据集到本地
             filePath = fileUpload.uploadFIle(uploadFile, path);
             //根据数据集的维度生成Attribute的值
-            int columnNum = csvUtill.getDimensionByFilePath("src\\main\\resources\\" + filePath);
+            int columnNum = csvUtill.getDimensionByFilePath(filePath)+1;
             int[] attributes = new int[columnNum-1];
             for (int i=0; i<attributes.length; i++){
                 attributes[i] = i+1;
@@ -100,6 +101,7 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
             parameterFormat.setColumn(columnNum);
             parameterFormat.setDatasetName(filePath.substring(filePath.lastIndexOf(File.separator)+1));
             parameterFormat.setAttributes(attributes);
+            parameterFormat.setPartDataSize((int)csvUtill.getRecords()+1 );
         }else {
             int columnNum = datasetMapper.getDatasetDimensionById(task.getDatasetId());
             int[] attributes = new int[columnNum-1];
@@ -109,12 +111,12 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
             parameterFormat.setColumn(columnNum);
             parameterFormat.setDatasetName(datasetMapper.getDatasetNameById(task.getDatasetId()));
             parameterFormat.setAttributes(attributes);
+            parameterFormat.setPartDataSize(datasetMapper.getDatasetRecordById(task.getDatasetId()));
         }
         //获取算法名称映射的值
         String algorithmName = algorithmMapper.getAlgorithmNameMapperById(task.getAlgorithmId());
         parameterFormat.setId(algorithmName+"-"+String.valueOf(System.currentTimeMillis()).substring(0,10));
         parameterFormat.setPart(0);
-        parameterFormat.setPartDataSize(0);
         AlgorithmInfo algorithmInfo = new AlgorithmInfo(algorithmName,objectMapper.readValue(task.getAlgorithmParameters(),Object.class));
         parameterFormat.setAlgorithmInfo(algorithmInfo);
         parameterFormat.setPreviousReducts(null);

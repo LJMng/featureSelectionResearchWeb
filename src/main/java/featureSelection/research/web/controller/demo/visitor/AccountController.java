@@ -83,8 +83,8 @@ public class AccountController {
 //        return result;
     }
 
-    @GetMapping("/signout/{page}/{account}")
-    public void signOut(@PathVariable String account, @PathVariable String page, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @GetMapping("/signout/{account}")
+    public void signOut(@PathVariable String account, HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (account != null) {
             Subject subject = SecurityUtils.getSubject();
             subject.logout();
@@ -97,11 +97,7 @@ public class AccountController {
             cookie2.setMaxAge(0);
             response.addCookie(cookie);
             response.addCookie(cookie2);
-            if (page.equals("index")) {
-                response.sendRedirect("/");
-            } else {
-                response.sendRedirect("/"+page);
-            }
+            response.sendRedirect("/");
         }
     }
 }

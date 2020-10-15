@@ -22,7 +22,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.boot.system.ApplicationHome;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -94,6 +96,7 @@ public class DemoRabbimqComInfo {
      */
     public String sendRabbitmqConnectRequestInfo() {
         AlgorithmCallTaskInfo connectenity = schemeInfoToRequestEnity();
+        connectenity.setPartDataSize(dataset.getDatasetRecords());
         connectenity.setLocalRabbitmqInfo(this.localDemoRabbitmqInfo);
         connectenity.setId(this.demoRabbimqComTaskId);
         //将算法参数实体信息对象转换为json字符串
@@ -207,7 +210,7 @@ public class DemoRabbimqComInfo {
         algorithmCallServiceInfo.setColumn(Integer.parseInt(dataset.getDatasetDimension()));
         //设置数据集part
         algorithmCallServiceInfo.setPart(0);
-        algorithmCallServiceInfo.setPartDataSize(0);
+        algorithmCallServiceInfo.setPartDataSize(dataset.getDatasetRecords());
         int featureNums=Integer.parseInt(dataset.getDatasetDimension());
         int[]attributes=new int[featureNums-1];
         for (int i=0;i<featureNums-1;i++){
@@ -223,10 +226,20 @@ public class DemoRabbimqComInfo {
      * @throws IOException
      */
     public void sendDataset() throws IOException {
-        String fileinfo=dataset.getdatasetFile().replace("\\","/");
-        StringBuilder stringBuilder=new StringBuilder(fileinfo);
-        stringBuilder.insert(0,"static/");
-        int[][] data = new DemoCsvUtil(stringBuilder.toString()).csvToIntArray();
+
+        ApplicationHome h = new ApplicationHome(getClass());
+        File jarF = h.getSource();
+        StringBuilder jarPath=new StringBuilder(dataset.getdatasetFile());
+        jarPath.insert(0,jarF.getParentFile().toString()+"\\");
+        int[][] data;
+        File file = new File(jarPath.toString());
+        if (file.exists()){
+                data=new DemoCsvUtil(jarPath.toString()).csvToIntArray();
+        }else{
+            String noJarPath=jarPath.toString();
+            noJarPath=noJarPath.replace("\\target","");
+            data=new DemoCsvUtil(noJarPath.toString()).csvToIntArray();
+        }
         //请求数据实体
         SendDataSetInfo RequestJsonDataCommonInfo = new SendDataSetInfo();
         //时间戳与任务建立时保持一致
@@ -236,8 +249,9 @@ public class DemoRabbimqComInfo {
         Object reductResult = new Object();
         log.info("begin send dataset");
         //根据数据量确定消息数
-        for (int i = 0; i < data.length - 1; i++) {
+        for (int i = 0; i < data.length ; i++) {
             JSONObject RequestJsonData = RequestJsonData(i, data[i], RequestJsonDataCommonInfo);
+            this.rabbitmqTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
             this.rabbitmqTemplate.convertAndSend(exchange, routingkey, RequestJsonData);
             log.info("article" + i + "data：" + RequestJsonData.toJSONString());
         }

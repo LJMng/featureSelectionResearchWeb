@@ -15,8 +15,8 @@
         <span class="h4 text-center ml-auto mr-auto" id="demo_algorithms_title">{{demo_algorithms_title}}</span>
         <hr>
         <span>{{demo_algorithms_secondtitle}}</span>
-
     </div>
+
     <div id="guideinfo" class="border border-darken-1">
         <div class="mt-2">
             <h4 class="text-center" id="demo_algorithms_guideinfotitile">{{demo_algorithms_guideinfotitile}}</h5>
@@ -326,10 +326,10 @@
                 },
                 downloadByDatasetIndex(algorithmIndex,datasetindex) {
                     // console.log(datasetindex)
-                    // var toPostDatasetId = this.algorithms[algorithmIndex].datasets[datasetindex].datasetId;
-                    // window.location.href = demoVisitorBaseURL+"/download?datasetid=" + toPostDatasetId;
-                    var filePath=this.algorithms[algorithmIndex].datasets[datasetindex].datasetFile
-                    window.location.href =filePath
+                    var toPostDatasetId = this.algorithms[algorithmIndex].datasets[datasetindex].datasetId;
+                    window.location.href = demoVisitorBaseURL+"/download?datasetid=" + toPostDatasetId;
+                    // var filePath=this.algorithms[algorithmIndex].datasets[datasetindex].datasetFile
+                    // window.location.href =filePath
                 },
                 newDraggable(algorithmIndex,parameterSchemeIndex) {
                     var testdemo_algorithms_title=this.demo_algorithms_title
@@ -470,6 +470,12 @@
             }
             return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00)+"%";
         }
+
+
+        function reviewCsvDataset(id) {
+            window.open("pages/demo/visitor/reviewCsvDatasetPage.html?id="+id,"_blank")
+        }
+
     </script>
 </body>
 

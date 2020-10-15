@@ -25,7 +25,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.boot.system.ApplicationHome;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -103,6 +105,7 @@ public class ExecutionRabbitmqComInfo {
      JSONObject localRabbitmqInfo=JSONObject.parseObject(localRabbitmqInfoString);
      JSONObject taskParamaterInfo=JSONObject.parseObject(taskInfo.getAlgorithmParameters());
      taskParamaterInfo.put("rabbitmqInfo",localRabbitmqInfo);
+
      //发送信息请求与rabbitmq建立通讯
      log.info("进行连接请求,请求数据：" + taskParamaterInfo.toJSONString());
      this.rabbitmqTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
@@ -122,7 +125,7 @@ public class ExecutionRabbitmqComInfo {
      */
     public JSONObject RequestJsonData(int row, int[] data, SendDataSetInfo requestCommonData) throws IOException {
         requestCommonData.setLine(row);
-        requestCommonData.setPartTotalLine(data.length);
+        requestCommonData.setPartTotalLine(dataset.getDatasetRecords());
         requestCommonData.setData(data);
         String jsonString = JSONObject.toJSONString(requestCommonData);
         //将json字符串转换为json对象
@@ -132,17 +135,34 @@ public class ExecutionRabbitmqComInfo {
 
     //发送数据集信息
     public void sendDataset() throws IOException {
+        log.info(this.sendRoutingkey);
         int[][] data;
         if (dataset!=null){
-            String fileinfo=dataset.getdatasetFile().replace("\\","/");
-            StringBuilder stringBuilder=new StringBuilder(fileinfo);
-            stringBuilder.insert(0,"static/");
-            data = new DemoCsvUtil(stringBuilder.toString()).csvToIntArray();
+            ApplicationHome h = new ApplicationHome(getClass());
+            File jarF = h.getSource();
+            StringBuilder jarPath=new StringBuilder(dataset.getdatasetFile());
+            jarPath.insert(0,jarF.getParentFile().toString()+"\\");
+            File file = new File(jarPath.toString());
+            if (file.exists()){
+                data=new DemoCsvUtil(jarPath.toString()).csvToIntArray();
+            }else{
+                String noJarPath=jarPath.toString();
+                noJarPath=noJarPath.replace("\\target","");
+                data=new DemoCsvUtil(noJarPath.toString()).csvToIntArray();
+            }
         }else{
-            String fileinfo=taskInfo.getDatasetUpload().replace("\\","/");
-            StringBuilder stringBuilder=new StringBuilder(fileinfo);
-            stringBuilder.insert(0,"static/");
-            data=new DemoCsvUtil(stringBuilder.toString()).csvToIntArray();
+            ApplicationHome h = new ApplicationHome(getClass());
+            File jarF = h.getSource();
+            StringBuilder jarPath=new StringBuilder(taskInfo.getDatasetUpload());
+            jarPath.insert(0,jarF.getParentFile().toString()+"\\");
+            File file = new File(jarPath.toString());
+            if (file.exists()){
+                data=new DemoCsvUtil(jarPath.toString()).csvToIntArray();
+            }else{
+                String noJarPath=jarPath.toString();
+                noJarPath=noJarPath.replace("\\target","");
+                data=new DemoCsvUtil(noJarPath.toString()).csvToIntArray();
+            }
         }
 
         //请求数据实体
@@ -150,12 +170,13 @@ public class ExecutionRabbitmqComInfo {
         //时间戳与任务建立时保持一致
         RequestJsonDataCommonInfo.setId(this.executionRabbimqComTaskId);
         RequestJsonDataCommonInfo.setDatasetName(dataset.getDatasetName());
-        log.info("开始发送数据");
+        log.info("begin send data");
         //根据数据量确定消息数
-        for (int i = 0; i < data.length - 1; i++) {
+        for (int i = 0; i < data.length; i++) {
             JSONObject RequestJsonData = RequestJsonData(i, data[i], RequestJsonDataCommonInfo);
+            this.rabbitmqTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
             this.rabbitmqTemplate.convertAndSend(exchange, sendRoutingkey, RequestJsonData);
-            log.info("发送第" + i + "条数据：" + RequestJsonData.toJSONString());
+            log.info("send the" + i + "条数据：" + RequestJsonData.toJSONString());
         }
     }
 

@@ -33,7 +33,7 @@
                 </div>
                 <button type="button" id="loginbutton" class="btn btn-outline-secondary btn-sm mr-2" onclick="toLoginPage()">{{login
                     }}</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm mr-2 d-none" id="signOutButton" onclick="javascript:window.location.href = '/signout/index'+'/'+$.cookie('account')">{{logout}}</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm mr-2 d-none" id="signOutButton" onclick="javascript:window.location.href = '/signout'+'/'+$.cookie('account')">{{logout}}</button>
 
                 &nbsp;&nbsp;&nbsp;
                 <input type="checkbox" name="my-checkbox" checked id="language">

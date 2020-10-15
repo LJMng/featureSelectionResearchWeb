@@ -4,8 +4,11 @@ import featureSelection.research.web.entity.execution.visitor.*;
 import featureSelection.research.web.service.execution.visitor.IHtmlElementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -42,5 +45,10 @@ public class HtmlElementsController {
     @GetMapping("/execution/getProcedureSettingsList")
     public Map<Integer,List<ProcedureSettings>> getProcedureSettingsList() {
         return htmlElementsServiceImpl.getProcedureSettingList();
+    }
+
+    @GetMapping("/execution/download/{datasetId}")
+    public void downloadDataset(HttpServletResponse response, @PathVariable("datasetId") int datasetId) throws IOException {
+        response.sendRedirect("/demo/visitor/download?datasetid=" + datasetId);
     }
 }

@@ -1,10 +1,13 @@
 package featureSelection.research.web.common.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.rabbitmq.client.Channel;
 import featureSelection.research.web.entity.communicationJson.rabbitmqcominfo.DemoRabbimqComInfo;
 import featureSelection.research.web.entity.communicationJson.rabbitmqcominfo.ExecutionRabbitmqComInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -33,8 +36,7 @@ public class ExecutionRabbitmqComServiceSingleton {
     private static Map<String, ExecutionRabbitmqComInfo> executionRabbimqComInfos = new ConcurrentHashMap<>(64);
 
     public static int addExecutionRabbitmqComInfo(ExecutionRabbitmqComInfo executionRabbitmqComInfo) {
-        //设置排队中状态
-        executionRabbitmqComInfo.setStatues("in the line:"+executionRabbimqComInfos.size());
+
         executionRabbimqComInfos.put(executionRabbitmqComInfo.getExecutionRabbimqComTaskId(), executionRabbitmqComInfo);
         //开始发送rabbitmq连接信息
         executionRabbitmqComInfo.sendRabbitmqConnectRequestInfo();
@@ -51,12 +53,18 @@ public class ExecutionRabbitmqComServiceSingleton {
 
     /**
      * 监听算法服务端返回队列中的返回的信息
-     * @param info：返回的信息
+     * @param message：返回的信息
      */
     @RabbitListener(queues = "executionResultReciverQueue")
-    public void listen(String info) {
-        log.info("reciver connect response" + info);
-        JSONObject infoJSon =JSONObject.parseObject(info);
+    @RabbitHandler
+    public void listen(Message message, Channel channel) {
+        String conteneType=message.getMessageProperties().getContentType();
+        if (conteneType!=null&&!conteneType.contains("json")){
+            log.error("Illegal content type"+message.toString());
+        }
+        String str=new String(message.getBody());
+        JSONObject infoJSon=JSONObject.parseObject(str);
+        log.info("reciverMessage："+message.toString());
         //判断连接任务是否存在
         if (executionRabbimqComInfos.get(infoJSon.get("id")) != null) {
             //获取请求连接信息类
@@ -65,8 +73,7 @@ public class ExecutionRabbitmqComServiceSingleton {
             //判断是否为连接请求结果
             if (infoJSon.get("connect-status") != null) {
                 //判断连接请求是否成功
-                if (infoJSon.get("connect-status").equals(200)) {
-
+                if ((int)infoJSon.get("connect-status")==200) {
                     //判断状态是否为准备状态（即服务等待连接状态）
                     if (executionRabbitmqComInfo.getStatues().equals("READY")) {
                         try {
@@ -105,13 +112,17 @@ public class ExecutionRabbitmqComServiceSingleton {
                 executionRabbitmqComInfo.getTaskInfo().setAlgorithmStatus("data-error:"+infoJSon.get("data-error-info").toString());
             }
             //如果信息中包含退出信息，则任务完成，接收任务结果并设置任务完成
-            if (infoJSon.get("exitInfos") != null) {
+            if (infoJSon.get("reducts") != null) {
                 executionRabbitmqComInfo.setResultInfo(infoJSon);
                 executionRabbitmqComInfo.setStatues("FINISH");
                 executionRabbitmqComInfo.sendEmailAndWriteResult();
                 log.info("excutionService:"+executionRabbitmqComInfo.getTaskAccoutEmail()+"-"
-                        +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":"+"FINISH"+"  resultInfo:"+info);
+                        +executionRabbitmqComInfo.getExecutionRabbimqComTaskId()+":"+"FINISH"+"  resultInfo:"+infoJSon.toJSONString());
             }
         }
+        else {
+            log.warn(new Date().toString()+"--"+"not find this TaskId:"+infoJSon.get("id"));
+        }
+
     }
 }

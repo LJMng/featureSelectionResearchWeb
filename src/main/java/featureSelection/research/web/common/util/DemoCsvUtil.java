@@ -21,19 +21,19 @@ public class DemoCsvUtil {
     CsvReader csvReader;
 
     public DemoCsvUtil(String csvPath) throws IOException {
-        this.csvPath = relativePathtoAboslute(csvPath);
+        this.csvPath = csvPath;
     }
-
-    /**
-     * 相对路径转绝对路径
-     *
-     * @return
-     */
-    public String relativePathtoAboslute(String path) {
-        String apppath = ClassUtils.getDefaultClassLoader().getResource("").getPath();
-        String aboslutePath = apppath + path;
-        return aboslutePath;
-    }
+//
+//    /**
+//     * 相对路径转绝对路径
+//     *
+//     * @return
+//     */
+//    public String relativePathtoAboslute(String path) {
+//        String apppath = ClassUtils.getDefaultClassLoader().getResource("").getPath();
+//        String aboslutePath = apppath + path;
+//        return aboslutePath;
+//    }
 
     /**
      * 将csv文件转化为int二位数组
@@ -104,14 +104,25 @@ public class DemoCsvUtil {
         csvWriter.close();
     }
 
-    public static void main(String[] args) throws IOException {
-        DemoCsvUtil demoCsvUtil = new DemoCsvUtil("static/dataset/iris.csv");
-        int[][] result = demoCsvUtil.csvToIntArray();
-        for (int row[] : result) {
-            for(int data : row){
-                System.out.print(data+" ");
+
+    public List<String> csvToListString() {
+
+        List<String> result = new ArrayList<>();
+        try {
+            // 创建CSV读对象
+            CsvReader csvReader = new CsvReader(csvPath);
+            while (csvReader.readRecord()){
+                // 读取每一行数据，以逗号分开
+                result.add(csvReader.getRawRecord());
             }
-            System.out.println();
+            csvReader.close();
+            return result;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return result;
         }
     }
+
+
 }
