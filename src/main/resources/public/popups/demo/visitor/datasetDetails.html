@@ -34,6 +34,12 @@
                         数据集维度:</span>&nbsp&nbsp{{dataset.datasetDimension}}
                     </li>
                 </ul>
+
+                <div style="width: 100%;text-align: center">
+                <button class="btn btn-primary"  v-on:click="reviewCsvDataset(dataset.datasetId)">review this
+                    dataset
+                </button>
+                </div>
             </div>
         </div>
     </div>
