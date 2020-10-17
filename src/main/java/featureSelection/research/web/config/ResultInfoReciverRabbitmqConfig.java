@@ -13,44 +13,44 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ResultInfoReciverRabbitmqConfig {
-    @Value(value ="${spring.rabbitmq.localResultReciverExchange}")
-    private String localResultReciverExchange;
-    @Value(value ="${spring.rabbitmq.localDemoResultReciverRoutingkey}")
-    private String localDemoResultReciverRoutingkey;
-    @Value(value ="${spring.rabbitmq.localExecutionResultReciverRoutingkey}")
-    private String localExecutionResultReciverRoutingkey;
-    //demo任务接收队列
-    @Bean
-    public Queue demoResultReciverQueue(){
-        return new Queue("demoResultReciverQueue");
-    }
-
-    //execution任务接受队列
-    @Bean
-    public Queue executionResultReciverQueue(){
-        return new Queue("executionResultReciverQueue");
-    }
-
-    //实例化ResultReciver交换机
-    @Bean
-    public DirectExchange resultReciverExchange(){
-        return new DirectExchange(localResultReciverExchange);
-    }
-
-    //将demo任务接收队列绑定至ResultReciver交换机,路由键为demoResultReciverRoutingkey
-    @Bean
-    Binding bindingDemo() {
-        return BindingBuilder.bind(demoResultReciverQueue()).to(resultReciverExchange()).with(
-                localDemoResultReciverRoutingkey);
-    }
-
-    //将execution任务接受队列绑定至ResultReciver交换机,路由键为executionResultReciverRoutingkey
-    @Bean
-    Binding bindingExecution() {
-        return BindingBuilder.bind(executionResultReciverQueue()).to(resultReciverExchange()).with(
-                localExecutionResultReciverRoutingkey);
-    }
-
+//    @Value(value ="${spring.rabbitmq.localResultReciverExchange}")
+//    private String localResultReciverExchange;
+//    @Value(value ="${spring.rabbitmq.localDemoResultReciverRoutingkey}")
+//    private String localDemoResultReciverRoutingkey;
+//    @Value(value ="${spring.rabbitmq.localExecutionResultReciverRoutingkey}")
+//    private String localExecutionResultReciverRoutingkey;
+//    //demo任务接收队列
+//    @Bean
+//    public Queue demoResultReciverQueue(){
+//        return new Queue("demoResultReciverQueue");
+//    }
+//
+//    //execution任务接受队列
+//    @Bean
+//    public Queue executionResultReciverQueue(){
+//        return new Queue("executionResultReciverQueue");
+//    }
+//
+//    //实例化ResultReciver交换机
+//    @Bean
+//    public DirectExchange resultReciverExchange(){
+//        return new DirectExchange(localResultReciverExchange);
+//    }
+//
+//    //将demo任务接收队列绑定至ResultReciver交换机,路由键为demoResultReciverRoutingkey
+//    @Bean
+//    Binding bindingDemo() {
+//        return BindingBuilder.bind(demoResultReciverQueue()).to(resultReciverExchange()).with(
+//                localDemoResultReciverRoutingkey);
+//    }
+//
+//    //将execution任务接受队列绑定至ResultReciver交换机,路由键为executionResultReciverRoutingkey
+//    @Bean
+//    Binding bindingExecution() {
+//        return BindingBuilder.bind(executionResultReciverQueue()).to(resultReciverExchange()).with(
+//                localExecutionResultReciverRoutingkey);
+//    }
+//
 
 
 }

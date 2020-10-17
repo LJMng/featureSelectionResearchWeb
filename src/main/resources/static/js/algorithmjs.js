@@ -29,133 +29,12 @@ $(document).ready(function() {
             label:'参数二',
             skip:true
         },{
-            content:`<form>     <p>查看双向绑定值：{{parameterInfo.parameterDescriptions[0]}}</p>                                                   
-                             
-                            
-                                <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <label for="parameterName" class="col-form-label">参数名：</label>
-                                        <input data-toggle="popover" title="参数名称"
-                                               data-content="用户输入算法参数时，前端显示给用户进行参数输入的名称,例如在XX算法中,初始化过程中需要执行XX方法迭代运行100次，这里的参数名称则填写迭代次数。"
-                                               id="parameterName" class="form-control" type="text"
-                                               v-model="parameterInfo.parameterNames[0]">
-                                    </div>
-                                    <div class="col-md-4 ">
-                                        <label for="parameterNameMapper" class="col-form-label">映射到算法层的参数名：</label>
-                                        <input data-toggle="popover" title="算法层参数名映射"
-                                               data-content="用户输入参数后，将参数名称实际传送至算法端的参数，例如在XX算法中，算法参数名称为初始化次数，在此处填写init_number,则实际传送至算法端进行运算的参数名称为init_number。"
-                                               id="parameterNameMapper" class="form-control" type="text"
-                                               v-model="parameterInfo.parameterNamesMapper[0]">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <label for="parameterType" class="col-form-label">参数类型：</label>
-                                        <select data-toggle="popover" title="算法层参数名映射"
-                                                data-content="参数类型有四种可以进行选择，text表示该参数在前端供用户输入时，为文本框的形式；radio表示该参数在前端供用户输入时为按钮单选形式；checkbox表示该参数在前端给用户输入时，为按钮多选形式；selection表示该参数在前端供用户输入时，为复合参数形式。参数类型的设置可以根据算法具体参数需求进行设置。"
-                                                id="parameterType" class="form-control"
-                                                v-model="parameterInfo.parameterTypes[0]">
-                                            <option>text</option>
-                                            <option>radio</option>
-                                            <option>checkbox</option>
-                                            <option>selection</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <label for="parameterDescription" class="col-form-label">参数描述：</label>
-                                        <input data-toggle="popover" title="参数描述"
-                                               data-content="对该参数进行描述，用户提交参数时可以查看参数描述。" id="parameterDescription"
-                                               class="form-control" type="text"
-                                               v-model="parameterInfo.parameterDescriptions[0]">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <label for="parameterDefaultValue">参数默认值</label>
-                                        <input data-toggle="popover" title="参数默认值"
-                                               data-content="参数默认值内容，用户不自行选择时，向算法后台提交参数默认值。" id="parameterDefaultValue"
-                                               class="form-control" type="text"
-                                               v-model="parameterInfo.parameterDefaultValues[0]">
-                                    </div>
-                                </div>
-                                <!--判断第一个参数类型是否为input -->
-                                <div class="row" v-if="parameterInfo.parameterTypes[0] !== 'text'">
-                                    <div class="col-md-2 offset-md-2">
-                                        <label>第一个值的个数：</label>
-                                        <input class="form-control" type="number"
-                                               v-model.number="paramValuesNumber[0]" @click="setDataPopover">
-                                    </div>
-                                </div>
-                                <hr>
-                                <!--                     循环设置第一个参数的值 -->
-                                <div v-for="m in paramValuesNumber[0]">
-                                    <div class="row">
-                                        <div class="col-md-4 offset-md-2">
-                                            <label for='"firstParamValue"+m' class="col-form-label">Web层取值{{m}}</label>
-                                            <input data-toggle="popover" title="客户端取值"
-                                                   data-content="参数具体值，该值为用户提交参数时，显示给用户进行选择的参数值。"
-                                                   id='"firstParamValue"+m' class="form-control" type="text"
-                                                   v-model="firstParameterValues[n-1][m-1]"
-                                                   @blur="confirmFirstValue(n,m)">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for='"firstAlgorithmParameter"+m'
-                                                   class="col-form-label">算法层取值{{m}}</label>
-                                            <input data-toggle="popover" title="算法层取值"
-                                                   data-content="参数具体值，该值为用户提交参数时，实际提交至算法端进行运算的参数值。例如在XX算法中，初始化步骤中提交的参数值为100，实际传送至算法端进行运算的值为此出填写的init_100。"
-                                                   data-placement="right" id='"firstAlgorithmParameter"+m'
-                                                   class="form-control" type="text"
-                                                   v-model="firstAlgorithmParameterValues[0][0]"
-                                                   @blur="confirmFirstAlgorithmValue(0,0)">
-                                        </div>
-                                    </div>
-                                    <div v-if="parameterInfo.parameterTypes[0] === 'selection'">
-                                        <div class="row">
-                                            <div class="col-md-2 offset-md-2">
-                                                <label for='"secondParameterType"+m'>第二个值参数类型：</label>
-                                                <select data-toggle="popover" title="参数值类型"
-                                                        data-content="复合参数第二个值的设定需要先确定参数值类型，有seleciton,text,null三种形式，text类型表示第二个值为文本内容，null类型表示无需设置第二个参数值，可以供用户进行输入在第二个值类型取值为selciton后，需要对第二个值进行设置，selection表示为下拉单选框。"
-                                                        id='"secondParameterType"+m' class="custom-select"
-                                                        v-model="secondParameterTypes[0][0]" name="paraType"
-                                                        @blur="confirmSecondParameterType(0,0)" @click="setDataPopover"
-                                                        required>
-                                                    <option selected>text</option>
-                                                    <option>selection</option>
-                                                    <option>null</option>
-                                                </select>
-                                            </div>
-                                            <!--根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 -->
-
-                                            <hr>
-                                        </div>
-                                        <div v-if="secondParameterTypes[0][0] === 'selection'">
-                                            <div class="row">
-                                                <div class="col-md-4 offset-md-2">
-                                                    <label for='"secondParameterValue"+m'>Web层第二个参数取值</label>
-                                                    <input data-toggle="popover" title="web层第二个参数值"
-                                                           data-content="复合参数第二个值Web层取值，该参数值表示在下拉框中，提供给用户进行选择的参数值，如果第二个参数值有多个可选择的值，各个值之间用英文”,“进行分隔。"
-                                                           id='"secondParameterValue"+m' type="text" name="value"
-                                                           class="form-control"
-                                                           v-model="secondParameterValues[0][0]"
-                                                           @blur="confirmSecondParameterValue(0,0)">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label for='"secondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>
-                                                    <input data-toggle="popover" title="算法层取值"
-                                                           data-content="复合参数第二个值算法层的取值，该参数值表示实际传送至算法端进行运算的参数值，如果第二个参数值有多个可选择的值，各个值之间用英文”,“进行分隔。"
-                                                           data-placement="right" id='"secondAlgorithmParameterValue"+m'
-                                                           type="text" name="value" class="form-control"
-                                                           v-model="secondAlgorithmParameterValues[0][0]"
-                                                           @blur="confirmSecondAlgorithmParameterValue(0,0)">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                </div>                                                                             
-                        </form>`,
+            content:`<from action="/manage" method="get">
+                           <input type="text" name="username">
+                           <input type="submit" value="提交">
+                           <input type="reset" value="重置">
+                    
+</from>`,
             label:'参数三',
             skip:true
         }, {
@@ -179,6 +58,7 @@ $(document).ready(function() {
 var vm =new Vue({
     el:"#algorithmData",
     data:{
+        testInfo:'试一下',
         paramsNumber:0,
         values:"",
         parasType:'',
@@ -240,7 +120,32 @@ var vm =new Vue({
             secondParameterValues:[],
             //第二个参数值（算法层）,二维数组     1
             secondAlgorithmParameterValues:[]
-
+        },
+        //定义一个空的参数信息添加对象，用于数据parameterInfo数据清空
+        emptyParameterInfo:{
+            // 算法id
+            algorithmId:1,
+            // 参数名称
+            parameterNames:[],
+            //参数名称映射到算法端的值
+            parameterNamesMapper:[],
+            // 参数描述
+            parameterDescriptions:[],
+            // 参数默认值
+            parameterDefaultValues:[],
+            //根据下面四个标识有1的属性进行parameterSettingInfo的封装
+            // 第一个参数值类型      1
+            parameterTypes:[],
+            //第一个参数值,二维数组  里层是个字符串数组   1
+            firstParameterVales:[],
+            //第一个参数值（算法层）,二维数组     1
+            firstAlgorithmParameterValues:[],
+            //第二个参数类型,二维    里层是个字符串数组   1
+            secondParameterTypes:[],
+            //第二个参数值,二维      里层是个字符串数组 一个数组包含对应的所有值    1
+            secondParameterValues:[],
+            //第二个参数值（算法层）,二维数组     1
+            secondAlgorithmParameterValues:[]
         },
         procedureSetting:{
             algorithmId:1,
@@ -347,7 +252,30 @@ var vm =new Vue({
         ProcedureSettingsList: {},
         parameterList: {},
         EalgorithmNames: '',
-        administratorName:''
+        administratorName:'',
+        //算法参数管理的数据
+        //参数类型，用于提交添加参数时，类型的选择
+        addParameterType:'',
+        //每个算法的参数信息，用于在缓冲区回显算法参数信息
+        algorithmParameters:{},
+        //添加算法的Id
+        addParameterAlgorithmId:1,
+        //用于显示算法参数信息的对象
+        parameterDetailObject:{
+            algorithmId:1,
+            parameterId:1,
+            parameterName:'',
+            parameterDescription:'',
+            parameterDefaultValue:'',
+            parameterType:'',
+            parameterSettingInfo:{},
+            parameterNameMapper:'',
+            parameterAlgorithmValue:''
+        },
+        //每个算法的参数信息，用于在缓冲区回显算法参数信息
+        algorithmProcedures:{},
+
+
     },
     created:function () {
         //算法方案初始化方法
@@ -849,15 +777,39 @@ var vm =new Vue({
                 });
 
         },
+        clearParameterInfo:function(){
+            this.parameterInfo.parameterNames=[];
+            this.parameterInfo.parameterNamesMapper=[];
+            this.parameterInfo.parameterDescriptions=[];
+            this.parameterInfo.parameterDefaultValues=[];
+            this.parameterInfo.parameterTypes=[];
+            this.parameterInfo.firstParameterVales=[];
+            this.parameterInfo.firstAlgorithmParameterValues=[];
+            this.parameterInfo.secondParameterTypes=[];
+            this.parameterInfo.secondParameterValues=[];
+            this.parameterInfo.secondAlgorithmParameterValues=[];
+            this.paramValuesNumber[0]=0;
+
+        },
         //添加算法参数信息
         createParameter(){
             axios.post('/createParameters',this.parameterInfo)
                 .then(() => {
-                    window.location.reload();
+                    //添加完成清除parameterInfo数据
+                    this.clearParameterInfo();
                 })
                 .catch(err => {
                     console.log(err);
                 })
+        },
+        //修改参数信息
+        updateParameter(){
+            axios.post('/updateParameters',this.parameterInfo).then(() => {
+                //修改完成清除parameterInfo数据
+                this.clearParameterInfo();
+            }).catch(err => {
+                console.log(err);
+            })
         },
         //新增算法信息
         insertData() {
@@ -960,25 +912,25 @@ var vm =new Vue({
         },
         //确认第二个参数类型
         confirmSecondParameterType:function(n,m){
-            if(m >= this.paramValuesNumber[n-1]){
-                // this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
+            if(m >= this.paramValuesNumber[0]){
+                // this.parameterInfo.firstParameterVales[0]=this.firstParameterValue;
                 // this.firstParameterValue=[];
-                this.secondParameterType=this.secondParameterTypes[n-1];
-                this.parameterInfo.secondParameterTypes[n-1]=this.secondParameterType;
+                this.secondParameterType=this.secondParameterTypes[0];
+                this.parameterInfo.secondParameterTypes[0]=this.secondParameterType;
                 this.secondParameterType=[];
-                console.log(this.parameterInfo.secondParameterTypes[n-1])
+                console.log(this.parameterInfo.secondParameterTypes[0])
                 console.log("改方法调用了")
             }
-            if (this.secondParameterTypes[n-1][m-1] !== 'selection'){
-                this.secondParameterValues[n-1][m-1]="default";
-                this.secondAlgorithmParameterValues[n-1][m-1]="default";
+            if (this.secondParameterTypes[0][m-1] !== 'selection'){
+                this.secondParameterValues[0][m-1]="default";
+                this.secondAlgorithmParameterValues[0][m-1]="default";
             }
-            if(this.secondParameterTypes[n-1][m-1] !== 'selection' && m >= this.paramValuesNumber[n-1] ){
-                this.secondParameterValue=this.secondParameterValues[n-1]
-                this.parameterInfo.secondParameterValues[n-1]=this.secondParameterValue;
+            if(this.secondParameterTypes[0][m-1] !== 'selection' && m >= this.paramValuesNumber[0] ){
+                this.secondParameterValue=this.secondParameterValues[0]
+                this.parameterInfo.secondParameterValues[0]=this.secondParameterValue;
                 this.secondParameterValue=[];
-                this.secondAlgorithmParameterValue=this.secondAlgorithmParameterValues[n-1];
-                this.parameterInfo.secondAlgorithmParameterValues[n-1]=this.secondAlgorithmParameterValue;
+                this.secondAlgorithmParameterValue=this.secondAlgorithmParameterValues[0];
+                this.parameterInfo.secondAlgorithmParameterValues[0]=this.secondAlgorithmParameterValue;
                 this.secondAlgorithmParameterValue=[];
                 console.log("调用了该方法")
             }
@@ -986,37 +938,37 @@ var vm =new Vue({
         },
         //确认第二个参数web层的值跟类型
         confirmSecondParameterValue:function (n,m) {
-            if(m >= this.paramValuesNumber[n-1]){
-                // this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
+            if(m >= this.paramValuesNumber[0]){
+                // this.parameterInfo.firstParameterVales[0]=this.firstParameterValue;
                 // this.firstParameterValue=[];
-                this.secondParameterValue=this.secondParameterValues[n-1]
-                this.parameterInfo.secondParameterValues[n-1]=this.secondParameterValue;
+                this.secondParameterValue=this.secondParameterValues[0]
+                this.parameterInfo.secondParameterValues[0]=this.secondParameterValue;
                 this.secondParameterValue=[];
-                console.log(this.parameterInfo.secondParameterTypes[n-1])
+                console.log(this.parameterInfo.secondParameterTypes[0])
                 console.log("改方法调用了")
             }
         },
         confirmFirstValue:function (n,m) {
-            if(m >= this.paramValuesNumber[n-1]){
-                this.firstParameterValue=this.firstParameterValues[n-1];
-                this.parameterInfo.firstParameterVales[n-1]=this.firstParameterValue;
+            if(m >= this.paramValuesNumber[0]){
+                this.firstParameterValue=this.firstParameterValues[0];
+                this.parameterInfo.firstParameterVales[0]=this.firstParameterValue;
                 this.firstParameterValue=[];
                 console.log("改方法调用了")
             }
         },
         confirmFirstAlgorithmValue:function (n,m) {
-            if(m >= this.paramValuesNumber[n-1]){
-                this.firstAlgorithmParameterValue=this.firstAlgorithmParameterValues[n-1];
-                this.parameterInfo.firstAlgorithmParameterValues[n-1]=this.firstAlgorithmParameterValue;
+            if(m >= this.paramValuesNumber[0]){
+                this.firstAlgorithmParameterValue=this.firstAlgorithmParameterValues[0];
+                this.parameterInfo.firstAlgorithmParameterValues[0]=this.firstAlgorithmParameterValue;
                 this.firstAlgorithmParameterValue=[];
                 console.log("改方法调用了")
             }
         }
         ,
         confirmSecondAlgorithmParameterValue:function(n,m){
-            if(m >= this.paramValuesNumber[n-1]){
-                this.secondAlgorithmParameterValue=this.secondAlgorithmParameterValues[n-1];
-                this.parameterInfo.secondAlgorithmParameterValues[n-1]=this.secondAlgorithmParameterValue;
+            if(m >= this.paramValuesNumber[0]){
+                this.secondAlgorithmParameterValue=this.secondAlgorithmParameterValues[0];
+                this.parameterInfo.secondAlgorithmParameterValues[0]=this.secondAlgorithmParameterValue;
                 this.secondAlgorithmParameterValue=[];
                 console.log("改方法调用了")
             }
@@ -1060,7 +1012,59 @@ var vm =new Vue({
         },
         setUpdateProcedureInfo:function (procedureSetting) {
             this.procedureSettingInfo=procedureSetting;
+        },
+        //根据算法Id,获取算法步骤信息
+        setAlgorithmIdAndGetProcedures:function(algorithmId){
+            this.procedureSetting.algorithmId=algorithmId;
+            axios.get('/getProcedureInfosByAlgorithmId?algorithmId='+algorithmId).then((response) =>{
+                this.algorithmProcedures=response.data;
+            }).catch(err=>{
+                console.log(err)
+            })
+        },
+        //根据算法Id,获取参数信息的值,以及设置要添加参数的算法Id
+        setAlgorithmIdAndGetParameterInfos:function (algorithmId) {
+            this.parameterInfo.algorithmId = algorithmId;
+            axios.get('/getParametersInfoByAlgorithmId?algorithmId='+algorithmId).then((response) =>{
+                console.log(response.data);
+                this.algorithmParameters=response.data;
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        getParameterInfo:function (parameterId) {
+            console.log(parameterId)
+            axios.get('/getParameterInfoByParameterId?parameterId='+parameterId).then((response)=>{
+                this.parameterInfo=response.data;
+                this.paramValuesNumber[0]=this.parameterInfo.firstParameterVales[0].length;
+                console.log(this.parameterInfo.firstParameterVales[0].length);
+                this.firstParameterValues[0]=this.parameterInfo.firstParameterVales[0];
+                this.secondParameterTypes[0]=this.parameterInfo.secondParameterTypes[0];
+                // this.secondParameterValues[0]=this.parameterInfo.secondParameterValues[0];
+                // this.firstParameterValues[0]=this.parameterInfo.firstAlgorithmParameterValues[0];
+            }).catch(err =>{
+                console.log(err)
+            })
+        },
+        getProcedureInfo:function (name) {
+            axios.get('/getProcedureSettingByName?name='+name).then((response) =>{
+                this.procedureSetting=response.data;
+            }).catch(err=>{
+                console.log(err)
+            })
+
+        },
+        updateProcedure:function () {
+            axios.post("/updateProcedure",this.procedureSetting).catch(err =>{
+                console.log(err)
+            })
+
         }
+        //设置添加参数的参数类型
+        // setParameter:function (addParameterType) {
+        //     this.parameterInfo.parameterTypes[0] = addParameterType;
+        //
+        // }
 
     },
     computed: {

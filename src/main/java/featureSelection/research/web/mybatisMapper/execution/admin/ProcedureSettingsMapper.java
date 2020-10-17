@@ -23,4 +23,13 @@ public interface ProcedureSettingsMapper {
 
     @Select("select max(id) from procedure_settings")
     public int getMaxProcedureSettingId();
+
+    @Select("select * from procedure_settings where algorithm_id =#{algorithmId}")
+    public List<ProcedureSettings> getProcedureInfosByAlgorithmId(int algorithmId);
+
+    @Select("select * from procedure_settings where name = #{name}")
+    public ProcedureSettings getProcedureSettingByName(String name);
+
+    @Update("update procedure_settings set name_mapper=#{nameMapper},state=#{state},options=#{options},default_option=#{defaultOption},description=#{description} where name=#{name}")
+    public void updateProcedureSettingByProcedureSettingName(ProcedureSettings procedureSettings);
 }

@@ -265,18 +265,18 @@
                                             @click="setDataset4AlgorithmOfAlgorithmId(msg.algorithmId)">数据集
                                     </button>
                                     <button type="button"  class="btn btn-success" data-toggle="modal"
-                                                 data-target="#submitModal">参数添加
+                                                 data-target="#addParameterModal" @click="setAlgorithmIdAndGetParameterInfos(msg.algorithmId)">参数添加
                                     </button>
                                     <button type="button" class="btn btn-success" data-toggle="modal"
-                                            data-target="#submitModal">步骤添加
+                                            data-target="#addProcedureModal"
+                                            @click="setAlgorithmIdAndGetProcedures(msg.algorithmId)"
+                                    >步骤添加
                                     </button>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-                    <!-- 算法参数添加模态框 -->
-                    <div id="submitModal" class="multi-step"> </div>
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                         <div class="col-md-12">
                             <h1>Add Algorithm Params</h1>
@@ -287,171 +287,172 @@
                         </div>
                         <hr>
                         <!--            添加参数内容表单-->
-                        <form>
-                            <!--选择算法 -->
-                            <div class="row">
-                                <div class="col-md-4 offset-md-2">
-                                    <label>选择算法id：</label>
-                                    <select v-model="parameterInfo.algorithmId">
-                                        <option v-for="algorithm in algorithms">
-                                            {{algorithm.algorithmId}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="row-md-4">
-                                    <button type="button" class="btn btn-link" data-toggle="modal"
-                                            v-bind:data-target='"#a"+parameterInfo.algorithmId'>
-                                        点击查看算法详情
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4 offset-md-2">
-                                    <label>参数个数：</label>
-                                    <input class="form-control" type="number" v-model.number="paramsNumber"
-                                           @click="setDataPopover">
-                                </div>
-                            </div>
-                            <div v-for="n in paramsNumber">
-                                <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <h2>第{{n}}个参数</h2>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <label for="parameterName" class="col-form-label">参数名：</label>
-                                        <input data-toggle="popover" title="参数名称"
-                                               data-content="用户输入算法参数时，前端显示给用户进行参数输入的名称,例如在XX算法中,初始化过程中需要执行XX方法迭代运行100次，这里的参数名称则填写迭代次数。"
-                                               id="parameterName" class="form-control" type="text"
-                                               v-model="parameterInfo.parameterNames[n-1]">
-                                    </div>
-                                    <div class="col-md-4 ">
-                                        <label for="parameterNameMapper" class="col-form-label">映射到算法层的参数名：</label>
-                                        <input data-toggle="popover" title="算法层参数名映射"
-                                               data-content="用户输入参数后，将参数名称实际传送至算法端的参数，例如在XX算法中，算法参数名称为初始化次数，在此处填写init_number,则实际传送至算法端进行运算的参数名称为init_number。"
-                                               id="parameterNameMapper" class="form-control" type="text"
-                                               v-model="parameterInfo.parameterNamesMapper[n-1]">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <label for="parameterType" class="col-form-label">参数类型：</label>
-                                        <select data-toggle="popover" title="算法层参数名映射"
-                                                data-content="参数类型有四种可以进行选择，text表示该参数在前端供用户输入时，为文本框的形式；radio表示该参数在前端供用户输入时为按钮单选形式；checkbox表示该参数在前端给用户输入时，为按钮多选形式；selection表示该参数在前端供用户输入时，为复合参数形式。参数类型的设置可以根据算法具体参数需求进行设置。"
-                                                id="parameterType" class="form-control"
-                                                v-model="parameterInfo.parameterTypes[n-1]">
-                                            <option>text</option>
-                                            <option>radio</option>
-                                            <option>checkbox</option>
-                                            <option>selection</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <label for="parameterDescription" class="col-form-label">参数描述：</label>
-                                        <input data-toggle="popover" title="参数描述"
-                                               data-content="对该参数进行描述，用户提交参数时可以查看参数描述。" id="parameterDescription"
-                                               class="form-control" type="text"
-                                               v-model="parameterInfo.parameterDescriptions[n-1]">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 offset-md-2">
-                                        <label for="parameterDefaultValue">参数默认值</label>
-                                        <input data-toggle="popover" title="参数默认值"
-                                               data-content="参数默认值内容，用户不自行选择时，向算法后台提交参数默认值。" id="parameterDefaultValue"
-                                               class="form-control" type="text"
-                                               v-model="parameterInfo.parameterDefaultValues[n-1]">
-                                    </div>
-                                </div>
-                                <!--判断第一个参数类型是否为input -->
-                                <div class="row" v-if="parameterInfo.parameterTypes[n-1] !== 'text'">
-                                    <div class="col-md-2 offset-md-2">
-                                        <label>第一个值的个数：</label>
-                                        <input class="form-control" type="number"
-                                               v-model.number="paramValuesNumber[n-1]" @click="setDataPopover">
-                                    </div>
-                                </div>
-                                <hr>
-                                <!--                     循环设置第一个参数的值 -->
-                                <div v-for="m in paramValuesNumber[n-1]">
-                                    <div class="row">
-                                        <div class="col-md-4 offset-md-2">
-                                            <label for='"firstParamValue"+m' class="col-form-label">Web层取值{{m}}</label>
-                                            <input data-toggle="popover" title="客户端取值"
-                                                   data-content="参数具体值，该值为用户提交参数时，显示给用户进行选择的参数值。"
-                                                   id='"firstParamValue"+m' class="form-control" type="text"
-                                                   v-model="firstParameterValues[n-1][m-1]"
-                                                   @blur="confirmFirstValue(n,m)">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for='"firstAlgorithmParameter"+m'
-                                                   class="col-form-label">算法层取值{{m}}</label>
-                                            <input data-toggle="popover" title="算法层取值"
-                                                   data-content="参数具体值，该值为用户提交参数时，实际提交至算法端进行运算的参数值。例如在XX算法中，初始化步骤中提交的参数值为100，实际传送至算法端进行运算的值为此出填写的init_100。"
-                                                   data-placement="right" id='"firstAlgorithmParameter"+m'
-                                                   class="form-control" type="text"
-                                                   v-model="firstAlgorithmParameterValues[n-1][m-1]"
-                                                   @blur="confirmFirstAlgorithmValue(n,m)">
-                                        </div>
-                                    </div>
-                                    <div v-if="parameterInfo.parameterTypes[n-1] === 'selection'">
-                                        <div class="row">
-                                            <div class="col-md-2 offset-md-2">
-                                                <label for='"secondParameterType"+m'>第二个值参数类型：</label>
-                                                <select data-toggle="popover" title="参数值类型"
-                                                        data-content="复合参数第二个值的设定需要先确定参数值类型，有seleciton,text,null三种形式，text类型表示第二个值为文本内容，null类型表示无需设置第二个参数值，可以供用户进行输入在第二个值类型取值为selciton后，需要对第二个值进行设置，selection表示为下拉单选框。"
-                                                        id='"secondParameterType"+m' class="custom-select"
-                                                        v-model="secondParameterTypes[n-1][m-1]" name="paraType"
-                                                        @blur="confirmSecondParameterType(n,m)" @click="setDataPopover"
-                                                        required>
-                                                    <option selected>text</option>
-                                                    <option>selection</option>
-                                                    <option>null</option>
-                                                </select>
-                                            </div>
-                                            <!--根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 -->
+<!--                        <form>-->
+<!--                            &lt;!&ndash;选择算法 &ndash;&gt;-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-md-4 offset-md-2">-->
+<!--                                    <label>选择算法id：</label>-->
+<!--                                    <select v-model="parameterInfo.algorithmId">-->
+<!--                                        <option v-for="algorithm in algorithms">-->
+<!--                                            {{algorithm.algorithmId}}-->
+<!--                                        </option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                                <div class="row-md-4">-->
+<!--                                    <button type="button" class="btn btn-link" data-toggle="modal"-->
+<!--                                            v-bind:data-target='"#a"+parameterInfo.algorithmId'>-->
+<!--                                        点击查看算法详情-->
+<!--                                    </button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-md-4 offset-md-2">-->
+<!--                                    <label>参数个数：</label>-->
+<!--                                    <input class="form-control" type="number" v-model.number="paramsNumber"-->
+<!--                                           @click="setDataPopover">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div v-for="n in paramsNumber">-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-4 offset-md-2">-->
+<!--                                        <h2>第{{n}}个参数</h2>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                &lt;!&ndash; 开始 &ndash;&gt;-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-4 offset-md-2">-->
+<!--                                        <label for="parameterName" class="col-form-label">参数名：</label>-->
+<!--                                        <input data-toggle="popover" title="参数名称"-->
+<!--                                               data-content="用户输入算法参数时，前端显示给用户进行参数输入的名称,例如在XX算法中,初始化过程中需要执行XX方法迭代运行100次，这里的参数名称则填写迭代次数。"-->
+<!--                                               id="parameterName" class="form-control" type="text"-->
+<!--                                               v-model="parameterInfo.parameterNames[n-1]">-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-4 ">-->
+<!--                                        <label for="parameterNameMapper" class="col-form-label">映射到算法层的参数名：</label>-->
+<!--                                        <input data-toggle="popover" title="算法层参数名映射"-->
+<!--                                               data-content="用户输入参数后，将参数名称实际传送至算法端的参数，例如在XX算法中，算法参数名称为初始化次数，在此处填写init_number,则实际传送至算法端进行运算的参数名称为init_number。"-->
+<!--                                               id="parameterNameMapper" class="form-control" type="text"-->
+<!--                                               v-model="parameterInfo.parameterNamesMapper[n-1]">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-4 offset-md-2">-->
+<!--                                        <label for="parameterType" class="col-form-label">参数类型：</label>-->
+<!--                                        <select data-toggle="popover" title="算法层参数名映射"-->
+<!--                                                data-content="参数类型有四种可以进行选择，text表示该参数在前端供用户输入时，为文本框的形式；radio表示该参数在前端供用户输入时为按钮单选形式；checkbox表示该参数在前端给用户输入时，为按钮多选形式；selection表示该参数在前端供用户输入时，为复合参数形式。参数类型的设置可以根据算法具体参数需求进行设置。"-->
+<!--                                                id="parameterType" class="form-control"-->
+<!--                                                v-model="parameterInfo.parameterTypes[n-1]">-->
+<!--                                            <option>text</option>-->
+<!--                                            <option>radio</option>-->
+<!--                                            <option>checkbox</option>-->
+<!--                                            <option>selection</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-4 offset-md-2">-->
+<!--                                        <label for="parameterDescription" class="col-form-label">参数描述：</label>-->
+<!--                                        <input data-toggle="popover" title="参数描述"-->
+<!--                                               data-content="对该参数进行描述，用户提交参数时可以查看参数描述。" id="parameterDescription"-->
+<!--                                               class="form-control" type="text"-->
+<!--                                               v-model="parameterInfo.parameterDescriptions[n-1]">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-4 offset-md-2">-->
+<!--                                        <label for="parameterDefaultValue">参数默认值</label>-->
+<!--                                        <input data-toggle="popover" title="参数默认值"-->
+<!--                                               data-content="参数默认值内容，用户不自行选择时，向算法后台提交参数默认值。" id="parameterDefaultValue"-->
+<!--                                               class="form-control" type="text"-->
+<!--                                               v-model="parameterInfo.parameterDefaultValues[n-1]">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                &lt;!&ndash;判断第一个参数类型是否为input &ndash;&gt;-->
+<!--                                <div class="row" v-if="parameterInfo.parameterTypes[n-1] !== 'text'">-->
+<!--                                    <div class="col-md-2 offset-md-2">-->
+<!--                                        <label>第一个值的个数：</label>-->
+<!--                                        <input class="form-control" type="number"-->
+<!--                                               v-model.number="paramValuesNumber[n-1]" @click="setDataPopover">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <hr>-->
+<!--                                &lt;!&ndash;                     循环设置第一个参数的值 &ndash;&gt;-->
+<!--                                <div v-for="m in paramValuesNumber[n-1]">-->
+<!--                                    <div class="row">-->
+<!--                                        <div class="col-md-4 offset-md-2">-->
+<!--                                            <label for='"firstParamValue"+m' class="col-form-label">Web层取值{{m}}</label>-->
+<!--                                            <input data-toggle="popover" title="客户端取值"-->
+<!--                                                   data-content="参数具体值，该值为用户提交参数时，显示给用户进行选择的参数值。"-->
+<!--                                                   id='"firstParamValue"+m' class="form-control" type="text"-->
+<!--                                                   v-model="firstParameterValues[n-1][m-1]"-->
+<!--                                                   @blur="confirmFirstValue(n,m)">-->
+<!--                                        </div>-->
+<!--                                        <div class="col-md-4">-->
+<!--                                            <label for='"firstAlgorithmParameter"+m'-->
+<!--                                                   class="col-form-label">算法层取值{{m}}</label>-->
+<!--                                            <input data-toggle="popover" title="算法层取值"-->
+<!--                                                   data-content="参数具体值，该值为用户提交参数时，实际提交至算法端进行运算的参数值。例如在XX算法中，初始化步骤中提交的参数值为100，实际传送至算法端进行运算的值为此出填写的init_100。"-->
+<!--                                                   data-placement="right" id='"firstAlgorithmParameter"+m'-->
+<!--                                                   class="form-control" type="text"-->
+<!--                                                   v-model="firstAlgorithmParameterValues[n-1][m-1]"-->
+<!--                                                   @blur="confirmFirstAlgorithmValue(n,m)">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div v-if="parameterInfo.parameterTypes[n-1] === 'selection'">-->
+<!--                                        <div class="row">-->
+<!--                                            <div class="col-md-2 offset-md-2">-->
+<!--                                                <label for='"secondParameterType"+m'>第二个值参数类型：</label>-->
+<!--                                                <select data-toggle="popover" title="参数值类型"-->
+<!--                                                        data-content="复合参数第二个值的设定需要先确定参数值类型，有seleciton,text,null三种形式，text类型表示第二个值为文本内容，null类型表示无需设置第二个参数值，可以供用户进行输入在第二个值类型取值为selciton后，需要对第二个值进行设置，selection表示为下拉单选框。"-->
+<!--                                                        id='"secondParameterType"+m' class="custom-select"-->
+<!--                                                        v-model="secondParameterTypes[n-1][m-1]" name="paraType"-->
+<!--                                                        @blur="confirmSecondParameterType(n,m)" @click="setDataPopover"-->
+<!--                                                        required>-->
+<!--                                                    <option selected>text</option>-->
+<!--                                                    <option>selection</option>-->
+<!--                                                    <option>null</option>-->
+<!--                                                </select>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 &ndash;&gt;-->
 
-                                            <hr>
-                                        </div>
-                                        <div v-if="secondParameterTypes[n-1][m-1] === 'selection'">
-                                            <div class="row">
-                                                <div class="col-md-4 offset-md-2">
-                                                    <label for='"secondParameterValue"+m'>Web层第二个参数取值</label>
-                                                    <input data-toggle="popover" title="web层第二个参数值"
-                                                           data-content="复合参数第二个值Web层取值，该参数值表示在下拉框中，提供给用户进行选择的参数值，如果第二个参数值有多个可选择的值，各个值之间用英文”,“进行分隔。"
-                                                           id='"secondParameterValue"+m' type="text" name="value"
-                                                           class="form-control"
-                                                           v-model="secondParameterValues[n-1][m-1]"
-                                                           @blur="confirmSecondParameterValue(n,m)">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label for='"secondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>
-                                                    <input data-toggle="popover" title="算法层取值"
-                                                           data-content="复合参数第二个值算法层的取值，该参数值表示实际传送至算法端进行运算的参数值，如果第二个参数值有多个可选择的值，各个值之间用英文”,“进行分隔。"
-                                                           data-placement="right" id='"secondAlgorithmParameterValue"+m'
-                                                           type="text" name="value" class="form-control"
-                                                           v-model="secondAlgorithmParameterValues[n-1][m-1]"
-                                                           @blur="confirmSecondAlgorithmParameterValue(n,m)">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                </div>
-                                <hr>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 offset-md-4">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                    <button type="button" class="btn btn-primary submitBtn" @click="createParameter()">
-                                        确定
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+<!--                                            <hr>-->
+<!--                                        </div>-->
+<!--                                        <div v-if="secondParameterTypes[n-1][m-1] === 'selection'">-->
+<!--                                            <div class="row">-->
+<!--                                                <div class="col-md-4 offset-md-2">-->
+<!--                                                    <label for='"secondParameterValue"+m'>Web层第二个参数取值</label>-->
+<!--                                                    <input data-toggle="popover" title="web层第二个参数值"-->
+<!--                                                           data-content="复合参数第二个值Web层取值，该参数值表示在下拉框中，提供给用户进行选择的参数值，如果第二个参数值有多个可选择的值，各个值之间用英文”,“进行分隔。"-->
+<!--                                                           id='"secondParameterValue"+m' type="text" name="value"-->
+<!--                                                           class="form-control"-->
+<!--                                                           v-model="secondParameterValues[n-1][m-1]"-->
+<!--                                                           @blur="confirmSecondParameterValue(n,m)">-->
+<!--                                                </div>-->
+<!--                                                <div class="col-md-4">-->
+<!--                                                    <label for='"secondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>-->
+<!--                                                    <input data-toggle="popover" title="算法层取值"-->
+<!--                                                           data-content="复合参数第二个值算法层的取值，该参数值表示实际传送至算法端进行运算的参数值，如果第二个参数值有多个可选择的值，各个值之间用英文”,“进行分隔。"-->
+<!--                                                           data-placement="right" id='"secondAlgorithmParameterValue"+m'-->
+<!--                                                           type="text" name="value" class="form-control"-->
+<!--                                                           v-model="secondAlgorithmParameterValues[n-1][m-1]"-->
+<!--                                                           @blur="confirmSecondAlgorithmParameterValue(n,m)">-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <hr>-->
+<!--                                </div>-->
+<!--                                <hr>-->
+<!--                            </div>-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-md-2 offset-md-4">-->
+<!--                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>-->
+<!--                                    <button type="button" class="btn btn-primary submitBtn" @click="createParameter()">-->
+<!--                                        确定-->
+<!--                                    </button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </form>-->
                     </div>
                     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                         <div class="col-md-12">
@@ -1253,6 +1254,548 @@
                         </div>
                     </div>
                 </div>
+                <!-- 添加算法参数模态框 -->
+                <div class="modal fade" id="addParameterModal" tabindex="-1" role="dialog" aria-hidden="true"
+                     data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">算法参数信息</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label class="label" for="addParameterType">选择要添加的参数类型:</label>
+                                        <select id="addParameterType" v-model="parameterInfo.parameterTypes[0]">
+                                            <option>text</option>
+                                            <option>radio</option>
+                                            <option>checkbox</option>
+                                            <option>selection</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn-primary" data-toggle="modal"
+                                                data-target="#addParameterDetail">参数添加</button>
+                                    </div>
+                                </div>
+                                <br>
+                                <p style="text-align: center;color: firebrick" ><strong>该算法已添加的参数</strong></p><br>
+                                <!--定义缓冲区，用于显示算法参数信息，已经添加可以提交修改 -->
+                                <div class="container">
+                                    <div v-for="algorithmParameter in algorithmParameters">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <button class="btn btn-link" data-toggle="modal" data-target="#parameterDetail"
+                                                        @click="getParameterInfo(algorithmParameter.parameterId)"
+                                                >{{algorithmParameter.parameterName}}</button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-danger" data-toggle="modal"
+                                                        v-bind:data-target='"#deleteParameter"+algorithmParameter.parameterId'
+                                                >删除</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary" @click="deleteData(info.algorithmId)">确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 参数细节添加模态框 -->
+                <div class="modal fade" id="addParameterDetail" tabindex="-1" role="dialog" aria-hidden="true"
+                     data-backdrop="static">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">算法参数信息</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-2">
+                                        <label for="detailParameterName" class="col-form-label">参数名：</label>
+                                        <input data-toggle="popover" title="参数名称"
+                                               data-content="用户输入算法参数时，前端显示给用户进行参数输入的名称,例如在XX算法中,初始化过程中需要执行XX方法迭代运行100次，这里的参数名称则填写迭代次数。"
+                                               id="detailParameterName" class="form-control" type="text"
+                                               v-model="parameterInfo.parameterNames[0]">
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <label for="detailParameterNameMapper" class="col-form-label">映射到算法层的参数名：</label>
+                                        <input data-toggle="popover" title="算法层参数名映射"
+                                               data-content="用户输入参数后，将参数名称实际传送至算法端的参数，例如在XX算法中，算法参数名称为初始化次数，在此处填写init_number,则实际传送至算法端进行运算的参数名称为init_number。"
+                                               id="detailParameterNameMapper" class="form-control" type="text"
+                                               v-model="parameterInfo.parameterNamesMapper[0]">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-2">
+                                        <label for="detailParameterDescription" class="col-form-label">参数描述：</label>
+                                        <input data-toggle="popover" title="参数描述"
+                                               data-content="对该参数进行描述，用户提交参数时可以查看参数描述。" id="detailParameterDescription"
+                                               class="form-control" type="text"
+                                               v-model="parameterInfo.parameterDescriptions[0]">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-2">
+                                        <label for="detailParameterDefaultValue">参数默认值</label>
+                                        <input data-toggle="popover" title="参数默认值"
+                                               data-content="参数默认值内容，用户不自行选择时，向算法后台提交参数默认值。" id="detailParameterDefaultValue"
+                                               class="form-control" type="text"
+                                               v-model="parameterInfo.parameterDefaultValues[0]">
+                                    </div>
+                                </div>
+                                <!--判断第一个参数类型是否为input -->
+                                <div class="row" v-if="parameterInfo.parameterTypes[0] !== 'text'">
+                                    <div class="col-md-6 offset-md-2">
+                                        <label for="detailFirstValueNumber">第一个值的个数：</label>
+                                        <input id="detailFirstValueNumber" class="form-control" type="number"
+                                               v-model.number="paramValuesNumber[0]" @click="setDataPopover">
+                                    </div>
+                                </div>
+                                <hr>
+                                <!--                     循环设置第一个参数的值 -->
+                                <div v-for="m in paramValuesNumber[0]">
+                                    <div class="row">
+                                        <div class="col-md-4 offset-md-2">
+                                            <label for='"detailFirstParamValue"+m' class="col-form-label">Web层取值{{m}}</label>
+                                            <input data-toggle="popover" title="客户端取值"
+                                                   data-content="参数具体值，该值为用户提交参数时，显示给用户进行选择的参数值。"
+                                                   id='"detailFirstParamValue"+m' class="form-control" type="text"
+                                                   v-model="firstParameterValues[0][m-1]"
+                                                   @blur="confirmFirstValue(0,m)">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for='"detailFirstAlgorithmParameter"+m'
+                                                   class="col-form-label">算法层取值{{m}}</label>
+                                            <input data-toggle="popover" title="算法层取值"
+                                                   data-content="参数具体值，该值为用户提交参数时，实际提交至算法端进行运算的参数值。例如在XX算法中，初始化步骤中提交的参数值为100，实际传送至算法端进行运算的值为此出填写的init_100。"
+                                                   data-placement="right" id='"detailFirstAlgorithmParameter"+m'
+                                                   class="form-control" type="text"
+                                                   v-model="firstAlgorithmParameterValues[0][m-1]"
+                                                   @blur="confirmFirstAlgorithmValue(0,m)">
+                                        </div>
+                                    </div>
+                                    <div v-if="parameterInfo.parameterTypes[0] === 'selection'">
+                                        <div class="row">
+                                            <div class="col-md-2 offset-md-2">
+                                                <label for='"detailSecondParameterType"+m'>第二个值参数类型：</label>
+                                                <select data-toggle="popover" title="参数值类型"
+                                                        data-content="复合参数第二个值的设定需要先确定参数值类型，有seleciton,text,null三种形式，text类型表示第二个值为文本内容，null类型表示无需设置第二个参数值，可以供用户进行输入在第二个值类型取值为selciton后，需要对第二个值进行设置，selection表示为下拉单选框。"
+                                                        id='"detailSecondParameterType"+m' class="custom-select"
+                                                        v-model="secondParameterTypes[0][m-1]" name="paraType"
+                                                        @blur="confirmSecondParameterType(0,m)" @click="setDataPopover"
+                                                        required>
+                                                    <option selected>text</option>
+                                                    <option>selection</option>
+                                                    <option>null</option>
+                                                </select>
+                                            </div>
+                                            <!--根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 -->
+                                            <hr>
+                                        </div>
+                                        <div v-if="secondParameterTypes[0][m-1] === 'selection'">
+                                            <div class="row">
+                                                <div class="col-md-4 offset-md-2">
+                                                    <label for='"detailSecondParameterValue"+m'>Web层第二个参数取值</label>
+                                                    <input data-toggle="popover" title="web层第二个参数值"
+                                                           data-content="复合参数第二个值Web层取值，该参数值表示在下拉框中，提供给用户进行选择的参数值，如果第二个参数值有多个可选择的值，各个值之间用英文”,“进行分隔。"
+                                                           id='"detailSecondParameterValue"+m' type="text" name="value"
+                                                           class="form-control"
+                                                           v-model="secondParameterValues[0][m-1]"
+                                                           @blur="confirmSecondParameterValue(0,m)">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for='"detailSecondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>
+                                                    <input data-toggle="popover" title="算法层取值"
+                                                           data-content="复合参数第二个值算法层的取值，该参数值表示实际传送至算法端进行运算的参数值，如果第二个参数值有多个可选择的值，各个值之间用英文”,“进行分隔。"
+                                                           data-placement="right" id='"detailSecondAlgorithmParameterValue"+m'
+                                                           type="text" name="value" class="form-control"
+                                                           v-model="secondAlgorithmParameterValues[0][m-1]"
+                                                           @blur="confirmSecondAlgorithmParameterValue(0,m)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="clearParameterInfo()" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary " @click="createParameter()">确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 定义可以修改参数信息的回显参数模态框 -->
+                <div class="modal fade" id='parameterDetail' tabindex="-1" role="dialog" aria-hidden="true"
+                         data-backdrop="static">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">算法参数信息</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-4 offset-md-2">
+                                            <label for="parameterName" class="col-form-label">参数名：</label>
+                                            <input data-toggle="popover" title="参数名称"
+                                                   data-content="用户输入算法参数时，前端显示给用户进行参数输入的名称,例如在XX算法中,初始化过程中需要执行XX方法迭代运行100次，这里的参数名称则填写迭代次数。"
+                                                   id="parameterName" class="form-control" type="text"
+                                                   v-model="parameterInfo.parameterNames[0]">
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <label for="parameterNameMapper" class="col-form-label">映射到算法层的参数名：</label>
+                                            <input data-toggle="popover" title="算法层参数名映射"
+                                                   data-content="用户输入参数后，将参数名称实际传送至算法端的参数，例如在XX算法中，算法参数名称为初始化次数，在此处填写init_number,则实际传送至算法端进行运算的参数名称为init_number。"
+                                                   id="parameterNameMapper" class="form-control" type="text"
+                                                   v-model="parameterInfo.parameterNamesMapper[0]">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 offset-md-2">
+                                            <label for="parameterType" class="col-form-label">参数类型：</label>
+                                            <select data-toggle="popover" title="算法层参数名映射"
+                                                    data-content="参数类型有四种可以进行选择，text表示该参数在前端供用户输入时，为文本框的形式；radio表示该参数在前端供用户输入时为按钮单选形式；checkbox表示该参数在前端给用户输入时，为按钮多选形式；selection表示该参数在前端供用户输入时，为复合参数形式。参数类型的设置可以根据算法具体参数需求进行设置。"
+                                                    id="parameterType" class="form-control"
+                                                    v-model="parameterInfo.parameterTypes[0]">
+                                                <option>text</option>
+                                                <option>radio</option>
+                                                <option>checkbox</option>
+                                                <option>selection</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 offset-md-2">
+                                            <label for="parameterDescription" class="col-form-label">参数描述：</label>
+                                            <input data-toggle="popover" title="参数描述"
+                                                   data-content="对该参数进行描述，用户提交参数时可以查看参数描述。" id="parameterDescription"
+                                                   class="form-control" type="text"
+                                                   v-model="parameterInfo.parameterDescriptions[0]">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 offset-md-2">
+                                            <label for="parameterDefaultValue">参数默认值</label>
+                                            <input data-toggle="popover" title="参数默认值"
+                                                   data-content="参数默认值内容，用户不自行选择时，向算法后台提交参数默认值。" id="parameterDefaultValue"
+                                                   class="form-control" type="text"
+                                                   v-model="parameterInfo.parameterDefaultValues[0]">
+                                        </div>
+                                    </div>
+                                    <!--判断第一个参数类型是否为input -->
+                                    <div class="row" v-if="parameterInfo.parameterTypes[0] !== 'text'">
+                                        <div class="col-md-6 offset-md-2">
+                                            <label for="firstValueNumber">第一个值的个数：</label>
+                                            <input id="firstValueNumber" class="form-control" type="number"
+                                                   v-model.number="paramValuesNumber[0]" @click="setDataPopover">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <!--                     循环设置第一个参数的值 -->
+                                    <div v-for="m in paramValuesNumber[0]">
+                                        <div class="row">
+                                            <div class="col-md-4 offset-md-2">
+                                                <label for='"firstParamValue"+m' class="col-form-label">Web层取值{{m}}</label>
+                                                <input data-toggle="popover" title="客户端取值"
+                                                       data-content="参数具体值，该值为用户提交参数时，显示给用户进行选择的参数值。"
+                                                       id='"firstParamValue"+m' class="form-control" type="text"
+                                                       v-model="firstParameterValues[0][m-1]"
+                                                       @blur="confirmFirstValue(0,m)">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for='"firstAlgorithmParameter"+m'
+                                                       class="col-form-label">算法层取值{{m}}</label>
+                                                <input data-toggle="popover" title="算法层取值"
+                                                       data-content="参数具体值，该值为用户提交参数时，实际提交至算法端进行运算的参数值。例如在XX算法中，初始化步骤中提交的参数值为100，实际传送至算法端进行运算的值为此出填写的init_100。"
+                                                       data-placement="right" id='"firstAlgorithmParameter"+m'
+                                                       class="form-control" type="text"
+                                                       v-model="firstAlgorithmParameterValues[0][m-1]"
+                                                       @blur="confirmFirstAlgorithmValue(0,m)">
+                                            </div>
+                                        </div>
+                                        <div v-if="parameterInfo.parameterTypes[0] === 'selection'">
+                                            <div class="row">
+                                                <div class="col-md-2 offset-md-2">
+                                                    <label for='"secondParameterType"+m'>第二个值参数类型：</label>
+                                                    <select data-toggle="popover" title="参数值类型"
+                                                            data-content="复合参数第二个值的设定需要先确定参数值类型，有seleciton,text,null三种形式，text类型表示第二个值为文本内容，null类型表示无需设置第二个参数值，可以供用户进行输入在第二个值类型取值为selciton后，需要对第二个值进行设置，selection表示为下拉单选框。"
+                                                            id='"secondParameterType"+m' class="custom-select"
+                                                            v-model="secondParameterTypes[0][m-1]" name="paraType"
+                                                            @blur="confirmSecondParameterType(0,m)" @click="setDataPopover"
+                                                            required>
+                                                        <option selected>text</option>
+                                                        <option>selection</option>
+                                                        <option>null</option>
+                                                    </select>
+                                                </div>
+                                                <!--根据类型输入值，文本类型的不用，radio,selection,checkbox的需要输入可能的值 -->
+
+                                                <hr>
+                                            </div>
+                                            <div v-if="secondParameterTypes[0][m-1] === 'selection'">
+                                                <div class="row">
+                                                    <div class="col-md-4 offset-md-2">
+                                                        <label for='"secondParameterValue"+m'>Web层第二个参数取值</label>
+                                                        <input data-toggle="popover" title="web层第二个参数值"
+                                                               data-content="复合参数第二个值Web层取值，该参数值表示在下拉框中，提供给用户进行选择的参数值，如果第二个参数值有多个可选择的值，各个值之间用英文”,“进行分隔。"
+                                                               id='"secondParameterValue"+m' type="text" name="value"
+                                                               class="form-control"
+                                                               v-model="secondParameterValues[0][m-1]"
+                                                               @blur="confirmSecondParameterValue(0,m)">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for='"secondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>
+                                                        <input data-toggle="popover" title="算法层取值"
+                                                               data-content="复合参数第二个值算法层的取值，该参数值表示实际传送至算法端进行运算的参数值，如果第二个参数值有多个可选择的值，各个值之间用英文”,“进行分隔。"
+                                                               data-placement="right" id='"secondAlgorithmParameterValue"+m'
+                                                               type="text" name="value" class="form-control"
+                                                               v-model="secondAlgorithmParameterValues[0][m-1]"
+                                                               @blur="confirmSecondAlgorithmParameterValue(0,m)">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" @click="clearParameterInfo()" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary " @click="updateParameter()">确定
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!-- 添加算法步骤模态框 -->
+                <div class="modal fade" id="addProcedureModal" tabindex="-1" role="dialog" aria-hidden="true"
+                     data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">算法步骤信息</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label class="label" for="addProduceType">选择运行状态:</label>
+                                        <select id="addProduceType" v-model="procedureSetting.state">
+                                            <option>required</option>
+                                            <option>optionalSelected</option>
+                                            <option>optional</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn-primary" data-toggle="modal"
+                                                data-target="#addProcedureDetail">步骤添加</button>
+                                    </div>
+                                </div>
+                                <br>
+                                <p style="text-align: center;color: firebrick" ><strong>该算法已添加的步骤</strong></p><br>
+                                <!--定义缓冲区，用于显示算法参数信息，已经添加可以提交修改 -->
+                                <div class="container">
+                                    <div v-for="algorithmProcedure in algorithmProcedures">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <button class="btn btn-link" data-toggle="modal" data-target="#procedureDetail"
+                                                        @click="getProcedureInfo(algorithmProcedure.name)"
+                                                >{{algorithmProcedure.name}}</button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-danger" data-toggle="modal"
+                                                >删除</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary">确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--添加算法参数细节信息 -->
+                <div class="modal fade" id="addProcedureDetail" tabindex="-1" role="dialog" aria-hidden="true"
+                     data-backdrop="static">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">添加算法步骤</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>步骤名称</label>
+                                        <input data-toggle="popover" title="步骤名称"
+                                               data-content="算法步骤名称的填写,填写的该参数为用户选择算法时，所选择执行的算法步骤。例如在XX算法中，可执行的步骤有3个，第一个步骤为初始化（init）步骤，则在该处添加初始化步骤。"
+                                               data-placement="right" type="text" v-model="procedureSetting.name"
+                                               class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>映射到算法层的步骤名称</label>
+                                        <input data-toggle="popover" title="算法层步骤名称"
+                                               data-content="该参数为用户在选择算法步骤后，实际传递只算法系统的实际参数。例如在XXX算法中，执行了XX步骤，在用户选择时显示的是XXX步骤参数，实际传递至算法层运算时为XX参数。"
+                                               data-placement="right" type="text" v-model="procedureSetting.nameMapper"
+                                               class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>可选择的运行方法</label>
+                                        <input data-toggle="popover" title="运行方法"
+                                               data-content="在算法执行过程中，选择该步骤后，执行调用的方法，被调用的方法必须在算法层中有接口可以执行。例如在XXX算法中,执行初始化（init）步骤的方法有多个,xxx方法,xxx方法...。在设置多个方法的时候，每个方法的名字需要要英文“,”进行分隔。"
+                                               data-placement="right" type="text" class="form-control"
+                                               title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.options"
+                                               required>
+                                    </div>
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>映射到算法端可运行的方法</label>
+                                        <input data-toggle="popover" title="映射到算法端的方法"
+                                               data-content="该方法为用户在前端选择的方法后,对应将该方法参数传递至算法层的参数值,被调用的方法必须在算法层中有接口可以执行。例如在XXX算法中,执行初始化（init）步骤的方法有多个,xxx方法,xxx方法...。在设置多个方法的时候，每个方法的名字需要要英文“,”进行分隔（逗号分隔开来的方法需要与上个方框所填的方法对应）。"
+                                               data-placement="right" type="text" class="form-control"
+                                               v-model="procedureSetting.optionsMapper" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>默认选择</label>
+                                        <input data-toggle="popover" title="默认选择的方法"
+                                               data-content="该参数可以设置算法步骤在执行的过程中，默认选择执行的步骤方法。如在XXX算法中，默认初始化步骤执行的是XX方法，则在此出填写XX方法。"
+                                               data-placement="right" type="text" v-model="procedureSetting.defaultOption"
+                                               class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>步骤描述</label>
+                                        <input data-toggle="popover" title="默认选择的方法" data-content="在此处可以文字描述该步骤的功能以及用法。"
+                                               data-placement="right" type="text" v-model="procedureSetting.description"
+                                               class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary " @click="createProcedureSetting()">确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 定义可以修改参数信息的回显参数模态框 -->
+                <div class="modal fade" id='procedureDetail' tabindex="-1" role="dialog" aria-hidden="true"
+                     data-backdrop="static">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">算法参数信息</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>运行状态</label>
+                                        <select data-toggle="popover" title="步骤名称"
+                                                data-content="算法运行状态的选择有三种：required为必选的步骤；optionalSelected为可自主选择的步骤，默认为选择；optional为可自主选择的步骤，默认为不选择。"
+                                                data-placement="right" class="custom-select"
+                                                v-model="procedureSetting.state">
+                                            <option>required</option>
+                                            <option>optionalSelected</option>
+                                            <option>optional</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>步骤名称</label>
+                                        <input data-toggle="popover" title="步骤名称"
+                                               data-content="算法步骤名称的填写,填写的该参数为用户选择算法时，所选择执行的算法步骤。例如在XX算法中，可执行的步骤有3个，第一个步骤为初始化（init）步骤，则在该处添加初始化步骤。"
+                                               data-placement="right" type="text" v-model="procedureSetting.name"
+                                               class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>映射到算法层的步骤名称</label>
+                                        <input data-toggle="popover" title="算法层步骤名称"
+                                               data-content="该参数为用户在选择算法步骤后，实际传递只算法系统的实际参数。例如在XXX算法中，执行了XX步骤，在用户选择时显示的是XXX步骤参数，实际传递至算法层运算时为XX参数。"
+                                               data-placement="right" type="text" v-model="procedureSetting.nameMapper"
+                                               class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>可选择的运行方法</label>
+                                        <input data-toggle="popover" title="运行方法"
+                                               data-content="在算法执行过程中，选择该步骤后，执行调用的方法，被调用的方法必须在算法层中有接口可以执行。例如在XXX算法中,执行初始化（init）步骤的方法有多个,xxx方法,xxx方法...。在设置多个方法的时候，每个方法的名字需要要英文“,”进行分隔。"
+                                               data-placement="right" type="text" class="form-control"
+                                               title="步骤如果有多种执行方法，各个步骤之间用英文逗号隔开。" v-model="procedureSetting.options"
+                                               required>
+                                    </div>
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>映射到算法端可运行的方法</label>
+                                        <input data-toggle="popover" title="映射到算法端的方法"
+                                               data-content="该方法为用户在前端选择的方法后,对应将该方法参数传递至算法层的参数值,被调用的方法必须在算法层中有接口可以执行。例如在XXX算法中,执行初始化（init）步骤的方法有多个,xxx方法,xxx方法...。在设置多个方法的时候，每个方法的名字需要要英文“,”进行分隔（逗号分隔开来的方法需要与上个方框所填的方法对应）。"
+                                               data-placement="right" type="text" class="form-control"
+                                               v-model="procedureSetting.optionsMapper" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>默认选择</label>
+                                        <input data-toggle="popover" title="默认选择的方法"
+                                               data-content="该参数可以设置算法步骤在执行的过程中，默认选择执行的步骤方法。如在XXX算法中，默认初始化步骤执行的是XX方法，则在此出填写XX方法。"
+                                               data-placement="right" type="text" v-model="procedureSetting.defaultOption"
+                                               class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label>步骤描述</label>
+                                        <input data-toggle="popover" title="默认选择的方法" data-content="在此处可以文字描述该步骤的功能以及用法。"
+                                               data-placement="right" type="text" v-model="procedureSetting.description"
+                                               class="form-control" required>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"  data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary " @click="updateProcedure()">确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <hr>
                 <hr/>
                 <!--模态框目标区域，遍历算法对象， -->
@@ -1688,6 +2231,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- 定义可以修改参数信息的回显参数模态框 -->
 
             </main>
         </div>

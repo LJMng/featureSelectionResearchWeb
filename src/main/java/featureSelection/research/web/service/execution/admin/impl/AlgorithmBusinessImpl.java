@@ -1,5 +1,6 @@
 package featureSelection.research.web.service.execution.admin.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import featureSelection.research.web.common.util.AlgorithmMapperValueUtil;
 import featureSelection.research.web.common.util.FileUtil;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -95,6 +97,7 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
 
     @Override
     public void createParameters(ParameterInfo parameterInfo) {
+        System.out.println(parameterInfo);
         //遍历parameterInfo里面的一个数组 封装成parameter对象
         String[] parameterNames=parameterInfo.getParameterNames();
         //存放算法id
@@ -369,5 +372,118 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         //添加映射值内容
         readExcelUtil.addParameterMapper(parameterExcelRowObjectList);
 
+    }
+
+    @Override
+    public List<Parameter> getParametersInfoByAlgorithmId(int algorithmId) {
+        return algorithmParamMapper.getParametersInfoByAlgorithmId(algorithmId);
+    }
+
+    @Override
+    public ParameterInfo getParameterInfoByParameterId(int parameterId) {
+        ParameterInfo parameterInfo = new ParameterInfo();
+        Parameter parameter = algorithmParamMapper.getParameterInfoByParameterId(parameterId);
+        //根据parameter信息生成ParameterInfo对象并且返回
+        String parameterSettingInfo = parameter.getParameterSettingInfo();
+        JSONObject parameterSettingInfoJsonObject =JSONObject.parseObject(parameterSettingInfo);
+        //生成第一个值firstParameterVales[][]的值
+        String firstParameterVales[][]=new String [1][10];
+        //生成第二个值的secondParameterTypes[][]
+        String secondParameterTypes[][]=new String[1][10];
+        //生成第二个值的数组
+        String secondParameterValues[][]=new String[1][10];
+        System.out.println(parameterSettingInfoJsonObject.toString());
+        try {
+            if (!parameterSettingInfoJsonObject.get("options").toString().equals("[]")){
+                firstParameterVales[0]=parameterSettingInfoJsonObject.get("options").toString().replace("[","").replace("]","").replace("\"","").split(",");
+                //生成第二个值的secondParameterTypes[][]
+                JSONObject optionExtraJsonObject=parameterSettingInfoJsonObject.getJSONObject("optionExtra");
+                for (int i=0;i<firstParameterVales[0].length;i++){
+                    if (firstParameterVales[0][i]!=null){
+                        System.out.println(firstParameterVales[0][i]);
+                        String secondType=optionExtraJsonObject.
+                                getJSONObject((firstParameterVales[0][i]).
+                                        replace("\"","")).get("type").toString();
+                        String secondValue=optionExtraJsonObject.
+                                getJSONObject((firstParameterVales[0][i]).
+                                        replace("\"","")).get("option").toString().
+                                replace("[","").replace("]","");
+                        secondParameterTypes[0][i]=secondType;
+                        secondParameterValues[0][i]=secondValue.replace("\"","");
+                        System.out.println(secondValue);
+                    }
+                }
+                //生成第二个值的数组secondParameterValues[][]
+
+            }
+        }catch (NullPointerException err){
+            throw err;
+        }finally {
+            parameterInfo.setAlgorithmId(parameter.getAlgorithmId());
+            //设置参数名数组
+            String[] parameterNames=new String[1];
+            parameterNames[0] = parameter.getParameterName();
+            parameterInfo.setParameterNames(parameterNames);
+            //设置参数名映射值数组
+            String[] parameterNamesMapper=new String[1];
+            parameterNamesMapper[0] = parameter.getParameterNameMapper();
+            parameterInfo.setParameterNamesMapper(parameterNamesMapper);
+            //设置参数描述数组
+            String[] parameterDescriptions=new String[1];
+            parameterDescriptions[0] = parameter.getParameterDescription();
+            parameterInfo.setParameterDescriptions(parameterDescriptions);
+            //设置参数默认值数组
+            String[] parameterDefaultValues=new String[1];
+            parameterDefaultValues[0] = parameter.getParameterDefaultValue();
+            parameterInfo.setParameterDefaultValues(parameterDefaultValues);
+            //设置参数类型数组
+            String[] parameterTypes=new String[1];
+            parameterTypes[0] = parameter.getParameterType();
+            parameterInfo.setParameterTypes(parameterTypes);
+            //设置第一个参数值数组
+            parameterInfo.setFirstParameterVales(firstParameterVales);
+            //设置第二个参数值数组
+            parameterInfo.setSecondParameterTypes(secondParameterTypes);
+            //设置第二个参数类型数组
+            parameterInfo.setSecondParameterValues(secondParameterValues);
+            //设置第一个算法层的参数值
+//            String[][] firstAlgorithmParameterValues=new String[1][10];
+//            for (int i=0;i<firstParameterVales[0].length;i++){
+//                if (firstParameterVales[0][i]!=null){
+//                    firstAlgorithmParameterValues[0][i]=
+//                            webAlgorithmMapper.getParameterValue(parameter.getAlgorithmId(),
+//                            algorithmMapper.getParameterIdByName(parameterNames[0]),
+//                                    firstParameterVales[0][i]);
+//                }
+//            }
+//            parameterInfo.setFirstParameterVales(firstAlgorithmParameterValues);
+
+            System.out.println(parameterInfo.toString());
+            return parameterInfo;
+        }
+
+
+    }
+
+    @Override
+    public void updateParameterInfo(ParameterInfo parameterInfo) {
+        int parameterId=algorithmMapper.getParameterIdByName(parameterInfo.getParameterNames()[0]);
+        algorithmParamMapper.deleteParameter(parameterId);
+        this.createParameters(parameterInfo);
+    }
+
+    @Override
+    public List<ProcedureSettings> getProcedureInfosByAlgorithmId(int algorithmId) {
+        return procedureSettingsMapper.getProcedureInfosByAlgorithmId(algorithmId);
+    }
+
+    @Override
+    public ProcedureSettings getProcedureSettingByName(String name) {
+        return procedureSettingsMapper.getProcedureSettingByName(name);
+    }
+
+    @Override
+    public void updateProcedure(ProcedureSettings procedureSettings) {
+        procedureSettingsMapper.updateProcedureSettingByProcedureSettingName(procedureSettings);
     }
 }

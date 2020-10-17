@@ -501,8 +501,27 @@ public class ReadExcelUtil {
             }
 
         }
-        //遍历webAlgorithmEntityList,添加参数值映射信息
+        List<WebAlgorithmMapperEntity> addAlgorithmValueList = new ArrayList<>();
+
+        //遍历刚生成的webAlgorithmMapperEntityList,生成信的无重复的webAlgorithmMapperEntityList
         for (WebAlgorithmMapperEntity webAlgorithmMapperEntity:webAlgorithmMapperEntityList){
+            WebAlgorithmMapperEntity addAlgorithmValueMapper = webAlgorithmMapperEntity;
+            //遍历addValue列表，如果web_key algorithmId parameterId都相同则不添加
+            boolean isContain=false;
+            for (WebAlgorithmMapperEntity currentMapper:addAlgorithmValueList){
+                if (currentMapper.getAlgorithmId() == addAlgorithmValueMapper.getAlgorithmId() &&
+                    currentMapper.getParameterId() == addAlgorithmValueMapper.getParameterId() &&
+                    currentMapper.getAlgorithmValue().equals(addAlgorithmValueMapper.getAlgorithmValue())){
+                    isContain = true;
+                }
+                if (! isContain){
+                    addAlgorithmValueList.add(addAlgorithmValueMapper);
+                }
+            }
+        }
+//        System.out.println(webAlgorithmMapperEntityList);
+        //遍历webAlgorithmEntityList,添加参数值映射信息
+        for (WebAlgorithmMapperEntity webAlgorithmMapperEntity:addAlgorithmValueList){
             webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
         }
 

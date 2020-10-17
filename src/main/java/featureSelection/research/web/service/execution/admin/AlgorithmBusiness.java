@@ -85,4 +85,26 @@ public interface AlgorithmBusiness {
      * @param excel
      */
     public void addAlgorithmInfoByExcelFile(MultipartFile excel) throws Exception;
+
+    /**
+     * 获取算法中的所有参数信息
+     * @param algorithmId
+     * @return
+     */
+    public List<Parameter> getParametersInfoByAlgorithmId(int algorithmId);
+
+    /**
+     * 根据参数Id获取参数信息
+     * @param parameterId
+     * @return
+     */
+    public ParameterInfo getParameterInfoByParameterId(int parameterId);
+
+    public void updateParameterInfo(ParameterInfo parameterInfo);
+
+    public List<ProcedureSettings> getProcedureInfosByAlgorithmId(int algorithmId);
+
+    public ProcedureSettings getProcedureSettingByName(String name);
+
+    public void updateProcedure(ProcedureSettings procedureSettings);
 }

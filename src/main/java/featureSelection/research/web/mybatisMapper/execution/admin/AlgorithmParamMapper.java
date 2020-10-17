@@ -26,4 +26,10 @@ public interface AlgorithmParamMapper {
 
     @Select("select max(parameter_id) from parameter")
     public Integer getMaxParameterId();
+
+    @Select("select * from parameter where algorithm_id = #{algorithmId}")
+    public List<Parameter> getParametersInfoByAlgorithmId(int algorithmId);
+
+    @Select("select * from parameter where parameter_id = #{parameterId}")
+    public Parameter getParameterInfoByParameterId(int parameterId);
 }

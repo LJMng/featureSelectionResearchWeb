@@ -184,4 +184,36 @@ public class AlgorithmController {
         return "redirect:/pages/execution/admin/algorithm.html";
     }
 
+    @GetMapping(value = "/getParametersInfoByAlgorithmId")
+    public @ResponseBody List<Parameter> getParametersInfoByAlgorithmId(@RequestParam("algorithmId")int algorithmId){
+        return algorithmBusiness.getParametersInfoByAlgorithmId(algorithmId);
+    }
+
+    @GetMapping(value = "/getParameterInfoByParameterId")
+    public ParameterInfo getParameterInfoByParameterId(@RequestParam("parameterId") int parameterId){
+        return algorithmBusiness.getParameterInfoByParameterId(parameterId);
+    }
+
+    @PostMapping(value = "updateParameters")
+    public String updateParameters(@RequestBody ParameterInfo parameterInfo){
+        algorithmBusiness.updateParameterInfo(parameterInfo);
+        return null;
+    }
+
+    @GetMapping(value = "/getProcedureInfosByAlgorithmId")
+    public List<ProcedureSettings> getProcedureInfosByAlgorithmId(@RequestParam("algorithmId")int algorithmId){
+        return algorithmBusiness.getProcedureInfosByAlgorithmId(algorithmId);
+
+    }
+
+    @GetMapping(value = "/getProcedureSettingByName")
+    public ProcedureSettings getProcedureSettingByName(@RequestParam("name") String name){
+        return algorithmBusiness.getProcedureSettingByName(name);
+    }
+
+    @PostMapping(value = "/updateProcedure")
+    public void updateProcedure(@RequestBody ProcedureSettings procedureSettings){
+        algorithmBusiness.updateProcedure(procedureSettings);
+    }
+
 }
