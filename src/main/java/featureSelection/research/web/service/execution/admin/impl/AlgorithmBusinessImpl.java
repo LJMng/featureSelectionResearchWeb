@@ -307,15 +307,40 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
             if(obj.get("options").toString().equals("[]")){
                 continue;
             }
-            //去除options对应的值的[]以及所有"方便存取
-            String str[] = obj.get("options").toString().replace("[","").replace("]","").replaceAll("\"","").split(",");
-            List<String> pav = new LinkedList<>();//存放第i个参数的options对应的算法层的值
-            for(int i = 0; i < str.length; i++){
-                tmpStr = webAlgorithmMapper.getParameterValue(p.getAlgorithmId(),p.getParameterId(),str[i]);
-                pav.add("\""+tmpStr+"\"");//将数据规范为["a","b",...]类型
+            if(obj.get("type").toString().equals("selection")){
+                //去除options对应的值的[]以及所有"方便存取
+                String str[] = obj.get("options").toString().replace("[","").replace("]","").replaceAll("\"","").split(",");
+                List<String> pav = new LinkedList<>();//存放第i个参数的options对应的算法层的值
+                for(int i = 0; i < str.length; i++){
+                    tmpStr = webAlgorithmMapper.getParameterValue(p.getAlgorithmId(),p.getParameterId(),str[i]);
+                    JSONObject tmp = obj.getJSONObject("optionExtra");
+                    JSONObject tmp1 = tmp.getJSONObject(str[i]);
+                    String strExtra[] = tmp1.get("options").toString().replace("[","").replace("]","").replaceAll("\"","").split(",");
+                    String tmpStr2 = "\""+tmpStr+"\""+":";
+                    for(int j = 0; j < strExtra.length; j++){
+                        String tmpStr1 = webAlgorithmMapper.getParameterValue(p.getAlgorithmId(),p.getParameterId(),str[i]+"_"+strExtra[j]);
+                        if(j == strExtra.length - 1){
+                            tmpStr2 = tmpStr2 + tmpStr1;
+                        }else{
+                            tmpStr2 = tmpStr2 + tmpStr1 + ",";//将数据规范为["a":"x,y","b":"j,k,l",...]类型
+                        }
+                    }
+                    pav.add(tmpStr2);
+                }
+                obj.put("parameterAlgorithmValue",pav);
+                p.setParameterAlgorithmValue(obj.get("parameterAlgorithmValue").toString());
+                return list;
+            }else{
+                //去除options对应的值的[]以及所有"方便存取
+                String str[] = obj.get("options").toString().replace("[","").replace("]","").replaceAll("\"","").split(",");
+                List<String> pav = new LinkedList<>();//存放第i个参数的options对应的算法层的值
+                for(int i = 0; i < str.length; i++){
+                    tmpStr = webAlgorithmMapper.getParameterValue(p.getAlgorithmId(),p.getParameterId(),str[i]);
+                    pav.add("\""+tmpStr+"\"");//将数据规范为["a","b",...]类型
+                }
+                obj.put("parameterAlgorithmValue",pav);
+                p.setParameterAlgorithmValue(obj.get("parameterAlgorithmValue").toString());
             }
-            obj.put("parameterAlgorithmValue",pav);
-            p.setParameterAlgorithmValue(obj.get("parameterAlgorithmValue").toString());
         }
         return list;
     }
