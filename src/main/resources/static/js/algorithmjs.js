@@ -789,10 +789,27 @@ var vm =new Vue({
             this.parameterInfo.secondParameterValues=[];
             this.parameterInfo.secondAlgorithmParameterValues=[];
             this.paramValuesNumber[0]=0;
+            this.firstParameterValues[0]=[]
+            this.secondParameterTypes[0]=[]
+            this.secondParameterValues[0]=[]
+            this.firstAlgorithmParameterValues[0]=[]
+            this.secondAlgorithmParameterValues[0]=[]
+
 
         },
         //添加算法参数信息
         createParameter(){
+            //设置firstParameterValues[0][m-1]
+            //firstAlgorithmParameterValues[0][m-1]
+            //secondParameterTypes[0][m-1]
+            //secondParameterValues[0][m-1]
+            //secondAlgorithmParameterValues[0][m-1]
+            //parameterInfo中对应的信息
+            this.parameterInfo.firstParameterVales=this.firstParameterValues;
+            this.parameterInfo.firstAlgorithmParameterValues=this.firstAlgorithmParameterValues;
+            this.parameterInfo.secondParameterTypes=this.secondParameterTypes;
+            this.parameterInfo.secondParameterValues=this.secondParameterValues;
+            this.parameterInfo.secondAlgorithmParameterValues=this.secondAlgorithmParameterValues;
             axios.post('/createParameters',this.parameterInfo)
                 .then(() => {
                     //添加完成清除parameterInfo数据
@@ -804,6 +821,11 @@ var vm =new Vue({
         },
         //修改参数信息
         updateParameter(){
+            this.parameterInfo.firstParameterVales=this.firstParameterValues;
+            this.parameterInfo.firstAlgorithmParameterValues=this.firstAlgorithmParameterValues;
+            this.parameterInfo.secondParameterTypes=this.secondParameterTypes;
+            this.parameterInfo.secondParameterValues=this.secondParameterValues;
+            this.parameterInfo.secondAlgorithmParameterValues=this.secondAlgorithmParameterValues;
             axios.post('/updateParameters',this.parameterInfo).then(() => {
                 //修改完成清除parameterInfo数据
                 this.clearParameterInfo();
@@ -976,17 +998,17 @@ var vm =new Vue({
         putAlgorithmId:function (algorithmId) {
             this.algorithmId=algorithmId
         },
-        updateParameter:function (parameterId) {
-            this.updateParameterInfo.parameterId=parameterId;
-            axios.post('/updateParameter',this.updateParameterInfo)
-                .then(() => {
-                    window.location.reload();
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-
-        },
+        // updateParameter:function (parameterId) {
+        //     this.updateParameterInfo.parameterId=parameterId;
+        //     axios.post('/updateParameter',this.updateParameterInfo)
+        //         .then(() => {
+        //             window.location.reload();
+        //         })
+        //         .catch(err => {
+        //             console.log(err);
+        //         })
+        //
+        // },
         deleteParameter:function (parameterId) {
             this.deleteParameterInfo.parameterId=parameterId
             axios.post('/deleteParameter',this.deleteParameterInfo)
@@ -1036,12 +1058,17 @@ var vm =new Vue({
             console.log(parameterId)
             axios.get('/getParameterInfoByParameterId?parameterId='+parameterId).then((response)=>{
                 this.parameterInfo=response.data;
-                this.paramValuesNumber[0]=this.parameterInfo.firstParameterVales[0].length;
+                if (this.parameterInfo.parameterTypes[0] === "text"){
+                    this.paramValuesNumber[0]=0;
+                }else {
+                    this.paramValuesNumber[0]=this.parameterInfo.firstParameterVales[0].length;
+                }
                 console.log(this.parameterInfo.firstParameterVales[0].length);
                 this.firstParameterValues[0]=this.parameterInfo.firstParameterVales[0];
                 this.secondParameterTypes[0]=this.parameterInfo.secondParameterTypes[0];
-                // this.secondParameterValues[0]=this.parameterInfo.secondParameterValues[0];
-                // this.firstParameterValues[0]=this.parameterInfo.firstAlgorithmParameterValues[0];
+                this.secondParameterValues[0]=this.parameterInfo.secondParameterValues[0];
+                this.firstAlgorithmParameterValues[0]=this.parameterInfo.firstAlgorithmParameterValues[0];
+                this.secondAlgorithmParameterValues[0]=this.parameterInfo.secondAlgorithmParameterValues[0];
             }).catch(err =>{
                 console.log(err)
             })
@@ -1055,10 +1082,11 @@ var vm =new Vue({
 
         },
         updateProcedure:function () {
-            axios.post("/updateProcedure",this.procedureSetting).catch(err =>{
+            axios.post("/updateProcedure",this.procedureSetting).then(()=>{
+                window.location.reload();
+            }).catch(err =>{
                 console.log(err)
             })
-
         }
         //设置添加参数的参数类型
         // setParameter:function (addParameterType) {

@@ -385,11 +385,11 @@ public class ReadExcelUtil {
                                    else {
                                        //如果当前的Extra信息不是最后一个
                                        if (allOptionExtraInfoObject.indexOf(oneOptionExtraInfoObject) != allOptionExtraInfoObject.size()-1){
-                                           extraInfo = extraInfo + "\"" + produceExtra.getParameterValue() + "\":{\"type\":\"selection\",\"option\":["+extraOption+"]},";
+                                           extraInfo = extraInfo + "\"" + produceExtra.getParameterValue() + "\":{\"type\":\"selection\",\"options\":["+extraOption+"]},";
                                        }
                                        //如果最后一个，则直接拼接
                                        else{
-                                           extraInfo = extraInfo + "\"" + produceExtra.getParameterValue() + "\":{\"type\":\"selection\",\"option\":["+extraOption+"]}";
+                                           extraInfo = extraInfo + "\"" + produceExtra.getParameterValue() + "\":{\"type\":\"selection\",\"options\":["+extraOption+"]}";
                                        }
 
                                    }

@@ -1373,7 +1373,7 @@
                                                    data-content="参数具体值，该值为用户提交参数时，显示给用户进行选择的参数值。"
                                                    id='"detailFirstParamValue"+m' class="form-control" type="text"
                                                    v-model="firstParameterValues[0][m-1]"
-                                                   @blur="confirmFirstValue(0,m)">
+                                            >
                                         </div>
                                         <div class="col-md-4">
                                             <label for='"detailFirstAlgorithmParameter"+m'
@@ -1383,7 +1383,7 @@
                                                    data-placement="right" id='"detailFirstAlgorithmParameter"+m'
                                                    class="form-control" type="text"
                                                    v-model="firstAlgorithmParameterValues[0][m-1]"
-                                                   @blur="confirmFirstAlgorithmValue(0,m)">
+                                            >
                                         </div>
                                     </div>
                                     <div v-if="parameterInfo.parameterTypes[0] === 'selection'">
@@ -1394,7 +1394,7 @@
                                                         data-content="复合参数第二个值的设定需要先确定参数值类型，有seleciton,text,null三种形式，text类型表示第二个值为文本内容，null类型表示无需设置第二个参数值，可以供用户进行输入在第二个值类型取值为selciton后，需要对第二个值进行设置，selection表示为下拉单选框。"
                                                         id='"detailSecondParameterType"+m' class="custom-select"
                                                         v-model="secondParameterTypes[0][m-1]" name="paraType"
-                                                        @blur="confirmSecondParameterType(0,m)" @click="setDataPopover"
+                                                        @click="setDataPopover"
                                                         required>
                                                     <option selected>text</option>
                                                     <option>selection</option>
@@ -1413,7 +1413,7 @@
                                                            id='"detailSecondParameterValue"+m' type="text" name="value"
                                                            class="form-control"
                                                            v-model="secondParameterValues[0][m-1]"
-                                                           @blur="confirmSecondParameterValue(0,m)">
+                                                    >
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label for='"detailSecondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>
@@ -1422,7 +1422,7 @@
                                                            data-placement="right" id='"detailSecondAlgorithmParameterValue"+m'
                                                            type="text" name="value" class="form-control"
                                                            v-model="secondAlgorithmParameterValues[0][m-1]"
-                                                           @blur="confirmSecondAlgorithmParameterValue(0,m)">
+                                                    >
                                                 </div>
                                             </div>
                                         </div>
@@ -1516,7 +1516,7 @@
                                                        data-content="参数具体值，该值为用户提交参数时，显示给用户进行选择的参数值。"
                                                        id='"firstParamValue"+m' class="form-control" type="text"
                                                        v-model="firstParameterValues[0][m-1]"
-                                                       @blur="confirmFirstValue(0,m)">
+                                                >
                                             </div>
                                             <div class="col-md-4">
                                                 <label for='"firstAlgorithmParameter"+m'
@@ -1526,7 +1526,7 @@
                                                        data-placement="right" id='"firstAlgorithmParameter"+m'
                                                        class="form-control" type="text"
                                                        v-model="firstAlgorithmParameterValues[0][m-1]"
-                                                       @blur="confirmFirstAlgorithmValue(0,m)">
+                                                >
                                             </div>
                                         </div>
                                         <div v-if="parameterInfo.parameterTypes[0] === 'selection'">
@@ -1537,7 +1537,7 @@
                                                             data-content="复合参数第二个值的设定需要先确定参数值类型，有seleciton,text,null三种形式，text类型表示第二个值为文本内容，null类型表示无需设置第二个参数值，可以供用户进行输入在第二个值类型取值为selciton后，需要对第二个值进行设置，selection表示为下拉单选框。"
                                                             id='"secondParameterType"+m' class="custom-select"
                                                             v-model="secondParameterTypes[0][m-1]" name="paraType"
-                                                            @blur="confirmSecondParameterType(0,m)" @click="setDataPopover"
+                                                            @click="setDataPopover"
                                                             required>
                                                         <option selected>text</option>
                                                         <option>selection</option>
@@ -1557,7 +1557,7 @@
                                                                id='"secondParameterValue"+m' type="text" name="value"
                                                                class="form-control"
                                                                v-model="secondParameterValues[0][m-1]"
-                                                               @blur="confirmSecondParameterValue(0,m)">
+                                                        >
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label for='"secondAlgorithmParameterValue"+m'>算法层第二个参数取值</label>
@@ -1566,7 +1566,7 @@
                                                                data-placement="right" id='"secondAlgorithmParameterValue"+m'
                                                                type="text" name="value" class="form-control"
                                                                v-model="secondAlgorithmParameterValues[0][m-1]"
-                                                               @blur="confirmSecondAlgorithmParameterValue(0,m)">
+                                                        >
                                                     </div>
                                                 </div>
                                             </div>
@@ -1621,7 +1621,7 @@
                                                 >{{algorithmProcedure.name}}</button>
                                             </div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-danger" data-toggle="modal"
+                                                <button class="btn btn-danger" data-toggle="modal" v-bind:data-targert='"#deleteProcedureSetting"+algorithmProcedure.id'
                                                 >删除</button>
                                             </div>
                                         </div>

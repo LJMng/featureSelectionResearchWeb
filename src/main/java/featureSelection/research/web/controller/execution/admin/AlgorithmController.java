@@ -142,6 +142,9 @@ public class AlgorithmController {
 
    @PostMapping("/createParameters")
    public void createParameters(@RequestBody ParameterInfo parameterInfo){
+       System.out.println(parameterInfo.toString());
+       System.out.println(parameterInfo.getFirstParameterVales().toString());
+       System.out.println(parameterInfo.getFirstParameterVales()[0].toString());
         algorithmBusiness.createParameters(parameterInfo);
        System.out.println(parameterInfo);
    }
@@ -197,7 +200,7 @@ public class AlgorithmController {
     @PostMapping(value = "updateParameters")
     public String updateParameters(@RequestBody ParameterInfo parameterInfo){
         algorithmBusiness.updateParameterInfo(parameterInfo);
-        return null;
+        return "redirect:/pages/execution/admin/algorithm.html";
     }
 
     @GetMapping(value = "/getProcedureInfosByAlgorithmId")

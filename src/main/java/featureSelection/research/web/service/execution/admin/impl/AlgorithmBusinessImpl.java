@@ -172,6 +172,7 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                     //遍历到第二个值开始
                     //判断第二个值的类型,如果为text,则直接添加第二个值的信息
                     if (secondParameterType[j].equals("text")){
+                        System.out.println(j);
                         //如果为最后一个
                         if (j==secondParameterType.length-1){
                             parameterSettingInfo=parameterSettingInfo+"\""+firstParameterValue[j]+"\":{\"type\":\""+secondParameterType[j]+"\",\"options\":[]}";
@@ -392,33 +393,70 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         String secondParameterTypes[][]=new String[1][10];
         //生成第二个值的数组
         String secondParameterValues[][]=new String[1][10];
+        String[][] firstAlgorithmParameterValues=new String[1][10];
+        String[][] secondAlgorithmParameterValues=new String[1][10];
         System.out.println(parameterSettingInfoJsonObject.toString());
         try {
-            if (!parameterSettingInfoJsonObject.get("options").toString().equals("[]")){
-                firstParameterVales[0]=parameterSettingInfoJsonObject.get("options").toString().replace("[","").replace("]","").replace("\"","").split(",");
+            if (!parameterSettingInfoJsonObject.get("options").toString().equals("[]")) {
+                firstParameterVales[0] = parameterSettingInfoJsonObject.get("options").toString().replace("[", "").replace("]", "").replace("\"", "").split(",");
                 //生成第二个值的secondParameterTypes[][]
-                JSONObject optionExtraJsonObject=parameterSettingInfoJsonObject.getJSONObject("optionExtra");
-                for (int i=0;i<firstParameterVales[0].length;i++){
-                    if (firstParameterVales[0][i]!=null){
+                JSONObject optionExtraJsonObject = parameterSettingInfoJsonObject.getJSONObject("optionExtra");
+                for (int i = 0; i < firstParameterVales[0].length; i++) {
+                    if (firstParameterVales[0][i] != null) {
                         System.out.println(firstParameterVales[0][i]);
-                        String secondType=optionExtraJsonObject.
+                        String secondType = optionExtraJsonObject.
                                 getJSONObject((firstParameterVales[0][i]).
-                                        replace("\"","")).get("type").toString();
-                        String secondValue=optionExtraJsonObject.
+                                        replace("\"", "")).get("type").toString();
+                        String secondValue = optionExtraJsonObject.
                                 getJSONObject((firstParameterVales[0][i]).
-                                        replace("\"","")).get("option").toString().
-                                replace("[","").replace("]","");
-                        secondParameterTypes[0][i]=secondType;
-                        secondParameterValues[0][i]=secondValue.replace("\"","");
+                                        replace("\"", "")).get("options").toString().
+                                replace("[", "").replace("]", "");
+                        secondParameterTypes[0][i] = secondType;
+                        secondParameterValues[0][i] = secondValue.replace("\"", "");
                         System.out.println(secondValue);
                     }
                 }
                 //生成第二个值的数组secondParameterValues[][]
-
             }
         }catch (NullPointerException err){
             throw err;
         }finally {
+            for (int i=0;i<firstParameterVales[0].length;i++){
+                if (firstParameterVales[0][i]!=null){
+                    firstAlgorithmParameterValues[0][i]=
+                            webAlgorithmMapper.getParameterValue(parameter.getAlgorithmId(),
+                                    parameterId, firstParameterVales[0][i]);
+                    System.out.println(firstAlgorithmParameterValues[0][i]);
+                }
+            }
+            //设置第二个算法层的参数值
+            //遍历第二个值类型的数组，如果有第二个参数类型为selection,则拼接取值
+            for (int i=0;i<secondParameterTypes[0].length;i++){
+                System.out.println();
+                //如果为selection类型,则需要寻找第二个算法值
+                try{
+                    if (secondParameterTypes[0][i].equals("selection")){
+                        String secondAlgorithmParameterValueStr="";
+                        //获取第二个web层参数值对应的值的字符串
+                        String secondValue=secondParameterValues[0][i];
+                        String[] secondValueArray=secondValue.split(",");
+                        for (int j=0;j<secondValueArray.length;j++){
+                            secondAlgorithmParameterValueStr=secondAlgorithmParameterValueStr+
+                                    webAlgorithmMapper.getParameterValue(parameter.getAlgorithmId(),
+                                            parameterId,firstParameterVales[0][i]+"_"+secondValueArray[j]);
+                            if (j<secondValueArray.length-1){
+                                secondAlgorithmParameterValueStr=secondAlgorithmParameterValueStr+",";
+                            }
+                        }
+                        secondAlgorithmParameterValues[0][i]=secondAlgorithmParameterValueStr;
+                    }else {
+                        continue;
+                    }
+                }catch (NullPointerException err){
+                    continue;
+                }
+
+            }
             parameterInfo.setAlgorithmId(parameter.getAlgorithmId());
             //设置参数名数组
             String[] parameterNames=new String[1];
@@ -442,25 +480,18 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
             parameterInfo.setParameterTypes(parameterTypes);
             //设置第一个参数值数组
             parameterInfo.setFirstParameterVales(firstParameterVales);
-            //设置第二个参数值数组
-            parameterInfo.setSecondParameterTypes(secondParameterTypes);
             //设置第二个参数类型数组
+            parameterInfo.setSecondParameterTypes(secondParameterTypes);
+            //设置第二个参数值数组
             parameterInfo.setSecondParameterValues(secondParameterValues);
             //设置第一个算法层的参数值
-//            String[][] firstAlgorithmParameterValues=new String[1][10];
-//            for (int i=0;i<firstParameterVales[0].length;i++){
-//                if (firstParameterVales[0][i]!=null){
-//                    firstAlgorithmParameterValues[0][i]=
-//                            webAlgorithmMapper.getParameterValue(parameter.getAlgorithmId(),
-//                            algorithmMapper.getParameterIdByName(parameterNames[0]),
-//                                    firstParameterVales[0][i]);
-//                }
-//            }
-//            parameterInfo.setFirstParameterVales(firstAlgorithmParameterValues);
-
-            System.out.println(parameterInfo.toString());
+            parameterInfo.setFirstAlgorithmParameterValues(firstAlgorithmParameterValues);
+            //设置第二个算法层的参数值
+            parameterInfo.setSecondAlgorithmParameterValues(secondAlgorithmParameterValues);
             return parameterInfo;
+
         }
+
 
 
     }
@@ -479,7 +510,18 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
 
     @Override
     public ProcedureSettings getProcedureSettingByName(String name) {
-        return procedureSettingsMapper.getProcedureSettingByName(name);
+        ProcedureSettings procedureSettings = procedureSettingsMapper.getProcedureSettingByName(name);
+        String options=procedureSettings.getOptions();
+        String [] optionValues=options.split(",");
+        String optionsMapper="";
+        for (int i=0;i<optionValues.length;i++){
+            optionsMapper = optionsMapper + webAlgorithmMapper.getProcedureValue(procedureSettings.getAlgorithmId(),procedureSettings.getId(),optionValues[i]);
+            if (i<options.length()-1){
+                optionsMapper = optionsMapper + ",";
+            }
+        }
+        procedureSettings.setOptionsMapper(optionsMapper);
+        return procedureSettings;
     }
 
     @Override
