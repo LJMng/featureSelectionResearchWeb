@@ -524,7 +524,7 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
 
     @Override
     public void updateParameterInfo(ParameterInfo parameterInfo) {
-        int parameterId=algorithmMapper.getParameterIdByName(parameterInfo.getParameterNames()[0]);
+        int parameterId=algorithmMapper.getParameterIdByNameAndAlgorithmId(parameterInfo.getParameterNames()[0],parameterInfo.getAlgorithmId());
         algorithmParamMapper.deleteParameter(parameterId);
         this.createParameters(parameterInfo);
     }

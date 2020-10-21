@@ -48,7 +48,8 @@
                     </li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-outline-secondary btn-sm">{{administratorName}}</button>        &nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-outline-secondary btn-sm">{{administratorName}}</button> &nbsp;
+            <button type="button" id="sigOutButton" @click="administratorSignOut" class="btn btn-outline-secondary btn-sm">注销</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <input type="checkbox" name="my-checkbox" checked>
         </div>
     </nav>
@@ -183,7 +184,6 @@
                 </div>
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                <a href="/excel/addAlgorithmInfoDemo.xlsx">算法信息添加样例文件</a>
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
@@ -215,9 +215,12 @@
                             </div>
                             <div class="col-md-2">
                                 <button type="button" class="btn btn-primary custom-file" data-toggle="modal"
-                                        data-target="#createAlgorithmInfoByExcelFile" >算法添加</button>
+                                        data-target="#createAlgorithmInfoByExcelFile" >使用excel文件导入算法信息</button>
                             </div>
-                            <div class="col-md-2 offset-md-6">
+                            <div class="col-md-2">
+                                <a href="/excel/addAlgorithmInfoDemo.xlsx">算法信息添加样例文件</a>
+                            </div>
+                            <div class="col-md-2 offset-md-4">
                                     <input v-model="searchString"
                                            style="width: 200px;margin:5px;padding: 6px 12px;float: right" type="search"
                                            class="form-control" id="Esearch-input" placeholder="SearchByName">

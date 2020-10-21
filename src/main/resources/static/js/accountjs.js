@@ -62,6 +62,11 @@ var vm =new Vue({
         reloadCurrentPage:function(){
             window.location.reload();
         },
+        administratorSignOut:function(){
+            axios.get('/administratorSignOut/{administratorName}').then(() =>{
+                window.location.reload();
+            })
+        },
         deleteAccount:function (accountId) {
             this.deleteAccountInfo.accountId=accountId
             axios.post('/deleteAccount',this.deleteAccountInfo).then((response) =>{

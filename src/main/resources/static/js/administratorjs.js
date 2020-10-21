@@ -62,6 +62,11 @@ var vm =new Vue({
             axios.post("/administratorSignOut");
             window.location.reload();
         },
+        administratorSignOut:function(){
+            axios.get('/administratorSignOut/{administratorName}').then(() =>{
+                window.location.reload();
+            })
+        },
         deleteAdministrator:function (administratorName) {
             $.post("/deleteAdministrator", { "administratorName": administratorName }, function
                 (response) {

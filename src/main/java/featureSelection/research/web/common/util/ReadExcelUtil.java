@@ -50,11 +50,8 @@ public class ReadExcelUtil {
 
                 int firstRowIndex = sheet.getFirstRowNum()+3;   //第一行添加算法的标题，第二行是算法信息的列名，所以从第三行开始读取数据
                 int lastRowIndex = sheet.getLastRowNum();
-//                System.out.println("firstRowIndex: "+firstRowIndex);
-//                System.out.println("lastRowIndex: "+lastRowIndex);
 
                 for(int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {   //遍历行
-//                    System.out.println("rIndex: " + rIndex);
                     Row row = sheet.getRow(rIndex);
                     if (row != null) {
                         int firstCellIndex = row.getFirstCellNum();
@@ -67,7 +64,6 @@ public class ReadExcelUtil {
                             if (cell != null) {
 
                                 algorithmInfo[cIndex-1]=cell.toString();
-//                                System.out.println(cell.toString());
                             }
                         }
                         algorithm.setAlgorithmName(algorithmInfo[0]);
@@ -511,7 +507,6 @@ public class ReadExcelUtil {
             WebAlgorithmMapperEntity addAlgorithmValueMapper = webAlgorithmMapperEntity;
             //遍历addValue列表，如果web_key algorithmId parameterId都相同则不添加
             boolean isContain=false;
-            System.out.println(addAlgorithmValueList.toString());
             addAlgorithmValueList.size();
             for (int j=0;j < addAlgorithmValueList.size();j++){
                 if (addAlgorithmValueList.get(j).getAlgorithmId() == addAlgorithmValueMapper.getAlgorithmId() &&

@@ -142,11 +142,7 @@ public class AlgorithmController {
 
    @PostMapping("/createParameters")
    public void createParameters(@RequestBody ParameterInfo parameterInfo){
-       System.out.println(parameterInfo.toString());
-       System.out.println(parameterInfo.getFirstParameterVales().toString());
-       System.out.println(parameterInfo.getFirstParameterVales()[0].toString());
         algorithmBusiness.createParameters(parameterInfo);
-       System.out.println(parameterInfo);
    }
 
    @GetMapping(value = "/getAlgorithms")

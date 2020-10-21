@@ -68,6 +68,11 @@ var vm=new Vue({
         }
     },
     methods: {
+        administratorSignOut:function(){
+            axios.get('/administratorSignOut/{administratorName}').then(() =>{
+                window.location.reload();
+            })
+        },
         deletePageElement:function (htmlName,moduleKey) {
             this.htmlElement.htmlName=htmlName;
             this.htmlElement.moduleKey=moduleKey;

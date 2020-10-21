@@ -101,6 +101,11 @@ var vm =new Vue({
     }
     ,
     methods:{
+        administratorSignOut:function(){
+            axios.get('/administratorSignOut/{administratorName}').then(() =>{
+                window.location.reload();
+            })
+        },
         showFileName: function (event) {
             let originFileName = event.target.files[0].name;
             let suffix = originFileName.substr(originFileName.lastIndexOf("."));

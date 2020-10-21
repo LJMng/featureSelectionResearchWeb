@@ -9,6 +9,8 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -45,19 +47,20 @@ public class LoginController {
             return "redirect:/pages/execution/admin/executionAdminLogin.html";
         }
     }
-    @PostMapping("/administratorSignOut")
-    public void signOut(HttpServletRequest request,
+    @GetMapping("/administratorSignOut/{administratorName}")
+    public void signOut(@PathVariable String administratorName, HttpServletRequest request,
                         HttpServletResponse response) throws IOException {
-        Subject subject=SecurityUtils.getSubject();
-        subject.logout();
-        request.getSession().removeAttribute("administrator");
-        Cookie cookie=new Cookie("administratorName",null);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-        System.out.println("administrator退出登陆");
-        request.getSession().setAttribute("administrator",null);
+        if (administratorName != null){
+            Subject subject=SecurityUtils.getSubject();
+            subject.logout();
+            request.getSession().removeAttribute("administratorName");
+            Cookie cookie=new Cookie("administratorName",null);
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+            System.out.println("administrator退出登陆");
+            response.sendRedirect("/");
+        }
 
-        response.sendRedirect("/");
     }
 }

@@ -326,6 +326,11 @@ var vm =new Vue({
 
     },
     methods:{
+        administratorSignOut:function(){
+            axios.get('/administratorSignOut/{administratorName}').then(() =>{
+                window.location.reload();
+            })
+        },
         //算法方案管理Method
         //获得所有方案信息
         getData() {

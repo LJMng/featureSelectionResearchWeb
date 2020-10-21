@@ -48,8 +48,8 @@
                     </li>
                 </ul>
             </div>
-            <button type="button" id="loginButton" class="btn btn-outline-secondary btn-sm">{{administratorName}}</button>&nbsp;&nbsp;
-            <button type="button" id="sigOutButton" class="btn btn-outline-secondary btn-sm">注销</button>&nbsp;&nbsp;&nbsp;
+            <button type="button" id="loginButton" class="btn btn-outline-secondary btn-sm">{{administratorName}}</button>&nbsp;&nbsp;&nbsp;
+            <button type="button" id="sigOutButton" @click="administratorSignOut" class="btn btn-outline-secondary btn-sm">注销</button>&nbsp;&nbsp;&nbsp;
             <input type="checkbox" name="my-checkbox" checked>
         </div>
     </nav>

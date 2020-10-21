@@ -50,7 +50,8 @@
                     </li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-outline-secondary btn-sm">{{administratorName}}</button>        &nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-outline-secondary btn-sm">{{administratorName}}</button>&nbsp;
+            <button type="button" id="sigOutButton" @click="administratorSignOut" class="btn btn-outline-secondary btn-sm">注销</button>&nbsp;   &nbsp;&nbsp;&nbsp;
             <input type="checkbox" name="my-checkbox" checked>
         </div>
     </nav>
@@ -506,6 +507,13 @@
             axios.get('/htmlElements').then(function(data) {
                 console.log(data);
             })
+        },
+        methods:{
+            administratorSignOut:function(){
+                axios.get('/administratorSignOut/{administratorName}').then(() =>{
+                    window.location.reload();
+                })
+            }
         }
     });
     // 上面created与下面$(function(){})的调用顺序自行百度和查看Vue.js文档说明，或者自行尝试

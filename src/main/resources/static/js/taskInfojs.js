@@ -30,6 +30,11 @@ var vm =new Vue({
 
      },
     methods:{
+        administratorSignOut:function(){
+            axios.get('/administratorSignOut/{administratorName}').then(() =>{
+                window.location.reload();
+            })
+        },
         fCheckAccountId:function () {
             if (this.checkAccountId>1000000000000000000000){
                 this.checked.checkedAccountId="用户名太长！"
