@@ -331,10 +331,8 @@ var app = new Vue({
             if(this.dataset_form_name=='' || this.$refs.inputDataset.files[0]==null){
                 ifCorrect = false;
             };
-            if(this.dataset_form_description=='' || this.dataset_form_dimension=='' ||
-                this.dataset_form_preprocessing=='' || this.dataset_form_record=='' ||
-                this.dataset_form_source=='' || this.dataset_form_tag=='' ||
-                this.dataset_form_type=='') {
+            if(this.dataset_form_description=='' || this.dataset_form_dimension=='' || this.dataset_form_record=='' ||
+                this.dataset_form_source=='') {
                 ifCorrect = false;
             }
             if (ifCorrect){
