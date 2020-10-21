@@ -274,6 +274,8 @@ var vm =new Vue({
         },
         //每个算法的参数信息，用于在缓冲区回显算法参数信息
         algorithmProcedures:{},
+        //存储算法已经已经添加数据集的数组
+        datasetAdded:[]
 
 
     },
@@ -443,8 +445,17 @@ var vm =new Vue({
         setDataset4AlgorithmOfAlgorithmId:function(AlgorithmId){
             this.availableDataset4Algorithm.algorithmId=AlgorithmId;
             //判断算法有多少个可运行的数据集
+            axios.get('/getAlgorithmAvailableDatasetByAlgorithmId?algorithmId='+AlgorithmId).then((response) => {
+                let datasetAddedArr = response.data;
+                console.log(datasetAddedArr)
+                let that = this;
+                that.datasetAdded=datasetAddedArr;
+            }).catch(err => {
+                console.log(err);
+            })
+        }
 
-        },
+        ,
         //设置可用数据集的数据集
         setDataset4AlgorithmOfAvailableDataset:function(){
             let availableDatasets = [];

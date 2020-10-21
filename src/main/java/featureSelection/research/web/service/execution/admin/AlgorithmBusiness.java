@@ -107,4 +107,6 @@ public interface AlgorithmBusiness {
     public ProcedureSettings getProcedureSettingByName(String name);
 
     public void updateProcedure(ProcedureSettings procedureSettings);
+
+    public List<Boolean> getAlgorithmAvailableDatasetByAlgorithmId(int algorithmId);
 }

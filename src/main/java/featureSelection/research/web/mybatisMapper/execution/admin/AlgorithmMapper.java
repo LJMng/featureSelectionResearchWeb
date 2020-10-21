@@ -30,4 +30,7 @@ public interface AlgorithmMapper {
 
     @Select("select parameter_id from parameter where parameter_name = #{parameterName}")
     public int getParameterIdByName(String parameterName);
+
+    @Select("select available_datasets from algorithm where algorithm_id = #{algorithmId}")
+    public String getAvailableDatasetByAlgorithmId(int algorithmId);
 }

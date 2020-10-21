@@ -45,6 +45,8 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     //注入添加算法的AlgorithmInfoDemoAdminMapper接口
     @Autowired
     private AlgorithmInfoDemoAdminMapper algorithmInfoDemoAdminMapper;
+    @Autowired
+    private DatasetMapping datasetMapping;
 
     @Override
     public void createParamSettingInfo(Map<Integer, String> algorithmMap) {
@@ -300,48 +302,48 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     @Override
     public List<Parameter> getParameters() {
         List<Parameter> list = algorithmParamMapper.getParameters();//存放每个参数
-        for (Parameter p : list){
-            String tmpStr = p.getParameterSettingInfo();//获取第i个参数的settingInfo
-            JSONObject obj = (JSONObject) JSONObject.parse(tmpStr);
-            //若settingInfo无值，即为text类型，直接跳过
-            if(obj.get("options").toString().equals("[]")){
-                continue;
-            }
-            if(obj.get("type").toString().equals("selection")){
-                //去除options对应的值的[]以及所有"方便存取
-                String str[] = obj.get("options").toString().replace("[","").replace("]","").replaceAll("\"","").split(",");
-                List<String> pav = new LinkedList<>();//存放第i个参数的options对应的算法层的值
-                for(int i = 0; i < str.length; i++){
-                    tmpStr = webAlgorithmMapper.getParameterValue(p.getAlgorithmId(),p.getParameterId(),str[i]);
-                    JSONObject tmp = obj.getJSONObject("optionExtra");
-                    JSONObject tmp1 = tmp.getJSONObject(str[i]);
-                    String strExtra[] = tmp1.get("options").toString().replace("[","").replace("]","").replaceAll("\"","").split(",");
-                    String tmpStr2 = "\""+tmpStr+"\""+":";
-                    for(int j = 0; j < strExtra.length; j++){
-                        String tmpStr1 = webAlgorithmMapper.getParameterValue(p.getAlgorithmId(),p.getParameterId(),str[i]+"_"+strExtra[j]);
-                        if(j == strExtra.length - 1){
-                            tmpStr2 = tmpStr2 + tmpStr1;
-                        }else{
-                            tmpStr2 = tmpStr2 + tmpStr1 + ",";//将数据规范为["a":"x,y","b":"j,k,l",...]类型
-                        }
-                    }
-                    pav.add(tmpStr2);
-                }
-                obj.put("parameterAlgorithmValue",pav);
-                p.setParameterAlgorithmValue(obj.get("parameterAlgorithmValue").toString());
-                return list;
-            }else{
-                //去除options对应的值的[]以及所有"方便存取
-                String str[] = obj.get("options").toString().replace("[","").replace("]","").replaceAll("\"","").split(",");
-                List<String> pav = new LinkedList<>();//存放第i个参数的options对应的算法层的值
-                for(int i = 0; i < str.length; i++){
-                    tmpStr = webAlgorithmMapper.getParameterValue(p.getAlgorithmId(),p.getParameterId(),str[i]);
-                    pav.add("\""+tmpStr+"\"");//将数据规范为["a","b",...]类型
-                }
-                obj.put("parameterAlgorithmValue",pav);
-                p.setParameterAlgorithmValue(obj.get("parameterAlgorithmValue").toString());
-            }
-        }
+//        for (Parameter p : list){
+//            String tmpStr = p.getParameterSettingInfo();//获取第i个参数的settingInfo
+//            JSONObject obj = (JSONObject) JSONObject.parse(tmpStr);
+//            //若settingInfo无值，即为text类型，直接跳过
+//            if(obj.get("options").toString().equals("[]")){
+//                continue;
+//            }
+//            if(obj.get("type").toString().equals("selection")){
+//                //去除options对应的值的[]以及所有"方便存取
+//                String str[] = obj.get("options").toString().replace("[","").replace("]","").replaceAll("\"","").split(",");
+//                List<String> pav = new LinkedList<>();//存放第i个参数的options对应的算法层的值
+//                for(int i = 0; i < str.length; i++){
+//                    tmpStr = webAlgorithmMapper.getParameterValue(p.getAlgorithmId(),p.getParameterId(),str[i]);
+//                    JSONObject tmp = obj.getJSONObject("optionExtra");
+//                    JSONObject tmp1 = tmp.getJSONObject(str[i]);
+//                    String strExtra[] = tmp1.get("options").toString().replace("[","").replace("]","").replaceAll("\"","").split(",");
+//                    String tmpStr2 = "\""+tmpStr+"\""+":";
+//                    for(int j = 0; j < strExtra.length; j++){
+//                        String tmpStr1 = webAlgorithmMapper.getParameterValue(p.getAlgorithmId(),p.getParameterId(),str[i]+"_"+strExtra[j]);
+//                        if(j == strExtra.length - 1){
+//                            tmpStr2 = tmpStr2 + tmpStr1;
+//                        }else{
+//                            tmpStr2 = tmpStr2 + tmpStr1 + ",";//将数据规范为["a":"x,y","b":"j,k,l",...]类型
+//                        }
+//                    }
+//                    pav.add(tmpStr2);
+//                }
+//                obj.put("parameterAlgorithmValue",pav);
+//                p.setParameterAlgorithmValue(obj.get("parameterAlgorithmValue").toString());
+//                return list;
+//            }else{
+//                //去除options对应的值的[]以及所有"方便存取
+//                String str[] = obj.get("options").toString().replace("[","").replace("]","").replaceAll("\"","").split(",");
+//                List<String> pav = new LinkedList<>();//存放第i个参数的options对应的算法层的值
+//                for(int i = 0; i < str.length; i++){
+//                    tmpStr = webAlgorithmMapper.getParameterValue(p.getAlgorithmId(),p.getParameterId(),str[i]);
+//                    pav.add("\""+tmpStr+"\"");//将数据规范为["a","b",...]类型
+//                }
+//                obj.put("parameterAlgorithmValue",pav);
+//                p.setParameterAlgorithmValue(obj.get("parameterAlgorithmValue").toString());
+//            }
+//        }
         return list;
     }
 
@@ -395,6 +397,7 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         for (Parameter parameter:parameters){
             algorithmMapper.createParameter(parameter);
         }
+        System.out.println(parameterExcelRowObjectList);
         //添加映射值内容
         readExcelUtil.addParameterMapper(parameterExcelRowObjectList);
 
@@ -420,7 +423,6 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         String secondParameterValues[][]=new String[1][10];
         String[][] firstAlgorithmParameterValues=new String[1][10];
         String[][] secondAlgorithmParameterValues=new String[1][10];
-        System.out.println(parameterSettingInfoJsonObject.toString());
         try {
             if (!parameterSettingInfoJsonObject.get("options").toString().equals("[]")) {
                 firstParameterVales[0] = parameterSettingInfoJsonObject.get("options").toString().replace("[", "").replace("]", "").replace("\"", "").split(",");
@@ -428,7 +430,6 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                 JSONObject optionExtraJsonObject = parameterSettingInfoJsonObject.getJSONObject("optionExtra");
                 for (int i = 0; i < firstParameterVales[0].length; i++) {
                     if (firstParameterVales[0][i] != null) {
-                        System.out.println(firstParameterVales[0][i]);
                         String secondType = optionExtraJsonObject.
                                 getJSONObject((firstParameterVales[0][i]).
                                         replace("\"", "")).get("type").toString();
@@ -438,7 +439,6 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                                 replace("[", "").replace("]", "");
                         secondParameterTypes[0][i] = secondType;
                         secondParameterValues[0][i] = secondValue.replace("\"", "");
-                        System.out.println(secondValue);
                     }
                 }
                 //生成第二个值的数组secondParameterValues[][]
@@ -451,13 +451,11 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                     firstAlgorithmParameterValues[0][i]=
                             webAlgorithmMapper.getParameterValue(parameter.getAlgorithmId(),
                                     parameterId, firstParameterVales[0][i]);
-                    System.out.println(firstAlgorithmParameterValues[0][i]);
                 }
             }
             //设置第二个算法层的参数值
             //遍历第二个值类型的数组，如果有第二个参数类型为selection,则拼接取值
             for (int i=0;i<secondParameterTypes[0].length;i++){
-                System.out.println();
                 //如果为selection类型,则需要寻找第二个算法值
                 try{
                     if (secondParameterTypes[0][i].equals("selection")){
@@ -541,7 +539,7 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         String optionsMapper="";
         for (int i=0;i<optionValues.length;i++){
             optionsMapper = optionsMapper + webAlgorithmMapper.getProcedureValue(procedureSettings.getAlgorithmId(),procedureSettings.getId(),optionValues[i]);
-            if (i<options.length()-1){
+            if (i<options.length()){
                 optionsMapper = optionsMapper + ",";
             }
         }
@@ -552,5 +550,36 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     @Override
     public void updateProcedure(ProcedureSettings procedureSettings) {
         procedureSettingsMapper.updateProcedureSettingByProcedureSettingName(procedureSettings);
+    }
+
+    @Override
+    public List<Boolean> getAlgorithmAvailableDatasetByAlgorithmId(int algorithmId) {
+        List<Boolean> datasetAdded = new ArrayList<>();
+        //获取一个算法对应的数据集Id
+        String availableDatasetStr=algorithmMapper.getAvailableDatasetByAlgorithmId(algorithmId);
+        System.out.println(availableDatasetStr);
+        //获取所有数据集的数组
+        List<Dataset> datasets=datasetMapping.getDatasetList();
+        try {
+            String[] availableDataset = availableDatasetStr.replace("[","").replace("]","").split(",");
+            for (Dataset dataset:datasets){
+                for (String availableDatasetId:availableDataset){
+                    if (Integer.parseInt(availableDatasetId) == dataset.getDatasetId()){
+                        datasetAdded.add(true);
+                    }else {
+                        datasetAdded.add(false);
+                    }
+                }
+            }
+        }catch (NullPointerException err){
+            for (Dataset dataset:datasets){
+                datasetAdded.add(false);
+            }
+            throw err;
+        }finally {
+            return datasetAdded;
+        }
+
+
     }
 }

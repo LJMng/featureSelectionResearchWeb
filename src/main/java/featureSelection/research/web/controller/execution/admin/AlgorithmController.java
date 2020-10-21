@@ -219,4 +219,9 @@ public class AlgorithmController {
         algorithmBusiness.updateProcedure(procedureSettings);
     }
 
+    @GetMapping(value = "/getAlgorithmAvailableDatasetByAlgorithmId")
+    public @ResponseBody List<Boolean> getAlgorithmAvailableDatasetByAlgorithmId(@RequestParam("algorithmId") int algorithmId){
+        return algorithmBusiness.getAlgorithmAvailableDatasetByAlgorithmId(algorithmId);
+    }
+
 }

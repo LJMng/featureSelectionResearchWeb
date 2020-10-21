@@ -483,6 +483,7 @@ public class ReadExcelUtil {
     public void addParameterMapper(List<ParameterExcelRowObject> parameterExcelRowObjectList){
         //遍历parameterExcelRowObject 生成算法参数映射值列表
         List<WebAlgorithmMapperEntity> webAlgorithmMapperEntityList = new ArrayList<>();
+
         for (ParameterExcelRowObject parameterExcelRowObject:parameterExcelRowObjectList){
             WebAlgorithmMapperEntity webAlgorithmMapperEntity = new WebAlgorithmMapperEntity();
             webAlgorithmMapperEntity.setAlgorithmId(algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName()));
@@ -502,29 +503,31 @@ public class ReadExcelUtil {
 
         }
         List<WebAlgorithmMapperEntity> addAlgorithmValueList = new ArrayList<>();
-
+        addAlgorithmValueList.add(webAlgorithmMapperEntityList.get(0));
         //遍历刚生成的webAlgorithmMapperEntityList,生成信的无重复的webAlgorithmMapperEntityList
         for (WebAlgorithmMapperEntity webAlgorithmMapperEntity:webAlgorithmMapperEntityList){
             WebAlgorithmMapperEntity addAlgorithmValueMapper = webAlgorithmMapperEntity;
             //遍历addValue列表，如果web_key algorithmId parameterId都相同则不添加
             boolean isContain=false;
-            for (WebAlgorithmMapperEntity currentMapper:addAlgorithmValueList){
-                if (currentMapper.getAlgorithmId() == addAlgorithmValueMapper.getAlgorithmId() &&
-                    currentMapper.getParameterId() == addAlgorithmValueMapper.getParameterId() &&
-                    currentMapper.getAlgorithmValue().equals(addAlgorithmValueMapper.getAlgorithmValue())){
+            System.out.println(addAlgorithmValueList.toString());
+            addAlgorithmValueList.size();
+            for (int j=0;j < addAlgorithmValueList.size();j++){
+                if (addAlgorithmValueList.get(j).getAlgorithmId() == addAlgorithmValueMapper.getAlgorithmId() &&
+                        addAlgorithmValueList.get(j).getParameterId() == addAlgorithmValueMapper.getParameterId() &&
+                        addAlgorithmValueList.get(j).getWebKey().equals(addAlgorithmValueMapper.getWebKey())){
+                    System.out.println("找到相同的");
                     isContain = true;
                 }
-                if (! isContain){
-                    addAlgorithmValueList.add(addAlgorithmValueMapper);
-                }
+            }
+            if (! isContain){
+                addAlgorithmValueList.add(addAlgorithmValueMapper);
             }
         }
-//        System.out.println(webAlgorithmMapperEntityList);
-        //遍历webAlgorithmEntityList,添加参数值映射信息
         for (WebAlgorithmMapperEntity webAlgorithmMapperEntity:addAlgorithmValueList){
             webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
         }
 
     }
+
 }
 

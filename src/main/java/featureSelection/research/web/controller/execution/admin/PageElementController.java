@@ -24,7 +24,7 @@ public class PageElementController {
      */
     @GetMapping("/manage")
     public String getExecutionManageIndex(){
-        return "/pages/execution/admin/execution.html";
+        return "/pages/execution/admin/executionAdminLogin.html";
     }
     @PostMapping("/htmlElements")
     public String createPageElement(@RequestBody PageElement pageElement){
@@ -35,7 +35,6 @@ public class PageElementController {
     @GetMapping("/getHtmlElements")
     public @ResponseBody List<PageElement> findAll(){
         List<PageElement> pageElements=pageElementBusiness.findAll();
-//        System.out.println(pageElements);
         return pageElements;
     }
 
@@ -65,7 +64,6 @@ public class PageElementController {
         String htmlName=pageElement.getHtmlName();
         String moduleKey=pageElement.getModuleKey();
         pageElementBusiness.delete(htmlName,moduleKey);
-        System.out.println("delete");
         return "redirect: /pages/execution/admin/htmlElementList.html";
     }
 
