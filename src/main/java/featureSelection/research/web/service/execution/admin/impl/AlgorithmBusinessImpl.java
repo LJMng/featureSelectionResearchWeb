@@ -99,7 +99,6 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
 
     @Override
     public void createParameters(ParameterInfo parameterInfo) {
-        System.out.println(parameterInfo);
         //遍历parameterInfo里面的一个数组 封装成parameter对象
         String[] parameterNames=parameterInfo.getParameterNames();
         //存放算法id
@@ -397,7 +396,7 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         for (Parameter parameter:parameters){
             algorithmMapper.createParameter(parameter);
         }
-        System.out.println(parameterExcelRowObjectList);
+//        System.out.println(parameterExcelRowObjectList);
         //添加映射值内容
         readExcelUtil.addParameterMapper(parameterExcelRowObjectList);
 
@@ -413,8 +412,8 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         ParameterInfo parameterInfo = new ParameterInfo();
         Parameter parameter = algorithmParamMapper.getParameterInfoByParameterId(parameterId);
         //根据parameter信息生成ParameterInfo对象并且返回
-        String parameterSettingInfo = parameter.getParameterSettingInfo();
-        JSONObject parameterSettingInfoJsonObject =JSONObject.parseObject(parameterSettingInfo);
+//        String parameterSettingInfo = parameter.getParameterSettingInfo();
+//        JSONObject parameterSettingInfoJsonObject =JSONObject.parseObject(parameterSettingInfo);
         //生成第一个值firstParameterVales[][]的值
         String firstParameterVales[][]=new String [1][10];
         //生成第二个值的secondParameterTypes[][]
@@ -424,6 +423,10 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         String[][] firstAlgorithmParameterValues=new String[1][10];
         String[][] secondAlgorithmParameterValues=new String[1][10];
         try {
+            //根据parameter信息生成ParameterInfo对象并且返回
+            String parameterSettingInfo = parameter.getParameterSettingInfo();
+            JSONObject parameterSettingInfoJsonObject =JSONObject.parseObject(parameterSettingInfo);
+
             if (!parameterSettingInfoJsonObject.get("options").toString().equals("[]")) {
                 firstParameterVales[0] = parameterSettingInfoJsonObject.get("options").toString().replace("[", "").replace("]", "").replace("\"", "").split(",");
                 //生成第二个值的secondParameterTypes[][]

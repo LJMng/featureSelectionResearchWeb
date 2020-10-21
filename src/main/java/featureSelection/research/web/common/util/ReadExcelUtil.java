@@ -486,8 +486,9 @@ public class ReadExcelUtil {
 
         for (ParameterExcelRowObject parameterExcelRowObject:parameterExcelRowObjectList){
             WebAlgorithmMapperEntity webAlgorithmMapperEntity = new WebAlgorithmMapperEntity();
-            webAlgorithmMapperEntity.setAlgorithmId(algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName()));
-            webAlgorithmMapperEntity.setParameterId(algorithmMapper.getParameterIdByName(parameterExcelRowObject.getParameterName()));
+            int algorithmId=algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName());
+            webAlgorithmMapperEntity.setAlgorithmId(algorithmId);
+            webAlgorithmMapperEntity.setParameterId(algorithmMapper.getParameterIdByNameAndAlgorithmId(parameterExcelRowObject.getParameterName(),algorithmId));
             webAlgorithmMapperEntity.setWebKey(parameterExcelRowObject.getParameterValue());
             webAlgorithmMapperEntity.setAlgorithmValue(parameterExcelRowObject.getParameterValueMapper());
             webAlgorithmMapperEntityList.add(webAlgorithmMapperEntity);
@@ -495,7 +496,8 @@ public class ReadExcelUtil {
             if (parameterExcelRowObject.getParameterExtraValue() != null){
                 WebAlgorithmMapperEntity webAlgorithmMapperEntityAddExtraValue = new WebAlgorithmMapperEntity();
                 webAlgorithmMapperEntityAddExtraValue.setAlgorithmId(algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName()));
-                webAlgorithmMapperEntityAddExtraValue.setParameterId(algorithmMapper.getParameterIdByName(parameterExcelRowObject.getParameterName()));
+                webAlgorithmMapperEntityAddExtraValue.setParameterId(algorithmMapper.getParameterIdByNameAndAlgorithmId(parameterExcelRowObject.getParameterName(),
+                        algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName())));
                 webAlgorithmMapperEntityAddExtraValue.setWebKey(parameterExcelRowObject.getParameterValue()+"_"+parameterExcelRowObject.getParameterExtraValue());
                 webAlgorithmMapperEntityAddExtraValue.setAlgorithmValue(parameterExcelRowObject.getParameterExtraValueMapper());
                 webAlgorithmMapperEntityList.add(webAlgorithmMapperEntityAddExtraValue);
