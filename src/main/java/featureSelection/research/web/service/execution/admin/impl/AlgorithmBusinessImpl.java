@@ -561,14 +561,18 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
         //获取所有数据集的数组
         List<Dataset> datasets=datasetMapping.getDatasetList();
         try {
-            String[] availableDataset = availableDatasetStr.replace("[","").replace("]","").split(",");
+            String[] availableDataset = availableDatasetStr.replace("[","").replace("]","").replace("\"","").split(",");
             for (Dataset dataset:datasets){
+                boolean isExtend = false;
                 for (String availableDatasetId:availableDataset){
                     if (Integer.parseInt(availableDatasetId) == dataset.getDatasetId()){
-                        datasetAdded.add(true);
-                    }else {
-                        datasetAdded.add(false);
+                        isExtend = true;
                     }
+                }
+                if (isExtend){
+                    datasetAdded.add(true);
+                }else {
+                    datasetAdded.add(false);
                 }
             }
         }catch (NullPointerException err){

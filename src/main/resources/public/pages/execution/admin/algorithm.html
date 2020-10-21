@@ -2156,7 +2156,7 @@
                                                 <input class="custom-control-input" type="checkbox"
                                                        :id="'executiondatasets'+dataset.datasetId"
                                                        :value="dataset.datasetId"
-                                                       name="availableDataset">
+                                                       name="availableDataset" v-bind:checked = 'datasetAdded[index] == true ? true :false'>
                                                 <label class="custom-control-label"
                                                        :for="'executiondatasets'+dataset.datasetId">{{dataset.datasetName}}</label>
                                             </div>
