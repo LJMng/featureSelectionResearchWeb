@@ -26,6 +26,8 @@
     <script src="/webjars/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
     <!--axios-->
     <script src="/webjars/axios/0.19.2/dist/axios.js"></script>
+    <!--        fontawesome-->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 <div id="algorithmData">
@@ -853,7 +855,8 @@
                                                              v-if="param.parameterSettingInfo.type=='text'">
                                                             <input type="text" class="form-control"
                                                                    :id="scheme.algorithmName+param.parameterName+'Basic'"
-                                                                   :name="scheme.algorithmName+param.parameterName">
+                                                                   :name="scheme.algorithmName+param.parameterName"
+                                                                    :value="BSetting[index2].parameterInputValue">
                                                         </div>
                                                         <div class="col-4"
                                                              v-if="param.parameterSettingInfo.type=='text'"></div>
@@ -879,7 +882,8 @@
                                                             <select class="custom-select"
                                                                     :name="scheme.algorithmName+param.parameterName"
                                                                     :id="scheme.algorithmName+param.parameterName+'Basic'"
-                                                                    @change="appendInfo($event,scheme.algorithmName,param.parameterName)">
+                                                                    @change="appendInfo($event,scheme.algorithmName,param.parameterName)"
+                                                                    :value="BSetting[index2].parameterOptionValue">
                                                                 <option selected>Choose...</option>
                                                                 <option v-for="(option,index3) in param.parameterSettingInfo.options"
                                                                         :value="option">{{option}}
@@ -914,7 +918,8 @@
                                                                 <input class="custom-control-input" type="radio"
                                                                        :id="scheme.algorithmName+param.parameterName+index4"
                                                                        :value="option"
-                                                                       :name="scheme.algorithmName+param.parameterName">
+                                                                       :name="scheme.algorithmName+param.parameterName"
+                                                                        :checked="checked(BSetting[index2].parameterOptionValue==option)">
                                                                 <label class="custom-control-label"
                                                                        :for="scheme.algorithmName+param.parameterName+index4">{{option}}</label>
                                                             </div>
@@ -945,7 +950,8 @@
                                                                 <input class="custom-control-input" type="checkbox"
                                                                        :id="scheme.algorithmName+param.parameterName+index5"
                                                                        :value="option"
-                                                                       :name="scheme.algorithmName+param.parameterName">
+                                                                       :name="scheme.algorithmName+param.parameterName"
+                                                                        :checked="multChecked(BSetting[index2].parameterOptionValue,option)">
                                                                 <label class="custom-control-label"
                                                                        :for="scheme.algorithmName+param.parameterName+index5">{{option}}</label>
                                                             </div>
@@ -994,7 +1000,7 @@
                                                                     :disabled="ps.state=='optional'?'disabled':null"
                                                                     @change="changeProduct($event,index2)">
                                                                 <option v-for="(option,index3) in ps.options"
-                                                                        :selected="option==ps.defaultOption?'selected':null"
+                                                                        :selected="PValue[index2]==option|option==ps.defaultOption?'selected':null"
                                                                         :value="option">{{option}}
                                                                 </option>
                                                             </select>

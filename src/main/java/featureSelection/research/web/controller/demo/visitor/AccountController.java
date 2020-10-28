@@ -1,7 +1,6 @@
 package featureSelection.research.web.controller.demo.visitor;
 
 import featureSelection.research.web.common.util.ResultUtil;
-import featureSelection.research.web.config.shiro.CustomUsernamePasswordToken;
 import featureSelection.research.web.entity.Result;
 import featureSelection.research.web.entity.UserType;
 import featureSelection.research.web.entity.demo.visitor.ApplyAccount;
@@ -52,26 +51,26 @@ public class AccountController {
     }
 
 
-    @PostMapping("/demologinbyemail")
-    public Result loginByEmail(@RequestParam("email") String email,
-                               @RequestParam("password") String password,
-                               HttpServletRequest request,
-                               HttpServletResponse response) {
-        Subject subject = SecurityUtils.getSubject();
-        CustomUsernamePasswordToken token = new CustomUsernamePasswordToken(email, password, UserType.account);
-        try {
-            subject.login(token);
-            Account account = new Account();
-            account.setAccountEmail(email);
-            request.getSession().setAttribute("account", account);
-            Cookie cookie = new Cookie("accountId", String.valueOf(accountService.getAccountIdByEmail(email)));
-            response.addCookie(cookie);
-            return ResultUtil.success();
-        } catch (UnknownAccountException e) {
-            return ResultUtil.error(404, "no register this account");
-        } catch (IncorrectCredentialsException e) {
-            return ResultUtil.error(400, "password error");
-        }
+//    @PostMapping("/demologinbyemail")
+//    public Result loginByEmail(@RequestParam("email") String email,
+//                               @RequestParam("password") String password,
+//                               HttpServletRequest request,
+//                               HttpServletResponse response) {
+//        Subject subject = SecurityUtils.getSubject();
+//        CustomUsernamePasswordToken token = new CustomUsernamePasswordToken(email, password, UserType.account);
+//        try {
+//            subject.login(token);
+//            Account account = new Account();
+//            account.setAccountEmail(email);
+//            request.getSession().setAttribute("account", account);
+//            Cookie cookie = new Cookie("accountId", String.valueOf(accountService.getAccountIdByEmail(email)));
+//            response.addCookie(cookie);
+//            return ResultUtil.success();
+//        } catch (UnknownAccountException e) {
+//            return ResultUtil.error(404, "no register this account");
+//        } catch (IncorrectCredentialsException e) {
+//            return ResultUtil.error(400, "password error");
+//        }
 //        Result result = accountService.loginByEmail(email, password);
 //        if (result.getCode() == 200) {
 //            Account account = new Account();
@@ -81,7 +80,7 @@ public class AccountController {
 //            response.addCookie(cookie);
 //        }
 //        return result;
-    }
+//    }
 
     @GetMapping("/signout/{account}")
     public void signOut(@PathVariable String account, HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="featureSelection.research.web.mybatisMapper.demo.admin.SettingsDemoAdminMapper">
+    <resultMap id= "result" type = "featureSelection.research.web.entity.demo.admin.BSettingsDemoAdmin">
+        <id column="scheme_id" property="schemeId" />
+        <result column="parameter_input_value" property="parameterInputValue" />
+        <result column="parameter_option_value" property="parameterOptionValue" />
+        <result column="parameter_name" property="parameterName" />
+        <result column="parameter_type" property="parameterType" />
+    </resultMap>
+
+    <!--通过ID查询信息-->
+    <select id="getBSettingsBySchemeId" resultMap="result" parameterType="int">
+        select distinct parameter_input_value, parameter_option_value, parameter_name,parameter_scheme_value.scheme_id,parameter_type
+        from parameter_scheme_value
+        left join parameter_scheme on parameter_scheme.scheme_id=parameter_scheme_value.scheme_id
+        left join scheme_procedure on parameter_scheme_value.scheme_id=scheme_procedure.scheme_id
+        left join parameter on parameter_scheme.algorithm_id=parameter.algorithm_id and parameter.parameter_id=parameter_scheme_value.parameter_id
+        left join procedure_settings on procedure_settings.id=scheme_procedure.scheme_procedure_id
+        where parameter_scheme_value.scheme_id =#{schemeId}
+    </select>
+</mapper>

@@ -2,7 +2,9 @@ package featureSelection.research.web.controller.demo.admin;
 
 import featureSelection.research.web.entity.demo.admin.DatasetDemoAdmin;
 import featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin;
+import featureSelection.research.web.entity.demo.admin.BSettingsDemoAdmin;
 import featureSelection.research.web.service.demo.admin.impl.SchemeServiceImpl;
+import featureSelection.research.web.service.demo.admin.impl.SettingsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,9 @@ public class SchemeController {
 
     @Autowired
     SchemeServiceImpl schemeService;
+
+    @Autowired
+    SettingsServiceImpl settingsService;
 
     /**
      * @return 返回所有的方案的信息，返回格式为json
@@ -78,6 +83,12 @@ public class SchemeController {
     @GetMapping("/findAllIdAndName")
     public List<DatasetDemoAdmin> findAllIdAndName(){
         return schemeService.findAllIdAndName();
+    }
+
+    //提供通过ID查询方案的设置
+    @GetMapping("/settings/find/{id}")
+    public List<BSettingsDemoAdmin> getSettingsBySchemeId(@PathVariable("id") Integer id){
+        return settingsService.getBSettingsBySchemeId(id);
     }
 }
 
