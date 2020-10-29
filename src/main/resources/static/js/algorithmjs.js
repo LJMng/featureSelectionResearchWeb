@@ -680,6 +680,31 @@ var vm =new Vue({
                 }
             }
         },
+        procedureCheck(pselceted,ps,i){
+            if(pselceted==='true'){
+                this.tempSetting[i].selected = 'true'
+                return 'checked'
+                if(ps.state!=='optional'){
+                    this.tempSetting[i].selected = 'true'
+                    return 'checked'
+                }
+            }
+            this.tempSetting[i].selected = 'false'
+        },
+        procedureDisabled(pselceted,ps,i,pv){
+            if(pselceted!=='true'){
+                this.tempSetting[i].selected = 'false'
+                return 'disabled'
+                if(ps.state==='optional'){
+                    this.tempSetting[i].selected = 'false'
+                    return 'disabled'
+                }
+            }
+            this.tempSetting[i].selected = 'true'
+            if(pv!=='data'){
+                this.tempSetting[i].data = pv;
+            }
+        },
         changeProduct(event, index) {
             this.tempSetting[index].data = event.target.value; //获取option对应的value值
         },

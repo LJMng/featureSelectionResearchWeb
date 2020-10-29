@@ -10,4 +10,12 @@
     <select id="count" resultMap="result">
         select procedure_settings.name,procedure_settings.id from procedure_settings where procedure_settings.algorithm_id=(select algorithm_id from parameter_scheme order by scheme_id desc limit 1);
     </select>
+
+    <resultMap id="result2" type = "featureSelection.research.web.entity.execution.admin.ProcedureSettings">
+        <id column="id" property="id" />
+        <result column="procedure_name" property="name" />
+    </resultMap>
+    <update id="updateProcedureNameAfterChangedByExecutionAdmin">
+        update scheme_procedure set procedure_name=#{name} where procedure_settings_id = #{id}
+    </update>
 </mapper>

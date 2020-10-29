@@ -4,6 +4,7 @@ import featureSelection.research.web.entity.demo.admin.ProcedureSettingsDemoAdmi
 import featureSelection.research.web.entity.demo.admin.SchemeDemoAdmin;
 import featureSelection.research.web.entity.demo.admin.SchemeProcedureDemoAdmin;
 import featureSelection.research.web.entity.execution.admin.ProcedureSettings;
+import featureSelection.research.web.mybatisMapper.demo.admin.ProcedureSettingsDemoAdminMapper;
 import featureSelection.research.web.mybatisMapper.demo.admin.SchemeDemoAdminMapper;
 import featureSelection.research.web.mybatisMapper.demo.admin.SchemeProcedureDemoAdminMapper;
 import featureSelection.research.web.service.demo.admin.ProcedureService;
@@ -21,6 +22,9 @@ public class ProcedureServiceImpl implements ProcedureService {
     @Autowired
     SchemeProcedureDemoAdminMapper schemeProcedureDemoAdminMapper;
 
+    @Autowired
+    ProcedureSettingsDemoAdminMapper procedureSettingsDemoAdminMapper;
+
     @Override
     public String insertSchemeProcedureAfterDeleteDemoAdmin(ProcedureSettings procedureSettings) {
         ProcedureSettingsDemoAdmin p = schemeProcedureDemoAdminMapper.findNewProcedureAlgorithmId();
@@ -33,4 +37,11 @@ public class ProcedureServiceImpl implements ProcedureService {
         }
         return null;
     }
+
+    @Override
+    public int updateProcedureNameAfterChangedByExecutionAdmin(ProcedureSettings procedureSettings) {
+        return procedureSettingsDemoAdminMapper.updateProcedureNameAfterChangedByExecutionAdmin(procedureSettings);
+    }
+
+
 }

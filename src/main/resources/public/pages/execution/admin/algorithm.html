@@ -973,7 +973,7 @@
                                                                        class="custom-control-input"
                                                                        :id="scheme.algorithmName+ps.name+'Procedure'"
                                                                        :name="scheme.algorithmName+ps.name+'Check'+(index2+1)"
-                                                                       :checked="ps.state=='optional'?null:'checked'"
+                                                                       :checked="procedureCheck(PSelected[index2],ps.state,index2)"
                                                                        :disabled="ps.state=='required'?'disabled':null"
                                                                        @change="changeDisabled($event,scheme.algorithmName+ps.name)">
                                                                 <label class="custom-control-label"
@@ -997,7 +997,7 @@
                                                             <select class="custom-select"
                                                                     :id="scheme.algorithmName+ps.name+'select'"
                                                                     :name="scheme.algorithmName+ps.name"
-                                                                    :disabled="ps.state=='optional'?'disabled':null"
+                                                                    :disabled="procedureDisabled(PSelected[index2],ps.state,index2,PValue[index2])"
                                                                     @change="changeProduct($event,index2)">
                                                                 <option v-for="(option,index3) in ps.options"
                                                                         :selected="PValue[index2]==option|option==ps.defaultOption?'selected':null"

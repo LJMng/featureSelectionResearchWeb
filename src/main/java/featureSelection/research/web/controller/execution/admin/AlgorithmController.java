@@ -138,6 +138,8 @@ public class AlgorithmController {
    @PostMapping("/updateProcedureSetting")
    public void updateProcedureSettings(@RequestBody ProcedureSettings procedureSettings){
         algorithmBusiness.updateProcedureSettings(procedureSettings);
+        //execution将步骤名字修改后同步到方案步骤表的名字
+        procedureService.updateProcedureNameAfterChangedByExecutionAdmin(procedureSettings);
    }
 
    @PostMapping("/createParameters")
