@@ -1000,7 +1000,7 @@
                                                                     :disabled="procedureDisabled(PSelected[index2],ps.state,index2,PValue[index2])"
                                                                     @change="changeProduct($event,index2)">
                                                                 <option v-for="(option,index3) in ps.options"
-                                                                        :selected="PValue[index2]==option|option==ps.defaultOption?'selected':null"
+                                                                        :selected="procedureSelected(PValue[index2],option,ps.defaultOption)"
                                                                         :value="option">{{option}}
                                                                 </option>
                                                             </select>

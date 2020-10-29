@@ -705,6 +705,18 @@ var vm =new Vue({
                 this.tempSetting[i].data = pv;
             }
         },
+        procedureSelected(pv,op,def){
+            if(pv==='data'){
+                if(op===def){
+                    return 'selected'
+                }
+            }else{
+                if(pv===op){
+                    return 'selected'
+                }
+            }
+            return null
+        },
         changeProduct(event, index) {
             this.tempSetting[index].data = event.target.value; //获取option对应的value值
         },
