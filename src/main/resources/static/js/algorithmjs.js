@@ -60,6 +60,9 @@ $(document).ready(function() {
 var vm =new Vue({
     el:"#algorithmData",
     data:{
+        BSetting:'',
+        PValue:'',
+        PSelected:'',
         testInfo:'试一下',
         paramsNumber:0,
         values:"",
@@ -485,6 +488,16 @@ var vm =new Vue({
             this.clearEData();
             const _id = id;
             console.log(id)
+            axios.get('/SchemeDemoAdmin/settings/find/' + id)
+                .then(resp => {
+                    this.BSetting=resp.data;
+                    for (let i = 0; i < this.BSetting.length; i++){
+                        if(this.BSetting[i].parameterType=='checkbox'){
+                            let tmp = this.BSetting[i].parameterOptionValue.replace(/\"/g, "").replace(/\[|]/g,"")
+                            this.BSetting[i].parameterOptionValue = tmp.split(',')
+                        }
+                    }
+                })
             axios.get('/SchemeDemoAdmin/find/' + id)
                 .then(resp => {
                     this.scheme.schemeId = _id;
@@ -506,7 +519,16 @@ var vm =new Vue({
                                     this.tempSetting[i] = JSON.parse(temp1[i]);
                                 }
                                 let temp = this.ProcedureSettingsList[this.scheme.algorithmId];
+                                let pvalue = ''
+                                let pselected = ''
                                 for (let i = 0; i < temp.length; i++) {
+                                    if(i === temp.length - 1){
+                                        pvalue += this.tempSetting[i].data
+                                        pselected += this.tempSetting[i].selected
+                                    }else{
+                                        pvalue += this.tempSetting[i].data + ','
+                                        pselected += this.tempSetting[i].selected + ','
+                                    }
                                     this.tempSetting[i].data = temp[i].defaultOption;
                                     this.p[i].procedureSettingsId = temp[i].id;
                                     if (temp[i].state === 'optional') {
@@ -515,6 +537,8 @@ var vm =new Vue({
                                         this.tempSetting[i].selected = 'true';
                                     }
                                 }
+                                this.PValue = pvalue.split(',')
+                                this.PSelected = pselected.split(',')
                             }
                         })
                         .catch(err => {
@@ -645,6 +669,55 @@ var vm =new Vue({
             } else {
                 this.tempSetting[i].selected = 'false';
             }
+        },
+        checked(i) {
+            if(i){
+                return "checked";
+            }
+        },
+        multChecked(methods,j){
+            for(let i = 0; i < methods.length; i++){
+                if(methods[i]===j){
+                    return "checked";
+                }
+            }
+        },
+        procedureCheck(pselceted,ps,i){
+            if(pselceted==='true'){
+                this.tempSetting[i].selected = 'true'
+                return 'checked'
+                if(ps.state!=='optional'){
+                    this.tempSetting[i].selected = 'true'
+                    return 'checked'
+                }
+            }
+            this.tempSetting[i].selected = 'false'
+        },
+        procedureDisabled(pselceted,ps,i,pv){
+            if(pselceted!=='true'){
+                this.tempSetting[i].selected = 'false'
+                return 'disabled'
+                if(ps.state==='optional'){
+                    this.tempSetting[i].selected = 'false'
+                    return 'disabled'
+                }
+            }
+            this.tempSetting[i].selected = 'true'
+            if(pv!=='data'){
+                this.tempSetting[i].data = pv;
+            }
+        },
+        procedureSelected(pv,op,def){
+            if(pv==='data'){
+                if(op===def){
+                    return 'selected'
+                }
+            }else{
+                if(pv===op){
+                    return 'selected'
+                }
+            }
+            return null
         },
         changeProduct(event, index) {
             this.tempSetting[index].data = event.target.value; //获取option对应的value值
@@ -1301,14 +1374,14 @@ Vue.component('append', {
     template: `
                 <div class="input-group form-row" v-if="optionName!=''&&param.parameterSettingInfo.optionExtra[optionName]!=null?param.parameterSettingInfo.optionExtra[optionName].type=='selection':false">
                     <label :for="scheme.algorithmName+param.parameterName+'Basic'+optionName" class="col-3 align-content-center">{{optionName}}</label>
-                    <select class="custom-select col-9" :name="scheme.algorithmName+param.parameterName+optionName" :id="scheme.algorithmName+param.parameterName+'Basic'+optionName">
+                    <select class="custom-select col-9" :name="scheme.algorithmName+param.parameterName+optionName" :id="scheme.algorithmName+param.parameterName+'Basic'+optionName" :value="BSetting[index2].parameterOptionValue">
                         <option selected value="Choose...">Choose...</option>
                         <option v-for="option in param.parameterSettingInfo.optionExtra[optionName].options" :value="option">{{option}}</option>
                     </select>
                 </div>
                 <div class="input-groupv form-row"v-else-if="optionName!=''&&param.parameterSettingInfo.optionExtra[optionName]!=null?param.parameterSettingInfo.optionExtra[optionName].type=='text':false">
                     <label :for="scheme.algorithmName+param.parameterName+'Basic'+optionName" class="col-3 align-content-center">{{optionName}}</label>
-                    <input type="text" class="form-control col-9" :id="scheme.algorithmName+param.parameterName+'Basic'+optionName" :name="scheme.algorithmName+param.parameterName+optionName">
+                    <input type="text" class="form-control col-9" :id="scheme.algorithmName+param.parameterName+'Basic'+optionName" :name="scheme.algorithmName+param.parameterName+optionName" :value="BSetting[index2].parameterInputValue">
                 </div>
                 <div v-else></div>
         `,

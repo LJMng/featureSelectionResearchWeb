@@ -223,7 +223,7 @@
                             </div>
                             <div class="col-md-2">
                                 <button type="button" class="btn btn-primary custom-file" data-toggle="modal"
-                                        data-target="#createAlgorithmInfoByExcelFile" >excel文件导入算法信息</button>
+                                        data-target="#createAlgorithmInfoByExcelFile" >使用excel文件导入算法信息</button>
                             </div>
                             <div class="col-md-2">
                                 <a href="/excel/addAlgorithmInfoDemo.xlsx">算法信息添加样例文件</a>
@@ -2201,11 +2201,8 @@
                                     <!--                                            {{values.modal_updateAdministrator_form_li1}}-->
                                     <div class="form-group">
                                         <label for="datasetId" class="col-form-label">数据集名称:</label>
-                                        <select class="selectpicker" id="datasetId" v-model="executionDatasetInfoName" data-live-search="true" >
-                                            <option v-for="dataset in executionDatasetInfo" v-bind:data-tokens="dataset.datasetName">{{dataset.datasetName}}</option>
-<!--                                            <option data-tokens="ketchup mustard">Hot Dog, Fries and a Soda</option>-->
-<!--                                            <option data-tokens="mustard">Burger, Shake and a Smile</option>-->
-<!--                                            <option data-tokens="frosting">Sugar, Spice and all things nice</option>-->
+                                        <select class="custom-select" id="datasetId" v-model="executionDatasetInfoName" >
+                                            <option v-for="dataset in executionDatasetInfo">{{dataset.datasetName}}</option>
                                         </select>
                                     </div>
                                     <div v-for="dataset in executionDatasetInfo">

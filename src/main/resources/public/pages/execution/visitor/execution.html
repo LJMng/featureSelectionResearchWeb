@@ -844,11 +844,11 @@
                                                 <input type="text" class="form-control" id="inputDimension" v-model.trim="dataset_form_dimension">
                                             </div>
                                             <div class="form-group col-6 mb-4">
-                                                <label for="inputTag"><span class="text-danger">*</span>{{dataset_info_p6}}</label>
+                                                <label for="inputTag">{{dataset_info_p6}}</label>
                                                 <input type="text" class="form-control" id="inputTag" v-model.trim="dataset_form_tag">
                                             </div>
                                             <div class="form-group col-6 mb-4">
-                                                <label for="inputType"><span class="text-danger">*</span>{{dataset_info_p7}}</label>
+                                                <label for="inputType">{{dataset_info_p7}}</label>
                                                 <input type="text" class="form-control" id="inputType" v-model.trim="dataset_form_type">
                                             </div>
                                         </div>
@@ -861,7 +861,7 @@
                                             <textarea v-model.trim="dataset_form_description" class="form-control" id="inputIntroduction" required></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="inputPreprocessing"><span class="text-danger">*</span>{{public_dataset_upload_label1}}</label>
+                                            <label for="inputPreprocessing">{{public_dataset_upload_label1}}</label>
                                             <textarea v-model="dataset_form_preprocessing" class="form-control" id="inputPreprocessing" required></textarea>
                                         </div>
                                         <div id="formResult">
