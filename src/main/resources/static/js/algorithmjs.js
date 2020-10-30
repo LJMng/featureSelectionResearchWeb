@@ -17,6 +17,8 @@ $(function () {
 
 });
 
+$('#datasetId').dropdown();
+
 $(document).ready(function() {
     $('.multi-step').MultiStep({
         title:'步骤框',
