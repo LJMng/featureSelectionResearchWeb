@@ -1,6 +1,10 @@
 package featureSelection.research.web.service.execution.visitor.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import featureSelection.research.web.entity.execution.admin.Account;
 import featureSelection.research.web.entity.execution.visitor.*;
+import featureSelection.research.web.mybatisMapper.demo.visitor.AccountMapper;
 import featureSelection.research.web.mybatisMapper.execution.visitor.*;
 import featureSelection.research.web.service.execution.visitor.IHtmlElementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +36,12 @@ public class HtmlElementsServiceImpl implements IHtmlElementService {
 
     @Autowired
     private DatasetFormMapper datasetFormMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private ObjectMapper objectMapper;
     
     @Autowired
     private ProcedureSettingsMapper procedureSettingsMapper;
@@ -151,4 +161,40 @@ public class HtmlElementsServiceImpl implements IHtmlElementService {
         }
         return resultMap;
     }
+
+    @Override
+    public List<Integer> getAuthorizationDownloadAlgDocs(Integer accountId) {
+        Account account = accountMapper.getAccountById(accountId);
+        Map<String, List<Integer>> map = new HashMap<>();
+        String accountPowerStr = account.getAccountPower();
+        List<Integer> ids = null;
+        try {
+            map = objectMapper.readValue(accountPowerStr, map.getClass());
+            if (map.containsKey("user:download")) {
+                ids = map.get("user:download");
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return ids;
+    }
+
+    @Override
+    public List<Integer> getAuthorizationUploadAlgDocs(Integer accountId) {
+        Account account = accountMapper.getAccountById(accountId);
+        Map<String, List<Integer>> map = new HashMap<>();
+        String accountPowerStr = account.getAccountPower();
+        List<Integer> ids = null;
+        try {
+            map = objectMapper.readValue(accountPowerStr, map.getClass());
+            if (map.containsKey("user:upload")) {
+                ids = map.get("user:upload");
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return ids;
+    }
+
+
 }

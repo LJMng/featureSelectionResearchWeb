@@ -43,6 +43,7 @@ var app = new Vue({
     el: '#app',
     data: {
         //------------------public-----------------
+        label_choose_file: '',
         algorithmList: {},
         parameterList: {},
         datasetList: {},
@@ -65,6 +66,7 @@ var app = new Vue({
         dataset_current_page: 1,
         dataset_list_page: [],
         language: '',
+        btn_upload: '',
         //------------------HeaderNav-----------------
         navHead_li1: '',
         navHead_li2: '',
@@ -96,6 +98,7 @@ var app = new Vue({
         algorithms_filter1: '',
         algorithms_filter2: '',
         algorithms_filter3: '',
+        algorithm_info_document: '',
         algorithms_info_how: '',
         algorithms_info_intro: '',
         algorithms_info_papers: '',
@@ -107,6 +110,8 @@ var app = new Vue({
         algorithms_info_parameter_li1: '',
         algorithms_info_parameter_li2: '',
         algorithms_info_parameter_footer: '',
+        downloadAccess: [],
+        uploadAccess: [],
         //------------------PublicDatasetContext-----------------
         dataset_temp: {},
         dataset_form_name: '',
@@ -254,8 +259,34 @@ var app = new Vue({
         axios.post('/execution/getTaskListByAccountId',param).then((response) => {
             this.task_list=response.data;
         });
+        axios.get('/execution/authorizationDownloadAlgDocs/',{params: {
+            accountId: $.cookie('accountId')
+        }}).then(response => {
+            this.downloadAccess = response.data
+        });
+        axios.get('/execution/authorizationUploadAlgDocs/',{params: {
+                accountId: $.cookie('accountId')
+            }}).then(response => {
+            this.uploadAccess = response.data
+        });
     },
     methods: {
+        uploadAlgDoc: function(event,id) {
+            let algDocForm = new FormData();
+            algDocForm.append("file", $("input[name="+this.algorithmList[id].algorithmName+'doc]')[0].files[0]);
+            axios.post('/execution/uploadAlgorithmDocument/'+id,algDocForm,{
+                'Content-Type':'multipart/form-data'
+            }).then((response) => {
+                if ($.cookie("language") == 'ch') {
+                    $(event.srcElement).prev().prev().html("成功！");
+                } else {
+                    $(event.srcElement).prev().prev().html("Success!");
+                }
+                setTimeout(function () {
+                    $(event.srcElement).prev().prev().html("");
+                }, 2000);
+            });
+        },
         goPublicDataset: function () {
             $('#nav-dataset-tab').addClass('show');
             $('#nav-dataset-tab').addClass('active');
@@ -788,7 +819,7 @@ var app = new Vue({
             this.params = paramSet;
             this.task_algorithm_id = algorithm.algorithmId;
             if ($.cookie("language") == 'ch') {
-                $(event.srcElement).prev().prev().html("成功保存！");
+                $(event.srcElement).prev().prev().html("成功！");
             } else {
                 $(event.srcElement).prev().prev().html("Success!");
             }

@@ -2,6 +2,7 @@ package featureSelection.research.web.controller.execution.visitor;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author Stephen
@@ -24,4 +25,11 @@ public class ExecutionController {
     public String accountLogin() {
         return "/pages/demo/visitor/login.html";
     }
+
+    @GetMapping("/unauthorized")
+    @ResponseBody
+    public String unauthorized() {
+        return "unauthorized";
+    }
+
 }

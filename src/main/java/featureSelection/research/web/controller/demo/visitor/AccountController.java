@@ -1,6 +1,7 @@
 package featureSelection.research.web.controller.demo.visitor;
 
 import featureSelection.research.web.common.util.ResultUtil;
+import featureSelection.research.web.config.shiro.CustomUsernamePasswordToken;
 import featureSelection.research.web.entity.Result;
 import featureSelection.research.web.entity.UserType;
 import featureSelection.research.web.entity.demo.visitor.ApplyAccount;
@@ -71,15 +72,15 @@ public class AccountController {
         } catch (IncorrectCredentialsException e) {
             return ResultUtil.error(400, "password error");
         }
-        Result result = accountService.loginByEmail(email, password);
-        if (result.getCode() == 200) {
-            Account account = new Account();
-            account.setAccountEmail(email);
-            request.getSession().setAttribute("account", account);
-            Cookie cookie = new Cookie("accountId", String.valueOf(accountService.getAccountIdByEmail(email)));
-            response.addCookie(cookie);
-        }
-        return result;
+//        Result result = accountService.loginByEmail(email, password);
+//        if (result.getCode() == 200) {
+//            Account account = new Account();
+//            account.setAccountEmail(email);
+//            request.getSession().setAttribute("account", account);
+//            Cookie cookie = new Cookie("accountId", String.valueOf(accountService.getAccountIdByEmail(email)));
+//            response.addCookie(cookie);
+//        }
+//        return result;
     }
 
     @GetMapping("/signout/{account}")

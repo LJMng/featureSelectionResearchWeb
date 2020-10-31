@@ -87,4 +87,6 @@ public interface IExecutionFormsService {
      * @return List<TaskResult>算法结果对象数组
      */
     TaskResultFormat getTaskResults(int taskId) throws JsonProcessingException;
+
+    int uploadAlgDoc (Integer algorithmId,MultipartFile file,String path);
 }

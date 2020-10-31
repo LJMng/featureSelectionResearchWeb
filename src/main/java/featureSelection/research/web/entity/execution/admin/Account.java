@@ -13,7 +13,7 @@ public class Account implements Serializable {
     private String accountName;
     private String accountPassword;
     private String accountEmail;
-    private int accountPower;
+    private String accountPower;
 
     public int getAccountId() {
         return accountId;
@@ -47,11 +47,11 @@ public class Account implements Serializable {
         this.accountEmail = accountEmail;
     }
 
-    public int getAccountPower() {
+    public String getAccountPower() {
         return accountPower;
     }
 
-    public void setAccountPower(int accountPower) {
+    public void setAccountPower(String accountPower) {
         this.accountPower = accountPower;
     }
 

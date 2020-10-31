@@ -4,6 +4,7 @@ import featureSelection.research.web.entity.execution.visitor.Algorithm;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
@@ -39,4 +40,11 @@ public interface AlgorithmMapper {
      */
     @Select("select algorithm_name_mapper from algorithm where algorithm_id = #{algorithmId}")
     String getAlgorithmNameMapperById(int algorithmId);
+
+    @Select("select algorithm_doc from algorithm where algorithm_id = #{id}")
+    String getAlgorithmDocById(Integer id);
+
+    @Update("update algorithm set algorithm_doc = #{path} where algorithm.algorithm_id = #{id}")
+    int uploadAlgDocById(Integer id,String path);
+
 }

@@ -15,4 +15,6 @@ public interface AccountMapper {
     public Account getAccountByPower(@Param("power") int power);
     @Select("select account_id from account where account_email = #{email}")
     public int getAccountIdByEmail(@Param("email") String email);
+    @Select("select * from account where account_id = #{id}")
+    public Account getAccountById(Integer id);
 }

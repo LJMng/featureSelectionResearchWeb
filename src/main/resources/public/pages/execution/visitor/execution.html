@@ -192,6 +192,44 @@
                                         <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                                     </svg>{{algorithm.algorithmName}} {{algorithms_info_title}}</h1>
                                     <hr>
+                                    <!-- doc -->
+                                    <div v-if="downloadAccess.indexOf(algorithm.algorithmId)!=-1||uploadAccess.indexOf(algorithm.algorithmId)!=-1">
+                                        <h4>
+                                            <svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
+                                                <path fill-rule="evenodd" d="M2.5 4.5a2 2 0 114 0 2 2 0 01-4 0zm2-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                                            </svg>{{algorithm_info_document}}
+                                        </h4>
+                                        <div class="ml-3 pr-2 mb-4">
+                                            <h5>
+                                                <a :href="'/execution/downloadAlgorithmDocument/'+algorithm.algorithmId" class="badge badge-info" v-if="downloadAccess.indexOf(algorithm.algorithmId)!=-1">{{public_dataset_list_btn1}}</a>
+                                                <a href="#" class="badge badge-primary" v-if="uploadAccess.indexOf(algorithm.algorithmId)!=-1" data-toggle="modal" data-target="#algDocUpload">{{btn_upload}}</a>
+                                            </h5>
+                                            <div class="modal fade" id="algDocUpload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">{{algorithm.algorithmName}} {{btn_upload}}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="custom-file">
+                                                                <input @change="showFileName" type="file" class="custom-file-input" id="customFile" :name="algorithm.algorithmName+'doc'">
+                                                                <label class="custom-file-label" for="customFile">{{label_choose_file}}</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <span class="text-success"></span>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modal_btn_close}}</button>
+                                                            <button type="button" class="btn btn-primary" @click="uploadAlgDoc($event,key)">{{modal_btn_submit}}</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <!--paper-->
                                     <h4><svg class="bi bi-tag text text-warning" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M.5 2A1.5 1.5 0 012 .5h4.586a1.5 1.5 0 011.06.44l7 7a1.5 1.5 0 010 2.12l-4.585 4.586a1.5 1.5 0 01-2.122 0l-7-7A1.5 1.5 0 01.5 6.586V2zM2 1.5a.5.5 0 00-.5.5v4.586a.5.5 0 00.146.353l7 7a.5.5 0 00.708 0l4.585-4.585a.5.5 0 000-.708l-7-7a.5.5 0 00-.353-.146H2z" clip-rule="evenodd"/>
@@ -247,7 +285,7 @@
                                             <table class="table table-hover table-bordered text-center">
                                                 <thead class="table-warning">
                                                     <tr>
-                                                        <th scope="col" style="width: ">#</th>
+                                                        <th scope="col">#</th>
                                                         <th scope="col">Name</th>
                                                         <th scope="col">Description</th>
                                                         <th scope="col">Type</th>
@@ -830,7 +868,7 @@
                                             <div class="form-group col-6 custom-file">
                                                 <label for="inputFile"><span class="text-danger">*</span>{{public_dataset_upload_label3}}</label><span class="float-right text-muted">.csv .xlsx .xls</span>
                                                 <input @change="showFileName" type="file" class="custom-file-input" id="inputFile" ref="inputDataset">
-                                                <label class="custom-file-label" for="inputFile" style="top: auto;overflow: hidden" id="datasetFileLabel">Choose file</label>
+                                                <label class="custom-file-label" for="inputFile" style="top: auto;overflow: hidden" id="datasetFileLabel">{{new_task_step1_label2}}</label>
                                                 <div class="invalid-tooltip" style="top: auto" name="datasetFormCheck">{{new_task_step1_feedback1}}</div>
                                             </div>
                                         </div>

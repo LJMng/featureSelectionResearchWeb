@@ -1,19 +1,17 @@
 package featureSelection.research.web.service.execution.admin.impl;
 
+import featureSelection.research.web.common.util.EmailUtil;
 import featureSelection.research.web.entity.execution.admin.Account;
 import featureSelection.research.web.entity.execution.admin.ApplyAccount;
 import featureSelection.research.web.entity.execution.admin.Power;
 import featureSelection.research.web.entity.execution.admin.ToEmail;
-
 import featureSelection.research.web.mybatisMapper.execution.admin.AccountMapper;
 import featureSelection.research.web.service.execution.admin.AccountBusiness;
-import featureSelection.research.web.common.util.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class AccountBusinessImpl implements AccountBusiness {
@@ -34,26 +32,26 @@ public class AccountBusinessImpl implements AccountBusiness {
 
     @Override
     public void addAccount(Account account) {
-        //先生成一个powerID,随机六位数
-        Random random=new Random();
-        int accountPower= random.nextInt(999999);
-        System.out.println(accountPower);
+//        //先生成一个powerID,随机六位数
+//        Random random=new Random();
+//        int accountPower= random.nextInt(999999);
+//        System.out.println(accountPower);
         //判断powerId是否已经存在
-        Power Power=accountMapper.findPowerById(accountPower);
+//        Power Power=accountMapper.findPowerById(accountPower);
         //递归调用，直至没有重复accountPower
-        if(Power!=null){
-            addAccount(account);
-        }else{
+//        if(Power!=null){
+//            addAccount(account);
+//        }else{
             //创建Power表
-            featureSelection.research.web.entity.execution.admin.Power newPower=new Power();
-            newPower.setAccountPower(accountPower);
-            newPower.setAccountId(account.getAccountId());
-            accountMapper.addPower(newPower);
+        featureSelection.research.web.entity.execution.admin.Power newPower=new Power();
+//            newPower.setAccountPower(accountPower);
+        newPower.setAccountId(account.getAccountId());
+        accountMapper.addPower(newPower);
             //创建新用户
-            account.setAccountPower(accountPower);
-            accountMapper.addAccount(account);
+//            account.setAccountPower(accountPower);
+        accountMapper.addAccount(account);
 
-        }
+//        }
 
     }
 

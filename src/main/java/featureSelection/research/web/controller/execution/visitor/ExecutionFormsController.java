@@ -25,6 +25,7 @@ public class ExecutionFormsController {
     public final static String tempPath = "dataset\\temp\\";
     public final static String taskPath = "dataset\\task\\";
     public final static String publicDatasetPath = "dataset\\publicDataset\\";
+    public final static String algDocPath = "algorithmDocs\\";
 
     @Autowired
     IExecutionFormsService formsService;
@@ -106,5 +107,10 @@ public class ExecutionFormsController {
                                     @PathVariable(name = "procedureId") int procedureId,
                                     @PathVariable(name = "procedure") String procedure){
         return valueUtil.getProcedureValue(algorithmId,procedureId,procedure);
+    }
+
+    @PostMapping("/execution/uploadAlgorithmDocument/{algorithmId}")
+    public String uploadAlgDoc(@PathVariable String algorithmId,@RequestParam MultipartFile file) {
+        return String.valueOf(formsService.uploadAlgDoc(Integer.parseInt(algorithmId), file, algDocPath));
     }
 }

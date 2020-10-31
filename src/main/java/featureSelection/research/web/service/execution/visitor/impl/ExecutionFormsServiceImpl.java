@@ -214,4 +214,11 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
         return resultFormat;
     }
 
+    @Override
+    public int uploadAlgDoc(Integer algorithmId, MultipartFile file, String path) {
+        String uploadedPath = fileUpload.uploadFIle(file, path);
+        int i = algorithmMapper.uploadAlgDocById(algorithmId, uploadedPath);
+        return i;
+    }
+
 }

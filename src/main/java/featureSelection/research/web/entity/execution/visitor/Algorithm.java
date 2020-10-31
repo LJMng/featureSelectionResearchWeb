@@ -22,6 +22,7 @@ public class Algorithm {
   private String algorithmNameMapper;
   private String algorithmUsage;
   private String algorithmEnDescription;
+  private String algorithmDoc;
 
   public String getAlgorithmEnDescription() {
     return algorithmEnDescription;
@@ -189,5 +190,13 @@ public class Algorithm {
 
   public void setAlgorithmUsage(String algorithmUsage) {
     this.algorithmUsage = algorithmUsage;
+  }
+
+  public String getAlgorithmDoc() {
+    return algorithmDoc;
+  }
+
+  public void setAlgorithmDoc(String algorithmDoc) {
+    this.algorithmDoc = algorithmDoc;
   }
 }

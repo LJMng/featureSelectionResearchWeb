@@ -41,4 +41,8 @@ public interface IHtmlElementService {
      * @return Map<Integer,List<ProcedureSettings>> key为算法id，value为改算法所有步骤设置的信息
      */
     Map<Integer,List<ProcedureSettings>> getProcedureSettingList();
+
+    List<Integer> getAuthorizationDownloadAlgDocs(Integer accountId);
+
+    List<Integer> getAuthorizationUploadAlgDocs(Integer accountId);
 }
