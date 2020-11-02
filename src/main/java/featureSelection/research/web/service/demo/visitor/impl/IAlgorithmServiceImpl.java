@@ -19,26 +19,45 @@ import java.util.List;
  * @Date: 2020-04-12 20:46
  */
 @Service
-public  class IAlgorithmServiceImpl implements IAlgorithmService {
+public class IAlgorithmServiceImpl implements IAlgorithmService {
 
-    @Autowired private AlgorithmMapper algorithmMapper;
-    @Autowired private DatasetMapper datasetMapper;
+    @Autowired
+    private AlgorithmMapper algorithmMapper;
+    @Autowired
+    private DatasetMapper datasetMapper;
 
     /**
-     *  获取所有算法的基本信息
+     * 获取所有设置过方案以及可用数据集的算法的基本信息
+     *
      * @return 所有算法的基本信息
      */
     @Override
-    public List<Algorithm>getAllAlgorithmInfo(){
+    public List<Algorithm> getAllAlgorithmInfo() {
 
-        List<Algorithm> algorithmList=algorithmMapper.getAllAlgorithmInfo();
-        for (Algorithm algorithm : algorithmList){
-            JSONArray algorithAvailableDatasetIndexStringJsonArray= JSONArray.parseArray(algorithm.getAvailableDatasetsString());
-            List<Dataset>datasets =new ArrayList<>();
-            for (Object datasetIndex: algorithAvailableDatasetIndexStringJsonArray){
-                datasets.add(datasetMapper.getDatasetInfo(Integer.parseInt(datasetIndex.toString())));
+        List<Algorithm> algorithmList = algorithmMapper.getAllAlgorithmInfo();
+        for (Algorithm algorithm : algorithmList) {
+            if (algorithm.getParameterSchemes() != null) {
+                System.out.println(algorithm.getParameters()==null);
+                if (algorithm.getAvailableDatasetsString() != null) {
+                    JSONArray algorithAvailableDatasetIndexStringJsonArray = JSONArray.parseArray(algorithm.getAvailableDatasetsString());
+                    List<Dataset> datasets = new ArrayList<>();
+                    for (Object datasetIndex : algorithAvailableDatasetIndexStringJsonArray) {
+                        datasets.add(datasetMapper.getDatasetInfo(Integer.parseInt(datasetIndex.toString())));
+                    }
+                    algorithm.setDatasets(datasets);
+                } else {
+                    //不存在数据集
+                    algorithmList.remove(algorithm);
+                    //todo:遍历集合时删除元素会报错（java.util.ConcurrentModificationException: null）,先用break的方法解决
+                    break;
+                }
+
+            } else {
+                //不存在方案
+                algorithmList.remove(algorithm);
+                break;
             }
-            algorithm.setDatasets(datasets);
+
         }
         return algorithmList;
     }
