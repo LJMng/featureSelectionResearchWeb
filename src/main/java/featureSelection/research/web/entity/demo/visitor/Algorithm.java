@@ -29,6 +29,7 @@ public  class Algorithm {
     private String algorithmCallUsername;
     private String algorithmCallPassword;
     private String algorithmNameMapper;
+    private String algorithmType;
     private Timestamp ut;
     private String availableDatasetsString;
     private List<ParameterScheme>parameterSchemes;
@@ -229,6 +230,14 @@ public  class Algorithm {
 
     public void setDatasetIndex(String datasetIndex) {
         this.datasetIndex = datasetIndex;
+    }
+
+    public String getAlgorithmType() {
+        return algorithmType;
+    }
+
+    public void setAlgorithmType(String algorithmType) {
+        this.algorithmType = algorithmType;
     }
 
     @Override
