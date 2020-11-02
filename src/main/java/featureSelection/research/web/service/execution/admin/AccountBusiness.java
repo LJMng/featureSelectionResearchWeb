@@ -3,6 +3,7 @@ package featureSelection.research.web.service.execution.admin;
 import featureSelection.research.web.entity.execution.admin.Account;
 import featureSelection.research.web.entity.execution.admin.ApplyAccount;
 import featureSelection.research.web.entity.execution.admin.Power;
+import featureSelection.research.web.entity.execution.admin.SetAccountPowerInfo;
 
 import javax.mail.MessagingException;
 import java.util.List;
@@ -47,7 +48,7 @@ public interface AccountBusiness {
      * @param power
      *   用户权限类，封装了用户权限信息
      */
-    public void updateAccountPower(Power power);
+//    public void updateAccountPower(Power power);
 
     /**
      * 在用户申请表中，获取用户申请信息的列表
@@ -75,4 +76,6 @@ public interface AccountBusiness {
      * @param applyAccount
      */
     public void unPassAccountAdult(ApplyAccount applyAccount) throws MessagingException;
+
+    public void setAccountPower(SetAccountPowerInfo setAccountPowerInfo);
 }

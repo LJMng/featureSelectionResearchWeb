@@ -31,9 +31,9 @@ public interface AccountMapper {
     @Delete("delete from account where account_id=#{accountId}")
     public void deleteAccount(int accountId);
 
-    @Update("update power set execution_algorithm1=#{executionAlgorithm1},execution_algorithm2=#{executionAlgorithm2}" +
-            " where account_id=#{accountId} and account_power = #{accountPower}")
-    public void updateAccountPower(Power power);
+//    @Update("update power set execution_algorithm1=#{executionAlgorithm1},execution_algorithm2=#{executionAlgorithm2}" +
+//            " where account_id=#{accountId} and account_power = #{accountPower}")
+//    public void updateAccountPower(Power power);
 
     @Select("select * from apply_account where apply_condition='审核中'")
     public List<ApplyAccount> getApplyAccounts();
@@ -44,4 +44,10 @@ public interface AccountMapper {
     @Update("update apply_account set administrator_id=#{administratorId},administrator_reason=#{administratorReason},apply_condition=#{applyCondition}" +
             " where apply_id=#{applyId}")
     public void updateApplyAccount(ApplyAccount passApplyAccount);
+
+    @Select("select account_power from account where account_id = #{accountId}")
+    public String getAccountPowerById(int accountId);
+
+    @Update("update account set account_power = #{accountPowerJsonString} where account_id = #{accountId}")
+    public void updateAccountPower(int accountId, String accountPowerJsonString);
 }

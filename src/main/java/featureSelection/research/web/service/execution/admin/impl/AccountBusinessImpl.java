@@ -1,11 +1,10 @@
 package featureSelection.research.web.service.execution.admin.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import featureSelection.research.web.common.util.EmailUtil;
-import featureSelection.research.web.entity.execution.admin.Account;
-import featureSelection.research.web.entity.execution.admin.ApplyAccount;
-import featureSelection.research.web.entity.execution.admin.Power;
-import featureSelection.research.web.entity.execution.admin.ToEmail;
+import featureSelection.research.web.entity.execution.admin.*;
 import featureSelection.research.web.mybatisMapper.execution.admin.AccountMapper;
+import featureSelection.research.web.mybatisMapper.execution.admin.AlgorithmMapper;
 import featureSelection.research.web.service.execution.admin.AccountBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +18,8 @@ public class AccountBusinessImpl implements AccountBusiness {
     private AccountMapper accountMapper;
     @Autowired
     private EmailUtil emailUtil;
+    @Autowired
+    private AlgorithmMapper algorithmMapper;
     @Override
     public List<Account> getAccounts() {
         List<Account> accounts=accountMapper.getAccounts();
@@ -32,37 +33,14 @@ public class AccountBusinessImpl implements AccountBusiness {
 
     @Override
     public void addAccount(Account account) {
-//        //先生成一个powerID,随机六位数
-//        Random random=new Random();
-//        int accountPower= random.nextInt(999999);
-//        System.out.println(accountPower);
-        //判断powerId是否已经存在
-//        Power Power=accountMapper.findPowerById(accountPower);
-        //递归调用，直至没有重复accountPower
-//        if(Power!=null){
-//            addAccount(account);
-//        }else{
-            //创建Power表
-        featureSelection.research.web.entity.execution.admin.Power newPower=new Power();
-//            newPower.setAccountPower(accountPower);
-        newPower.setAccountId(account.getAccountId());
-        accountMapper.addPower(newPower);
-            //创建新用户
-//            account.setAccountPower(accountPower);
+        System.out.println(account);
+        account.setAccountPower("{\"user:download\":[],\"user:upload\":[]}");
         accountMapper.addAccount(account);
-
-//        }
-
     }
 
     @Override
     public void deleteAccount(int accountId) {
         accountMapper.deleteAccount(accountId);
-    }
-
-    @Override
-    public void updateAccountPower(Power power) {
-        accountMapper.updateAccountPower(power);
     }
 
     @Override
@@ -86,6 +64,8 @@ public class AccountBusinessImpl implements AccountBusiness {
         account.setAccountId(passApplyAccount.getApplyId());
         account.setAccountPassword(passApplyAccount.getApplyPassword());
         account.setAccountName("用户");
+        account.setAccountPower("{\"user:download\":[],\"user:upload\":[]}");
+        //调用添加用户的方法
         this.addAccount(account);
         //更新inputApply表
         accountMapper.updateApplyAccount(passApplyAccount);
@@ -183,5 +163,123 @@ public class AccountBusinessImpl implements AccountBusiness {
                 "</html>";
         ToEmail toEmail=new ToEmail(unPassApplyAccount.getApplyEmail(),"注册账户成功",content);
         emailUtil.htmlEmail(toEmail);
+    }
+
+    @Override
+    public void setAccountPower(SetAccountPowerInfo setAccountPowerInfo) {
+        //获取accountPower字符串
+        String accountPower=accountMapper.getAccountPowerById(setAccountPowerInfo.getAccountId());
+        //将要设置权限的算法Id转成字符串
+        int addPowerAlgorithmId = algorithmMapper.getAlgorithmIdByName(setAccountPowerInfo.getAlgorithmName());
+        String currAlgorithmId = addPowerAlgorithmId+"";
+        System.out.println(currAlgorithmId);
+        //解析accountPower字符串，将accountPower转化为字符串数组
+        JSONObject accountPowerJsonObject = JSONObject.parseObject(accountPower);
+        String[] downLoadAlgorithmDocArr = accountPowerJsonObject.get("user:download").toString().replace("[","").replace("]","").split(",");
+        String[] upLoadAlgorithmDocArr = accountPowerJsonObject.get("user:upload").toString().replace("[","").replace("]","").split(",");
+        boolean addDownLoadDocPower = true;
+        boolean addUploadDocPower = true;
+        //设置下载权限
+        if (setAccountPowerInfo.getHaveDownloadDocPower().equals("true")){
+            for (String algorithmId:downLoadAlgorithmDocArr){
+                if(algorithmId.equals(currAlgorithmId)){
+                    addDownLoadDocPower = false;
+                }
+            }
+            if (addDownLoadDocPower){
+                String[] currentDownLoadAlgorithmDocArr =new String[downLoadAlgorithmDocArr.length+1];
+                for (int i=0;i<downLoadAlgorithmDocArr.length;i++){
+                    currentDownLoadAlgorithmDocArr[i] = downLoadAlgorithmDocArr[i];
+                }
+                currentDownLoadAlgorithmDocArr[downLoadAlgorithmDocArr.length]=currAlgorithmId;
+                downLoadAlgorithmDocArr = currentDownLoadAlgorithmDocArr;
+            }
+        }else{
+            //确定当前数组长度
+            int a=0;
+            for (int i=0;i<downLoadAlgorithmDocArr.length;i++) {
+                if (downLoadAlgorithmDocArr[i].equals(currAlgorithmId)) {
+                    continue;
+                } else {
+                    a++;
+                }
+            }
+            //定义新的下载权限数组
+            String[] currDownLoadAlgorithmDocArr = new String[a];
+            int j = 0;
+            //给新的数组赋值
+            for (int i=0;i<downLoadAlgorithmDocArr.length;i++){
+                if(downLoadAlgorithmDocArr[i].equals(currAlgorithmId)){
+                    continue;
+                }else {
+                    currDownLoadAlgorithmDocArr [j] = downLoadAlgorithmDocArr[i];
+                    j++;
+                }
+            }
+            //数组替换
+            downLoadAlgorithmDocArr = currDownLoadAlgorithmDocArr;
+        }
+        //设置上传权限
+        if (setAccountPowerInfo.getHaveUploadDocPower().equals("true")){
+            for (String algorithmId:upLoadAlgorithmDocArr){
+                if(algorithmId.equals(currAlgorithmId)){
+                    addUploadDocPower = false;
+                }
+            }
+            if (addUploadDocPower){
+                String[] currentUpLoadAlgorithmDocArr =new String[upLoadAlgorithmDocArr.length+1];
+                for (int i=0;i<upLoadAlgorithmDocArr.length;i++){
+                    currentUpLoadAlgorithmDocArr[i] = upLoadAlgorithmDocArr[i];
+                }
+                currentUpLoadAlgorithmDocArr[upLoadAlgorithmDocArr.length]=currAlgorithmId;
+                upLoadAlgorithmDocArr = currentUpLoadAlgorithmDocArr;
+            }
+        }else{
+            //确定当前数组长度
+            int uploadArrLen=0;
+            for (int i=0;i<upLoadAlgorithmDocArr.length;i++) {
+                if (upLoadAlgorithmDocArr[i].equals(currAlgorithmId)) {
+                    continue;
+                } else {
+                    uploadArrLen++;
+                }
+            }
+            //定义新的下载权限数组
+            String[] currUploadAlgorithmDocArr = new String[uploadArrLen];
+            int j = 0;
+            //给新的数组赋值
+            for (int i=0;i<upLoadAlgorithmDocArr.length;i++){
+                if(upLoadAlgorithmDocArr[i].equals(currAlgorithmId)){
+                    continue;
+                }else {
+                    currUploadAlgorithmDocArr [j] = upLoadAlgorithmDocArr[i];
+                    j++;
+                }
+            }
+            //数组替换
+                upLoadAlgorithmDocArr = currUploadAlgorithmDocArr;
+        }
+        //将上传与下载的权限数组转成JSON字符串，存入数据库
+        StringBuilder downLoadSb= new StringBuilder();
+        StringBuilder upLoadSb = new StringBuilder();
+        for (int i=0;i<downLoadAlgorithmDocArr.length;i++){
+            downLoadSb.append(downLoadAlgorithmDocArr[i]);
+            if (i != downLoadAlgorithmDocArr.length-1 && !downLoadAlgorithmDocArr[0].equals("")){
+                downLoadSb.append(",");
+            }
+        }
+        for (int i=0;i<upLoadAlgorithmDocArr.length;i++){
+            upLoadSb.append(upLoadAlgorithmDocArr[i]);
+            System.out.println(upLoadAlgorithmDocArr.length-1);
+            if (i != upLoadAlgorithmDocArr.length-1 && !upLoadAlgorithmDocArr[0].equals("")){
+                upLoadSb.append(",");
+            }
+        }
+        String downLoadAlgorithmString = downLoadSb.toString();
+        String upLoadAlgorithmString = upLoadSb.toString();
+        String accountPowerJsonString = "{\"user:download\":[" +
+                downLoadAlgorithmString + "],\"user:upload\":[" +
+                upLoadAlgorithmString + "]}";
+        accountMapper.updateAccountPower(setAccountPowerInfo.getAccountId(),accountPowerJsonString);
     }
 }

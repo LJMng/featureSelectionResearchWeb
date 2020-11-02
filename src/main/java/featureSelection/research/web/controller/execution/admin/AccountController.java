@@ -4,6 +4,7 @@ import featureSelection.research.web.App;
 import featureSelection.research.web.entity.execution.admin.Account;
 import featureSelection.research.web.entity.execution.admin.ApplyAccount;
 import featureSelection.research.web.entity.execution.admin.Power;
+import featureSelection.research.web.entity.execution.admin.SetAccountPowerInfo;
 import featureSelection.research.web.service.execution.admin.AccountBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,11 +47,6 @@ public class AccountController {
         return "删除用户信息成功！";
     }
 
-    @PostMapping("/updateAccountPower")
-    public String updateAccountPower(Power power){
-        accountBusiness.updateAccountPower(power);
-        return "redirect: /pages/execution/admin/account.html";
-}
 
     @GetMapping("/getApplyAccounts")
     public @ResponseBody List<ApplyAccount> getApplyAccounts(){
@@ -58,11 +54,7 @@ public class AccountController {
         return applyAccounts;
     }
 
-//    @PostMapping("/passApplyAccount")
-//    public String passApplyAccount(ApplyAccount applyAccount) throws MessagingException {
-//        accountBusiness.passApplyAccount(applyAccount);
-//        return "redirect: /pages/execution/admin/account.html";
-//    }
+
 
     /**
      * 通过用户申请,将申请用户信息添加至用户表，修改申请表信息
@@ -83,4 +75,16 @@ public class AccountController {
         accountBusiness.unPassAccountAdult(applyAccount);
         return "redirect: /pages/execution/admin/account.html";
     }
+
+    @PostMapping(value = "/setAccountPower")
+    public @ResponseBody String setAccountPower(@RequestBody SetAccountPowerInfo setAccountPowerInfo){
+        System.out.println(setAccountPowerInfo);
+        if (setAccountPowerInfo.getAdministratorName().equals("root")){
+            accountBusiness.setAccountPower(setAccountPowerInfo);
+            return "添加用户权限成功！";
+        }else{
+            return "您不是root管理员，未拥有该权限！";
+        }
+    }
+
 }

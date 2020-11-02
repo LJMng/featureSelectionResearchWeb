@@ -13,6 +13,8 @@ $(function () {
 
 });
 
+$('#updateAlgorithmPowerName').dropdown();
+
 var vm =new Vue({
     el:"#accountData",
     data:{
@@ -44,7 +46,18 @@ var vm =new Vue({
         deleteResultText:'',
         deleteAccountInfo:{
             accountId:1
-        }
+        },
+        setAccountPowerInfo:{
+            accountId:1,
+            algorithmId:1,
+            algorithmName:'',
+            administratorName:'',
+            haveUploadDocPower:'',
+            haveDownloadDocPower:''
+         },
+        updateAccountPowerAlgorithms:{},
+        setAccountPowerResult:'',
+        resultTextCss:''
     },
     computed:{
         filterAccount(){
@@ -78,6 +91,30 @@ var vm =new Vue({
                 console.log(err)
             })
 
+        },
+        getAlgorithms:function(accountId){
+            $('#setAccountPowerResult').hide();
+            this.setAccountPowerInfo.accountId = accountId;
+            axios.get('/getAlgorithms').then((response) => {
+                this.updateAccountPowerAlgorithms = response.data;
+            }).catch((err)=>{
+                console.log(err)
+            })
+        },
+        setAccountPower:function(){
+            this.setAccountPowerInfo.administratorName = $.cookie("administratorName");
+            axios.post('/setAccountPower',this.setAccountPowerInfo).then((response) => {
+                this.setAccountPowerResult=response.data;
+                if (this.setAccountPowerResult === "添加用户权限成功！"){
+                    this.resultTextCss = 'text-success'
+                }else {
+                    this.resultTextCss = 'text-danger'
+                }
+                $('#setAccountPowerResult').show();
+            }).catch((err)=>{
+                console.log(err)
+
+            })
         },
         checkoutEmail:function (checkEmail) {
 
