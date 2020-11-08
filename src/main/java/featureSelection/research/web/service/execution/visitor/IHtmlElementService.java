@@ -1,5 +1,6 @@
 package featureSelection.research.web.service.execution.visitor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import featureSelection.research.web.entity.execution.visitor.*;
 
 import java.util.List;
@@ -45,4 +46,6 @@ public interface IHtmlElementService {
     List<Integer> getAuthorizationDownloadAlgDocs(Integer accountId);
 
     List<Integer> getAuthorizationUploadAlgDocs(Integer accountId);
+
+    public Map<Integer, List<Map<String, String>>> getAlgDocsMap() throws JsonProcessingException;
 }

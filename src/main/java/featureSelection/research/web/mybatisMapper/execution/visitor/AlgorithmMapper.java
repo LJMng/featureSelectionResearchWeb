@@ -47,4 +47,8 @@ public interface AlgorithmMapper {
     @Update("update algorithm set algorithm_doc = #{path} where algorithm.algorithm_id = #{id}")
     int uploadAlgDocById(Integer id,String path);
 
+    @Select("select algorithm_id,algorithm_doc from algorithm")
+    @MapKey("algorithmId")
+    Map<Integer, Algorithm> getAllAlgDocsMap();
+
 }

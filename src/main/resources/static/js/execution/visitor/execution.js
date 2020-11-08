@@ -67,6 +67,9 @@ var app = new Vue({
         dataset_list_page: [],
         language: '',
         btn_upload: '',
+        currentNewTask: '',
+        docsMap: {},
+        description: '',
         //------------------HeaderNav-----------------
         navHead_li1: '',
         navHead_li2: '',
@@ -79,6 +82,7 @@ var app = new Vue({
         navBody_a3: '',
         navBody_a4: '',
         navBody_a5: '',
+        navBody_a6: '',
         //------------------HomeContext-----------------
         home_text: '',
         home_title: '',
@@ -112,6 +116,7 @@ var app = new Vue({
         algorithms_info_parameter_footer: '',
         downloadAccess: [],
         uploadAccess: [],
+        algorithm_doc_download: '',
         //------------------PublicDatasetContext-----------------
         dataset_temp: {},
         dataset_form_name: '',
@@ -136,6 +141,7 @@ var app = new Vue({
         public_dataset_list_btn1: '',
         //------------------NewTaskContext-----------------
         task_dataset: 0,
+        dataset_number: 1,
         task_dataset_info: {},
         algorithm_info_temp: {},
         password: '',
@@ -179,6 +185,8 @@ var app = new Vue({
         new_task_step1_h2: '',
         new_task_step1_p1: '',
         new_task_step1_a1: '',
+        //------------------NewSteamTaskContext-----------------
+        new_steam_task_upload_title: '',
         //------------------QueryTaskContext-----------------
         task_list: [],
         temp_task_info: {},
@@ -269,6 +277,15 @@ var app = new Vue({
             }}).then(response => {
             this.uploadAccess = response.data
         });
+        axios.get('/execution/getAlgDocsMap').then(response => {
+            this.docsMap = response.data;
+        })
+        if (sessionStorage.getItem('currentTag')=='nav-new-tab') {
+            this.currentNewTask = 'normal'
+        }
+        if (sessionStorage.getItem('currentTag')=='nav-new-steam-tab') {
+            this.currentNewTask = 'steam'
+        }
     },
     methods: {
         uploadAlgDoc: function(event,id) {
@@ -332,7 +349,15 @@ var app = new Vue({
                 sessionStorage.setItem('currentTag','nav-home-tab');
                 window.location.href = '/accountLogin';
             } else {
+                if (event.target.id=='nav-new-tab') {
+                    this.currentNewTask = 'normal'
+                }
+                if (event.target.id=='nav-new-steam-tab') {
+                    this.currentNewTask = 'steam';
+                }
                 sessionStorage.setItem('currentTag',event.target.id);
+                window.location.href = '/execution';
+
             }
         },
         searchAlgorithm: function (event) {
@@ -454,7 +479,6 @@ var app = new Vue({
                 $('#datasetFile').removeAttr("disabled","disabled");
                 $('#taskDatasetInfo').removeClass("d-block");
                 $('#taskDatasetInfo').addClass("d-none");
-                $("#datasetFileLabel2").html($('#datasetFile')[0].files[0].name);
                 $('#datasetSelect').attr("disabled","disabled");
             }
             $('#taskDatasetFeedback').addClass('invisible');
@@ -482,7 +506,7 @@ var app = new Vue({
                     ifCorrect = false;
                 }
             }
-            if (this.task_dataset==0 && this.$refs.taskDataset.files[0]==null){
+            if (this.task_dataset==0 && this.$refs['taskDataset'+this.dataset_number][0].files[0]==null){
                 $('#taskDatasetFeedback').removeClass('invisible');
                 ifCorrect = false;
             }
@@ -499,7 +523,9 @@ var app = new Vue({
                 taskForm.append("taskEmail",this.task_email);
                 taskForm.append("algorithmParameters",JSON.stringify(this.params));
                 taskForm.append("datasetId",this.task_dataset);
-                taskForm.append("file",this.$refs.taskDataset.files[0]);
+                for (let i = 1; i < this.dataset_number+1; i++) {
+                    taskForm.append("file",this.$refs['taskDataset'+i][0].files[0]);
+                }
                 axios.post('/execution/uploadTaskForm',taskForm,{
                     'Content-Type':'multipart/form-data'
                 }).then((response) => {
@@ -924,7 +950,6 @@ $(function () {
             $('#nav-home-tab').attr('aria-selected', 'true');
             $('#nav-home').addClass('show');
             $('#nav-home').addClass('active');
-
             break;
         case "nav-algorithms-tab":
             $('#nav-algorithms-tab').addClass('show');
@@ -953,6 +978,13 @@ $(function () {
             $('#nav-dataset-tab').attr('aria-selected', 'true');
             $('#nav-dataset').addClass('show');
             $('#nav-dataset').addClass('active');
+            break;
+        case "nav-new-steam-tab":
+            $('#nav-new-steam-tab').addClass('show');
+            $('#nav-new-steam-tab').addClass('active');
+            $('#nav-new-steam-tab').attr('aria-selected', 'true');
+            $('#nav-new').addClass('show');
+            $('#nav-new').addClass('active');
             break;
         default:
             $('#nav-home-tab').addClass('show');

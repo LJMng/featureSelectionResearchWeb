@@ -54,3 +54,15 @@ ul,li{
     float:left;
 
 }
+
+.input-group-append {
+    display: block;
+}
+
+.custom-file-input:lang(ch) ~ .custom-file-label::after {
+    content: "浏览";
+}
+
+.custom-file-label::after {
+    content: "浏览";
+}

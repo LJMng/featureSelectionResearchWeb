@@ -40,7 +40,7 @@ public interface IExecutionFormsService {
      * @return String "success"或"failed"
      * @throws JsonProcessingException
      */
-    String submitTaskForm(TaskInfo task, MultipartFile uploadFile, String path) throws IOException;
+    String submitTaskForm(TaskInfo task, MultipartFile[] uploadFile, String path) throws IOException;
 
     /**
      * 通过用户id获取所有算法任务
@@ -88,5 +88,5 @@ public interface IExecutionFormsService {
      */
     TaskResultFormat getTaskResults(int taskId) throws JsonProcessingException;
 
-    int uploadAlgDoc (Integer algorithmId,MultipartFile file,String path);
+    int uploadAlgDoc (Integer algorithmId,MultipartFile file,String path) throws JsonProcessingException;
 }

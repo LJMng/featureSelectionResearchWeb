@@ -10,6 +10,7 @@ import featureSelection.research.web.service.execution.visitor.IHtmlElementServi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -196,5 +197,25 @@ public class HtmlElementsServiceImpl implements IHtmlElementService {
         return ids;
     }
 
-
+    @Override
+    public Map<Integer, List<Map<String, String>>> getAlgDocsMap() throws JsonProcessingException {
+        Map<Integer, Algorithm> allAlgDocsMap = algorithmMapper.getAllAlgDocsMap();
+        Map<Integer, List<Map<String, String>>> resultAlgDocsMap = new HashMap<>();
+        for (Integer i: allAlgDocsMap.keySet()) {
+            List<Map<String, String>> values = new ArrayList<>();
+            Algorithm algorithm = allAlgDocsMap.get(i);
+            String algorithmDoc = algorithm.getAlgorithmDoc();
+            if (algorithmDoc!=null && !algorithmDoc.equals("")) {
+                List<String> docsList = objectMapper.readValue(algorithmDoc, objectMapper.getTypeFactory().constructParametricType(List.class, String.class));
+                for (String doc : docsList) {
+                    Map<String, String> value = new HashMap<> ();
+                    value.put("time", doc.substring(doc.lastIndexOf(File.separator)-10, doc.lastIndexOf(File.separator)).replace('\\', '/'));
+                    value.put("name", doc.substring(doc.lastIndexOf(File.separator)+1));
+                    values.add(value);
+                }
+            }
+            resultAlgDocsMap.put(i, values);
+        }
+        return resultAlgDocsMap;
+    }
 }

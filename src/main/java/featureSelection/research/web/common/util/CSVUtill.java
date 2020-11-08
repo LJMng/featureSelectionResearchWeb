@@ -2,8 +2,10 @@ package featureSelection.research.web.common.util;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
@@ -25,11 +27,18 @@ public class CSVUtill {
     }
 
     public CSVUtill(String filePath) {
-        this.filePath = filePath;
+        File jarF = new ApplicationHome(getClass()).getSource();
+        String path = jarF.getParentFile().toString()+File.separator+filePath;
+        if (new File(path).exists()) {
+            this.filePath=path;
+        } else {
+            path.replace("\\target", "");
+            this.filePath = path;
+        }
         this.csvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
         FileReader reader = null;
         try {
-            reader = new FileReader(filePath);
+            reader = new FileReader(this.filePath);
             this.csvParser = new CSVParser(reader,this.csvFormat);
         }  catch (IOException e) {
             throw new RuntimeException(e);
@@ -60,9 +69,16 @@ public class CSVUtill {
     public int getDimensionByFilePath(String filePath) {
         this.filePath = filePath;
         this.csvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
+        File jarF = new ApplicationHome(getClass()).getSource();
+        String path = jarF.getParentFile().toString()+File.separator+filePath;
+        if (new File(path).exists()) {
+            this.filePath=path;
+        } else {
+            this.filePath = path.replace("\\target", "");
+        }
         FileReader reader = null;
         try {
-            reader = new FileReader(filePath);
+            reader = new FileReader(this.filePath);
             this.csvParser = new CSVParser(reader,this.csvFormat);
         }  catch (IOException e) {
             throw new RuntimeException(e);

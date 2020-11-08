@@ -48,7 +48,7 @@ public class ExecutionFormsController {
 
     @PostMapping("/execution/uploadTaskForm")
     public String submitTaskForm(TaskInfo task,
-             @RequestParam(name = "file",required = false) MultipartFile uploadFile) throws JsonProcessingException {
+             @RequestParam(name = "file",required = false) MultipartFile[] uploadFile) throws JsonProcessingException {
         String s = null;
         try {
             s = formsService.submitTaskForm(task, uploadFile, taskPath);
@@ -110,7 +110,8 @@ public class ExecutionFormsController {
     }
 
     @PostMapping("/execution/uploadAlgorithmDocument/{algorithmId}")
-    public String uploadAlgDoc(@PathVariable String algorithmId,@RequestParam MultipartFile file) {
+    public String uploadAlgDoc(@PathVariable String algorithmId,@RequestParam MultipartFile file) throws JsonProcessingException {
         return String.valueOf(formsService.uploadAlgDoc(Integer.parseInt(algorithmId), file, algDocPath));
     }
+
 }

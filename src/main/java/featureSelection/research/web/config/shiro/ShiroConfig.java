@@ -31,8 +31,8 @@ public class ShiroConfig {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         bean.setSecurityManager(securityManager);
         Map<String, String> filterMap = new LinkedHashMap<>();
-        filterMap.put("/pages/execution/admin/**", "authc");
         filterMap.put("/pages/execution/admin/**", "roles[admin]");
+        filterMap.put("/pages/execution/admin/**", "authc");
         bean.setFilterChainDefinitionMap(filterMap);
         bean.setLoginUrl("/pages/execution/admin/executionAdminLogin.html");
         bean.setUnauthorizedUrl("/unauthorized");
@@ -48,8 +48,8 @@ public class ShiroConfig {
         Iterator<Integer> keys = keySet.iterator();
         while (keys.hasNext()) {
             String key = keys.next().toString();
-            filterMap.put("/execution/downloadAlgorithmDocument/"+key, "perms[user:"+key+":download]");
-            filterMap.put("/execution/uploadAlgorithmDocument/"+key, "perms[user:"+key+":upload]");
+            filterMap.put("/execution/downloadAlgorithmDocument/"+key+"/**", "perms[user:"+key+":download]");
+            filterMap.put("/execution/uploadAlgorithmDocument/"+key+"/**", "perms[user:"+key+":upload]");
         }
         filterMap.put("/execution/**", "roles[user]");
         filterMap.put("/execution/**", "authc");

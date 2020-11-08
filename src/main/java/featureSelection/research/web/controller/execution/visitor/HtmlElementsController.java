@@ -1,5 +1,7 @@
 package featureSelection.research.web.controller.execution.visitor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import featureSelection.research.web.entity.execution.visitor.*;
 import featureSelection.research.web.mybatisMapper.execution.visitor.AlgorithmMapper;
 import featureSelection.research.web.service.execution.visitor.IHtmlElementService;
@@ -28,6 +30,9 @@ public class HtmlElementsController {
     
     @Autowired
     AlgorithmMapper algorithmMapper;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @GetMapping("/htmlElements")
     public List<HtmlElementControl> getElementsContext(){
@@ -59,12 +64,19 @@ public class HtmlElementsController {
         response.sendRedirect("/demo/visitor/download?datasetid=" + datasetId);
     }
 
-    @GetMapping("/execution/downloadAlgorithmDocument/{algorithmId}")
-    public void downloadAlgorithmDocument(HttpServletResponse response,@PathVariable String algorithmId) throws IOException {
-        String docPath = algorithmMapper.getAlgorithmDocById(Integer.parseInt(algorithmId));
+    @GetMapping("/execution/downloadAlgorithmDocument/{algorithmId}/{fileName}")
+    public void downloadAlgorithmDocument(HttpServletResponse response, @PathVariable String algorithmId, @PathVariable String fileName) throws IOException {
+        String docsPath = algorithmMapper.getAlgorithmDocById(Integer.parseInt(algorithmId));
+        List<String> docsList = objectMapper.readValue(docsPath, objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));
+        String targetFile = docsList.get(docsList.size() - 1);
+        for (String docName : docsList) {
+            if (docName.contains(fileName)) {
+                targetFile = docName;
+            }
+        }
         ApplicationHome h = new ApplicationHome(getClass());
         File jarF = h.getSource();
-        StringBuilder jarPathSb = new StringBuilder(docPath);
+        StringBuilder jarPathSb = new StringBuilder(targetFile);
         jarPathSb.insert(0, jarF.getParentFile().toString() + "\\");
         String jarPath = jarPathSb.toString();
         File jarfile = new File(jarPath.toString());
@@ -107,5 +119,8 @@ public class HtmlElementsController {
         return htmlElementsServiceImpl.getAuthorizationUploadAlgDocs(accountId);
     }
 
-
+    @GetMapping("/execution/getAlgDocsMap")
+    public Map<Integer, List<Map<String, String>>> getAlgDocsMap() throws JsonProcessingException {
+        return htmlElementsServiceImpl.getAlgDocsMap();
+    }
 }

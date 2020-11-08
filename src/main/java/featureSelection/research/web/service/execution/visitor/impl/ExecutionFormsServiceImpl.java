@@ -83,25 +83,31 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
     }
 
     @Override
-    public String submitTaskForm(TaskInfo task, MultipartFile uploadFile, String path) throws IOException {
-        String filePath = null;
+    public String submitTaskForm(TaskInfo task, MultipartFile[] uploadFile, String path) throws IOException {
+        List<String> filePath = null;
         ParameterFormat parameterFormat = new ParameterFormat();
         //判断算法任务是否是使用用户上传的数据集
         if (task.getDatasetId() == 0) {
             //存储数据集到本地
-            filePath = fileUpload.uploadFIle(uploadFile, path);
+            filePath = fileUpload.uploadFiles(uploadFile, path);
+            if (filePath.size() > 1) {
+                parameterFormat.setPart(1);
+                parameterFormat.setPartDataSize(1);
+            } else {
+                parameterFormat.setPart(0);
+                parameterFormat.setPartDataSize(0);
+            }
             //根据数据集的维度生成Attribute的值
-            int columnNum = csvUtill.getDimensionByFilePath(filePath)+1;
+            int columnNum = csvUtill.getDimensionByFilePath(filePath.get(0));
             int[] attributes = new int[columnNum-1];
             for (int i=0; i<attributes.length; i++){
                 attributes[i] = i+1;
             }
-            task.setDatasetUpload(filePath);
+            task.setDatasetUpload(filePath.toString());
             task.setDatasetId(null);
             parameterFormat.setColumn(columnNum);
-            parameterFormat.setDatasetName(filePath.substring(filePath.lastIndexOf(File.separator)+1));
+            parameterFormat.setDatasetName(filePath.get(0).substring(filePath.lastIndexOf(File.separator)+1));
             parameterFormat.setAttributes(attributes);
-            parameterFormat.setPartDataSize((int)csvUtill.getRecords()+1 );
         }else {
             int columnNum = datasetMapper.getDatasetDimensionById(task.getDatasetId());
             int[] attributes = new int[columnNum-1];
@@ -111,12 +117,12 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
             parameterFormat.setColumn(columnNum);
             parameterFormat.setDatasetName(datasetMapper.getDatasetNameById(task.getDatasetId()));
             parameterFormat.setAttributes(attributes);
-            parameterFormat.setPartDataSize(datasetMapper.getDatasetRecordById(task.getDatasetId()));
+            parameterFormat.setPartDataSize(0);
+            parameterFormat.setPart(0);
         }
         //获取算法名称映射的值
         String algorithmName = algorithmMapper.getAlgorithmNameMapperById(task.getAlgorithmId());
         parameterFormat.setId(algorithmName+"-"+String.valueOf(System.currentTimeMillis()).substring(0,10));
-        parameterFormat.setPart(0);
         AlgorithmInfo algorithmInfo = new AlgorithmInfo(algorithmName,objectMapper.readValue(task.getAlgorithmParameters(),Object.class));
         parameterFormat.setAlgorithmInfo(algorithmInfo);
         parameterFormat.setPreviousReducts(null);
@@ -177,48 +183,70 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
     public TaskResultFormat getTaskResults(int taskId) throws JsonProcessingException {
         List<int[]> resultList = new ArrayList<>();
         TaskResultFormat resultFormat = new TaskResultFormat();
-
         String taskSetting = taskInfoMapper.getTaskSettingById(taskId);
         JsonNode taskSettingTree = objectMapper.readTree(taskSetting);
         int column = taskSettingTree.get("column").asInt();
         resultFormat.setDatasetDimension(column);
 
         List<TaskResult> taskResults = taskResult.getTaskResults(taskId);
-        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, int[].class);
         for (TaskResult taskResult : taskResults) {
             JsonNode jsonNode = objectMapper.readTree(taskResult.getResultVal());
-            JsonNode reductsNode = jsonNode.findValue("reducts");
-            if (reductsNode.isObject()) {
-                Iterator<JsonNode> reductsNodeIterator = reductsNode.iterator();
-                if (reductsNodeIterator.hasNext()) {
-                    JsonNode reductsNodeNext = reductsNodeIterator.next();
-                    Iterator<JsonNode> reductsIterator = reductsNodeNext.elements();
-                    while (reductsIterator.hasNext()) {
-                        JsonNode reductsNext = reductsIterator.next();
-                        int[] result = objectMapper.readValue(reductsNext.toString(), int[].class);
-                        resultList.add(result);
-                    }
+            if (jsonNode.isArray()) {
+                Iterator<JsonNode> jsonIterator = jsonNode.iterator();
+                while (jsonIterator.hasNext()) {
+                    resultList.addAll(getTaskResultFormat(jsonIterator.next()));
                 }
-
             } else {
-                Iterator<JsonNode> reductsIterator = jsonNode.withArray("reducts").elements();
+                resultList.addAll(getTaskResultFormat(jsonNode));
+            }
+        }
+        resultFormat.setResultList(resultList);
+        return resultFormat;
+    }
+
+    @Override
+    public int uploadAlgDoc(Integer algorithmId, MultipartFile file, String path) throws JsonProcessingException {
+        String algorithmName = algorithmMapper.getAlgorithmNameById(algorithmId);
+        String uploadedPath = fileUpload.uploadFIle(file, path+algorithmName+File.separator);
+        String algorithmDoc = algorithmMapper.getAlgorithmDocById(algorithmId);
+        List<String> currentDocs = null;
+        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, String.class);
+        int i = 0;
+        if (algorithmDoc == null || algorithmDoc.equals("")) {
+            currentDocs = new ArrayList<>();
+            currentDocs.add(uploadedPath);
+        } else {
+            currentDocs = objectMapper.readValue(algorithmDoc, javaType);
+            currentDocs.add(uploadedPath);
+        }
+        i = algorithmMapper.uploadAlgDocById(algorithmId, objectMapper.writeValueAsString(currentDocs));
+        return i;
+    }
+
+    private List<int[]> getTaskResultFormat(JsonNode jsonNode) throws JsonProcessingException {
+        List<int[]> resultList = new ArrayList<> ();
+        JsonNode reductsNode = jsonNode.findValue("reducts");
+        if (reductsNode.isObject()) {
+            Iterator<JsonNode> reductsNodeIterator = reductsNode.iterator();
+            if (reductsNodeIterator.hasNext()) {
+                JsonNode reductsNodeNext = reductsNodeIterator.next();
+                Iterator<JsonNode> reductsIterator = reductsNodeNext.elements();
                 while (reductsIterator.hasNext()) {
                     JsonNode reductsNext = reductsIterator.next();
                     int[] result = objectMapper.readValue(reductsNext.toString(), int[].class);
                     resultList.add(result);
                 }
             }
+
+        } else {
+            Iterator<JsonNode> reductsIterator = jsonNode.withArray("reducts").elements();
+            while (reductsIterator.hasNext()) {
+                JsonNode reductsNext = reductsIterator.next();
+                int[] result = objectMapper.readValue(reductsNext.toString(), int[].class);
+                resultList.add(result);
+            }
         }
-
-        resultFormat.setResultList(resultList);
-        return resultFormat;
-    }
-
-    @Override
-    public int uploadAlgDoc(Integer algorithmId, MultipartFile file, String path) {
-        String uploadedPath = fileUpload.uploadFIle(file, path);
-        int i = algorithmMapper.uploadAlgDocById(algorithmId, uploadedPath);
-        return i;
+        return resultList;
     }
 
 }

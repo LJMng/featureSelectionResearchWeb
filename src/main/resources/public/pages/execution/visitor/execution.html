@@ -27,7 +27,7 @@
     <!--echarts-->
     <script src="/webjars/echarts/dist/echarts.js"></script>
 </head>
-<body data-spy="scroll" data-target="#navbar-example3" data-offset="120">
+<body data-spy="scroll" data-target="#navbar-normal" data-offset="120">
 <div id="app" v-cloak>
         <!--head-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3" id="nav_head">
@@ -63,6 +63,8 @@
                     <a class="nav-item nav-link ml-1" id="nav-algorithms-tab" data-toggle="tab" href="#nav-algorithms" role="tab" aria-controls="nav-algorithms" aria-selected="false" @click="currentTag">{{navBody_a2}}</a>
                     <!--New Task-->
                     <a class="nav-item nav-link ml-1" id="nav-new-tab" data-toggle="tab" href="#nav-new" role="tab" aria-controls="nav-new" aria-selected="false" @click="currentTag">{{navBody_a3}}</a>
+                    <!--New Steam Task-->
+                    <a class="nav-item nav-link ml-1" id="nav-new-steam-tab" data-toggle="tab" href="#nav-new" role="tab" aria-controls="nav-new" aria-selected="false" @click="currentTag">{{navBody_a6}}</a>
                     <!--Query Task-->
                     <a class="nav-item nav-link ml-1" id="nav-query-tab" data-toggle="tab" href="#nav-query" role="tab" aria-controls="nav-query" aria-selected="false" @click="currentTag">{{navBody_a4}}</a>
                     <!--public dataset-->
@@ -202,21 +204,54 @@
                                         </h4>
                                         <div class="ml-3 pr-2 mb-4">
                                             <h5>
-                                                <a :href="'/execution/downloadAlgorithmDocument/'+algorithm.algorithmId" class="badge badge-info" v-if="downloadAccess.indexOf(algorithm.algorithmId)!=-1">{{public_dataset_list_btn1}}</a>
-                                                <a href="#" class="badge badge-primary" v-if="uploadAccess.indexOf(algorithm.algorithmId)!=-1" data-toggle="modal" data-target="#algDocUpload">{{btn_upload}}</a>
+                                                <a href="#" class="badge badge-info" v-if="downloadAccess.indexOf(algorithm.algorithmId)!=-1" data-toggle="modal" :data-target="'#'+algorithm.algorithmName+'DocDownload'">{{public_dataset_list_btn1}}</a>
+                                                <a href="#" class="badge badge-primary" v-if="uploadAccess.indexOf(algorithm.algorithmId)!=-1" data-toggle="modal" :data-target="'#'+algorithm.algorithmName+'DocUpload'">{{btn_upload}}</a>
                                             </h5>
-                                            <div class="modal fade" id="algDocUpload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div v-if="downloadAccess.indexOf(algorithm.algorithmId)!=-1" class="modal fade" :id="algorithm.algorithmName+'DocDownload'" tabindex="-1" role="dialog" aria-labelledby="downloadModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">{{algorithm.algorithmName}} {{btn_upload}}</h5>
+                                                            <h5 class="modal-title" id="downloadModalLabel">{{algorithm.algorithmName}} {{algorithm_doc_download}}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <table class="table table-sm table-hover">
+                                                                <thead class="thead-light">
+                                                                <tr class="table-warning">
+                                                                    <td scope="col">{{public_dataset_check_th1}}</td>
+                                                                    <td scope="col">{{query_task_table_th5}}</td>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr v-for="doc in docsMap[algorithm.algorithmId]">
+                                                                    <td>{{doc.time}}</td>
+                                                                    <td><a :href="'/execution/downloadAlgorithmDocument/'+algorithm.algorithmId+'/'+doc.name" class="badge badge-info">{{public_dataset_list_btn1}}</a></td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <span class="text-success"></span>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modal_btn_close}}</button>
+                                                            <button type="button" class="btn btn-primary" @click="uploadAlgDoc($event,key)">{{modal_btn_submit}}</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-if="uploadAccess.indexOf(algorithm.algorithmId)!=-1" class="modal fade" :id="algorithm.algorithmName+'DocUpload'" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="uploadModalLabel">{{algorithm.algorithmName}} {{btn_upload}}</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="custom-file">
-                                                                <input @change="showFileName" type="file" class="custom-file-input" id="customFile" :name="algorithm.algorithmName+'doc'">
+                                                                <input @change="showFileName" type="file" class="custom-file-input" id="customFile" :name="algorithm.algorithmName+'doc'" :lang="language=='ch'?'ch':'en'">
                                                                 <label class="custom-file-label" for="customFile">{{label_choose_file}}</label>
                                                             </div>
                                                         </div>
@@ -228,6 +263,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
                                     <!--paper-->
@@ -286,10 +322,10 @@
                                                 <thead class="table-warning">
                                                     <tr>
                                                         <th scope="col">#</th>
-                                                        <th scope="col">Name</th>
-                                                        <th scope="col">Description</th>
-                                                        <th scope="col">Type</th>
-                                                        <th scope="col" class="text-nowrap">Default Value</th>
+                                                        <th scope="col">{{query_task_table_th2}}</th>
+                                                        <th scope="col">{{description}}</th>
+                                                        <th scope="col">{{dataset_info_p7}}</th>
+                                                        <th scope="col" class="text-nowrap">{{algorithms_info_parameter_li2}}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -315,11 +351,11 @@
                     <div class="row">
                         <!--NewTaskNavbar-->
                         <div class="col-2">
-                            <nav id="navbar-example3" class="navbar navbar-light bg-light position-fixed" style="margin-top: 150px">
+                            <nav id="navbar-normal" class="navbar navbar-light bg-light position-fixed" style="margin-top: 150px">
                                 <nav class="nav nav-pills flex-column">
-                                    <a class="nav-link" href="#Dataset">{{new_task_navbar_a1}}</a>
-                                    <a class="nav-link" href="#Algorithm">{{new_task_navbar_a2}}</a>
-                                    <a class="nav-link" href="#BaseInfo">{{new_task_navbar_a3}}</a>
+                                    <a class="nav-link" href="#normal-dataset">{{new_task_navbar_a1}}</a>
+                                    <a class="nav-link" href="#normal-algorithm">{{new_task_navbar_a2}}</a>
+                                    <a class="nav-link" href="#normal-base-info">{{new_task_navbar_a3}}</a>
                                 </nav>
                             </nav>
                         </div>
@@ -327,11 +363,11 @@
                         <div class="col-10 mt-4">
                             <!--step1-->
                             <div class="alert alert-primary text-center" role="alert">
-                                <h3 id="Dataset">{{new_task_step1}}</h3>
+                                <h3 id="normal-dataset">{{new_task_step1}}</h3>
                             </div>
                             <div class="p-4">
                                 <fieldset @change="datasetOption">
-                                    <div class="form-group">
+                                    <div class="form-group" v-if="currentNewTask=='normal'">
                                         <span id="taskDatasetInfo" data-toggle="modal" data-target="#datasetInfo" class="d-none" style="position: absolute;margin-top: 40px;margin-left: -30px;">
                                             <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
@@ -342,12 +378,17 @@
                                             <option value="0" selected>{{new_task_step1_select_default}}</option>
                                             <option v-for="(value,key,index) in datasetList" :value="key">{{value.datasetName}}</option>
                                         </select>
-
                                     </div>
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="datasetFile" ref="taskDataset" required @change="showFileName">
+                                    <h5 v-if="currentNewTask=='steam'">{{new_steam_task_upload_title}}</h5>
+                                    <div class="custom-file mb-1" v-for="i of dataset_number">
+                                        <input type="file" class="custom-file-input mb-2" id="datasetFile" :ref="'taskDataset'+i" required @change="showFileName" :lang="language=='ch'?'ch':'en'">
                                         <label class="custom-file-label" for="datasetFile" id="datasetFileLabel2">{{new_task_step1_label2}}</label>
                                         <div class="invalid-tooltip" style="top: auto" name="taskFormCheck">{{new_task_step1_feedback1}}</div>
+                                        <span class="position-absolute ml-2 mt-1" v-if="currentNewTask=='steam'" @click="dataset_number++"><svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-folder-plus text-primary" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                  <path fill-rule="evenodd" d="M9.828 4H2.19a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91H9v1H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181L15.546 8H14.54l.265-2.91A1 1 0 0 0 13.81 4H9.828zm-2.95-1.707L7.587 3H2.19c-.24 0-.47.042-.684.12L1.5 2.98a1 1 0 0 1 1-.98h3.672a1 1 0 0 1 .707.293z"/>
+                                                  <path fill-rule="evenodd" d="M13.5 10a.5.5 0 0 1 .5.5V12h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V13h-1.5a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z"/>
+                                                </svg>
+                                        </span>
                                     </div>
                                 </fieldset>
                                 <div class="accordion mt-2" id="accordionDataset">
@@ -372,8 +413,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <table class="table mt-4 mb-0">
-                                    <thead class="table-primary">
+                                <div v-if="currentNewTask=='normal'">
+                                    <table class="table mt-4 mb-0">
+                                        <thead class="table-primary">
                                         <tr>
                                             <th scope="col">{{query_task_table_th2}}</th>
                                             <th scope="col">{{dataset_info_p2}}</th>
@@ -383,8 +425,8 @@
                                             <th scope="col">{{dataset_info_p6}}</th>
                                             <th scope="col">{{dataset_info_p7}}</th>
                                         </tr>
-                                    </thead>
-                                    <tbody>
+                                        </thead>
+                                        <tbody>
                                         <tr v-for="(value,index) in dataset_list_page">
                                             <th>{{datasetList[value].datasetName}}</th>
                                             <th style="word-break: break-all"><a class="text-dark" :href="datasetList[value].datasetSource" target="_blank">{{datasetList[value].datasetSource}}</a></th>
@@ -394,30 +436,31 @@
                                             <th>{{datasetList[value].datasetTags}}</th>
                                             <th>{{datasetList[value].datasetType}}</th>
                                         </tr>
-                                    </tbody>
-                                </table>
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Previous" @click.prevent="previousPage">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                        <li :class="i==dataset_current_page?'page-item active':'page-item'" v-for="i of dataset_pages"><a class="page-link" href="#" @click.prevent="goDatasetPage(i)">{{i}}</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Next" @click.prevent="nextDatasetPage">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                        </tbody>
+                                    </table>
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" aria-label="Previous" @click.prevent="previousPage">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                            <li :class="i==dataset_current_page?'page-item active':'page-item'" v-for="i of dataset_pages"><a class="page-link" href="#" @click.prevent="goDatasetPage(i)">{{i}}</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" aria-label="Next" @click.prevent="nextDatasetPage">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
                                 <div id="taskDatasetFeedback" class="invisible mt-2">
                                     <div class="alert alert-danger" role="alert" v-html="new_task_step1_feedback2"></div>
                                 </div>
                             </div>
                             <!--step2-->
                             <div class="alert alert-primary text-center" role="alert">
-                                <h3 id="Algorithm">{{new_task_step2}}</h3>
+                                <h3 id="normal-algorithm">{{new_task_step2}}</h3>
                             </div>
                             <div class="p-4">
                                 <div class="accordion mb-3" id="accordionExample2">
@@ -470,23 +513,25 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-4 mb-3 pl-2 pr-2" v-for="(algorithm,key,index) in algorithmList">
-                                        <div class="card" style="width: 18rem;" >
-                                            <div class="card-body text-center">
-                                                <h5 class="card-title p-2 mb-0"><svg class="bi bi-star-fill text-primary mb-1" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                                                </svg>{{algorithm.algorithmName}}</h5>
-                                                <p class="card-text">{{new_task_step2_card_p1}}:{{algorithm.ut}}</p>
-                                                <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#algorithmInfoModal" @click="getAlgorithmInfo(key)">{{new_task_step2_card_btn1}}</a>
-                                                <a href="#" class="btn btn-primary" data-toggle="modal" :data-target="'#'+'Algorithm'+algorithm.algorithmId+'Modal'" @click="getAlgorithmInfo(key)">{{new_task_step2_card_btn2}}</a>
-                                                <span class="d-none" @click="cancelSelectedAlgorithm">
+                                    <template v-for="(algorithm,key,index) in algorithmList">
+                                        <div class="col-4 mb-3 pl-2 pr-2" v-if="currentNewTask=='normal'?algorithm.algorithmType=='normal':algorithm.algorithmType=='steam'">
+                                            <div class="card" style="width: 18rem;">
+                                                <div class="card-body text-center">
+                                                    <h5 class="card-title p-2 mb-0"><svg class="bi bi-star-fill text-primary mb-1" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                                    </svg>{{algorithm.algorithmName}}</h5>
+                                                    <p class="card-text">{{new_task_step2_card_p1}}:{{algorithm.ut}}</p>
+                                                    <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#algorithmInfoModal" @click="getAlgorithmInfo(key)">{{new_task_step2_card_btn1}}</a>
+                                                    <a href="#" class="btn btn-primary" data-toggle="modal" :data-target="'#'+'Algorithm'+algorithm.algorithmId+'Modal'" @click="getAlgorithmInfo(key)">{{new_task_step2_card_btn2}}</a>
+                                                    <span class="d-none" @click="cancelSelectedAlgorithm">
                                                     <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-x-circle-fill text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
                                                     </svg>
                                                 </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </template>
                                 </div>
                                 <div id="algorithmSelectFeedback" class="invisible">
                                     <div class="alert alert-danger" role="alert" v-html="new_task_step2_feedback1">
@@ -495,7 +540,7 @@
                             </div>
                             <!--step3-->
                             <div class="alert alert-primary text-center" role="alert">
-                                <h3 id="BaseInfo">{{new_task_step3}}</h3>
+                                <h3 id="normal-base-info">{{new_task_step3}}</h3>
                             </div>
                             <div class="p-4">
                                 <div class="form-row mb-5">
@@ -529,127 +574,114 @@
                             </div>
                         </div>
                     </div>
-                    <!--AlgorithmSettingModal-->
-                    <div v-for="(algorithm,key,index1) in algorithmList" class="modal fade" :id="'Algorithm'+algorithm.algorithmId+'Modal'" tabindex="-1" role="dialog" data-backdrop="static">
-                        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 61.8%;">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">{{algorithm.algorithmName}}</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="card mb-4 shadow-sm" v-html="algorithm.algorithmUsage">
-                                    </div>
-                                    <div class="card mb-4 shadow-sm">
-                                        <div class="alert alert-warning text-center" role="alert">
-                                            {{algorithm_setting1}}
-                                        </div>
-                                        <div class="row m-0" v-for="(param,index2) in parameterList[algorithm.algorithmId]" v-if="param.parameterSettingInfo!=null">
-                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='text'">{{param.parameterName}}
-                                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
-                                                        <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
-                                                        </svg>
-                                                    </span>
-                                            </label>
-                                            <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='text'">
-                                                <input type="text" class="form-control" :id="algorithm.algorithmName+param.parameterName+'Basic'" :name="algorithm.algorithmName+param.parameterName">
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button" @click="setParamDefault(algorithm,param)">{{algorithm_setting_btn1}}</button>
-                                                </div>
-                                            </div>
-                                            <div class="col-4" v-if="param.parameterSettingInfo.type=='text'"></div>
-
-                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='selection'">{{param.parameterName}}
-                                                <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
-                                                    <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
-                                                    </svg>
-                                                </span>
-                                            </label>
-                                            <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='selection'">
-                                                <select class="custom-select" :name="algorithm.algorithmName+param.parameterName" :id="algorithm.algorithmName+param.parameterName+'Basic'" @change="appendInfo($event,algorithm.algorithmName,param.parameterName)">
-                                                    <option selected>Choose...</option>
-                                                    <option v-for="(option,index3) in param.parameterSettingInfo.options" :value="option">{{option}}</option>
-                                                </select>
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button" @click="setParamDefault(algorithm,param)">{{algorithm_setting_btn1}}</button>
-                                                </div>
-                                            </div>
-                                            <div class="col-4" v-if="param.parameterSettingInfo.type=='selection'">
-                                                <append :algorithm="algorithm" :param="param"></append>
-                                            </div>
-
-                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='radio'">{{param.parameterName}}
-                                                <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
-                                                    <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
-                                                    </svg>
-                                                </span>
-                                            </label>
-                                            <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='radio'">
-                                                <div class="custom-control-inline custom-control custom-radio" v-for="(option,index4) in param.parameterSettingInfo.options">
-                                                    <input class="custom-control-input" type="radio" :id="algorithm.algorithmName+param.parameterName+index4" :value="option" :name="algorithm.algorithmName+param.parameterName">
-                                                    <label class="custom-control-label" :for="algorithm.algorithmName+param.parameterName+index4">{{option}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-4" v-if="param.parameterSettingInfo.type=='radio'"></div>
-
-                                            <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='checkbox'">{{param.parameterName}}
-                                                <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
-                                                    <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
-                                                    </svg>
-                                                </span>
-                                            </label>
-                                            <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='checkbox'">
-                                                <div class="custom-control-inline custom-control custom-checkbox" v-for="(option,index5) in param.parameterSettingInfo.options">
-                                                    <input class="custom-control-input" type="checkbox" :id="algorithm.algorithmName+param.parameterName+index5" :value="option" :name="algorithm.algorithmName+param.parameterName">
-                                                    <label class="custom-control-label" :for="algorithm.algorithmName+param.parameterName+index5">{{option}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-4" v-if="param.parameterSettingInfo.type=='checkbox'"></div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-4 shadow-sm">
-                                        <div class="alert alert-warning text-center" role="alert">
-                                            {{algorithm_setting2}}
-                                        </div>
-                                        <div class="row m-0" v-for="(ps,index2) in ProcedureSettingsList[algorithm.algorithmId]">
-                                            <div class="col-3 p-2">
-                                                <div class="custom-control custom-control-inline custom-radio">
-                                                    <input type="checkbox" class="custom-control-input" :id="algorithm.algorithmName+ps.name+'Procedure'" :name="algorithm.algorithmName+ps.name+'Check'+(index2+1)" :checked="ps.state=='optional'?null:'checked'" :disabled="ps.state=='required'?'disabled':null" @change="changeDisabled($event,algorithm.algorithmName+ps.name)">
-                                                    <label class="custom-control-label" :for="algorithm.algorithmName+ps.name+'Procedure'">{{ps.name}}</label>
-                                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="ps.description">
-                                                        <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="input-group mb-3 col-9">
-                                                <select class="custom-select" :id="algorithm.algorithmName+ps.name+'select'" :name="algorithm.algorithmName+ps.name" :disabled="ps.state=='optional'?'disabled':null">
-                                                    <option v-for="(option,index3) in ps.options" :selected="option==ps.defaultOption?'selected':null" :value="option">{{option}}</option>
-                                                </select>
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button" @click="setProcedureDefault(algorithm,ps)">{{algorithm_setting_btn1}}</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <span class="text-success"></span>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modal_btn_cancel}}</button>
-                                    <button type="button" class="btn btn-primary" @click="saveAlgorithmSettings($event,algorithm)">{{algorithm_setting_save}}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
+<!--                &lt;!&ndash;NewSteamAlgorithmTask&ndash;&gt;-->
+<!--                <div class="tab-pane fade" id="nav-new-steam" role="tabpanel" aria-labelledby="nav-new-steam-tab">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-2">-->
+<!--                            <nav id="navbar-steam" class="navbar navbar-light bg-light position-fixed" style="margin-top: 150px">-->
+<!--                                <nav class="nav nav-pills flex-column">-->
+<!--                                    <a class="nav-link" href="#steam-dataset">{{new_task_navbar_a1}}</a>-->
+<!--                                    <a class="nav-link" href="#Algorithm">{{new_task_navbar_a2}}</a>-->
+<!--                                    <a class="nav-link" href="#BaseInfo">{{new_task_navbar_a3}}</a>-->
+<!--                                </nav>-->
+<!--                            </nav>-->
+<!--                        </div>-->
+<!--                        <div class="col-10 mt-4">-->
+<!--                            <div class="alert alert-primary text-center" role="alert">-->
+<!--                                <h3 id="steam-dataset">{{new_task_step1}}</h3>-->
+<!--                            </div>-->
+<!--                            <div class="p-4">-->
+<!--                                <div class="custom-file">-->
+<!--                                    <input type="file" class="custom-file-input" id="steam-dataset-file" multiple ref="taskDataset" required @change="showAllFilesName">-->
+<!--                                    <label class="custom-file-label" for="steam-dataset-file">{{new_task_step1_label2}}</label>-->
+<!--                                    <div class="invalid-tooltip" style="top: auto" name="taskFormCheck">{{new_task_step1_feedback1}}</div>-->
+<!--                                </div>-->
+<!--                                <div class="accordion mt-2" id="accordionDataset2">-->
+<!--                                    <div class="card">-->
+<!--                                        <div class="card-header bg-white p-0" id="headingOneDataset2">-->
+<!--                                            <h2 class="mb-0">-->
+<!--                                                <button class="btn btn-link btn-block text-center collapsed" type="button" data-toggle="collapse" data-target="#collapseOneDataset2" aria-expanded="false" aria-controls="collapseOneDataset">-->
+<!--                                                    {{new_task_step1_btn1}}-->
+<!--                                                </button>-->
+<!--                                            </h2>-->
+<!--                                        </div>-->
+<!--                                        <div id="collapseOneDataset2" class="collapse" aria-labelledby="headingOneDataset2" data-parent="#accordionDataset2">-->
+<!--                                            <div class="card-body border-bottom">-->
+<!--                                                <div class="alert alert-secondary mt-3" role="alert">-->
+<!--                                                    <h5 class="alert-heading" v-html="new_task_step1_h1"></h5>-->
+<!--                                                    <p v-html="new_task_step1_p1"></p>-->
+<!--                                                    <hr>-->
+<!--                                                    <h5 class="alert-heading" v-html="new_task_step1_h2"></h5>-->
+<!--                                                    <a href="#" class="alert-link font-weight-normal" @click="goPublicDataset" v-text="new_task_step1_a1"></a>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="alert alert-primary text-center" role="alert">-->
+<!--                                <h3 id="steam-algorithm">{{new_task_step2}}</h3>-->
+<!--                            </div>-->
+<!--                            <div class="p-4">-->
+<!--                                <div class="row">-->
+<!--                                    <template v-for="(algorithm,key,index) in algorithmList">-->
+<!--                                        <div class="col-4 mb-3 pl-2 pr-2"  v-if="algorithm.algorithmType=='steam'">-->
+<!--                                            <div class="card" style="width: 18rem;">-->
+<!--                                                <div class="card-body text-center">-->
+<!--                                                    <h5 class="card-title p-2 mb-0"><svg class="bi bi-star-fill text-primary mb-1" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">-->
+<!--                                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>-->
+<!--                                                    </svg>{{algorithm.algorithmName}}</h5>-->
+<!--                                                    <p class="card-text">{{new_task_step2_card_p1}}:{{algorithm.ut}}</p>-->
+<!--                                                    <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#algorithmInfoModal" @click="getAlgorithmInfo(key)">{{new_task_step2_card_btn1}}</a>-->
+<!--                                                    <a href="#" class="btn btn-primary" data-toggle="modal" :data-target="'#'+'Algorithm'+algorithm.algorithmId+'Modal'" @click="getAlgorithmInfo(key)">{{new_task_step2_card_btn2}}</a>-->
+<!--                                                    <span class="d-none" @click="cancelSelectedAlgorithm">-->
+<!--                                                    <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-x-circle-fill text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">-->
+<!--                                                        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>-->
+<!--                                                    </svg>-->
+<!--                                                </span>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </template>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="alert alert-primary text-center" role="alert">-->
+<!--                                <h3 id="steam-base-info">{{new_task_step3}}</h3>-->
+<!--                            </div>-->
+<!--                            <div class="p-4">-->
+<!--                                <div class="form-row mb-5">-->
+<!--                                    <label class="col-2 text-right" for="email2">{{new_task_step3_card_label1}}</label>-->
+<!--                                    <div class="col-4">-->
+<!--                                        <input type="email" class="form-control" id="email2" v-model="task_email" @blur="emailCheck">-->
+<!--                                        <div class="invalid-tooltip" name="taskFormCheck">{{new_task_step3_feedback1}}</div>-->
+<!--                                        <div class="custom-control custom-control-inline custom-checkbox">-->
+<!--                                            <input type="checkbox" class="custom-control-input" id="eamilCheck" value="true" v-model="email_check">-->
+<!--                                            <label for="eamilCheck" class="custom-control-label">{{new_task_step3_card_label4}}</label>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <label class="col-2 text-right" for="taskName">{{new_task_step3_card_label2}}</label>-->
+<!--                                    <div class="col-4">-->
+<!--                                        <input type="text" class="form-control" id="taskName" v-model="task_name" @blur="taskNameCheck">-->
+<!--                                        <div class="invalid-tooltip" name="taskFormCheck">-->
+<!--                                            {{new_task_step3_feedback2}}-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="form-row">-->
+<!--                                    <label class="col-2 text-right" for="taskDescription">{{new_task_step3_card_label3}}</label>-->
+<!--                                    <div class="col-10">-->
+<!--                                        <textarea class="form-control" id="taskDescription" rows="3" v-model="task_description"></textarea>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="text-center pb-5" style="margin-bottom: 300px;">-->
+<!--                                <button class="btn btn-lg btn-primary" @click="submitTaskForm">{{new_task_step_btn1}}</button>-->
+<!--                                <div id="taskFormResult" class="p-4"></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <!--Query TaskContext-->
                 <div class="tab-pane fade" id="nav-query" role="tabpanel" aria-labelledby="nav-query-tab">
                     <div class="accordion mb-3 mt-4" id="accordionExample3">
@@ -867,7 +899,7 @@
                                             </div>
                                             <div class="form-group col-6 custom-file">
                                                 <label for="inputFile"><span class="text-danger">*</span>{{public_dataset_upload_label3}}</label><span class="float-right text-muted">.csv .xlsx .xls</span>
-                                                <input @change="showFileName" type="file" class="custom-file-input" id="inputFile" ref="inputDataset">
+                                                <input @change="showFileName" type="file" class="custom-file-input" id="inputFile" ref="inputDataset" :lang="language=='ch'?'ch':'en'">
                                                 <label class="custom-file-label" for="inputFile" style="top: auto;overflow: hidden" id="datasetFileLabel">{{new_task_step1_label2}}</label>
                                                 <div class="invalid-tooltip" style="top: auto" name="datasetFormCheck">{{new_task_step1_feedback1}}</div>
                                             </div>
@@ -927,7 +959,7 @@
                                         <table class="table table-hover">
                                             <thead>
                                             <tr class="table-warning">
-                                                <th scope="col">Id</th>
+                                                <th scope="col">{{query_task_table_th1}}</th>
                                                 <th scope="col">{{query_task_table_th2}}</th>
                                                 <th scope="col">{{public_dataset_check_th1}}</th>
                                                 <th scope="col">{{query_task_table_th4}}</th>
@@ -1093,43 +1125,125 @@
                 </div>
             </div>
         </div>
+        <!--AlgorithmSettingModal-->
+        <div v-for="(algorithm,key,index1) in algorithmList" class="modal fade" :id="'Algorithm'+algorithm.algorithmId+'Modal'" tabindex="-1" role="dialog" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 61.8%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{algorithm.algorithmName}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card mb-4 shadow-sm" v-html="algorithm.algorithmUsage">
+                        </div>
+                        <div class="card mb-4 shadow-sm">
+                            <div class="alert alert-warning text-center" role="alert">
+                                {{algorithm_setting1}}
+                            </div>
+                            <div class="row m-0" v-for="(param,index2) in parameterList[algorithm.algorithmId]" v-if="param.parameterSettingInfo!=null">
+                                <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='text'">{{param.parameterName}}
+                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
+                                                            <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </span>
+                                </label>
+                                <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='text'">
+                                    <input type="text" class="form-control" :id="algorithm.algorithmName+param.parameterName+'Basic'" :name="algorithm.algorithmName+param.parameterName">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" @click="setParamDefault(algorithm,param)">{{algorithm_setting_btn1}}</button>
+                                    </div>
+                                </div>
+                                <div class="col-4" v-if="param.parameterSettingInfo.type=='text'"></div>
 
-<!--        &lt;!&ndash; LoginModal &ndash;&gt;-->
-<!--        <div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">-->
-<!--            <div class="modal-dialog" role="document">-->
-<!--                <div class="modal-content">-->
-<!--                    <div class="modal-header">-->
-<!--                        <h5 class="modal-title" id="loginmodaltitle">{{logintitle}}</h5>-->
-<!--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                            <span aria-hidden="true">&times;</span>-->
-<!--                        </button>-->
-<!--                    </div>-->
-<!--                    <div class="modal-body">-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="loginAccount">{{accounttitle}}</label>-->
-<!--                            <input type="email" class="form-control" id="loginAccount" aria-describedby="accountHelp">-->
+                                <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='selection'">{{param.parameterName}}
+                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
+                                                        <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </span>
+                                </label>
+                                <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='selection'">
+                                    <select class="custom-select" :name="algorithm.algorithmName+param.parameterName" :id="algorithm.algorithmName+param.parameterName+'Basic'" @change="appendInfo($event,algorithm.algorithmName,param.parameterName)">
+                                        <option selected>Choose...</option>
+                                        <option v-for="(option,index3) in param.parameterSettingInfo.options" :value="option">{{option}}</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" @click="setParamDefault(algorithm,param)">{{algorithm_setting_btn1}}</button>
+                                    </div>
+                                </div>
+                                <div class="col-4" v-if="param.parameterSettingInfo.type=='selection'">
+                                    <append :algorithm="algorithm" :param="param"></append>
+                                </div>
 
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="loginPassword">{{passwordtitle}}</label>-->
-<!--                            <input type="password" class="form-control" id="loginPassword">-->
-<!--                        </div>-->
-<!--                        <button class="btn btn-primary"><a onclick="login()">{{log}}</a></button>-->
-<!--                        <small class="form-text text-muted">{{notaccount}}</small>-->
-<!--                        <small class="form-text text-muted" data-dismiss="modal">-->
-<!--                            <a onclick="toRegister()" href="#">{{register}}</a>-->
-<!--                        </small>-->
-<!--                        <small id="forget" class="form-text text-muted">-->
-<!--                            <a href="#">forgetPassWord</a>-->
-<!--                        </small>-->
-<!--                    </div>-->
-<!--                    <div class="modal-footer">-->
-<!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    -->
+                                <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='radio'">{{param.parameterName}}
+                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
+                                                        <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </span>
+                                </label>
+                                <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='radio'">
+                                    <div class="custom-control-inline custom-control custom-radio" v-for="(option,index4) in param.parameterSettingInfo.options">
+                                        <input class="custom-control-input" type="radio" :id="algorithm.algorithmName+param.parameterName+index4" :value="option" :name="algorithm.algorithmName+param.parameterName">
+                                        <label class="custom-control-label" :for="algorithm.algorithmName+param.parameterName+index4">{{option}}</label>
+                                    </div>
+                                </div>
+                                <div class="col-4" v-if="param.parameterSettingInfo.type=='radio'"></div>
+
+                                <label :for="algorithm.algorithmName+param.parameterName+'Basic'" class="col-2 p-2" v-if="param.parameterSettingInfo.type=='checkbox'">{{param.parameterName}}
+                                    <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="param.parameterDescription">
+                                                        <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </span>
+                                </label>
+                                <div class="input-group mb-3 col-6" v-if="param.parameterSettingInfo.type=='checkbox'">
+                                    <div class="custom-control-inline custom-control custom-checkbox" v-for="(option,index5) in param.parameterSettingInfo.options">
+                                        <input class="custom-control-input" type="checkbox" :id="algorithm.algorithmName+param.parameterName+index5" :value="option" :name="algorithm.algorithmName+param.parameterName">
+                                        <label class="custom-control-label" :for="algorithm.algorithmName+param.parameterName+index5">{{option}}</label>
+                                    </div>
+                                </div>
+                                <div class="col-4" v-if="param.parameterSettingInfo.type=='checkbox'"></div>
+                            </div>
+                        </div>
+                        <div class="card mb-4 shadow-sm">
+                            <div class="alert alert-warning text-center" role="alert">
+                                {{algorithm_setting2}}
+                            </div>
+                            <div class="row m-0" v-for="(ps,index2) in ProcedureSettingsList[algorithm.algorithmId]">
+                                <div class="col-3 p-2">
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                        <input type="checkbox" class="custom-control-input" :id="algorithm.algorithmName+ps.name+'Procedure'" :name="algorithm.algorithmName+ps.name+'Check'+(index2+1)" :checked="ps.state=='optional'?null:'checked'" :disabled="ps.state=='required'?'disabled':null" @change="changeDisabled($event,algorithm.algorithmName+ps.name)">
+                                        <label class="custom-control-label" :for="algorithm.algorithmName+ps.name+'Procedure'">{{ps.name}}</label>
+                                        <span data-container="body" data-toggle="popover" data-placement="bottom" :data-content="ps.description">
+                                                            <svg class="bi bi-info-circle-fill text-success position-absolute" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </span>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3 col-9">
+                                    <select class="custom-select" :id="algorithm.algorithmName+ps.name+'select'" :name="algorithm.algorithmName+ps.name" :disabled="ps.state=='optional'?'disabled':null">
+                                        <option v-for="(option,index3) in ps.options" :selected="option==ps.defaultOption?'selected':null" :value="option">{{option}}</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" @click="setProcedureDefault(algorithm,ps)">{{algorithm_setting_btn1}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <span class="text-success"></span>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{modal_btn_cancel}}</button>
+                        <button type="button" class="btn btn-primary" @click="saveAlgorithmSettings($event,algorithm)">{{algorithm_setting_save}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 </body>
 <script src="/js/execution/visitor/execution.js"></script>

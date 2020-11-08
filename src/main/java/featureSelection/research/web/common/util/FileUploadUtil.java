@@ -5,7 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -55,5 +57,13 @@ public class FileUploadUtil {
             e.printStackTrace();
         }
         return "fail";
+    }
+
+    public List<String> uploadFiles(MultipartFile[] uploadFile,String UPLOAD_PATH_PREFIX) {
+        List<String> result = new ArrayList<>();
+        for (MultipartFile file : uploadFile) {
+            result.add(uploadFIle(file, UPLOAD_PATH_PREFIX));
+        }
+        return result;
     }
 }

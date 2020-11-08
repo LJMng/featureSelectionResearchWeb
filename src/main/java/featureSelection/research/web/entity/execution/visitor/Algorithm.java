@@ -23,6 +23,7 @@ public class Algorithm {
   private String algorithmUsage;
   private String algorithmEnDescription;
   private String algorithmDoc;
+  private String algorithmType;
 
   public String getAlgorithmEnDescription() {
     return algorithmEnDescription;
@@ -198,5 +199,13 @@ public class Algorithm {
 
   public void setAlgorithmDoc(String algorithmDoc) {
     this.algorithmDoc = algorithmDoc;
+  }
+
+  public String getAlgorithmType() {
+    return algorithmType;
+  }
+
+  public void setAlgorithmType(String algorithmType) {
+    this.algorithmType = algorithmType;
   }
 }
