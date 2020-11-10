@@ -185,8 +185,8 @@ var app = new Vue({
         new_task_step1_h2: '',
         new_task_step1_p1: '',
         new_task_step1_a1: '',
-        //------------------NewSteamTaskContext-----------------
-        new_steam_task_upload_title: '',
+        //------------------NewstreamTaskContext-----------------
+        new_stream_task_upload_title: '',
         //------------------QueryTaskContext-----------------
         task_list: [],
         temp_task_info: {},
@@ -283,8 +283,8 @@ var app = new Vue({
         if (sessionStorage.getItem('currentTag')=='nav-new-tab') {
             this.currentNewTask = 'normal'
         }
-        if (sessionStorage.getItem('currentTag')=='nav-new-steam-tab') {
-            this.currentNewTask = 'steam'
+        if (sessionStorage.getItem('currentTag')=='nav-new-stream-tab') {
+            this.currentNewTask = 'stream'
         }
     },
     methods: {
@@ -352,8 +352,8 @@ var app = new Vue({
                 if (event.target.id=='nav-new-tab') {
                     this.currentNewTask = 'normal'
                 }
-                if (event.target.id=='nav-new-steam-tab') {
-                    this.currentNewTask = 'steam';
+                if (event.target.id=='nav-new-stream-tab') {
+                    this.currentNewTask = 'stream';
                 }
                 sessionStorage.setItem('currentTag',event.target.id);
                 window.location.href = '/execution';
@@ -979,10 +979,10 @@ $(function () {
             $('#nav-dataset').addClass('show');
             $('#nav-dataset').addClass('active');
             break;
-        case "nav-new-steam-tab":
-            $('#nav-new-steam-tab').addClass('show');
-            $('#nav-new-steam-tab').addClass('active');
-            $('#nav-new-steam-tab').attr('aria-selected', 'true');
+        case "nav-new-stream-tab":
+            $('#nav-new-stream-tab').addClass('show');
+            $('#nav-new-stream-tab').addClass('active');
+            $('#nav-new-stream-tab').attr('aria-selected', 'true');
             $('#nav-new').addClass('show');
             $('#nav-new').addClass('active');
             break;

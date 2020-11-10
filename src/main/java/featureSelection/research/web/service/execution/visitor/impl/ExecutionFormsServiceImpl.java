@@ -103,10 +103,10 @@ public class ExecutionFormsServiceImpl implements IExecutionFormsService {
             for (int i=0; i<attributes.length; i++){
                 attributes[i] = i+1;
             }
-            task.setDatasetUpload(filePath.toString());
+            task.setDatasetUpload(objectMapper.writeValueAsString(filePath));
             task.setDatasetId(null);
             parameterFormat.setColumn(columnNum);
-            parameterFormat.setDatasetName(filePath.get(0).substring(filePath.lastIndexOf(File.separator)+1));
+            parameterFormat.setDatasetName(filePath.get(0).substring(filePath.get(0).lastIndexOf(File.separator)+1));
             parameterFormat.setAttributes(attributes);
         }else {
             int columnNum = datasetMapper.getDatasetDimensionById(task.getDatasetId());
