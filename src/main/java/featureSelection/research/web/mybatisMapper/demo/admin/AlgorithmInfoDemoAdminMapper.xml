@@ -29,7 +29,7 @@
 
     <!--增加算法信息-->
     <insert id="insertAlgorithmInfoDemoAdmin" parameterType="featureSelection.research.web.entity.execution.admin.Algorithm" useGeneratedKeys="true" keyProperty="algorithmId">
-        insert into algorithm (algorithm_name,algorithm_name_mapper,algorithm_paper_reference, algorithm_description, algorithm_paper_link, algorithm_call_interface,algorithm_call_host,algorithm_call_exchange,algorithm_call_demo_routingkey,algorithm_call_execution_connect_routingkey,algorithm_call_execution_send_routingkey,algorithm_call_port,algorithm_call_username,algorithm_call_password,algorithm_usage,algorithm_en_description)
+        insert into algorithm (algorithm_name,algorithm_name_mapper,algorithm_paper_reference, algorithm_description, algorithm_paper_link, algorithm_call_interface,algorithm_call_host,algorithm_call_exchange,algorithm_call_demo_routingkey,algorithm_call_execution_connect_routingkey,algorithm_call_execution_send_routingkey,algorithm_call_port,algorithm_call_username,algorithm_call_password,algorithm_usage,algorithm_en_description,algorithm_type)
         values (
             #{algorithmName},
             #{algorithmNameMapper},
@@ -46,7 +46,8 @@
             #{algorithmCallUsername},
             #{algorithmCallPassword},
             #{algorithmUsage},
-            #{algorithmEnDescription}
+            #{algorithmEnDescription},
+            #{algorithmType}
         )
     </insert>
     <!--增加参数信息-->
