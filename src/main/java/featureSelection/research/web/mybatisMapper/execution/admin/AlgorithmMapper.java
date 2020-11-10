@@ -26,14 +26,20 @@ public interface AlgorithmMapper {
     public void setAvailableDataset4Algorithm(AvailableDataset4Algorithm availableDataset4Algorithm);
 
     @Select("select algorithm_id from algorithm where algorithm_name=#{algorithmName}")
-    public int getAlgorithmIdByName(String algorithmName);
+    public Integer getAlgorithmIdByName(String algorithmName);
 
     @Select("select parameter_id from parameter where parameter_name = #{parameterName}")
-    public int getParameterIdByName(String parameterName);
+    public Integer getParameterIdByName(String parameterName);
 
     @Select("select available_datasets from algorithm where algorithm_id = #{algorithmId}")
     public String getAvailableDatasetByAlgorithmId(int algorithmId);
 
     @Select("select parameter_id from parameter where parameter_name = #{parameterName} and algorithm_id = #{algorithmId}")
     public int getParameterIdByNameAndAlgorithmId(String parameterName,int algorithmId);
+
+    @Select("select * from algorithm where algorithm_name = #{algorithmName}")
+    public Algorithm getAlgorithmByName(String algorithmName);
+
+    @Select("select * from algorithm where algorithm_id = #{algorithmId}")
+    public Algorithm getAlgorithmById(Integer algorithmId);
 }

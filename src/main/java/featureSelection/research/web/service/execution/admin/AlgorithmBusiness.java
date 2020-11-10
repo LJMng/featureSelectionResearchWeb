@@ -48,7 +48,7 @@ public interface AlgorithmBusiness {
      * 给对应的算法添加新的参数
      * @param parameterInfo 封装算法信息的实体类
      */
-    public void createParameters(ParameterInfo parameterInfo);
+    public String createParameters(ParameterInfo parameterInfo);
 
     /**
      * 查找所有参数信息
@@ -84,7 +84,7 @@ public interface AlgorithmBusiness {
      * 根据算法详细信息的excel文件，添加算法的信息，算法参数,算法步骤
      * @param excel
      */
-    public void addAlgorithmInfoByExcelFile(MultipartFile excel) throws Exception;
+    public String addAlgorithmInfoByExcelFile(MultipartFile excel) throws Exception;
 
     /**
      * 获取算法中的所有参数信息
@@ -104,7 +104,7 @@ public interface AlgorithmBusiness {
 
     public List<ProcedureSettings> getProcedureInfosByAlgorithmId(int algorithmId);
 
-    public ProcedureSettings getProcedureSettingByName(String name);
+    public ProcedureSettings getProcedureSettingByName(String name,int algorithmId);
 
     public void updateProcedure(ProcedureSettings procedureSettings);
 

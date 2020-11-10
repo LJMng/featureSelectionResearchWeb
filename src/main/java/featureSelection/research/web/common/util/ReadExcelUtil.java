@@ -92,7 +92,6 @@ public class ReadExcelUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
         return algorithms;
     }
 
@@ -115,7 +114,6 @@ public class ReadExcelUtil {
                 }
                 //开始解析
                 Sheet sheet = wb.getSheetAt(2);     //读取sheet 3
-
                 int firstRowIndex = sheet.getFirstRowNum()+3;   //第一行添加算法的标题，第二行是算法信息的列名，所以从第三行开始读取数据
                 int lastRowIndex = sheet.getLastRowNum();
 //                System.out.println("firstRowIndex: "+firstRowIndex);
@@ -128,7 +126,7 @@ public class ReadExcelUtil {
                     if (row != null) {
                         int firstCellIndex = row.getFirstCellNum();
                         int lastCellIndex = row.getLastCellNum();
-                        ProcedureSettings procedureSetting=new ProcedureSettings();
+//                        ProcedureSettings procedureSetting=new ProcedureSettings();
                         //封装单个算法步骤信息的数组,数组的最大长度为8即可支持所有信息的添加
                         String [] procedureSettingsInfo = new String[9];
                         for (int cIndex = firstCellIndex; cIndex < lastCellIndex; cIndex++) {   //遍历列
@@ -139,7 +137,10 @@ public class ReadExcelUtil {
                             }
                         }
                         //根据封装成的数组，给procedureSetting对象对应的属性赋值
-                        int algorithmId=algorithmMapper.getAlgorithmIdByName(procedureSettingsInfo[1]);
+                        ProcedureSettings procedureSetting=new ProcedureSettings();
+//                        System.out.println(procedureSetting);
+                        Integer algorithmId=algorithmMapper.getAlgorithmIdByName(procedureSettingsInfo[1]);
+//                        System.out.println(algorithmId);
                         procedureSetting.setAlgorithmId(algorithmId);
                         procedureSetting.setName(procedureSettingsInfo[2]);
                         procedureSetting.setNameMapper(procedureSettingsInfo[3]);
@@ -395,7 +396,7 @@ public class ReadExcelUtil {
                         }
                         parameterSettingInfo = parameterSettingInfo + extraInfo + "}}";
                         Parameter parameter = new Parameter();
-                        int algorithmId = algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName());
+                        Integer algorithmId = algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName());
                         parameter.setAlgorithmId(algorithmId);
                         parameter.setParameterName(parameterExcelRowObject.getParameterName());
                         parameter.setParameterNameMapper(parameterExcelRowObject.getParameterNameMapper());
@@ -417,7 +418,7 @@ public class ReadExcelUtil {
                         //根据options生成实际的parameterSettingInfo
                         parameterSettingInfo = parameterSettingInfo + options + "],\"optionExtra\":null}";
                         Parameter parameter = new Parameter();
-                        int algorithmId = algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName());
+                        Integer algorithmId = algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName());
                         parameter.setAlgorithmId(algorithmId);
                         parameter.setParameterName(parameterExcelRowObject.getParameterName());
                         parameter.setParameterNameMapper(parameterExcelRowObject.getParameterNameMapper());
@@ -482,7 +483,7 @@ public class ReadExcelUtil {
 
         for (ParameterExcelRowObject parameterExcelRowObject:parameterExcelRowObjectList){
             WebAlgorithmMapperEntity webAlgorithmMapperEntity = new WebAlgorithmMapperEntity();
-            int algorithmId=algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName());
+            Integer algorithmId=algorithmMapper.getAlgorithmIdByName(parameterExcelRowObject.getAlgorithmName());
             webAlgorithmMapperEntity.setAlgorithmId(algorithmId);
             webAlgorithmMapperEntity.setParameterId(algorithmMapper.getParameterIdByNameAndAlgorithmId(parameterExcelRowObject.getParameterName(),algorithmId));
             webAlgorithmMapperEntity.setWebKey(parameterExcelRowObject.getParameterValue());
@@ -521,6 +522,7 @@ public class ReadExcelUtil {
             }
         }
         for (WebAlgorithmMapperEntity webAlgorithmMapperEntity:addAlgorithmValueList){
+
             webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
         }
 

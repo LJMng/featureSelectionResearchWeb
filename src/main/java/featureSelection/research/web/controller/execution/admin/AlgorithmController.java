@@ -124,10 +124,10 @@ public class AlgorithmController {
     }
 
     @PostMapping("/addProcedureSetting")
-   public String addProcedureSettings(@RequestBody ProcedureSettings procedureSettings){
+   public @ResponseBody String addProcedureSettings(@RequestBody ProcedureSettings procedureSettings){
         algorithmBusiness.addProcedureSettings(procedureSettings);
         procedureService.insertSchemeProcedureAfterDeleteDemoAdmin(procedureSettings);
-        return "redirect:/pages/execution/admin/algorithm.html";
+        return "success";
    }
 
    @GetMapping("/findAllProcedureSetting")
@@ -143,8 +143,8 @@ public class AlgorithmController {
    }
 
    @PostMapping("/createParameters")
-   public void createParameters(@RequestBody ParameterInfo parameterInfo){
-        algorithmBusiness.createParameters(parameterInfo);
+   public @ResponseBody String createParameters(@RequestBody ParameterInfo parameterInfo){
+         return algorithmBusiness.createParameters(parameterInfo);
    }
 
    @GetMapping(value = "/getAlgorithms")
@@ -180,9 +180,8 @@ public class AlgorithmController {
 
 
     @PostMapping(value = "/addAlgorithmInfoByExcelFile")
-    public String addAlgorithmInfoByExcelFile(@RequestParam("algorithmInfoExcel") MultipartFile excel) throws Exception {
-        algorithmBusiness.addAlgorithmInfoByExcelFile(excel);
-        return "redirect:/pages/execution/admin/algorithm.html";
+    public @ResponseBody String addAlgorithmInfoByExcelFile(@RequestParam("algorithmInfoExcel") MultipartFile excel) throws Exception {
+        return algorithmBusiness.addAlgorithmInfoByExcelFile(excel);
     }
 
     @GetMapping(value = "/getParametersInfoByAlgorithmId")
@@ -207,9 +206,9 @@ public class AlgorithmController {
 
     }
 
-    @GetMapping(value = "/getProcedureSettingByName")
-    public ProcedureSettings getProcedureSettingByName(@RequestParam("name") String name){
-        return algorithmBusiness.getProcedureSettingByName(name);
+    @GetMapping(value = "/getProcedureSettingByNameAndAlgorithmId")
+    public ProcedureSettings getProcedureSettingByNameAndAlgorithmId(@RequestParam("name") String name,@RequestParam("algorithmId") int algorithmId){
+        return algorithmBusiness.getProcedureSettingByName(name,algorithmId);
     }
 
     @PostMapping(value = "/updateProcedure")

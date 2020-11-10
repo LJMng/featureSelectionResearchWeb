@@ -32,4 +32,7 @@ public interface AlgorithmParamMapper {
 
     @Select("select * from parameter where parameter_id = #{parameterId}")
     public Parameter getParameterInfoByParameterId(int parameterId);
+
+    @Select("select * from parameter where algorithm_id = #{algorithmId} and parameter_name = #{parameterName}")
+    public Parameter getParameterInfoByAlgorithmIdAndParameterName(Integer algorithmId, String parameterName);
 }

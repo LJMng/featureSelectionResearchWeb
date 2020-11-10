@@ -12,7 +12,7 @@ import java.util.List;
  * @Date: 2020-07-18
  */
 public class Algorithm implements Serializable {
-    private int algorithmId;
+    private Integer algorithmId;
     private String algorithmName;
     private String algorithmType;
     private String algorithmPaperReference;
@@ -50,11 +50,11 @@ public class Algorithm implements Serializable {
         return algorithmParameterDemoAdmin;
     }
 
-    public int getAlgorithmId() {
+    public Integer getAlgorithmId() {
         return algorithmId;
     }
 
-    public void setAlgorithmId(int algorithmId) {
+    public void setAlgorithmId(Integer algorithmId) {
         this.algorithmId = algorithmId;
     }
 

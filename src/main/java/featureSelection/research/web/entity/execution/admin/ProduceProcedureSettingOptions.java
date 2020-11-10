@@ -7,15 +7,15 @@ import java.io.Serializable;
  * @Author 马凯健
  */
 public class ProduceProcedureSettingOptions implements Serializable {
-    private int algorithmId;
+    private Integer algorithmId;
     private String procedureName;
     private String procedureOptions;
 
-    public int getAlgorithmId() {
+    public Integer getAlgorithmId() {
         return algorithmId;
     }
 
-    public void setAlgorithmId(int algorithmId) {
+    public void setAlgorithmId(Integer algorithmId) {
         this.algorithmId = algorithmId;
     }
 

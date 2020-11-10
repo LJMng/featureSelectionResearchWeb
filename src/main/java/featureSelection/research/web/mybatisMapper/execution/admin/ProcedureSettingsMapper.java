@@ -27,9 +27,12 @@ public interface ProcedureSettingsMapper {
     @Select("select * from procedure_settings where algorithm_id =#{algorithmId}")
     public List<ProcedureSettings> getProcedureInfosByAlgorithmId(int algorithmId);
 
-    @Select("select * from procedure_settings where name = #{name}")
-    public ProcedureSettings getProcedureSettingByName(String name);
+    @Select("select * from procedure_settings where name = #{name} and algorithm_id = #{algorithmId}")
+    public ProcedureSettings getProcedureSettingByName(String name,int algorithmId);
 
     @Update("update procedure_settings set name_mapper=#{nameMapper},state=#{state},options=#{options},default_option=#{defaultOption},description=#{description} where name=#{name}")
     public void updateProcedureSettingByProcedureSettingName(ProcedureSettings procedureSettings);
+
+    @Select("select * from procedure_settings where algorithm_id = #{algorithmId} and name = #{name} ")
+    public ProcedureSettings getProcedureSettingByAlgorithmIdAndName(Integer algorithmId, String name);
 }

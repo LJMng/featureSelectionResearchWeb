@@ -9,8 +9,8 @@ import java.io.Serializable;
  * @Date: 2020-07-18
  */
 public class ProcedureSettings implements Serializable {
-    private int id;
-    private int algorithmId;
+    private Integer id;
+    private Integer algorithmId;
     private String name;
     private String state;
     private String options;
@@ -29,11 +29,11 @@ public class ProcedureSettings implements Serializable {
         this.id = id;
     }
 
-    public int getAlgorithmId() {
+    public Integer getAlgorithmId() {
         return algorithmId;
     }
 
-    public void setAlgorithmId(int algorithmId) {
+    public void setAlgorithmId(Integer algorithmId) {
         this.algorithmId = algorithmId;
     }
 

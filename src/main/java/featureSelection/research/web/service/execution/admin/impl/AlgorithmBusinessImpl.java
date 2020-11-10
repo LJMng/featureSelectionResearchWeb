@@ -98,7 +98,7 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     }
 
     @Override
-    public void createParameters(ParameterInfo parameterInfo) {
+    public String createParameters(ParameterInfo parameterInfo) {
         //遍历parameterInfo里面的一个数组 封装成parameter对象
         String[] parameterNames=parameterInfo.getParameterNames();
         //存放算法id
@@ -292,10 +292,8 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
                 webAlgorithmMapperEntity.setParameterId(parameterId);
                 webAlgorithmMapper.insertParameterAlgorithmValue(webAlgorithmMapperEntity);
             }
-
-
-
         }
+        return "success";
     }
 
     @Override
@@ -373,33 +371,91 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
      */
     @Override
     @Transactional
-    public void addAlgorithmInfoByExcelFile(MultipartFile excel) throws Exception {
+    public String addAlgorithmInfoByExcelFile(MultipartFile excel) throws Exception {
+        /*
+        1.文件内容检验：excel的算法三个sheet表都不是为必填字段
+        2.sheet1为算法信息添加，数据库要求其算法名称不可重复，否则在添加的时候数据库查询会发生found2的Exception
+        3.sheet2为算法参数信息，在内容要求上，算法名称必须为数据库中以及存在的算法名称（或者在本次添加中sheet1已经添加的算法），同时，同一个算法的参数不能同名
+        4.sheet3为算法步骤信息，在内容要求上，算法名称必须为数据库中已经存在的算法名称（或者在本次添加中sheet1已经添加的算法），同时，同一个算法的参数不能同名
+         */
         //获取excel文件对象,MultipartFile转化为普通的io文件对象File
         File algorithmInfoExcel=fileUtil.multipartFileToFile(excel);
         //根据上传的excel对象获取sheet0中的算法信息列表
         List<Algorithm> algorithms=readExcelUtil.readAlgorithmInfoByExcelFile(algorithmInfoExcel);
+        //遍历算法列表，判断该算法列表是否存在已经添加过的算法
+        for(Algorithm algorithm:algorithms){
+            Algorithm currentAlgorithm=algorithmMapper.getAlgorithmByName(algorithm.getAlgorithmName());
+            if (currentAlgorithm !=null){
+                //返回重复算法名信息
+                return "repetitionAlgorithmName";
+            }else if (currentAlgorithm == null){
+                algorithmInfoDemoAdminMapper.insertAlgorithmInfoDemoAdmin(algorithm);
+            }else{
+                continue;
+            }
+        }
+
         //遍历算法信息列表，添加算法信息
-        for (Algorithm algorithm:algorithms){
-            //添加算法的算法，调用到了demo管理系统中的AlgorithmInfoDemoAdminMapper接口
-            algorithmInfoDemoAdminMapper.insertAlgorithmInfoDemoAdmin(algorithm);
-        }
+//        for (Algorithm algorithm:algorithms){
+//            //添加算法的算法，调用到了demo管理系统中的AlgorithmInfoDemoAdminMapper接口
+//            algorithmInfoDemoAdminMapper.insertAlgorithmInfoDemoAdmin(algorithm);
+//        }
+
         List<ProcedureSettings> procedureSettings=readExcelUtil.readProcedureSettingInfoByExcelFile(algorithmInfoExcel);
-        //遍历步骤列表，添加步骤信息
-        for(ProcedureSettings procedureSetting:procedureSettings){
-            procedureSettingsMapper.addProcedureSetting(procedureSetting);
+        //遍历步骤列表，判断步骤信息对应的算法是否存在
+        for (ProcedureSettings procedureSetting:procedureSettings){
+            Algorithm algorithm = algorithmMapper.getAlgorithmById(procedureSetting.getAlgorithmId());
+            //查询步骤名称，算法Id对应的procedureSettings是否存在
+            ProcedureSettings currProcedureSettings = new ProcedureSettings();
+            if (procedureSetting.getAlgorithmId() != null){
+                currProcedureSettings = procedureSettingsMapper.
+                        getProcedureSettingByAlgorithmIdAndName(procedureSetting.getAlgorithmId(),
+                                procedureSetting.getName());
+            }
+            if (algorithm == null){
+                //算法信息不存在,返回添加算法步骤不能找到对应算法信息
+                return "notFindAlgorithmInfo";
+            }else if (currProcedureSettings != null){
+                return "repetitionProcedureInfo";
+            }else{
+                //添加步骤信息
+                procedureSettingsMapper.addProcedureSetting(procedureSetting);
+            }
         }
+        //遍历步骤列表，添加步骤信息
+//        for(ProcedureSettings procedureSetting:procedureSettings){
+//            procedureSettingsMapper.addProcedureSetting(procedureSetting);
+//        }
         //遍历算法参数列表，添加参数信息
         Map<String,Object> algorithmInfoMapper = readExcelUtil.readParameterInfoByExcelFile(algorithmInfoExcel);
-
         List<Parameter> parameters= (List<Parameter>) algorithmInfoMapper.get("parameters");
         List<ParameterExcelRowObject> parameterExcelRowObjectList= (List<ParameterExcelRowObject>) algorithmInfoMapper.get("parameterExcelRowObjectList");
+        //遍历参数信息
         for (Parameter parameter:parameters){
-            algorithmMapper.createParameter(parameter);
+            Algorithm algorithm = algorithmMapper.getAlgorithmById(parameter.getAlgorithmId());
+            //查询参数名称，算法Id对应的procedureSettings是否存在
+            Parameter currentParameter = new Parameter();
+            if (parameter.getAlgorithmId() !=null){
+                currentParameter = algorithmParamMapper.
+                        getParameterInfoByAlgorithmIdAndParameterName
+                                (parameter.getAlgorithmId(),
+                                        parameter.getParameterName());
+            }
+            if (algorithm == null){
+                return "notFindAlgorithmInfo";
+            }else if (currentParameter != null){
+                return "repetitionParameterInfo";
+            }else {
+                algorithmMapper.createParameter(parameter);
+            }
         }
+//        for (Parameter parameter:parameters){
+//            algorithmMapper.createParameter(parameter);
+//        }
 //        System.out.println(parameterExcelRowObjectList);
         //添加映射值内容
         readExcelUtil.addParameterMapper(parameterExcelRowObjectList);
-
+        return "success";
     }
 
     @Override
@@ -535,8 +591,8 @@ public class AlgorithmBusinessImpl implements AlgorithmBusiness {
     }
 
     @Override
-    public ProcedureSettings getProcedureSettingByName(String name) {
-        ProcedureSettings procedureSettings = procedureSettingsMapper.getProcedureSettingByName(name);
+    public ProcedureSettings getProcedureSettingByName(String name,int algorithmId) {
+        ProcedureSettings procedureSettings = procedureSettingsMapper.getProcedureSettingByName(name,algorithmId);
         String options=procedureSettings.getOptions();
         String [] optionValues=options.split(",");
         String optionsMapper="";
