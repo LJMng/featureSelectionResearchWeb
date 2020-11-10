@@ -17,8 +17,7 @@ $(function () {
 
 });
 
-$('#datasetId').dropdown();
-
+// $('#datasetId').dropdown();
 $(document).ready(function() {
     $('.multi-step').MultiStep({
         title:'步骤框',
@@ -280,9 +279,19 @@ var vm =new Vue({
         //每个算法的参数信息，用于在缓冲区回显算法参数信息
         algorithmProcedures:{},
         //存储算法已经已经添加数据集的数组
-        datasetAdded:[]
-
-
+        datasetAdded:[],
+        //用excel文件添加算法信息结果回显
+        addAlgorithmInfoByExcelResult:'',
+        //excel文件添加算法结果信息样式设置
+        addAlgorithmByExcelFileResult:'',
+        //添加参数回显文本
+        addParameterResultText:'',
+        //添加参数回显文本样式
+        addParameterResultClass:'',
+        //添加步骤信息回显文本
+        addProcedureResultText:'',
+        //添加步骤信息回显文本样式
+        addProcedureResultClass:''
     },
     created:function () {
         //算法方案初始化方法
@@ -430,24 +439,33 @@ var vm =new Vue({
                 axios.post('/addAlgorithmInfoByExcelFile',inputFile,{
                     'Content-Type':'multipart/form-data'
                 }).then((response) => {
-                    if(response.data == "success"){
+                    console.log(response.data)
+                    if(response.data === "repetitionAlgorithmName"){
                         $('#addAlgorithmInfoByExcelFileResult').html('' +
-                            '<div class="alert alert-success alert-dismissible fade show" role="alert" id="datasetFormAlert">\n' +
-                            '  <strong>Submit Success!</strong>You can click \'Check My Uploads\' to Check your uploads\'status anytime.\n' +
-                            '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
-                            '    <span aria-hidden="true">&times;</span>\n' +
-                            '  </button>\n' +
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert" id="addAlgorithmInfoResult">\n' +
+                            '  <strong> 上传算法信息失败 !</strong>请不要添加算法名重复的算法，请检查您的excel文件的算法名称 ！' +
                             '</div>');
-                    }else {
+                    }else if(response.data === "notFindAlgorithmInfo") {
                         $('#addAlgorithmInfoByExcelFileResult').html('' +
-                            '<div class="alert alert-danger alert-dismissible fade show" role="alert" id="datasetFormAlert">\n' +
-                            '  <strong>Error!</strong>Please Check Your Form!\n' +
-                            '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
-                            '    <span aria-hidden="true">&times;</span>\n' +
-                            '  </button>\n' +
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert" id="addAlgorithmInfoResult">\n' +
+                            '  <strong>上传算法信息失败 !</strong>找不到要添加参数、步骤的算法，请检查是否有对应的算法 ！' +
+                            '</div>');
+                    }else if (response.data === "repetitionProcedureInfo"){
+                        $('#addAlgorithmInfoByExcelFileResult').html('' +
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert" id="addAlgorithmInfoResult">\n' +
+                            '  <strong>上传算法信息失败 !</strong>请不要重复添加同个算法步骤信息，请检查您的excel文件！' +
+                            '</div>');
+                    }else if (response.data === "repetitionParameterInfo"){
+                        $('#addAlgorithmInfoByExcelFileResult').html('' +
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert" id="addAlgorithmInfoResult">\n' +
+                            '  <strong>上传算法信息失败 !</strong>请不要重复添加同个算法参数信息，请检查您的excel文件！' +
+                            '</div>');
+                    }else if(response.data === "success"){
+                        $('#addAlgorithmInfoByExcelFileResult').html('' +
+                            '<div class="alert alert-success alert-dismissible fade show" role="alert" id="addAlgorithmInfoResult">\n' +
+                            '  <strong> 上传算法信息成功 ！ </strong> 您可以在管理页面查看添加的算法信息。' +
                             '</div>');
                     }
-                    window.location.reload();
                 })
                 }
             },
@@ -890,21 +908,24 @@ var vm =new Vue({
         },
         //添加算法参数信息
         createParameter(){
-            //设置firstParameterValues[0][m-1]
-            //firstAlgorithmParameterValues[0][m-1]
-            //secondParameterTypes[0][m-1]
-            //secondParameterValues[0][m-1]
-            //secondAlgorithmParameterValues[0][m-1]
-            //parameterInfo中对应的信息
+            $("#addParameterResult").hide()
             this.parameterInfo.firstParameterVales=this.firstParameterValues;
             this.parameterInfo.firstAlgorithmParameterValues=this.firstAlgorithmParameterValues;
             this.parameterInfo.secondParameterTypes=this.secondParameterTypes;
             this.parameterInfo.secondParameterValues=this.secondParameterValues;
             this.parameterInfo.secondAlgorithmParameterValues=this.secondAlgorithmParameterValues;
             axios.post('/createParameters',this.parameterInfo)
-                .then(() => {
-                    //添加完成清除parameterInfo数据
-                    this.clearParameterInfo();
+                .then((response) => {
+                    console.log(response.data)
+                    if (response.data === 'success'){
+                        this.addParameterResultText='添加参数信息成功 !您可以查看在算法管理页面查询新添的参数。';
+                        this.addParameterResultClass='text-success';
+                        $("#addParameterResult").show();
+                    }else {
+                        this.addParameterResultText="添加参数信息失败 !请检查您添加的参数信息。";
+                        this.addParameterResultClass="text-danger";
+                        $("#addParameterResult").show();
+                    }
                 })
                 .catch(err => {
                     console.log(err);
@@ -1005,9 +1026,18 @@ var vm =new Vue({
         },
         //新增算法步骤
         createProcedureSetting(){
+            $('#addProcedureResult').hide();
             axios.post('/addProcedureSetting',this.procedureSetting)
-                .then(() => {
-                    window.location.reload();
+                .then((response) => {
+                    if (response.data === "success"){
+                        this.addProcedureResultText = "添加步骤信息成功！您可以在算法管理页面查看新增的步骤信息。";
+                        this.addProcedureResultClass = "text-success"
+                        $('#addProcedureResult').show();
+                    }else{
+                        this.addProcedureResultText = "添加步骤信息失败！请检查您添加的步骤信息。";
+                        this.addProcedureResultClass = "text-danger"
+                        $('#addProcedureResult').show();
+                    }
                 })
                 .catch(err => {
                     console.log(err);
@@ -1164,8 +1194,8 @@ var vm =new Vue({
                 console.log(err)
             })
         },
-        getProcedureInfo:function (name) {
-            axios.get('/getProcedureSettingByName?name='+name).then((response) =>{
+        getProcedureInfo:function (name,algorithmId) {
+            axios.get('/getProcedureSettingByNameAndAlgorithmId?name='+name+'&algorithmId='+algorithmId).then((response) =>{
                 this.procedureSetting=response.data;
             }).catch(err=>{
                 console.log(err)

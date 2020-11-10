@@ -14,6 +14,7 @@ $(function () {
 });
 
 $('#updateAlgorithmPowerName').dropdown();
+$('#updateAlgorithmPowerName').selectpicker();
 
 var vm =new Vue({
     el:"#accountData",

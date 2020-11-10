@@ -1431,6 +1431,7 @@
                                     </div>
                                     <hr>
                                 </div>
+                                <div id="addParameterResult" v-bind:class="addParameterResultClass" style="text-align: center">{{addParameterResultText}}</div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="clearParameterInfo()" data-dismiss="modal">取消</button>
@@ -1619,7 +1620,7 @@
                                         <div class="row">
                                             <div class="col-md-8">
                                                 <button class="btn btn-link" data-toggle="modal" data-target="#procedureDetail"
-                                                        @click="getProcedureInfo(algorithmProcedure.name)"
+                                                        @click="getProcedureInfo(algorithmProcedure.name,algorithmProcedure.algorithmId)"
                                                 >{{algorithmProcedure.name}}</button>
                                             </div>
                                             <div class="col-md-4">
@@ -1702,6 +1703,7 @@
                                                class="form-control" required>
                                     </div>
                                 </div>
+                                <div id="addProcedureResult" v-bind:class="addProcedureResultClass" style="text-align: center">{{addProcedureResultText}}</div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
