@@ -251,7 +251,7 @@
                             <td>{{account.accountEmail}}</td>
                             <td>
                                 <button class="btn btn-primary" data-toggle="modal" v-bind:data-target='"#updateAccount"+account.accountId' @click="setUpdateAccountInfo(account)">修改用户信息</button>
-                                <button class="btn btn-warning" data-toggle="modal" data-target="#setAccountPower"  @click="getAlgorithms(account.accountId)">设置用户权限</button>
+                                <button class="btn btn-warning" data-toggle="modal" data-target="#setAccountPower"  @click="setAccountPowerInfoAccountId(account.accountId)">设置用户权限</button>
                                 <button class="btn btn-md btn-danger" data-toggle="modal" v-bind:data-target='"#deleteAccount"+account.accountId' >删除用户</button>
                             </td>
                         </tr>
@@ -369,8 +369,8 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="updateAlgorithmPowerName" class="col-form-label">算法名称:</label>
-                                    <select class="selectpicker" id="updateAlgorithmPowerName" v-model="setAccountPowerInfo.algorithmName" data-live-search="true" >
-                                        <option v-bind:data-tokens="algorithm.algorithmName" v-for="algorithm in updateAccountPowerAlgorithms">{{algorithm.algorithmName}}</option>
+                                    <select class="custom-select" id="updateAlgorithmPowerName" v-model="setAccountPowerInfo.algorithmName" @change="getAccountPower(setAccountPowerInfo.algorithmName)">
+                                        <option v-for="algorithm in updateAccountPowerAlgorithms">{{algorithm.algorithmName}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -387,11 +387,11 @@
                                         <option>false</option>
                                     </select>
                                 </div>
-                                <div id="setAccountPowerResult" text-algin="center" v-bind:class="resultTextCss">{{setAccountPowerResult}}</div>
+                                <div id="setAccountPowerResult"style="text-align: center" v-bind:class="resultTextCss">{{setAccountPowerResult}}</div>
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="clearSetAccountInfo()">取消</button>
                                 <button type="button" class="btn btn-primary" @click="setAccountPower">修改</button>
                             </div>
                         </div>

@@ -79,7 +79,8 @@
             algorithm_call_username = #{algorithmCallUsername},
             algorithm_call_password = #{algorithmCallPassword},
             algorithm_usage = #{algorithmUsage},
-            algorithm_en_description = #{algorithmEnDescription}
+            algorithm_en_description = #{algorithmEnDescription},
+            algorithm_type = #{algorithmType}
         where algorithm_id = #{algorithmId}
     </update>
 

@@ -78,4 +78,11 @@ public interface AccountBusiness {
     public void unPassAccountAdult(ApplyAccount applyAccount) throws MessagingException;
 
     public void setAccountPower(SetAccountPowerInfo setAccountPowerInfo);
+
+    /**
+     * 根据算法名称，用户ID获取是否拥有对应算法上传、下载文档的权限
+     * @param setAccountPowerInfo
+     * @return
+     */
+    public SetAccountPowerInfo getAccountPower(SetAccountPowerInfo setAccountPowerInfo);
 }

@@ -20,6 +20,7 @@ public class AccountBusinessImpl implements AccountBusiness {
     private EmailUtil emailUtil;
     @Autowired
     private AlgorithmMapper algorithmMapper;
+
     @Override
     public List<Account> getAccounts() {
         List<Account> accounts=accountMapper.getAccounts();
@@ -172,7 +173,6 @@ public class AccountBusinessImpl implements AccountBusiness {
         //将要设置权限的算法Id转成字符串
         int addPowerAlgorithmId = algorithmMapper.getAlgorithmIdByName(setAccountPowerInfo.getAlgorithmName());
         String currAlgorithmId = addPowerAlgorithmId+"";
-        System.out.println(currAlgorithmId);
         //解析accountPower字符串，将accountPower转化为字符串数组
         JSONObject accountPowerJsonObject = JSONObject.parseObject(accountPower);
         String[] downLoadAlgorithmDocArr = accountPowerJsonObject.get("user:download").toString().replace("[","").replace("]","").split(",");
@@ -281,5 +281,43 @@ public class AccountBusinessImpl implements AccountBusiness {
                 downLoadAlgorithmString + "],\"user:upload\":[" +
                 upLoadAlgorithmString + "]}";
         accountMapper.updateAccountPower(setAccountPowerInfo.getAccountId(),accountPowerJsonString);
+    }
+
+    @Override
+    public SetAccountPowerInfo getAccountPower(SetAccountPowerInfo setAccountPowerInfo) {
+        Integer algorithmId = algorithmMapper.getAlgorithmIdByName(setAccountPowerInfo.getAlgorithmName());
+        setAccountPowerInfo.setAlgorithmId(algorithmId);
+        Account account = accountMapper.getAccountById(setAccountPowerInfo.getAccountId());
+        String accountPower = account.getAccountPower();
+        JSONObject accountPowerJSONObject = JSONObject.parseObject(accountPower);
+        String [] accountDownLoadPower = accountPowerJSONObject.get("user:download").toString()
+                .replace("[","")
+                .replace("]","")
+                .split(",");
+        String [] accountUploadPower = accountPowerJSONObject.get("user:upload").toString()
+                .replace("[","")
+                .replace("]","")
+                .split(",");
+        setAccountPowerInfo.setHaveDownloadDocPower("false");
+        setAccountPowerInfo.setHaveUploadDocPower("false");
+        if ( !accountDownLoadPower[0].equals("")){
+            for (String downloadPowerAlgorithmId:accountDownLoadPower){
+                if (Integer.parseInt(downloadPowerAlgorithmId) ==
+                        setAccountPowerInfo.getAlgorithmId()){
+                    setAccountPowerInfo.setHaveDownloadDocPower("true");
+                }
+            }
+        }
+        if (!accountUploadPower[0].equals("")){
+            for (String uploadPowerAlgorithmId:accountUploadPower){
+                if (Integer.parseInt(uploadPowerAlgorithmId) ==
+                        setAccountPowerInfo.getAlgorithmId()){
+                    setAccountPowerInfo.setHaveUploadDocPower("true");
+                }
+            }
+        }
+        SetAccountPowerInfo currentSetAccountPowerInfo = new SetAccountPowerInfo();
+        currentSetAccountPowerInfo =setAccountPowerInfo;
+        return currentSetAccountPowerInfo;
     }
 }

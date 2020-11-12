@@ -880,6 +880,7 @@ var vm =new Vue({
                     this.info.algorithmCallUsername = resp.data.algorithmCallUsername;
                     this.info.algorithmCallPassword = resp.data.algorithmCallPassword;
                     this.info.algorithmEnDescription = resp.data.algorithmEnDescription;
+                    this.info.algorithmType = resp.data.algorithmType;
                 })
                 .catch(err => {
                     console.log(err);

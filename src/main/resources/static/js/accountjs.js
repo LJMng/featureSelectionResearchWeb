@@ -13,8 +13,8 @@ $(function () {
 
 });
 
-$('#updateAlgorithmPowerName').dropdown();
-$('#updateAlgorithmPowerName').selectpicker();
+// $('#updateAlgorithmPowerName').dropdown();
+// $('#updateAlgorithmPowerName').selectpicker();
 
 var vm =new Vue({
     el:"#accountData",
@@ -56,7 +56,7 @@ var vm =new Vue({
             haveUploadDocPower:'',
             haveDownloadDocPower:''
          },
-        updateAccountPowerAlgorithms:{},
+        updateAccountPowerAlgorithms:'',
         setAccountPowerResult:'',
         resultTextCss:''
     },
@@ -93,20 +93,15 @@ var vm =new Vue({
             })
 
         },
-        getAlgorithms:function(accountId){
+        setAccountPowerInfoAccountId:function(accountId){
             $('#setAccountPowerResult').hide();
             this.setAccountPowerInfo.accountId = accountId;
-            axios.get('/getAlgorithms').then((response) => {
-                this.updateAccountPowerAlgorithms = response.data;
-            }).catch((err)=>{
-                console.log(err)
-            })
         },
         setAccountPower:function(){
             this.setAccountPowerInfo.administratorName = $.cookie("administratorName");
             axios.post('/setAccountPower',this.setAccountPowerInfo).then((response) => {
                 this.setAccountPowerResult=response.data;
-                if (this.setAccountPowerResult === "添加用户权限成功！"){
+                if (this.setAccountPowerResult === "修改用户权限成功！"){
                     this.resultTextCss = 'text-success'
                 }else {
                     this.resultTextCss = 'text-danger'
@@ -189,13 +184,36 @@ var vm =new Vue({
             this.applyAccountInfo.administratorId='';
             this.applyAccountInfo.applyId=-1;
             this.applyAccountInfo.applyReason=''
-
+        },
+        clearSetAccountInfo:function(){
+            this.setAccountPowerInfo.accountId=1;
+            this.setAccountPowerInfo.algorithmId=1;
+            this.setAccountPowerInfo.algorithmName='';
+            this.setAccountPowerInfo.administratorName='';
+            this.setAccountPowerInfo.haveUploadDocPower='';
+            this.setAccountPowerInfo.haveDownloadDocPower=''
+        },
+        //获取用户的算法对应的权限对象
+        getAccountPower:function (algorithmName) {
+            this.setAccountPowerInfo.algorithmName=algorithmName;
+            axios.post('/getAccountPower',this.setAccountPowerInfo).then((response) => {
+                this.setAccountPowerInfo = response.data;
+            }).catch((err) =>{
+                console.log(err)
+            })
         }
     },
     created:function () {
         //初始化数值
         var that=this;
-        that.administratorName=$.cookie("administratorName")
+        that.administratorName=$.cookie("administratorName");
+
+        axios.get('/getAlgorithms').then((response) => {
+            console.log(response.data)
+            that.updateAccountPowerAlgorithms = response.data;
+        }).catch((err)=>{
+            console.log(err)
+        })
 
         axios.get('/getAccounts').then(function (response) {
             that.accounts=response.data;

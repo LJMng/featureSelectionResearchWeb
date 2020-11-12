@@ -78,13 +78,17 @@ public class AccountController {
 
     @PostMapping(value = "/setAccountPower")
     public @ResponseBody String setAccountPower(@RequestBody SetAccountPowerInfo setAccountPowerInfo){
-        System.out.println(setAccountPowerInfo);
         if (setAccountPowerInfo.getAdministratorName().equals("root")){
             accountBusiness.setAccountPower(setAccountPowerInfo);
-            return "添加用户权限成功！";
+            return "修改用户权限成功！";
         }else{
             return "您不是root管理员，未拥有该权限！";
         }
+    }
+
+    @PostMapping(value = "/getAccountPower")
+    public @ResponseBody SetAccountPowerInfo getAccountPower(@RequestBody SetAccountPowerInfo setAccountPowerInfo){
+        return accountBusiness.getAccountPower(setAccountPowerInfo);
     }
 
 }

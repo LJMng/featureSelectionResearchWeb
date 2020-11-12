@@ -54,7 +54,8 @@ public class EmailUtil {
         //邮件内容   true 表示带有附件或html
         minehelper.setText(toEmail.getContent(), true);
         try {
-            mailSender.send(message);            return true;
+            mailSender.send(message);
+            return true;
         } catch (MailException e) {
             e.printStackTrace();
             return false;

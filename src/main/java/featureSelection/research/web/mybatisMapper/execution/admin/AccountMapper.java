@@ -50,4 +50,7 @@ public interface AccountMapper {
 
     @Update("update account set account_power = #{accountPowerJsonString} where account_id = #{accountId}")
     public void updateAccountPower(int accountId, String accountPowerJsonString);
+
+    @Select("select * from account where account_id = #{accountId}")
+    public Account getAccountById(int accountId);
 }
