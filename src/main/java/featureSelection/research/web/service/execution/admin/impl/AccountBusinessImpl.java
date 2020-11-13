@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,7 +36,6 @@ public class AccountBusinessImpl implements AccountBusiness {
 
     @Override
     public void addAccount(Account account) {
-        System.out.println(account);
         account.setAccountPower("{\"user:download\":[],\"user:upload\":[]}");
         accountMapper.addAccount(account);
     }
@@ -55,7 +56,6 @@ public class AccountBusinessImpl implements AccountBusiness {
         //通过applyId获取申请者信息
         ApplyAccount passApplyAccount=accountMapper.findApplyAccountById(applyAccount.getApplyId());
         //设置审批人信息，审批意见,更新信息
-        System.out.println(applyAccount);
         passApplyAccount.setAdministratorId(applyAccount.getAdministratorId());
         passApplyAccount.setAdministratorReason(applyAccount.getAdministratorReason());
         passApplyAccount.setApplyCondition("通过审核");
@@ -78,17 +78,52 @@ public class AccountBusinessImpl implements AccountBusiness {
          * 3.账户功能介绍
          * 4.欢迎使用本平台功能
          */
-        String content="<html>\n" +
-                "\t<body>\n" +
-                "\t\t<h2 text-align=\"center\">这里是featureSelection平台 恭喜您的账号注册成功！！</h2>\n" +
-                "\t\t<div class=\"container\">\n" +
-                "\t\t\t<p>账号："+account.getAccountEmail()+"</p><br />\n" +
-                "\t\t\t<p>账户功能介绍：您可以登陆featureSelection平台，然后使用平台算法运行以及数据集下载等功能。</p><br />\n" +
-                "\t\t\t<p align=\"center\">欢迎登陆并使用平台功能。</p>\n" +
-                "\t\t</div>\n" +
-                "\t</body>\n" +
+        Date date =new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = simpleDateFormat.format(date);
+        String htmlEmailContent="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>邮件提醒</title>\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body style=\"margin: 0; padding: 0;\">\n" +
+                "\n" +
+                "<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border-collapse: collapse;\">\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div style=\"margin: 20px;text-align: center;margin-top: 50px\">\n" +
+                "                <img src=\"img/gdutLogo.jpg\" border=\"0\" style=\"display:block;width: 30%;height: 30%\">\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div style=\"border: #36649d 1px dashed;margin: 30px;padding: 20px\">\n" +
+                "                <label style=\"font-size: 22px;color: #36649d;font-weight: bold\">恭喜您，注册成功！</label>\n" +
+                "                <p style=\"font-size: 16px\">尊敬的&nbsp;<label style=\"font-weight: bold\"> featureSelection算法平台用户</label>&nbsp; 您好！。\n" +
+                "                </p>\n" +
+                "                <p style=\"font-size: 16px\">您已成功注册本算法平台账号："+account.getAccountEmail()+"，您可以登陆本平台进行算法测试！</p>\n" +
+                "                <p>平台登陆地址：<a href=\"/execution\">http://www.featureSelection.com</a></p>\n" +
+                "                <p>联系方式：XXXXXXXXXX</p>\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div align=\"right\" style=\"margin: 40px;border-top: solid 1px gray\" id=\"bottomTime\">\n" +
+                "                <p style=\"margin-right: 20px\">featureSelection 算法平台</p>\n" +
+                "                <label style=\"margin-right: 20px\">"+dateString+"</label>\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "</table>\n" +
+                "</body>\n" +
                 "</html>";
-        ToEmail toEmail=new ToEmail(passApplyAccount.getApplyEmail(),"注册账户成功",content);
+        ToEmail toEmail=new ToEmail(passApplyAccount.getApplyEmail(),"注册账户成功",htmlEmailContent);
         emailUtil.htmlEmail(toEmail);
 
     }
@@ -118,17 +153,50 @@ public class AccountBusinessImpl implements AccountBusiness {
          * 3.账户功能介绍
          * 4.欢迎使用本平台功能
          */
-        String content="<html>\n" +
-                "\t<body>\n" +
-                "\t\t<h2 text-align=\"center\">这里是xxx平台 恭喜您的账号注册成功！！</h2>\n" +
-                "\t\t<div class=\"container\">\n" +
-                "\t\t\t<p>账号："+account.getAccountEmail()+"</p><br />\n" +
-                "\t\t\t<p>账户功能介绍：您可以登陆XX平台，然后XXXXXXX</p><br />\n" +
-                "\t\t\t<p align=\"center\">欢迎登陆并使用平台功能</p>\n" +
-                "\t\t</div>\n" +
-                "\t</body>\n" +
+        Date date =new Date();
+        String htmlEmailContent="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>邮件提醒</title>\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body style=\"margin: 0; padding: 0;\">\n" +
+                "\n" +
+                "<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border-collapse: collapse;\">\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div style=\"margin: 20px;text-align: center;margin-top: 50px\">\n" +
+                "                <img src=\"img/gdutLogo.jpg\" border=\"0\" style=\"display:block;width: 30%;height: 30%\">\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div style=\"border: #36649d 1px dashed;margin: 30px;padding: 20px\">\n" +
+                "                <label style=\"font-size: 22px;color: #36649d;font-weight: bold\">恭喜您，注册成功！</label>\n" +
+                "                <p style=\"font-size: 16px\">尊敬的&nbsp;<label style=\"font-weight: bold\"> featureSelection算法平台用户</label>&nbsp; 您好！。\n" +
+                "                </p>\n" +
+                "                <p style=\"font-size: 16px\">您已成功注册本算法平台账号："+account.getAccountEmail()+"，您可以登陆本平台进行算法测试！</p>\n" +
+                "                <p>平台登陆地址：<a href=\"/execution\">http://www.featureSelection.com</a></p>\n" +
+                "                <p>联系方式：XXXXXXXXXX</p>\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div align=\"right\" style=\"margin: 40px;border-top: solid 1px gray\" id=\"bottomTime\">\n" +
+                "                <p style=\"margin-right: 20px\">featureSelection 算法平台</p>\n" +
+                "                <label style=\"margin-right: 20px\">"+date+"</label>\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "</table>\n" +
+                "</body>\n" +
                 "</html>";
-        ToEmail toEmail=new ToEmail(passApplyAccount.getApplyEmail(),"注册账户成功",content);
+        ToEmail toEmail=new ToEmail(passApplyAccount.getApplyEmail(),"注册账户成功",htmlEmailContent);
         emailUtil.htmlEmail(toEmail);
 
     }
@@ -138,7 +206,6 @@ public class AccountBusinessImpl implements AccountBusiness {
         //通过applyId获取申请者信息
         ApplyAccount unPassApplyAccount=accountMapper.findApplyAccountById(applyAccount.getApplyId());
         //设置审批人信息，审批意见,更新信息
-        System.out.println(applyAccount);
         unPassApplyAccount.setAdministratorId(applyAccount.getAdministratorId());
         unPassApplyAccount.setAdministratorReason(applyAccount.getAdministratorReason());
         unPassApplyAccount.setApplyCondition("不通过审核");
@@ -152,17 +219,53 @@ public class AccountBusinessImpl implements AccountBusiness {
          * 3.账户功能介绍
          * 4.欢迎使用本平台功能
          */
-        String content="<html>\n" +
-                "\t<body>\n" +
-                "\t\t<h2 text-align=\"center\">这里是featureSelection平台 很遗憾您没通过账号注册！！</h2>\n" +
-                "\t\t<div class=\"container\">\n" +
-                "\t\t\t<p>账号："+unPassApplyAccount.getApplyEmail()+"</p><br />\n" +
-                "\t\t\t<p>不通过原因："+unPassApplyAccount.getAdministratorReason()+"</p>\n" +
-                "\t\t\t<p align=\"center\">欢迎继续登陆并使用平台的功能。</p>\n" +
-                "\t\t</div>\n" +
-                "\t</body>\n" +
-                "</html>";
-        ToEmail toEmail=new ToEmail(unPassApplyAccount.getApplyEmail(),"注册账户成功",content);
+        Date date =new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = simpleDateFormat.format(date);
+        String htmlEmailContent="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>邮件提醒</title>\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body style=\"margin: 0; padding: 0;\">\n" +
+                "\n" +
+                "<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border-collapse: collapse;\">\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div style=\"margin: 20px;text-align: center;margin-top: 50px\">\n" +
+                "                <img src=\"img/gdutLogo.jpg\" border=\"0\" style=\"display:block;width: 30%;height: 30%\">\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div style=\"border: #36649d 1px dashed;margin: 30px;padding: 20px\">\n" +
+                "                <label style=\"font-size: 22px;color: #36649d;font-weight: bold\">很遗憾，注册失败！</label>\n" +
+                "                <p style=\"font-size: 16px\">这里是&nbsp;<label style=\"font-weight: bold\"> featureSelection算法平台</label>&nbsp;\n" +
+                "                </p>\n" +
+                "                <p style=\"font-size: 16px\">很遗憾您的账号："+unPassApplyAccount.getApplyEmail()+"，没能注册成功！但您仍然可以使用算法平台首页功能。</p>\n" +
+                "                <p>未通过注册原因："+unPassApplyAccount.getAdministratorReason()+"</p>\n" +
+                "                <p>平台登陆地址：<a href=\"/execution\">http://www.featureSelection.com</a></p>\n" +
+                "                <p>联系方式：XXXXXXXXXX</p>\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div align=\"right\" style=\"margin: 40px;border-top: solid 1px gray\" id=\"bottomTime\">\n" +
+                "                <p style=\"margin-right: 20px\">featureSelection 算法平台</p>\n" +
+                "                <label style=\"margin-right: 20px\">"+dateString+"</label>\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "</table>\n" +
+                "</body>\n" +
+                "</html>\n";
+        ToEmail toEmail=new ToEmail(unPassApplyAccount.getApplyEmail(),"注册用户失败",htmlEmailContent);
         emailUtil.htmlEmail(toEmail);
     }
 
@@ -270,7 +373,6 @@ public class AccountBusinessImpl implements AccountBusiness {
         }
         for (int i=0;i<upLoadAlgorithmDocArr.length;i++){
             upLoadSb.append(upLoadAlgorithmDocArr[i]);
-            System.out.println(upLoadAlgorithmDocArr.length-1);
             if (i != upLoadAlgorithmDocArr.length-1 && !upLoadAlgorithmDocArr[0].equals("")){
                 upLoadSb.append(",");
             }

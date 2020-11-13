@@ -68,7 +68,7 @@ public class DatasetController {
     }
 
     @GetMapping("/unPassDatasetForm")
-    public String unPassDatasetForm(int inputId,String advice,String administrator){
+    public String unPassDatasetForm(int inputId,String advice,String administrator) throws MessagingException {
         datasetBusiness.unPassDatasetForm(inputId,advice,administrator);
         return "redirect:/pages/execution/admin/datasetManage.html";
     }

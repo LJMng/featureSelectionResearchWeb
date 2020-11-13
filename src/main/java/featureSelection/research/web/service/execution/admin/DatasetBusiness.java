@@ -60,6 +60,6 @@ public interface DatasetBusiness {
      * @param advice String 不通过审核的理由
      * @param administratorName String 审核管理员的姓名
      */
-    public void unPassDatasetForm(int inputId, String advice,String administratorName);
+    public void unPassDatasetForm(int inputId, String advice,String administratorName) throws MessagingException;
 
 }

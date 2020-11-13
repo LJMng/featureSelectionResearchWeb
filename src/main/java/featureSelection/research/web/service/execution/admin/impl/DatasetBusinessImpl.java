@@ -2,9 +2,11 @@ package featureSelection.research.web.service.execution.admin.impl;
 
 import featureSelection.research.web.common.util.EmailUtil;
 import featureSelection.research.web.common.util.FileUtil;
+import featureSelection.research.web.entity.execution.admin.Account;
 import featureSelection.research.web.entity.execution.admin.Dataset;
 import featureSelection.research.web.entity.execution.admin.DatasetForm;
 import featureSelection.research.web.entity.execution.admin.ToEmail;
+import featureSelection.research.web.mybatisMapper.execution.admin.AccountMapper;
 import featureSelection.research.web.mybatisMapper.execution.admin.DatasetMapping;
 import featureSelection.research.web.service.execution.admin.DatasetBusiness;
 import org.apache.commons.io.FileUtils;
@@ -18,6 +20,7 @@ import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +36,8 @@ public class DatasetBusinessImpl implements DatasetBusiness {
     private DatasetMapping datasetMapping;
     @Autowired
     private FileUtil fileUtil;
+    @Autowired
+    private AccountMapper accountMapper;
     @Override
     public void createDataset(Dataset dataset, MultipartFile file) throws Exception {
         //将文件存在datasetHome
@@ -75,6 +80,7 @@ public class DatasetBusinessImpl implements DatasetBusiness {
         File source=new File(datasetForm.getInputFile());
         String fileName= FilenameUtils.getName(datasetForm.getInputFile());
         File target=new File (UPLOAD_BASE+fileName);
+        Account account = accountMapper.getAccountById(datasetForm.getAccountId());
         try {
             FileUtils.copyFile(source,target);
         } catch (IOException e) {
@@ -118,24 +124,58 @@ public class DatasetBusinessImpl implements DatasetBusiness {
         5.通过时间
         6.欢迎再次使用平台
          */
-        String content="<html>\n" +
-                "\t<body>\n" +
-                "\t\t<h2 align=\"center\">这里是xxx平台 恭喜你上传数据集成功！！</h2>\n" +
-                "\t\t<div class=\"container\">\n" +
-                "\t\t\t<p>上传数据集的名称"+datasetForm.getInputName()+"</p>\n" +
-                "\t\t\t<p>上传数据集时间："+datasetForm.getInputReviewTime()+"</p>\n" +
-                "\t\t\t<p>数据集通过审核时间："+datasetForm.getInputEndTime()+"</p>\n" +
-                "\t\t\t<p align=\"center\">欢迎再次使用本平台</p>\n" +
-                "\t\t</div>\n" +
-                "\t</body>\n" +
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = simpleDateFormat.format(date);
+        String htmlEmailContent = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>邮件提醒</title>\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body style=\"margin: 0; padding: 0;\">\n" +
+                "\n" +
+                "<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border-collapse: collapse;\">\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div style=\"margin: 20px;text-align: center;margin-top: 50px\">\n" +
+                "                <img src=\"gdutLogo.jpg\" border=\"0\" style=\"display:block;width: 30%;height: 30%\">\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div style=\"border: #36649d 1px dashed;margin: 30px;padding: 20px\">\n" +
+                "                <label style=\"font-size: 22px;color: #36649d;font-weight: bold\">恭喜您，上传数据集成功！</label>\n" +
+                "                <p style=\"font-size: 16px\">这里是&nbsp;<label style=\"font-weight: bold\"> featureSelection算法平台</label>&nbsp;\n" +
+                "                </p>\n" +
+                "                <p style=\"font-size: 16px\">恭喜您成功向featureSeletion平台上传数据集，数据集名称："+datasetForm.getInputName()+"</p>\n" +
+                "                <p>欢迎再次使用本平台功能！</p>\n" +
+                "                <p>平台登陆地址：<a href=\"/execution\">http://www.featureSelection.com</a></p>\n" +
+                "                <p>联系方式：XXXXXXXXXX</p>\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div align=\"right\" style=\"margin: 40px;border-top: solid 1px gray\" id=\"bottomTime\">\n" +
+                "                <p style=\"margin-right: 20px\">featureSelection 算法平台</p>\n" +
+                "                <label style=\"margin-right: 20px\">"+dateString+"</label>\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "</table>\n" +
+                "</body>\n" +
                 "</html>";
-
-        ToEmail toEmail=new ToEmail("1009710828@qq.com","上传数据集成功",content);
+        ToEmail toEmail=new ToEmail(account.getAccountEmail(),"上传数据集成功",htmlEmailContent);
         emailUtil.htmlEmail(toEmail);
     }
 
     @Override
-    public void unPassDatasetForm(int inputId, String advice,String administratorName) {
+    public void unPassDatasetForm(int inputId, String advice,String administratorName) throws MessagingException {
         //获取申请表单对象
         DatasetForm datasetForm=datasetMapping.getDatasetFormById(inputId);
         //获取文件地址，删除文件
@@ -152,6 +192,7 @@ public class DatasetBusinessImpl implements DatasetBusiness {
         datasetForm.setInputEndTime(new Date());
         datasetForm.setInputReviewer(administratorName);
         datasetMapping.updateDatasetForm(datasetForm);
+        Account account = accountMapper.getAccountById(datasetForm.getAccountId());
         //发送邮件给用户
         /*
         邮件内容：
@@ -162,19 +203,54 @@ public class DatasetBusinessImpl implements DatasetBusiness {
         5.通过时间
         6.欢迎再次使用平台
          */
-        String content="<html>\n" +
-                "\t<body>\n" +
-                "\t\t<h2 align=\"center\">这里是xxx平台 恭喜你上传数据集成功！！</h2>\n" +
-                "\t\t<div class=\"container\">\n" +
-                "\t\t\t<p>上传数据集的名称"+datasetForm.getInputName()+"</p>\n" +
-                "\t\t\t<p>不通过原因："+advice+"</p>\n" +
-                "\t\t\t<p>上传数据集时间："+datasetForm.getInputReviewTime()+"</p>\n" +
-                "\t\t\t<p>数据集通过审核时间："+datasetForm.getInputEndTime()+"</p>\n" +
-                "\t\t\t<p align=\"center\">欢迎再次使用本平台</p>\n" +
-                "\t\t</div>\n" +
-                "\t</body>\n" +
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = simpleDateFormat.format(date);
+        String htmlEmailContent = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>邮件提醒</title>\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body style=\"margin: 0; padding: 0;\">\n" +
+                "\n" +
+                "<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border-collapse: collapse;\">\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div style=\"margin: 20px;text-align: center;margin-top: 50px\">\n" +
+                "                <img src=\"gdutLogo.jpg\" border=\"0\" style=\"display:block;width: 30%;height: 30%\">\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div style=\"border: #36649d 1px dashed;margin: 30px;padding: 20px\">\n" +
+                "                <label style=\"font-size: 22px;color: #36649d;font-weight: bold\">很遗憾，上传数据集失败！</label>\n" +
+                "                <p style=\"font-size: 16px\">这里是&nbsp;<label style=\"font-weight: bold\"> featureSelection算法平台</label>&nbsp;\n" +
+                "                </p>\n" +
+                "                <p style=\"font-size: 16px\">很遗憾您上传的数据集没能通过审核，数据集名称："+datasetForm.getInputName()+"</p>\n" +
+                "                <p>未通过审核原因："+advice+"</p>\n" +
+                "                <p>欢迎再次使用本平台功能！</p>\n" +
+                "                <p>平台登陆地址：<a href=\"/execution\">http://www.featureSelection.com</a></p>\n" +
+                "                <p>联系方式：XXXXXXXXXX</p>\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "    <tr>\n" +
+                "        <td>\n" +
+                "            <div align=\"right\" style=\"margin: 40px;border-top: solid 1px gray\" id=\"bottomTime\">\n" +
+                "                <p style=\"margin-right: 20px\">featureSelection 算法平台</p>\n" +
+                "                <label style=\"margin-right: 20px\">"+dateString+"</label>\n" +
+                "            </div>\n" +
+                "        </td>\n" +
+                "    </tr>\n" +
+                "</table>\n" +
+                "</body>\n" +
                 "</html>";
-
-
+        ToEmail toEmail=new ToEmail(account.getAccountEmail(),"上传数据集成功",htmlEmailContent);
+        emailUtil.htmlEmail(toEmail);
     }
 }
